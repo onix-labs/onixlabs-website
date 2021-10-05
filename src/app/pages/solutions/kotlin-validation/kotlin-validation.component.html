@@ -1,0 +1,166 @@
+<section id="solution" class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3 text-center">
+                <img src="assets/images/kotlin/kotlin-validation.svg" class="img-fluid">
+            </div>
+            <div class="col-12 col-md-8 col-lg-9 text-center text-md-start">
+                <h1 class="display-3 fw-lighter mt-md-5"><span class="text-primary">Kotlin</span> Validation Library
+                </h1>
+                <h2 class="display-6 fw-lighter text-muted">
+                    A powerful, fluent mechanism to validate the state of an object graph.
+                </h2>
+                <span class="badge bg-dark fw-light">Kotlin</span>&nbsp;
+                <span class="badge bg-dark fw-light">Kotlin-Library</span>&nbsp;
+                <span class="badge bg-dark fw-light">Validation</span>&nbsp;
+                <hr class="mb-4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3 order-last order-md-first">
+                <div class="d-flex flex-column justify-content-start align-items-stretch">
+                    <a href="https://github.com/onix-labs/onixlabs-kotlin-validation"
+                        class="btn btn-lg btn-dark fw-light mt-2">
+                        <span class="fab fa-lg fa-github pe-2"></span> Repository
+                    </a>
+                    <a href="https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin-validation"
+                        class="btn btn-lg btn-secondary fw-light mt-2">
+                        <span class="fas fa-lg fa-box-open pe-2"></span> Packages
+                    </a>
+                    <a href="https://github.com/onix-labs/onixlabs-kotlin-validation/releases"
+                        class="btn btn-lg btn-secondary fw-light mt-2">
+                        <span class="fas fa-lg fa-code-branch pe-2"></span> Releases
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 col-lg-9 order-first order-md-last">
+                <p class="lead">
+                    In most, if not all software systems we will likely encounter scenarios where we need to validate
+                    the state of a value, structure or object to ensure that its state is sufficient enough to proceed
+                    with a specified task. We may encounter several reasons to implement validation, and we will find
+                    many solutions to the problem.
+                </p>
+                <p class="lead">
+                    As diligent software developers we should carefully consider these solutions against the specific
+                    use-case, and implement the best solution accordingly.
+                </p>
+                <p class="lead">
+                    The ONIXLabs Kotlin Validation Library provides a fluent, flexible, extensible and scalable
+                    framework for implementing object graph validationin Kotlin.
+                </p>
+                <h3 class="display-5 mt-3 fw-lighter text-dropcaps">The Problem</h3>
+                <hr>
+                <p class="lead">
+                    Before we can fully appreciate the ONIXLabs Kotlin Validation Library as a solution, we have to
+                    first understand the problems that it solves. JSR 380 is a specification of the Java API for bean
+                    validation, which ensures that the properties of a bean meet specific criteria, using annotations
+                    such as @NotNull, @Min and @Max. On first impression, this might seem like a reasonable approach,
+                    but when you start to dig a little deeper, you'll start to identify that whilst this solves one
+                    problem, it also introduces others.
+                </p>
+                <h4 class="fw-light">Null Handling</h4>
+                <p class="lead">
+                    The @NotNull annotation is redundant in Kotlin because Kotlin implements a non-nullable type system,
+                    which is checked on assignment rather than access. Assignment of null to properties would throw a
+                    NullPointerException before the validator even had the chance to check anything. This leads to
+                    mismatched error handling and exceptions being thrown at from different parts of the application.
+                </p>
+                <p class="lead">
+                    As much as Kotlin's non-nullable type system is a great solution to "The Billion Dollar Mistake",
+                    developers should make informed decisions about how and when to use it appropriately. When objects
+                    are being created within the application then using non-nullable types is favourable, but when
+                    objects are being created through deserialisation of external data, the object should be designed to
+                    respect the incoming data structure, which more than likely doesn't even have a type system, let
+                    alone a non-nullable one.
+                </p>
+                <h4 class="fw-light">SOLID Violations</h4>
+                <p class="lead">
+                    JSR 380 violates at least two of the SOLID principles.
+                </p>
+                <p class="lead">
+                    It is violating the <strong>Single Responsibility Principle</strong> because the object now has two
+                    reasons to change; to capture data that requires validation, and to specify the validation
+                    requirements for the captured data.
+                </p>
+                <p class="lead">
+                    It is also violating the <strong>Dependency Inversion Principle</strong> because the object
+                    declaration is dependant on the validation framework, rather than an <em>instance</em> of the
+                    validation framework being dependant on an <em>instance</em> of the object.
+                </p>
+                <h4 class="fw-light">Dependency Hell</h4>
+                <p class="lead">
+                    Using annotations means that these dependencies are tightly coupled to the object itself. If you are
+                    validating objects in your domain model this way, then these dependencies have to be declared right
+                    at the heart of your application architecture, bleeding their way into the application's outer
+                    layers. If your business requirements ever change, or you decide to replace the validation
+                    mechanism, it will become difficult to unpick and remove these dependencies.
+                </p>
+                <h4 class="fw-light">Constant Limitations</h4>
+                <p class="lead">
+                    Annotations can only use constant values, such as integers, strings and Booleans. This limits how
+                    expressive validation can be because some values can't be expressed in constant form. Also, not
+                    being able to use dynamic values means that it's very hard to validate with different contexts.
+                </p>
+                <h4 class="fw-light">Validation Messages</h4>
+                <p class="lead">
+                    In relation to constant limitations, validation messages are also constant, which makes
+                    globalisation and localisation of validation messages also difficult.
+                </p>
+                <h4 class="fw-light">Validation Targets</h4>
+                <p class="lead">
+                    According to the documentation for JSR 380, only properties can be annotated. There does not seem to
+                    be any solution for validation things like function return values.
+                </p>
+                <h3 class="display-5 mt-3 fw-lighter text-dropcaps">The Solution</h3>
+                <hr>
+                <p class="lead">
+                    The ONIXLabs Kotlin Validation Library was designed from the ground up, not only to provide a
+                    unified validation solution, but also to solve the problems described above. ONIXLabs Kotlin
+                    Validation adopts the notion of assertions (similar to how we construct unit tests). Once we have an
+                    object state, we can make assertions against that state to see whether the object instance meets the
+                    specified conditions.
+                </p>
+                <h4 class="fw-light">Null Handling</h4>
+                <p class="lead">
+                    Null validation is caught by the validator, rather than by the runtime, so validation error handling
+                    is all performed at the same stage in the application.
+                </p>
+                <h4 class="fw-light">SOLID Respect</h4>
+                <p class="lead">
+                    The ONIXLabs Kotlin Validation Library respects the SOLID principles.
+                </p>
+                <p class="lead">
+                    It respects the <strong>Single Responsibility Principle</strong> because objects only one reason to
+                    change, and have absolutely no awareness of validation requirements.
+                </p>
+                <p class="lead">
+                    It respects the <strong>Dependency Inversion Principle</strong> because validation implementations
+                    are dependant on object instances, rather than object instances being dependant on the validation
+                    framework.
+                </p>
+                <h4 class="fw-light">Dependency Heaven</h4>
+                <p class="lead">
+                    The ONIXLabs Kotlin Validation Library contains far fewer sub-dependencies that other validation
+                    solutions, and since the dependencies are no longer required by the object itself, the dependencies
+                    can be included in the application layer where validation is actually required, allowing for much
+                    looser coupling between modules.
+                </p>
+                <h4 class="fw-light">Constant Limitations</h4>
+                <p class="lead">
+                    Validator implementations are free to use any dynamic value, rather than being limited to constant
+                    values only. This means that validation can easily become context driven and much more expressive.
+                </p>
+                <h4 class="fw-light">Validation Messages</h4>
+                <p class="lead">
+                    In relation to allowing dynamic values, validation messages can also be customised at runtime, which
+                    makes globalisation and localisation of validation messages easy.
+                </p>
+                <h4 class="fw-light">Validation Targets</h4>
+                <p class="lead">
+                    The ONIXLabs Kotlin Validation Library also supports the ability to validate function return values,
+                    even if that function requires arguments in order to execute.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

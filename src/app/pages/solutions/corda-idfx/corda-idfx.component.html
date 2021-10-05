@@ -1,0 +1,114 @@
+<section id="solution" class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3 text-center">
+                <img src="assets/images/corda/corda-idfx.svg" class="img-fluid">
+            </div>
+            <div class="col-12 col-md-8 col-lg-9 text-center text-md-start">
+                <h1 class="display-3 fw-lighter mt-md-5"><span class="text-danger">Corda</span> Identity Framework</h1>
+                <h2 class="display-6 fw-lighter text-muted">
+                    Scalable, interoperable identities for individuals, organisations and digital assets on Corda.
+                </h2>
+                <span class="badge bg-dark fw-light">Corda</span>&nbsp;
+                <span class="badge bg-dark fw-light">Corda-Framework</span>&nbsp;
+                <span class="badge bg-dark fw-light">Digital-Identity</span>&nbsp;
+                <span class="badge bg-dark fw-light">Claims-Based-Identity</span>&nbsp;
+                <span class="badge bg-dark fw-light">Attestation-Based-Identity</span>&nbsp;
+                <a
+                    href="https://github.com/onix-labs/onixlabs-corda-identity-framework/actions/workflows/gradle-build.yml">
+                    <img src="https://github.com/onix-labs/onixlabs-corda-identity-framework/actions/workflows/gradle-build.yml/badge.svg"
+                        class="img-fluid">
+                </a>
+                <hr class="mb-4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3 order-last order-md-first">
+                <div class="d-flex flex-column justify-content-start align-items-stretch">
+                    <a href="https://github.com/onix-labs/onixlabs-corda-identity-framework"
+                        class="btn btn-lg btn-dark fw-light mt-2">
+                        <span class="fab fa-lg fa-github pe-2"></span> Repository
+                    </a>
+                    <a href="https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-corda-identity-framework"
+                        class="btn btn-lg btn-secondary fw-light mt-2">
+                        <span class="fas fa-lg fa-box-open pe-2"></span> Packages
+                    </a>
+                    <a href="https://github.com/onix-labs/onixlabs-corda-identity-framework/releases"
+                        class="btn btn-lg btn-secondary fw-light mt-2">
+                        <span class="fas fa-lg fa-code-branch pe-2"></span> Releases
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 col-lg-9 order-first order-md-last">
+                <p class="lead">
+                    The ONIXLabs Corda Identity Framework provides a powerful framework for building highly scalable,
+                    interoperable, digital and decentralised identities for individuals, organisations and digital
+                    assets on Corda. The design and implementation of this framework is influenced by the W3C
+                    specifications for Verifiable Credentials and Decentralised Identifiers and will continue to build
+                    upon these concepts in future versions.
+                </p>
+                <h3 class="display-5 mt-3 fw-lighter text-dropcaps">Objectives</h3>
+                <hr>
+                <p class="lead">
+                    The ONIXLabs Corda Identity Framework aims to address the following objectives:
+                </p>
+                <ul>
+                    <li>Allow individuals and organisations to take control of their digital identity.</li>
+                    <li>Provide a data layer protocol for application interoperability across Corda applications.</li>
+                    <li>Ensure some level of data privacy and trust through cryptographic security.</li>
+                    <li>Alleviate the need for centralised and/or federated control.</li>
+                </ul>
+                <h3 class="display-5 mt-3 fw-lighter text-dropcaps">Claims Based Identity</h3>
+                <hr>
+                <p class="lead">
+                    A claim is a statement or assertion about a subject, and are expressed as a subject-property/value
+                    relationship. A claim subject represents something about which claims are made; for example an
+                    individual, organisation or digital asset. Claims offer several benefits over traditional data
+                    models:
+                </p>
+                <ul>
+                    <li>All digital and completely under the owner's control.</li>
+                    <li>Highly scalable and cohesive.</li>
+                    <li>Much harder to fake the claim or impersonate the claim owner.</li>
+                    <li>Eliminates the need for treasure troves of data.</li>
+                    <li>Enables minimum disclosure.</li>
+                    <li>Enables zero-knowledge proofs (ZKPs).</li>
+                    <li>Data by itself becomes useless to thieves.</li>
+                </ul>
+                <p class="lead">
+                    Claims in the ONIXLabs Corda Identity Framework are implemented as a comprehensive and open type
+                    hierarchy, allowing developers to consume and utilize claims immediately, or extend the framework to
+                    build custom claim types on top of the existing infrastructure.
+                </p>
+                <h3 class="display-5 mt-3 fw-lighter text-dropcaps">Corda Claims</h3>
+                <hr>
+                <p class="lead">
+                    Corda claims are part of the open claims type hierarchy. They are contract states that represent a
+                    bi-lateral fact between an issuer and a holder, or alternatively may represent a unilateral fact
+                    where the issuer and holder identities are the same (known as a self-issued claim). Corda claims may
+                    evolve over time; that is, their value is subject to change. Corda claims allow information to be
+                    distributed on a need-to-know basis.
+                </p>
+                <h3 class="display-5 mt-3 fw-lighter text-dropcaps">Claim Pointers</h3>
+                <hr>
+                <p class="lead">
+                    Claim pointers are also claims themselves; specifically they are claims whose value points to and
+                    resolves a known Corda claim. The intention of claim pointers is to allow claims to be referenced,
+                    whilst keeping the underlying claim data private. There are two types of claim pointer:
+                </p>
+                <ul>
+                    <li>Linear claim pointers which always point to the latest version of a claim.</li>
+                    <li>Static claim pointers which always point a specific version of a claim.</li>
+                </ul>
+                <h3 class="display-5 mt-3 fw-lighter text-dropcaps">Attestations</h3>
+                <hr>
+                <p class="lead">
+                    Attestations represent a type of proof that a particular state has been witnessed and that its value
+                    has been accepted or rejected. The purpose of attestations is to enable trust of claims, or indeed
+                    any Corda state. Verifiers may accept an attestation to a particular claim or Corda state, without
+                    needing to see the claim or state itself, which enables privacy through trust.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

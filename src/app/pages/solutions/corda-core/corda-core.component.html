@@ -1,0 +1,114 @@
+<section id="solution" class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3 text-center">
+                <img src="assets/images/corda/corda-core.svg" class="img-fluid">
+            </div>
+            <div class="col-12 col-md-8 col-lg-9 text-center text-md-start">
+                <h1 class="display-3 fw-lighter mt-md-5"><span class="text-danger">Corda</span> Core Library</h1>
+                <h2 class="display-6 fw-lighter text-muted">
+                    An essential library for every Corda developer's toolkit comprising several features for contract
+                    and workflow design.
+                </h2>
+                <span class="badge bg-dark fw-light">Corda</span>&nbsp;
+                <span class="badge bg-dark fw-light">Corda-Library</span>&nbsp;
+                <span class="badge bg-dark fw-light">Contract-Design</span>&nbsp;
+                <span class="badge bg-dark fw-light">Workflow-Design</span>&nbsp;
+                <a href="https://github.com/onix-labs/onixlabs-corda-core/actions/workflows/gradle-build.yml">
+                    <img src="https://github.com/onix-labs/onixlabs-corda-core/actions/workflows/gradle-build.yml/badge.svg"
+                        class="img-fluid">
+                </a>
+                <hr class="mb-4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3 order-last order-md-first">
+                <div class="d-flex flex-column justify-content-start align-items-stretch">
+                    <a href="https://github.com/onix-labs/onixlabs-corda-core"
+                        class="btn btn-lg btn-dark fw-light mt-2">
+                        <span class="fab fa-lg fa-github pe-2"></span> Repository
+                    </a>
+                    <a href="https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-corda-core"
+                        class="btn btn-lg btn-secondary fw-light mt-2">
+                        <span class="fas fa-lg fa-box-open pe-2"></span> Packages
+                    </a>
+                    <a href="https://github.com/onix-labs/onixlabs-corda-core/releases"
+                        class="btn btn-lg btn-secondary fw-light mt-2">
+                        <span class="fas fa-lg fa-code-branch pe-2"></span> Releases
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 col-lg-9 order-first order-md-last">
+                <p class="lead">
+                    Several years of developing enterprise, distributed applications on Corda have gone into the making
+                    of the ONIXLabs Corda Core Library. We've identified significant areas where contract and workflow
+                    design can be streamlined, allowing developers to write maintainable, expressive and succint code,
+                    and build more sophisticated applications on Corda.
+                </p>
+                <p class="lead">
+                    The ONIXLabs Corda Core Library is an essential toolkit for any Corda developer, and offers
+                    enterprises a strategic advantage, being able to build and maintain production ready application in
+                    a fraction of the time.
+                </p>
+                <h3 class="display-5 mt-3 fw-lighter text-dropcaps">Features</h3>
+                <hr>
+                <h4 class="fw-light">Chained States</h4>
+                <p class="lead">
+                    Chained states provide a mechanism to cryptographically link contract states into a single linear
+                    chain of state transitions. This can be used to secure states from being split, merged or
+                    duplicated.
+                </p>
+                <h4 class="fw-light">Resolvable States</h4>
+                <p class="lead">
+                    Resolvable states are a better alternative to Corda's state pointers. State pointers in Corda only
+                    allow states to be resolved by their state reference or linear ID, whereas resolvables represent an
+                    open pattern for creating custom pointers to other states, and allow developers to better express
+                    intent over the relationship between states. Furthermore, resolvables allow state relationships to
+                    be modelled as one-to-one, one-to-many, or many-to-many with minimal implementation.
+                </p>
+                <h4 class="fw-light">Hashable States</h4>
+                <p class="lead">
+                    Hashable states are states that are intended to generate unique hashes for each state transition
+                    that occurs on them. This is to enforce absolute uniqueness over the state and every transition
+                    during its lifecycle. Hashable states can also be used to create guarantees over the state data,
+                    withing necessarily needing to reveal the state itself.
+                </p>
+                <h4 class="fw-light">SignatureData &amp; SignedCommandData</h4>
+                <p class="lead">
+                    In traditional, centralized systems, it's common for role/permission based activity to occur, where
+                    users of the system have the authorization to perform actions. In Corda, this can be hard to solve,
+                    since flows can ask for implicit signatures from counter-parties. This makes it hard to tell whether
+                    the right participant initiated a transaction. SignatureData and SignedCommandData solve this
+                    problem by requiring that commands contain signature data that can only be generated by the
+                    initiating node, and must be verified and signed before the transaction can be counter-signed by
+                    other participants on the network. This provides a guarantee of who initiated a transaction and an
+                    additional layer of security, ensuring that transactions can only be initiated by certain parties.
+                </p>
+                <h4 class="fw-light">Vault Query DSL</h4>
+                <p class="lead">
+                    Corda's Vault Query Criteria has caused many headaches for developers. It's quite a tricky learning
+                    curve to understand how query criteria expressions work, and also it's a non-standard query
+                    language, compared to standard collection queries in Kotlin. The Vault Query DSL solves this by
+                    allowing developers to write vault queries that are more aligned with standard collection queries in
+                    Kotlin, using a succint query language that expresses the intent of the query clearly. The Vault
+                    Query DSL can also be extented to support application specific query contexts.
+                </p>
+                <h4 class="fw-light">Messaging Workflows</h4>
+                <p class="lead">
+                    Messaging workflows provide a low-level messaging API for inter-node messaging and message
+                    acknowledgement. This can be used to send and receive transient messages between nodes and obtain
+                    guanratees of message receipt. The messaging workflows also provide a mechanism to distribute vault
+                    transaction notes to all counter-parties that record a transaction.
+                </p>
+                <h4 class="fw-light">Contract and Workflow Extensions</h4>
+                <p class="lead">
+                    The ONIXLabs Corda Core Library is supported by a plethora of extensions which wrap common tasks
+                    into easily callable functions, allowing applications to become more robust and succint through code
+                    reuse. Extensions exist to enable developers to work better with ledger transactions, signed
+                    transactions, transaction builders, public key management, flow management, flow sessions, etc. It
+                    might sound underwhelming, but the extension functions are where this library really shines!
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
