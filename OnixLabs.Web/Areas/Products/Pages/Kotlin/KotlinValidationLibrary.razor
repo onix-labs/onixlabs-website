@@ -25,6 +25,57 @@
 <Section>
     <Headline Centered="true">APIs at a Glance</Headline>
     <Callout Centered="true">Discover the capabilities built to elevate your Kotlin applications</Callout>
+
+    <Row>
+        <Summary Title="Validator & Validation Builder">
+            <Paragraph>
+                The Validator class orchestrates object validation through a builder DSL. The ValidationBuilder exposes concise
+                property, function, and allProperties entry points that bind validations to data points. Assertions can be
+                applied to any callable—including functions with up to 9 parameters—enabling flexible, expressive validation rules.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Member Assertion Context">
+            <Paragraph>
+                Each member under validation operates in a scoped MemberAssertionContext, which provides DSL-style syntax for
+                expressing constraints using validate(condition, message) or nesting validations using validateWith(...).
+                This enables clear local reasoning for both leaf and nested properties in complex object graphs.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Tree-Structured Validation Results">
+            <Paragraph>
+                Validation results are composed into a graph of ValidationResult and MemberResult nodes. These support deep
+                inspection of validation failures across nested models, with automatic tracking of callables, types, and locations
+                in the graph. Each assertion captures its exact position and semantics, ideal for debugging or UI feedback.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Assertion Semantics & Types">
+            <Paragraph>
+                Assertions are represented by MemberAssertion, which includes a failure message, type (relative or absolute),
+                and a ValidationCondition. This allows layering of contextualized error messaging while supporting flexible
+                validation modes.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Validation Modes & Exception Handling">
+            <Paragraph>
+                The engine supports multiple modes: STOP_ON_ERROR halts validation at the first failure, while EMULATION
+                collects all failures into a complete result set. Exceptions are thrown as ValidationException or
+                ValidationGraphException, and include detailed paths to the failing assertion within the graph.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Collection & Map Validations">
+            <Paragraph>
+                The API includes specialized support for Iterable, Map, String, Boolean, and Comparable extensions.
+                These offer idiomatic assertions like isNullOrEmpty(), isTrue(), hasSize(...), isGreaterThan(...),
+                and more, enabling readable, type-safe validation logic across domain types.
+            </Paragraph>
+        </Summary>
+    </Row>
 </Section>
 
 <Section Class="bg-kotlin text-white">

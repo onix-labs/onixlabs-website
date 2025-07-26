@@ -27,6 +27,55 @@
 <Section>
     <Headline Centered="true">APIs at a Glance</Headline>
     <Callout Centered="true">Discover the capabilities built to elevate your Kotlin applications</Callout>
+
+    <Row>
+        <Summary Title="Primitive Type Extensions">
+            <Paragraph>
+                Extension functions for Int, Float, Double, Long, Short, Byte, and BigDecimal provide constants
+                like ZERO and ONE, as well as numeric utilities such as isInteger, toBigDecimal, toBigInteger, and more.
+                These help express numeric logic clearly and idiomatically across different scales and types.
+            </Paragraph>
+        </Summary>
+        <Summary Title="String & Text Utilities">
+            <Paragraph>
+                Adds the String.EMPTY constant and methods like wrap, toUpperSnakeCase, toLowerSnakeCase, toUpperKebabCase, and
+                toLowerKebabCase. These provide fluent transformations for formatting, serialization, and identifier generation.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Reflection Extensions">
+            <Paragraph>
+                Extension support for KClass, and KType helps bridge Kotlin's reflection and sequence APIs with
+                concise, reusable operations. These utilities enable safer introspection patterns.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Date and Time Utilities">
+            <Paragraph>
+                Utility functions in and domain types like DayOfMonth and DayOfMonthOccurrence provide
+                expressive ways to model time-related logic, such as monthly scheduling and ISO duration formatting.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Console Color">
+            <Paragraph>
+                Console styling is powered by the ConsoleColor enum, which defines a full palette of ANSI-compatible foreground and
+                background colors. Paired with ConsoleColorModifier, these colors can be dynamically formatted using escape sequences for
+                terminal output. Extensions to the Console API make it easy to apply structured styles in CLI applications, ideal for
+                highlighting logs, prompts, errors, and results with clear visual cues.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Type Conversion API">
+            <Paragraph>
+                A robust set of type converters; for example, IntTypeConverter, UUIDTypeConverter, BigDecimalTypeConverter, and more,
+                enable safe, declarative casting between primitives and complex types. Includes custom exception handling via
+                IllegalTypeConversionException for reliable validation.
+            </Paragraph>
+        </Summary>
+    </Row>
 </Section>
 
 <Section Class="bg-kotlin text-white">
