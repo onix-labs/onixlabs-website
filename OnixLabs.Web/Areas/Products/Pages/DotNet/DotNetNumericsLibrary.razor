@@ -1,0 +1,90 @@
+@page "/Products/DotNet/Numerics"
+
+<PageTitle>ONIXLabs | Numerics Library for .NET</PageTitle>
+
+<Section Class="bg-dotnet-fade" Centered="true">
+    <Headline>.NET Numerics Library</Headline>
+    <Callout>Enhanced math and arithmetic for .NET applications</Callout>
+    <div class="col-12 col-md-4 offset-md-4">
+        <Image Class="img-fluid" Description="Numerics Library for .NET"
+               Url="onixlabs/images/icons/dotnet/dotnet-numerics-outline.svg"/>
+    </div>
+    <Paragraph Class="text-white" Lead="true">
+        Extends .NET's generic math with powerful tools for precision, formatting, and numeric analysis. Features include an
+        arbitrary-precision BigDecimal, culture-aware formatting, and a NumberInfo struct that reveals the inner workings of any number;
+        significand, exponent, scale, and more. It also adds smart extensions like Pow10 and SetScale for fine-grained decimal control.
+    </Paragraph>
+    <ActionButtons>
+        <ActionButton Class="btn-dark" Icon="fa-brands fa-github" Text="View GitHub Repository" OpenInNewTab="true"
+                      Url="https://github.com/onix-labs/onixlabs-dotnet"/>
+        <ActionButton Class="btn-dark" Icon="fa-solid fa-box-open" Text="View Nuget Packages" OpenInNewTab="true"
+                      Url="https://www.nuget.org/packages?q=OnixLabs.Numerics"/>
+    </ActionButtons>
+</Section>
+
+<Section>
+    <Headline Centered="true">APIs at a Glance</Headline>
+    <Callout Centered="true">Discover the capabilities built to elevate your .NET applications</Callout>
+
+    <Row>
+        <Summary Title="BigDecimal">
+            <Paragraph>
+                The BigDecimal struct delivers arbitrary‑precision, base‑10 decimal arithmetic while implementing IFloatingPoint&lt;T&gt;.
+                This means your numeric logic integrates seamlessly with .NET's generic math ecosystem, without sacrificing accuracy. Ideal
+                for financial calculations, scientific models, and anywhere decimal exactness matters.
+            </Paragraph>
+        </Summary>
+        <Summary Title="NumberInfo">
+            <Paragraph>
+                The NumberInfo struct decomposes numbers into their core components; including unscaled value, scale, exponent, precision,
+                and sign. With built-in parsing and formatting, it's the ideal foundation for custom numeric types and data analysis
+                scenarios.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Generic Math Utilities">
+            <Paragraph>
+                Extend .NET's generic math support with powerful helpers like Delta, Factorial, IntegerLength, MinMax, and Pow10. These
+                utilities simplify complex numeric operations across data types with reusable, type-safe methods.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Numeric Extensions">
+            <Paragraph>
+                A comprehensive suite of extension methods enhances numeric workflows. Convert numbers to BigInteger, BigDecimal, or
+                NumberInfo, extract unscaled values, adjust decimal scales, and more. These helpers make complex transformations feel
+                intuitive and coding more expressive.
+            </Paragraph>
+        </Summary>
+    </Row>
+</Section>
+
+<Section Class="bg-dotnet text-white">
+    <Headline Class="text-white" Centered="true">Other Products for .NET</Headline>
+
+    <hr class="mt-5"/>
+
+    <Product
+        Title="Core Library"
+        ImageUrl="onixlabs/images/icons/dotnet/dotnet-core-outline.svg"
+        InfoUrl="/Products/DotNet/Core"
+        Hook="Designed to be lightweight and reusable, this module serves as the base layer for other ONIXLabs components while remaining broadly useful on its own.">
+        Provides essential abstractions and utilities for building clean, consistent applications. It includes standardized
+        interfaces for value equality, comparison, and binary conversion, along with extension methods and guard clauses to enhance
+        code clarity and safety, and functional constructs that enable explicit, exception-free error handling.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Security Library"
+        ImageUrl="onixlabs/images/icons/dotnet/dotnet-security-outline.svg"
+        InfoUrl="/Products/DotNet/Security"
+        Hook="Built for high-assurance environments, it’s the cryptographic backbone of the ONIXLabs ecosystem.">
+        Provides robust tools for secure data handling and cryptographic operations in .NET applications. It includes primitives like salts,
+        hashes, digital signatures, key pairs, and a FIPS 202-compliant SHA-3 implementation. The library supports secure token generation
+        and in-memory secret management to minimize exposure risks. Features like Merkle tree construction enable data integrity checks in
+        distributed or tamper-resistant systems.
+    </Product>
+</Section>

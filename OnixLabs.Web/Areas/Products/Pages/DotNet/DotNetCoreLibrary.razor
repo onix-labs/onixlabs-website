@@ -1,0 +1,163 @@
+@page "/Products/DotNet/Core"
+
+<PageTitle>ONIXLabs | Core Library for .NET</PageTitle>
+
+<Section Class="bg-dotnet-fade" Centered="true">
+    <Headline>.NET Core Library</Headline>
+    <Callout>Powerful, general-purpose APIs for .NET developers</Callout>
+    <div class="col-12 col-md-4 offset-md-4">
+        <Image Class="img-fluid" Description="Core Library for .NET"
+               Url="onixlabs/images/icons/dotnet/dotnet-core-outline.svg"/>
+    </div>
+    <Paragraph Class="text-white" Lead="true">
+        Provides essential abstractions and utilities for building clean, consistent applications. It includes standardized
+        interfaces for value equality, comparison, and binary conversion, along with extension methods and guard clauses to enhance
+        code clarity and safety, and functional constructs that enable explicit, exception-free error handling.
+    </Paragraph>
+    <ActionButtons>
+        <ActionButton Class="btn-dark" Icon="fa-brands fa-github" Text="View GitHub Repository" OpenInNewTab="true"
+                      Url="https://github.com/onix-labs/onixlabs-dotnet"/>
+        <ActionButton Class="btn-dark" Icon="fa-solid fa-box-open" Text="View Nuget Packages" OpenInNewTab="true"
+                      Url="https://www.nuget.org/packages?q=OnixLabs.Core"/>
+    </ActionButtons>
+</Section>
+
+<Section>
+    <Headline Centered="true">APIs at a Glance</Headline>
+    <Callout Centered="true">Discover the capabilities built to elevate your .NET applications</Callout>
+
+    <Row>
+        <Summary Title="Smart Enumerations">
+            <Paragraph>
+                The Enumeration class implements the strongly typed enumeration pattern, providing a powerful alternative to standard enums.
+                Unlike native enum types, smart enumerations can encapsulate additional data and behavior, making them ideal for
+                domain-driven design scenarios where richer semantics and extensibility are required.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Composable Specifications">
+            <Paragraph>
+                The Specification class abstracts the specification pattern to enable reusable, composable, and parameterized query
+                logic. Specifications can be used with in-memory collections or translated to LINQ queries against data sources like
+                Entity Framework. Logical operators such as AND, OR, and NOT are fully supported, making this an expressive and testable
+                mechanism for encapsulating business rules and query criteria.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Value Semantics">
+            <Paragraph>
+                IValueEquatable and IValueComparable extend IEquatable and IComparable to include operator overloads for equality and
+                comparison. These abstractions simplify the creation of value types that behave consistently across .NET's equality
+                and sorting mechanisms, encouraging clarity and correctness in value semantics.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Binary Conversion Interfaces">
+            <Paragraph>
+                Interfaces like IBinaryConvertible, IMemoryBinaryConvertible, and ISpanBinaryConvertible allow types to expose their
+                underlying data as byte representations. This supports efficient serialization, cryptographic operations, and low-level
+                data manipulation, and is especially useful in performance-sensitive or binary-focused applications.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Result Monad">
+            <Paragraph>
+                Aero’s Result and Result&lt;T&gt; types provide a structured approach to success/failure modeling. Each result is either a
+                Success or a Failure, with error states represented using Exception, allowing deep integration with the language's native
+                error-handling mechanisms. These types support rich functional workflows, including async integration, chaining,
+                pattern matching, and comprehensive extension methods that make error propagation explicit and maintainable.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Optional Monad">
+            <Paragraph>
+                The Optional&lt;T&gt; type provides a clear abstraction for representing optional values. With explicit Some and None
+                states, it removes the ambiguity of null and promotes safer handling of optional data. The library includes extensive
+                methods and async-compatible workflows for transforming, filtering, and consuming optional values in a fluent, expressive
+                way.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Precondition Utilities">
+            <Paragraph>
+                Methods such as Check, Require, CheckIsNotNull, RequireNotNullOrEmpty, etc. provide idiomatic, parameterized precondition
+                validation. These utilities offer consistent and expressive ways to enforce method contracts and fail fast when inputs
+                don't meet expectations, improving both developer ergonomics and runtime safety.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Extension Methods">
+            <Paragraph>
+                The Core library includes a broad collection of extension methods for working with objects, arrays, strings, dates &amp;
+                times, sequences, and more. These helpers reduce boilerplate, improve code readability, and enhance developer productivity
+                across a wide range of everyday tasks.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Functional Collections">
+            <Paragraph>
+                Factory methods like ListOf, HashSetOf, ImmutableQueueOf, EmptyList, EmptyDictionary, etc. offer a concise, functional
+                approach to creating strongly typed collections. Unlike .NET's collection expressions, these utilities guarantee type
+                consistency and enable functional chaining, supporting cleaner, more declarative collection handling.
+            </Paragraph>
+        </Summary>
+        <Summary Title="LINQ Enhancements">
+            <Paragraph>
+                LINQ is supercharged with extensions like AllEqualBy, AnyEqualBy, IsEmpty, WhereNot, and CountNot, among others. These
+                extensions are designed to work seamlessly with IEnumerable and IEnumerable&lt;T&gt;, offering expressive shortcuts and
+                structural clarity for common operations.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Advanced Type Reflection">
+            <Paragraph>
+                The library provides a customizable C# type formatter for reflection scenarios. It supports fully qualified names, generic
+                type arguments, nullable shorthand, and tuple formatting with named elements. This is ideal for diagnostics, logging, or
+                developer tooling where precise type display is essential.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Flexible Text Encoding">
+            <Paragraph>
+                The library includes a powerful encoding framework with built-in support for Base-16, Base-32, Base-58, and Base-64. Format
+                providers and alphabet variants are supported out-of-the-box, and extension methods enhance interoperability with .NET's
+                Encoding and StringBuilder classes. Whether you’re encoding binary data or building secure identifiers, this API is built
+                for precision and performance.
+            </Paragraph>
+        </Summary>
+    </Row>
+</Section>
+
+<Section Class="bg-dotnet text-white">
+    <Headline Class="text-white" Centered="true">Other Products for .NET</Headline>
+
+    <hr class="mt-5"/>
+
+    <Product
+        Title="Numerics Library"
+        ImageUrl="onixlabs/images/icons/dotnet/dotnet-numerics-outline.svg"
+        InfoUrl="/Products/DotNet/Numerics"
+        Hook="Designed for flexibility and accuracy, the Numerics library empowers developers to reliably work with numbers in scientific, financial, or engineering contexts.">
+        Extends .NET’s generic math with powerful tools for precision, formatting, and numeric analysis. Features include an
+        arbitrary-precision BigDecimal, culture-aware formatting, and a NumberInfo struct that reveals the inner workings of any number;
+        significand, exponent, scale, and more. It also adds smart extensions like Pow10 and SetScale for fine-grained decimal control.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Security Library"
+        ImageUrl="onixlabs/images/icons/dotnet/dotnet-security-outline.svg"
+        InfoUrl="/Products/DotNet/Security"
+        Hook="Built for high-assurance environments, it’s the cryptographic backbone of the ONIXLabs ecosystem.">
+        Provides robust tools for secure data handling and cryptographic operations in .NET applications. It includes primitives like salts,
+        hashes, digital signatures, key pairs, and a FIPS 202-compliant SHA-3 implementation. The library supports secure token generation
+        and in-memory secret management to minimize exposure risks. Features like Merkle tree construction enable data integrity checks in
+        distributed or tamper-resistant systems.
+    </Product>
+</Section>

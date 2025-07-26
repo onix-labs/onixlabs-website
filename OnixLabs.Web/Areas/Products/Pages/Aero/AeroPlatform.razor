@@ -1,0 +1,245 @@
+@page "/Products/Aero"
+
+<PageTitle>ONIXLabs | Aero</PageTitle>
+
+<Section Class="bg-secondary-subtle bloom" Centered="true">
+    <div class="col-12 col-md-6 offset-md-3">
+        <ThemeImage
+            Class="img-fluid" Description="Discover Aero Platform"
+            UrlLight="onixlabs/images/logo/aero-dark.svg"
+            UrlDark="onixlabs/images/logo/aero-light.svg"/>
+    </div>
+    <Callout>The modular platform for enterprise .NET development</Callout>
+    <div class="col-12 col-md-6 offset-md-3 mt-5">
+        <ThemeImage
+            Class="img-fluid" Description="Aero Platform"
+            UrlDark="onixlabs/images/marketing/macbook-pro-dark.svg"
+            UrlLight="onixlabs/images/marketing/macbook-pro.svg"/>
+    </div>
+    <Paragraph class="mt-5" Lead="true">
+        <strong>Aero is the .NET platform for fast, scalable, enterprise-grade engineering.</strong>
+        <br/>
+        <span>It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.</span>
+    </Paragraph>
+</Section>
+
+<Section Centered="true">
+    <Headline>Founding Principles</Headline>
+    <Callout>Why build .NET applications with Aero</Callout>
+    <Paragraph Class="mt-5" Lead="true">
+        Aero provides a rock-solid foundation for building modern .NET applications. Designed with flexibility and scalability in mind, it
+        helps teams move faster, adopt best practices by default, and build applications that are robust, maintainable, and ready for
+        growth.
+    </Paragraph>
+    <Row>
+        <Tile ColumnSize="3" Title="Built for Acceleration"
+              ImageLightUrl="onixlabs/images/icons/glass/rocket.svg"
+              ImageDarkUrl="onixlabs/images/icons/glass/rocket-dark.svg">
+            Get up and running in minutes, not months. Aero provides essential infrastructure, right out of the box.
+        </Tile>
+
+        <Tile ColumnSize="3" Title="Modular by Design"
+              ImageLightUrl="onixlabs/images/icons/glass/stack.svg"
+              ImageDarkUrl="onixlabs/images/icons/glass/stack-dark.svg">
+            Pick and choose the features you need. Everything is built around dependency injection for seamless, flexible integration.
+        </Tile>
+
+        <Tile ColumnSize="3" Title="Enterprise-Grade Foundations"
+              ImageLightUrl="onixlabs/images/icons/glass/buildings.svg"
+              ImageDarkUrl="onixlabs/images/icons/glass/buildings-dark.svg">
+            Scalable, performant, and production-ready. Aero handles the heavy lifting so you can focus on your core domain.
+        </Tile>
+
+        <Tile ColumnSize="3" Title="Modern and Legacy Friendly"
+              ImageLightUrl="onixlabs/images/icons/glass/lambda.svg"
+              ImageDarkUrl="onixlabs/images/icons/glass/lambda-dark.svg">
+            Support for synchronous and asynchronous APIs means Aero plays nicely with both cutting-edge and established systems.
+        </Tile>
+
+        <Tile ColumnSize="3" Title="Security, Sorted"
+              ImageLightUrl="onixlabs/images/icons/glass/shield-alt.svg"
+              ImageDarkUrl="onixlabs/images/icons/glass/shield-alt-dark.svg">
+            Built-in support for data privacy, integrity, secrets management, and digital signing using Hashicorp Vault.
+        </Tile>
+
+        <Tile ColumnSize="3" Title="Observability First"
+              ImageLightUrl="onixlabs/images/icons/glass/telemetry.svg"
+              ImageDarkUrl="onixlabs/images/icons/glass/telemetry-dark.svg">
+            Robust logging and telemetry tools included, so you can understand, debug, and optimize with confidence.
+        </Tile>
+    </Row>
+</Section>
+
+<Section Class="bg-secondary-subtle">
+    <Headline Centered="true">Aero Architecture</Headline>
+    <Callout Centered="true">The building blocks for enterprise-grade .NET applications</Callout>
+    <Paragraph Class="mt-5" Centered="true" Lead="true">
+        Aero isn’t just another framework—it's your project's backbone. From APIs to infrastructure, each module is crafted to solve
+        real-world engineering challenges with clarity, performance, and security in mind. Whether you're launching something new or
+        evolving a legacy system, these core components give you the speed, structure, and scalability to build with confidence.
+    </Paragraph>
+    <Row>
+        <Summary Title="API-First Design">
+            <Paragraph>
+                Aero is built with a strict API-first philosophy. Every module defines a clean, public-facing contract that exposes only
+                what developers need; no internal clutter or implementation leakage. By hiding implementations behind dependency injection,
+                Aero ensures consistent separation of concerns, enforces modular design, and makes swapping or mocking implementations
+                effortless.
+            </Paragraph>
+            <Paragraph>
+                Where appropriate, Aero offers both synchronous and asynchronous APIs. This duality makes Aero uniquely versatile: it
+                integrates seamlessly with legacy codebases that rely on synchronous patterns, while also embracing modern, non-blocking
+                async workflows. Whether you’re modernizing existing systems or starting fresh, Aero adapts to your architecture, not the
+                other way around.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Error Handling">
+            <Paragraph>
+                Aero standardizes error handling through the use of rich result types like Result and Optional. These abstractions eliminate
+                the ambiguity of exceptions-as-control-flow and make error states explicit in method signatures, improving clarity and
+                reducing unexpected failures.
+            </Paragraph>
+            <Paragraph>
+                Beyond just return types, Aero defines a consistent pattern for error identification, including structured error types,
+                names, and codes. Every failure scenario is catalogued and easy to trace, making debugging faster, more reliable, and less
+                dependent on guesswork or logs.
+            </Paragraph>
+            <Paragraph>
+                By embracing these patterns across its APIs, Aero encourages a functional, explicit, and predictable approach to error
+                handling, particularly valuable in complex or distributed systems where clarity and consistency are critical.
+            </Paragraph>
+        </Summary>
+    </Row>
+    <Row>
+        <Summary Title="Logging">
+            <Paragraph>
+                Logging in Aero is built on the Microsoft Logging APIs and enhanced through ILogService&lt;T&gt; and ILogServiceFactory.
+                Every meaningful action in Aero is logged, offering deep insight into application behavior with minimal developer effort.
+            </Paragraph>
+            <Paragraph>
+                This baked-in observability means faster debugging, clearer traceability, and operational transparency by default; critical
+                for production systems at scale.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Configuration">
+            <Paragraph>
+                Aero integrates with Microsoft's Configuration APIs to support JSON files, in-memory settings, and environment-based
+                overrides. Every Aero module is configurable by design, meaning no hidden behavior and no need for custom plumbing.
+            </Paragraph>
+            <Paragraph>
+                You get consistent, centralized control over runtime behavior; across services, environments, and teams.
+            </Paragraph>
+        </Summary>
+    </Row>
+    <Row>
+        <Summary Title="Data Access">
+            <Paragraph>
+                Aero offers a powerful, granular API for working with data. It embraces the repository pattern, supports fine-grained roles
+                (like read-only or write-only access), and enables unit-of-work coordination and transactional workflows.
+            </Paragraph>
+            <Paragraph>
+                A production-ready Entity Framework implementation is included, giving teams a modern and familiar ORM experience with
+                best-practice abstractions on top.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Serialization">
+            <Paragraph>
+                Serialization in Aero is simple, fast, and extensible. It includes support for JSON via .NET's built-in libraries and
+                high-performance binary serialization via MessagePack.
+            </Paragraph>
+            <Paragraph>
+                Whether you're storing data, communicating between services, or caching responses, Aero's serialization API gives you
+                consistent, pluggable control over data formats.
+            </Paragraph>
+        </Summary>
+    </Row>
+    <Row>
+        <Summary Title="Key and Secrets Management">
+            <Paragraph>
+                Aero provides robust APIs for both key and secrets management, offering a consistent and secure approach to handling
+                sensitive material across environments. Both systems support lightweight, in-memory implementations for development and
+                testing, enabling rapid iteration without complex setup.
+            </Paragraph>
+            <Paragraph>
+                For production, Aero integrates seamlessly with HashiCorp Vault to ensure strong security and centralized control.
+                Secrets, such as API keys, credentials, and tokens can be securely stored and retrieved. Cryptographic keys, including
+                ECDSA,
+                are managed through Vault-backed implementations, with operations such as signing performed entirely within the Vault for
+                maximum security.
+            </Paragraph>
+            <Paragraph>
+                These abstractions decouple security concerns from application logic, making it easier to build maintainable, auditable, and
+                secure systems without sacrificing development speed or operational control.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Digital Signing">
+            <Paragraph>
+                Digital signatures are a first-class capability in Aero, supported through a dedicated signing API designed for both
+                flexibility and security. The API allows developers to generate cryptographic signatures using trusted key sources,
+                including in-memory keys for local development and secure, Vault-managed keys for production environments.
+            </Paragraph>
+            <Paragraph>
+                In production, Aero integrates with HashiCorp Vault to ensure private keys remain fully isolated. Signatures are generated
+                inside the Vault itself, meaning sensitive key material never leaves the secure boundary, protecting against leaks, misuse,
+                or unauthorized access.
+            </Paragraph>
+            <Paragraph>
+                This design enables strong guarantees of authenticity and integrity for digital documents, transactions, and inter-service
+                communication, while keeping signing workflows cleanly abstracted from application logic. Whether you're building document
+                verification systems, audit trails, or cryptographically verified services, Aero provides a secure and consistent
+                foundation.
+            </Paragraph>
+        </Summary>
+
+    </Row>
+    <Row>
+        <Summary Title="Ledger Infrastructure">
+            <Paragraph>
+                Aero introduces a world-first UTXO ledger, purpose-built for the .NET ecosystem. Unlike blockchain implementations,
+                Aero’s ledger is designed for centralized environments where trust and control are managed internally, but data integrity
+                and auditability remain critical.
+            </Paragraph>
+            <Paragraph>
+                At its core, the ledger maintains immutable state transitions using the Unspent Transaction Output (UTXO) model. This
+                ensures every transaction leaves a verifiable, tamper-proof trail of data, ideal for systems that demand accountability,
+                such
+                as financial services, regulatory reporting, or digital governance. The infrastructure is modular, secure, and ready for
+                production-grade applications.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Ledger Programming Models">
+            <Paragraph>
+                To meet a variety of use cases, Aero provides two distinct programming models for interacting with the ledger. The
+                general-purpose model gives developers full control over smart contract logic, enabling advanced, domain-specific rules and
+                state validations. This model is ideal for complex workflows, such as asset management or financial settlements.
+            </Paragraph>
+            <Paragraph>
+                For simpler needs, Aero offers a streamlined model specifically designed for document-centric applications. This includes
+                built-in patterns for digital document lifecycle management, signing, state changes, and provenance tracking, without the
+                overhead of building a contract system from scratch.
+            </Paragraph>
+            <Paragraph>
+                Together, these models make the Aero ledger both powerful and approachable, supporting everything from enterprise workflow
+                automation to secure digital records.
+            </Paragraph>
+        </Summary>
+    </Row>
+    <Paragraph Class="mt-5" Lead="true">
+        Aero gives you more than just utilities—it gives you architecture. With thoughtfully designed APIs, production-ready integrations,
+        and deep flexibility across every layer of the stack, Aero equips .NET teams to deliver faster, scale confidently, and stay
+        maintainable from day one. This is modern enterprise development, without the drag.
+    </Paragraph>
+</Section>
+
+<Section Centered="true">
+    <Headline>Aero In Action</Headline>
+    <Callout>Still curious to see what Aero can do?</Callout>
+    <Paragraph Class="mt-5" Lead="true">
+        Whether you're evaluating it for your next project or just want a deeper look under the hood, we’d love to show you what Aero can
+        do. Book a product or technical demo and get a guided tour of the platform, explore real-world use cases, and ask questions tailored
+        to your team’s needs. See how Aero can accelerate your development, and transform the way you build with .NET.
+    </Paragraph>
+    <ActionButtons>
+        <ActionButton Class="btn-secondary" Url="/Contact?reason=aero-demo" Text="Request a Demo"/>
+    </ActionButtons>
+</Section>

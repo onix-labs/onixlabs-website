@@ -1,0 +1,117 @@
+@page "/Tools/Token-Generator"
+@using OnixLabs.Core.Linq
+@using OnixLabs.Security
+@layout ToolsLayout
+
+<PageTitle>Token Generator</PageTitle>
+
+<Card>
+    <CardHeader Class="fw-semibold">Token Generator</CardHeader>
+    <CardBody>
+        <Row>
+            <div class="col">
+                <div class="form-floating">
+                    <InputSelect @bind-Value="generator" class="form-select" id="generator">
+                        <option value="0" selected disabled hidden></option>
+                        <option value="1">Pseudo-Random</option>
+                        <option value="2">Secure-Random</option>
+                    </InputSelect>
+                    <label for="generator">Random Number Generator</label>
+                </div>
+            </div>
+            @if (generator == 1)
+            {
+                <div class="col">
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <InputNumber @bind-Value="seed" class="form-control no-spinner" id="seed"/>
+                            <label for="seed">Seed</label>
+                        </div>
+                        <button @onclick="RandomizeSeed" class="btn btn-secondary" type="button">
+                            <i class="fa-solid fa-dice"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </Row>
+        <Row Class="mt-3">
+            <div class="col">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <InputNumber @bind-Value="length" class="form-control no-spinner" id="length"/>
+                        <label for="length">Length</label>
+                    </div>
+                    <button @onclick="IncrementLength" class="btn btn-secondary" type="button">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button @onclick="DecrementLength" class="btn btn-secondary" type="button">
+                        <i class="fa-solid fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <InputNumber @bind-Value="amount" class="form-control no-spinner" id="amount"/>
+                        <label for="amount">Amount</label>
+                    </div>
+                    <button @onclick="IncrementAmount" class="btn btn-secondary" type="button">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button @onclick="DecrementAmount" class="btn btn-secondary" type="button">
+                        <i class="fa-solid fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+        </Row>
+        <Row Class="mt-3">
+            <div class="btn-group flex-fill" role="group" aria-label="Basic checkbox toggle button group">
+                <InputCheckbox @bind-Value="useUpper" class="btn-check" id="useUpper" autocomplete="off"/>
+                <label class="btn btn-outline-secondary" for="useUpper">Uppercase</label>
+
+                <InputCheckbox @bind-Value="useLower" class="btn-check" id="useLower" autocomplete="off"/>
+                <label class="btn btn-outline-secondary" for="useLower">Lowercase</label>
+
+                <InputCheckbox @bind-Value="useDigits" class="btn-check" id="useDigits" autocomplete="off"/>
+                <label class="btn btn-outline-secondary" for="useDigits">Digits</label>
+
+                <InputCheckbox @bind-Value="useSpecialBasic" class="btn-check" id="useSpecialBasic" autocomplete="off"/>
+                <label class="btn btn-outline-secondary" for="useSpecialBasic">Special (Basic)</label>
+
+                <InputCheckbox @bind-Value="useSpecialExtended" class="btn-check" id="useSpecialAdvanced" autocomplete="off"/>
+                <label class="btn btn-outline-secondary" for="useSpecialAdvanced">Special (Extended)</label>
+            </div>
+        </Row>
+    </CardBody>
+    <CardFooter Class="d-flex justify-content-end py-3">
+        <button @onclick="Create" class="btn btn-min-width btn-secondary" type="button">Create</button>
+    </CardFooter>
+</Card>
+@if (tokens.IsNotEmpty())
+{
+    <Card Class="mt-3">
+        <CardHeader>
+            <div class="d-flex flex-row justify-content-end py-2">
+                <button @onclick="() => CopyToClipboard()" class="btn btn-min-width btn-secondary" type="button">
+                    <i class="fa-regular fa-paste"></i>
+                    <span class="ms-2">Copy All</span>
+                </button>
+            </div>
+        </CardHeader>
+        <CardBody>
+            <Row Class="gap-3">
+                @foreach ((int index, SecurityToken token) in tokens.Index())
+                {
+                    <div class="col-12">
+                        <div class="input-group">
+                            <input class="form-control font-monospace" type="text" readonly value="@token">
+                            <button @onclick="() => CopyToClipboard(index)" class="btn btn-secondary" type="button">
+                                <i class="fa-regular fa-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </Row>
+        </CardBody>
+    </Card>
+}

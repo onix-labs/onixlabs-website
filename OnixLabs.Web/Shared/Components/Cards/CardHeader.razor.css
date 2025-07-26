@@ -1,0 +1,4 @@
+.card-header {
+    background-color: transparent;
+    border-bottom: 0.0625rem solid var(--site-card-border-middle);
+}

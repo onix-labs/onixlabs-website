@@ -1,0 +1,137 @@
+@page "/Products/Corda/Core"
+
+<PageTitle>ONIXLabs | Corda Core Library</PageTitle>
+
+<Section Class="bg-corda-fade" Centered="true">
+    <Headline>Corda Core Library</Headline>
+    <Callout>Powerful, general-purpose APIs for Corda developers</Callout>
+    <div class="col-12 col-md-4 offset-md-4">
+        <Image Class="img-fluid" Description="Core Library for Corda"
+               Url="onixlabs/images/icons/corda/corda-core-outline.svg"/>
+    </div>
+    <Paragraph Class="text-white" Lead="true">
+        Provides Corda developers with a modular toolkit of contract, workflow, and integration APIs to streamline CorDapp development.
+        Instead of a standalone app, it offers reusable abstractions, utilities, and patterns for building scalable, maintainable solutions.
+        With features like clean vault queries, transaction builders, standardized signing, and modular Gradle support, it reduces
+        boilerplate and enforces consistency. Clear structure and seamless integration make it easy to adopt across projects.
+    </Paragraph>
+    <ActionButtons>
+        <ActionButton Class="btn-dark" Icon="fa-brands fa-github" Text="View GitHub Repository" OpenInNewTab="true"
+                      Url="https://github.com/onix-labs/onixlabs-corda-core"/>
+        <ActionButton Class="btn-dark" Icon="fa-solid fa-box-open" Text="View Maven Packages" OpenInNewTab="true"
+                      Url="https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-corda-core"/>
+    </ActionButtons>
+</Section>
+
+<Section>
+    <Headline Centered="true">APIs at a Glance</Headline>
+    <Callout Centered="true">Discover the capabilities built to elevate your Corda applications</Callout>
+
+    <Row>
+        <Summary Title="Contract APIs">
+            <Paragraph>
+                Implementing ContractID automates and standardizes how contract identifiers are generated and managed, eliminating
+                boilerplate and reducing future refactoring. It ensures every contract has a deterministic and idiomatic ID from day one.
+            </Paragraph>
+            <Paragraph>
+                Corda's flows often require explicit verification of who initiated a transaction, which isn’t always straightforward in a
+                decentralized context. To solve this, the library introduces SignatureData and SignedCommandData, enforcing that each
+                command be signed by its originator before a counterparty can endorse the transaction. This mechanism strengthens
+                authorization guarantees and provides clear attribution of transaction intent.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Enhanced State Types">
+            <Paragraph>
+                Chained States create a cryptographic sequence of state transitions, preventing splits, merges, or duplicates and preserving
+                a verifiable linear history.
+            </Paragraph>
+            <Paragraph>
+                Hashable States emit unique hashes at each transition to guarantee tamper-proof uniqueness and allow integrity verification
+                without exposing underlying data.
+            </Paragraph>
+            <Paragraph>
+                Resolvable States enhance Corda's pointer model by enabling expressive relationships—one-to-one, one-to-many, or
+                many-to-many. This empowers developers to model complex state relations with minimal code.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Vault Adapters">
+            <Paragraph>
+                Vault access via CordaRPCOps and ServiceHub often varies subtly, leading to inconsistent implementations. ONIXLabs Vault
+                Adapters abstract these differences behind a cohesive interface for consistent and predictable vault queries.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Vault Query DSL">
+            <Paragraph>
+                Pairing vault adapters with the expressive Vault Query DSL brings Corda's vault querying in line with idiomatic Kotlin. Use
+                familiar operators, such as where, filter, and map to write clear and extensible queries, improving readability and reducing
+                complexity.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Transaction DSL">
+            <Paragraph>
+                The Transaction Builder DSL provides a clean, structured approach to constructing ledger transactions—grouping inputs,
+                outputs, commands, and signatures logically by intent. This enhances clarity and maintainability in flow development.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Flow Steps">
+            <Paragraph>
+                Complemented by reusable Flow Step utilities, the library standardizes tasks like session initiation, subflow invocation,
+                and error handling. These helpers eliminate boilerplate and simplify workflow logic for faster development.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Messaging Workflows">
+            <Paragraph>
+                The low-level messaging API enables reliable inter-node communication with built-in acknowledgement support. It also
+                simplifies distributing vault transaction notifications to counterparties, ensuring consistent and traceable workflows.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Extensions">
+            <Paragraph>
+                Powered by a rich collection of extension methods, covering transactions, key and flow management, signed transactions,
+                builders, and more, this library wraps common tasks into expressive, reusable functions that elevate productivity and reduce
+                errors.
+            </Paragraph>
+        </Summary>
+    </Row>
+</Section>
+
+<Section Class="bg-corda text-white">
+    <Headline Class="text-white" Centered="true">Other Products for Corda</Headline>
+
+    <hr class="mt-5"/>
+
+    <Product
+        Title="Identity Framework"
+        ImageUrl="onixlabs/images/icons/corda/corda-idfx-outline.svg"
+        InfoUrl="/Products/Corda/Identity-Framework"
+        Hook="Built for modern identity on Corda, it gives developers the tools to deliver privacy-first, standards-aligned identity systems with ease.">
+        A powerful toolkit for building scalable, interoperable digital identities on Corda, supporting both individuals and organizations.
+        Inspired by W3C Verifiable Credentials, it enables secure, privacy-preserving claims through a flexible hierarchy of types,
+        including pointers and attestations. It supports evolving identity state transitions while minimizing data exposure, and introduces
+        a multi-tenant account model with APIs for vault partitioning and cross-node account sharing.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Business Network Management System"
+        ImageUrl="onixlabs/images/icons/corda/corda-bnms-outline.svg"
+        InfoUrl="/Products/Corda/Business-Network-Management-System"
+        Hook="By streamlining governance and trust, the ONIXLabs BNMS lays the foundation for dynamic, secure smart contract execution in complex networks.">
+        A powerful Corda framework for defining and managing membership and multi-lateral relationships within business networks. It
+        supports both centralized and decentralized models, enabling governance by operators or members through flexible permissions and
+        attestations. Built on the ONIXLabs Identity Framework, it offers standardized APIs and claim-based mechanisms for interoperable,
+        privacy-aware identity management. Membership issuance, updates, and revocation are handled via configurable multi-party workflows
+        with built-in tamper resistance.
+    </Product>
+</Section>

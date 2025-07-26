@@ -1,0 +1,114 @@
+@page "/Contact"
+
+<PageTitle>ONIXLabs | Contact</PageTitle>
+
+<Section Centered="true">
+    <Headline>Stay Connected</Headline>
+    <Callout>We'd love to hear from you</Callout>
+    <div class="col-12 col-md-4 offset-md-4">
+        <ThemeImage
+            Class="img-fluid"
+            UrlDark="onixlabs/images/icons/glass/envelope-dark.svg"
+            UrlLight="onixlabs/images/icons/glass/envelope.svg"
+        />
+    </div>
+    <Paragraph Lead="true">
+        If you're interested in learning more about our Aero Platform, .NET, Corda, or Kotlin product lines, or if you're exploring
+        consulting opportunities, feel free to drop us a message. We're always happy to connect and help you find the right solution.
+    </Paragraph>
+
+    <Row Class="mt-5">
+        <div class="col-12 col-lg-8 offset-lg-2">
+            <Card>
+                <CardHeader Class="fw-semibold text-start">
+                    Contact Us
+                </CardHeader>
+                <CardBody>
+                    <form class="d-flex flex-column gap-3" action="https://formspree.io/f/xwpqpeay" method="post">
+                        <div class="form-floating">
+                            <input class="form-control" type="text" name="name" id="name" required autofocus>
+                            <label for="name">Name</label>
+                        </div>
+
+                        <div class="form-floating">
+                            <input class="form-control" type="email" name="email" id="email" required>
+                            <label for="email">Email Address</label>
+                        </div>
+
+                        <div class="form-floating">
+                            <select @bind="reason" class="form-select" name="reason" id="reason" required>
+                                <option disabled selected hidden></option>
+                                <option>Aero Platform (General Inquiry)</option>
+                                <option>Aero Platform (Book a Demo)</option>
+                                <option>Product Line (.NET)</option>
+                                <option>Product Line (Corda)</option>
+                                <option>Product Line (Kotlin)</option>
+                                <option>Consulting</option>
+                                <option>Other</option>
+                            </select>
+                            <label for="reason">Reason</label>
+                        </div>
+
+                        <div class="form-floating">
+                            <textarea @bind="message" class="form-control" name="message" id="message" rows="6" required></textarea>
+                            <label for="message">Message</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-secondary align-self-end">
+                            <Icon Class="fa-solid fa-paper-plane"/>
+                            <span class="ms-2">Send Message</span>
+                        </button>
+                    </form>
+                </CardBody>
+            </Card>
+        </div>
+    </Row>
+</Section>
+
+<Section Class="bg-secondary-subtle" Centered="true">
+    <Headline>Book a Meeting</Headline>
+    <Callout>Let's talk, on your schedule</Callout>
+    <Paragraph Class="mt-5" Lead="true">
+        Booking time with us is easy and flexible. Use our Calendly link to pick a time that works best for you — no back-and-forth emails,
+        just a straightforward way to connect. Whether it's a quick chat or a deep dive, we're here when you're ready.
+    </Paragraph>
+    <NavLink class="btn btn-lg btn-outline-secondary p-4 px-5 mt-5"
+             href="https://calendly.com/matthew-layton/30min"
+             target="_blank" rel="noopener noreferrer">
+        <Icon Class="fa-solid fa-calendar"/>
+        <span class="ms-2">Book a Meeting</span>
+    </NavLink>
+</Section>
+
+<Section Centered="true">
+    <Headline>Social Media</Headline>
+    <Callout>Follow us for updates and insights</Callout>
+    <Paragraph Class="mt-5" Lead="true">
+        Stay connected with us on social media to get the latest news, product updates, and insights from our team.
+        Whether you're a developer, partner, or just curious, following us is the best way to stay in the loop.
+    </Paragraph>
+
+    <Row Class="mt-5 justify-content-center">
+        <div class="col-4 col-md-2 text-center">
+            <NavLink class="display-1 text-secondary"
+                     href="https://x.com/onix_labs"
+                     target="_blank" rel="noopener noreferrer">
+                <Icon Class="fa-brands fa-x-twitter"/>
+            </NavLink>
+        </div>
+        <div class="col-4 col-md-2 text-center">
+            <NavLink class="display-1 text-secondary"
+                     href="https://onixlabs.hashnode.dev/"
+                     target="_blank" rel="noopener noreferrer">
+                <Icon Class="fa-brands fa-hashnode"/>
+            </NavLink>
+        </div>
+        <div class="col-4 col-md-2 text-center">
+            <NavLink class="display-1 text-secondary"
+                     href="https://github.com/onix-labs"
+                     target="_blank" rel="noopener noreferrer">
+                <Icon Class="fa-brands fa-github"/>
+            </NavLink>
+        </div>
+    </Row>
+</Section>

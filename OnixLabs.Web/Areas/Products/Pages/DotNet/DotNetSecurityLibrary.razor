@@ -1,0 +1,121 @@
+@page "/Products/DotNet/Security"
+
+<PageTitle>ONIXLabs | Security Library for .NET</PageTitle>
+
+<Section Class="bg-dotnet-fade" Centered="true">
+  <Headline>.NET Security Library</Headline>
+  <Callout>Comprehensive security for your .NET application</Callout>
+  <div class="col-12 col-md-4 offset-md-4">
+    <Image Class="img-fluid" Description="Security Library for .NET"
+           Url="onixlabs/images/icons/dotnet/dotnet-security-outline.svg"/>
+  </div>
+  <Paragraph Class="text-white" Lead="true">
+    Provides robust tools for secure data handling and cryptographic operations in .NET applications. It includes primitives like salts,
+    hashes, digital signatures, key pairs, and a FIPS 202-compliant SHA-3 implementation. The library supports secure token generation
+    and in-memory secret management to minimize exposure risks. Features like Merkle tree construction enable data integrity checks in
+    distributed or tamper-resistant systems.
+  </Paragraph>
+  <ActionButtons>
+    <ActionButton Class="btn-dark" Icon="fa-brands fa-github" Text="View GitHub Repository" OpenInNewTab="true"
+                  Url="https://github.com/onix-labs/onixlabs-dotnet"/>
+    <ActionButton Class="btn-dark" Icon="fa-solid fa-box-open" Text="View Nuget Packages" OpenInNewTab="true"
+                  Url="https://www.nuget.org/packages?q=OnixLabs.Security"/>
+  </ActionButtons>
+</Section>
+
+<Section>
+  <Headline Centered="true">APIs at a Glance</Headline>
+  <Callout Centered="true">Discover the capabilities built to elevate your .NET applications</Callout>
+
+  <Row>
+    <Summary Title="Security Tokens">
+      <Paragraph>
+        Easily generate highly secure tokens using either pseudo-random or cryptographically strong random number generators. With support
+        for upper‑case and lower‑case letters, digits, special characters, and custom alphabets, the SecurityToken API gives you complete
+        control over token format and entropy, ideal for use in authentication, session management, and more.
+      </Paragraph>
+    </Summary>
+    <Summary Title="Cryptographic Primitives">
+      <Paragraph>
+        Reduce error-prone handling of raw byte arrays or strings with strongly typed primitives like DigitalSignature, PublicKey,
+        PrivateKey, Hash, Salt, Secret, and MerkleTree. These wrappers encapsulate cryptographic semantics and securely manage sensitive
+        data with value-type safety baked in.
+      </Paragraph>
+    </Summary>
+  </Row>
+
+  <Row>
+    <Summary Title="Asymmetric Cryptography">
+      <Paragraph>
+        The library includes a full-featured API for public-key cryptography, delivering abstractions over EC Diffie-Hellman, ECDSA, and
+        RSA. Your code can create and manage PublicKey and PrivateKey instances, perform secure key exchanges and digital signatures,
+        and verify signatures seamlessly, while keeping private material safe.
+      </Paragraph>
+    </Summary>
+    <Summary Title="Merkle Trees">
+      <Paragraph>
+        Build Merkle trees with high performance and modular hashing. Harness any HashAlgorithm implementation for tree generation and
+        verify integrity at scale; for example, computing a Merkle root for 1 million leaves in milliseconds.
+      </Paragraph>
+    </Summary>
+  </Row>
+
+  <Row>
+    <Summary Title="Cryptographic Hashes">
+      <Paragraph>
+        The Hash struct wraps cryptographic hash values in a semantic, type-safe primitive. It supports flexible creation from HashAlgorithm
+        or keyed hash instances, alongside utilities for comparison, conversion, and storage.
+      </Paragraph>
+    </Summary>
+    <Summary Title="SHA-3 & SHAKE">
+      <Paragraph>
+        Fully conformant with FIPS‑202, the library delivers SHA-3 hash functions (224/256/384/512 bits) and variable-length outputs via
+        SHAKE128 and SHAKE256. A reliable, standardised, and cross-platform alternative to Merle-Damgård hash functions like SHA 1 and 
+        SHA 2.
+      </Paragraph>
+    </Summary>
+  </Row>
+
+  <Row>
+    <Summary Title="Salts">
+      <Paragraph>
+        Manage salt values securely with the Salt struct, which generates cryptographically strong random salts and provides utility
+        methods for consistent, secure generation, essential for hashing and password storage.
+      </Paragraph>
+    </Summary>
+    <Summary Title="Secrets">
+      <Paragraph>
+        The Secret struct offers a secure, encrypted-in-memory container for sensitive data, protecting secrets at rest and in transit
+        without exposing raw values. Ideal for API keys, tokens, or other credentials.
+      </Paragraph>
+    </Summary>
+  </Row>
+</Section>
+
+<Section Class="bg-dotnet text-white">
+  <Headline Class="text-white" Centered="true">Other Products for .NET</Headline>
+
+  <hr class="mt-5"/>
+
+  <Product
+    Title="Core Library"
+    ImageUrl="onixlabs/images/icons/dotnet/dotnet-core-outline.svg"
+    InfoUrl="/Products/DotNet/Core"
+    Hook="Designed to be lightweight and reusable, this module serves as the base layer for other ONIXLabs components while remaining broadly useful on its own.">
+    Provides essential abstractions and utilities for building clean, consistent applications. It includes standardized
+    interfaces for value equality, comparison, and binary conversion, along with extension methods and guard clauses to enhance
+    code clarity and safety, and functional constructs that enable explicit, exception-free error handling.
+  </Product>
+
+  <hr/>
+
+  <Product
+    Title="Numerics Library"
+    ImageUrl="onixlabs/images/icons/dotnet/dotnet-numerics-outline.svg"
+    InfoUrl="/Products/DotNet/Numerics"
+    Hook="Designed for flexibility and accuracy, the Numerics library empowers developers to reliably work with numbers in scientific, financial, or engineering contexts.">
+    Extends .NET's generic math with powerful tools for precision, formatting, and numeric analysis. Features include an
+    arbitrary-precision BigDecimal, culture-aware formatting, and a NumberInfo struct that reveals the inner workings of any number;
+    significand, exponent, scale, and more. It also adds smart extensions like Pow10 and SetScale for fine-grained decimal control.
+  </Product>
+</Section>

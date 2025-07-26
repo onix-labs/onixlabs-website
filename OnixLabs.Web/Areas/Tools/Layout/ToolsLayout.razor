@@ -1,0 +1,54 @@
+@inherits LayoutComponentBase
+@layout LayoutRoot
+
+<Section>
+    <Row Class="sticky-container">
+        <div class="col-3 sticky-sidebar">
+            <Card>
+                <Accordion>
+                    <AccordionItem Header="Data Tables">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Tools/Ascii-Table">ASCII Table</NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                    <AccordionItem Header="Generators">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Tools/Guid-Generator">GUID Generator</NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Tools/Token-Generator">Token Generator</NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                    <AccordionItem Header="Text Encoding">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Tools/Base-Encoder">Base Encoder</NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                    <AccordionItem Header="Cryptography">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Tools/Hash-Generator">Hash Generator</NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                    <AccordionItem Header="Mathematics">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Tools/Ratio-Calculator">Ratio Calculator</NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                </Accordion>
+            </Card>
+        </div>
+        <div class="col-9 scrollable-content">
+            @Body
+        </div>
+    </Row>
+</Section>

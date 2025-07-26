@@ -1,0 +1,34 @@
+.navbar {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-bottom 0.3s ease;
+    background-color: var(--site-body-bg);
+    border-bottom: 1px solid transparent;
+}
+
+.scrolled {
+    background-color: var(--site-navbar-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-bottom-color: var(--site-navbar-border);
+}
+
+.theme-toggle {
+    background: var(--site-card-bg);
+    border: none;
+    border-top: 0.1rem solid var(--site-card-border-top);
+    border-bottom: 0.1rem solid var(--site-card-border-bottom);
+    border-radius: 50rem;
+    padding: 0.1rem 0.2rem 0.2rem;
+    width: 3rem;
+    cursor: pointer;
+}
+
+.theme-toggle:has(:checked) {
+    flex-direction: row-reverse !important;
+}
+
+.theme-toggle-button {
+    --bs-text-opacity: 1;
+    background: rgba(var(--bs-secondary-rgb), var(--bs-text-opacity));
+    border-radius: 100%;
+    width: 1.25rem;
+    height: 1.25rem;
+}

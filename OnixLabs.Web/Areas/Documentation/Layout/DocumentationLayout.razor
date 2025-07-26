@@ -1,0 +1,72 @@
+@inherits LayoutComponentBase
+@layout LayoutRoot
+
+<Section>
+    <Row class="sticky-container">
+        <div class="col-4 sticky-sidebar">
+            <Card>
+                <Accordion>
+                    <AccordionItem Header="Aero">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Documentation/Aero/Introduction-To-Aero">
+                                    Introduction To Aero
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                    <AccordionItem Header="C#">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste">
+                                    Syntactic Sugar, Bitter Aftertaste
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Documentation/CSharp/Underscore-Overkill">
+                                    Underscore, Overkill
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                    <AccordionItem Header="Corda">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Documentation/Corda/Flow-Design-Guidelines-1">
+                                    Flow Design Guidelines (Part 1)
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Documentation/Corda/Flow-Design-Guidelines-2">
+                                    Flow Design Guidelines (Part 2)
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Documentation/Corda/Flow-Design-Guidelines-3">
+                                    Flow Design Guidelines (Part 3)
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Documentation/Corda/Relational-Data-And-Pointers">
+                                    Relational Data &amp; Pointers
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                    <AccordionItem Header="Number Theory">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/Documentation/Number-Theory/The-Problem-With-Decimals">
+                                    The Problem With Decimals
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </AccordionItem>
+                </Accordion>
+            </Card>
+        </div>
+        <div class="col-8 scrollable-content">
+            @Body
+        </div>
+    </Row>
+</Section>

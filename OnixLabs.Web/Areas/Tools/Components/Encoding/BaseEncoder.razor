@@ -1,0 +1,100 @@
+@page "/Tools/Base-Encoder"
+@layout ToolsLayout
+
+<PageTitle>Base Encoder</PageTitle>
+
+<Card>
+    <CardHeader Class="fw-semibold">Base Encoder</CardHeader>
+    <CardBody>
+        <Row>
+            <div class="col">
+                <div class="form-floating">
+                    <InputSelect @bind-Value="inputFormat.Value" class="form-select">
+                        <option value="@Format.PlainText">Plain Text</option>
+                        <option value="@Format.Base16Rfc4648Invariant">Base-16 (RFC 4648, Invariant)</option>
+                        <option value="@Format.Base16Rfc4648Lowercase">Base-16 (RFC 4648, Lowercase)</option>
+                        <option value="@Format.Base16Rfc4648Uppercase">Base-16 (RFC 4648, Uppercase)</option>
+                        <option value="@Format.Base32Rfc4648">Base-32 (RFC 4648)</option>
+                        <option value="@Format.Base32ZBase32">Base-32 (ZBase 32)</option>
+                        <option value="@Format.Base32GeoHash">Base-32 (GeoHash)</option>
+                        <option value="@Format.Base32Crockford">Base-32 (Crockford)</option>
+                        <option value="@Format.Base32Hex">Base-32 (Base32Hex)</option>
+                        <option value="@Format.Base32Rfc4648Padded">Base-32 (RFC 4648, Padded)</option>
+                        <option value="@Format.Base32ZBase32Padded">Base-32 (ZBase 32, Padded)</option>
+                        <option value="@Format.Base32GeoHashPadded">Base-32 (GeoHash, Padded)</option>
+                        <option value="@Format.Base32CrockfordPadded">Base-32 (Crockford, Padded)</option>
+                        <option value="@Format.Base32HexPadded">Base-32 (Base32Hex, Padded)</option>
+                        <option value="@Format.Base58Bitcoin">Base-58 (Bitcoin)</option>
+                        <option value="@Format.Base58Flickr">Base-58 (Flickr)</option>
+                        <option value="@Format.Base58Ripple">Base-58 (Ripple)</option>
+                        <option value="@Format.Base64Rfc4648">Base-64 (RFC 4648)</option>
+                    </InputSelect>
+                    <label>Input Format</label>
+                </div>
+            </div>
+        </Row>
+        <Row Class="mt-3">
+            <div class="col">
+                <div class="form-floating">
+                    <textarea
+                        @bind="inputText.Value"
+                        @bind:event="oninput"
+                        class="@IfElse(isInvalid, "form-control is-invalid", "form-control")" rows="8">
+                    </textarea>
+                    <label class="@If(isInvalid, "text-danger")">Input Text @If(isInvalid, "(Invalid input text format)")</label>
+                </div>
+            </div>
+        </Row>
+        <Row Class="my-3">
+            <div class="col d-flex flex-row justify-content-between">
+                <button @onclick="() => CopyToClipboard(inputText)" class="btn btn-secondary" type="button">
+                    <Icon class="fa-regular fa-paste"/>
+                    <span class="ms-2">Copy Input</span>
+                </button>
+                <button @onclick="Swap" class="btn btn-secondary">
+                    <Icon Class="fa-solid fa-arrow-up"/>
+                    <Icon Class="fa-solid fa-arrow-down"/>
+                </button>
+                <button @onclick="() => CopyToClipboard(outputText)" class="btn btn-secondary" type="button">
+                    <Icon class="fa-regular fa-paste"/>
+                    <span class="ms-2">Copy Output</span>
+                </button>
+            </div>
+        </Row>
+        <Row>
+            <div class="col">
+                <div class="form-floating">
+                    <InputSelect @bind-Value="outputFormat.Value" class="form-select">
+                        <option value="@Format.PlainText">Plain Text</option>
+                        <option value="@Format.Base16Rfc4648Invariant">Base-16 (RFC 4648, Invariant)</option>
+                        <option value="@Format.Base16Rfc4648Lowercase">Base-16 (RFC 4648, Lowercase)</option>
+                        <option value="@Format.Base16Rfc4648Uppercase">Base-16 (RFC 4648, Uppercase)</option>
+                        <option value="@Format.Base32Rfc4648">Base-32 (RFC 4648)</option>
+                        <option value="@Format.Base32ZBase32">Base-32 (ZBase 32)</option>
+                        <option value="@Format.Base32GeoHash">Base-32 (GeoHash)</option>
+                        <option value="@Format.Base32Crockford">Base-32 (Crockford)</option>
+                        <option value="@Format.Base32Hex">Base-32 (Base32Hex)</option>
+                        <option value="@Format.Base32Rfc4648Padded">Base-32 (RFC 4648, Padded)</option>
+                        <option value="@Format.Base32ZBase32Padded">Base-32 (ZBase 32, Padded)</option>
+                        <option value="@Format.Base32GeoHashPadded">Base-32 (GeoHash, Padded)</option>
+                        <option value="@Format.Base32CrockfordPadded">Base-32 (Crockford, Padded)</option>
+                        <option value="@Format.Base32HexPadded">Base-32 (Base32Hex, Padded)</option>
+                        <option value="@Format.Base58Bitcoin">Base-58 (Bitcoin)</option>
+                        <option value="@Format.Base58Flickr">Base-58 (Flickr)</option>
+                        <option value="@Format.Base58Ripple">Base-58 (Ripple)</option>
+                        <option value="@Format.Base64Rfc4648">Base-64 (RFC 4648)</option>
+                    </InputSelect>
+                    <label>Output Format</label>
+                </div>
+            </div>
+        </Row>
+        <Row Class="mt-3">
+            <div class="col">
+                <div class="form-floating">
+                    <InputTextArea class="form-control" @bind-Value="outputText" rows="8" readonly="readonly"/>
+                    <label>Output Text</label>
+                </div>
+            </div>
+        </Row>
+    </CardBody>
+</Card>

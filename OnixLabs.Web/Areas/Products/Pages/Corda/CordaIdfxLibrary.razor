@@ -1,0 +1,134 @@
+@page "/Products/Corda/Identity-Framework"
+
+<PageTitle>ONIXLabs | Corda Identity Framework</PageTitle>
+
+<Section Class="bg-corda-fade" Centered="true">
+    <Headline>Corda Identity Framework</Headline>
+    <Callout>Secure, scalable identity management built for enterprise Corda</Callout>
+    <div class="col-12 col-md-4 offset-md-4">
+        <Image Class="img-fluid" Description="Identity Framework for Corda"
+               Url="onixlabs/images/icons/corda/corda-idfx-outline.svg"/>
+    </div>
+    <Paragraph Lead="true">
+        A powerful toolkit for building scalable, interoperable digital identities on Corda, supporting both individuals and organizations.
+        Inspired by W3C Verifiable Credentials, it enables secure, privacy-preserving claims through a flexible hierarchy of types,
+        including pointers and attestations. It supports evolving identity state transitions while minimizing data exposure, and introduces
+        a multi-tenant account model with APIs for vault partitioning and cross-node account sharing.
+    </Paragraph>
+    <ActionButtons>
+        <ActionButton Class="btn-dark" Icon="fa-brands fa-github" Text="View GitHub Repository" OpenInNewTab="true"
+                      Url="https://github.com/onix-labs/onixlabs-corda-identity-framework"/>
+        <ActionButton Class="btn-dark" Icon="fa-solid fa-box-open" Text="View Maven Packages" OpenInNewTab="true"
+                      Url="https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-corda-identity-framework"/>
+    </ActionButtons>
+</Section>
+
+<Section>
+    <Headline Centered="true">APIs at a Glance</Headline>
+    <Callout Centered="true">Discover the capabilities built to elevate your Corda applications</Callout>
+
+    <Row>
+        <div class="col-12">
+            <h1 class="fw-bold mt-5">Claims-Based Identity Model</h1>
+            <Paragraph>
+                A robust, claims-first identity framework tailored for Corda. A claim asserts a relationship in the form of a
+                subject-property/value; for example, an individual's role, organizational affiliation, or asset ownership. This model
+                delivers:
+            </Paragraph>
+            <ul>
+                <li>Decentralized, self-controlled assertions.</li>
+                <li>Scalable, cohesive identity structures.</li>
+                <li>Enhanced resistance to forgery and impersonation.</li>
+                <li>Elimination of monolithic data repositories.</li>
+                <li>Minimal data disclosure for privacy.</li>
+                <li>Support for zero-knowledge workflows.</li>
+                <li>Data that remains secure, even if compromised.</li>
+            </ul>
+            <Paragraph>
+                Claims in ONIXLabs Corda Identity Framework are modeled via an extensible type hierarchy, ready for immediate use, yet
+                flexible enough for custom claim types and domain-specific extensions.
+            </Paragraph>
+        </div>
+    </Row>
+
+    <Row>
+        <Summary Title="Claim States">
+            <Paragraph>
+                Claim States represent assertions recorded on the ledger and shared between an issuer and holder, or self-issued when both
+                roles coincide. State values can evolve over time, and claims support selective distribution, ensuring privacy through
+                controlled disclosure.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Claim Pointers">
+            <Paragraph>
+                Claim Pointers are lightweight claims that reference other claims without exposing the full data. They come in two forms.
+                Linear pointers always reference the latest version of a claim, whereas static pointers lock to a specific historical
+                version.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Attestations">
+            <Paragraph>
+                Attestations serve as verifiable proofs that a state or claim has been reviewed; either validated or rejected. Importantly,
+                recipients can rely on the attestation's validity without seeing the underlying claim, enabling privacy-preserving trust.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Accounts">
+            <Paragraph>
+                The framework also supports a Corda-native account model, allowing ledger states to be segmented by account instead of by
+                node alone. Using AccountParty, this feature helps teams manage multi-tenant or identity-scoped workflows within and across
+                nodes.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Identity Workflows">
+            <Paragraph>
+                Pre-built, end-to-end flows simplify working with identity constructs; issuing, amending, revoking, and publishing claims,
+                attestations, and accounts, so developers can integrate identity logic with minimal overhead.
+            </Paragraph>
+        </Summary>
+        <Summary Title="Extension Services">
+            <Paragraph>
+                Seamlessly integrate identity operations via CordaRPCOps with dedicated services for Claims, Attestations, and Accounts.
+                These services wrap complex workflows into intuitive, RPC-accessible APIs, enabling faster development and operational
+                clarity.
+            </Paragraph>
+        </Summary>
+    </Row>
+</Section>
+
+<Section Class="bg-corda text-white">
+    <Headline Class="text-white" Centered="true">Other Products for Corda</Headline>
+
+    <hr class="mt-5"/>
+
+    <Product
+        Title="Core Library"
+        ImageUrl="onixlabs/images/icons/corda/corda-core-outline.svg"
+        InfoUrl="/Products/Corda/Core"
+        Hook="Signed and maintained by ONIXLabs, it’s the trusted foundation for building serious, production-grade CorDapps.">
+        Provides Corda developers with a modular toolkit of contract, workflow, and integration APIs to streamline CorDapp development.
+        Instead of a standalone app, it offers reusable abstractions, utilities, and patterns for building scalable, maintainable solutions.
+        With features like clean vault queries, transaction builders, standardized signing, and modular Gradle support, it reduces
+        boilerplate and enforces consistency. Clear structure and seamless integration make it easy to adopt across projects.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Business Network Management System"
+        ImageUrl="onixlabs/images/icons/corda/corda-bnms-outline.svg"
+        InfoUrl="/Products/Corda/Business-Network-Management-System"
+        Hook="By streamlining governance and trust, the ONIXLabs BNMS lays the foundation for dynamic, secure smart contract execution in complex networks.">
+        A powerful Corda framework for defining and managing membership and multi-lateral relationships within business networks. It
+        supports both centralized and decentralized models, enabling governance by operators or members through flexible permissions and
+        attestations. Built on the ONIXLabs Identity Framework, it offers standardized APIs and claim-based mechanisms for interoperable,
+        privacy-aware identity management. Membership issuance, updates, and revocation are handled via configurable multi-party workflows
+        with built-in tamper resistance.
+    </Product>
+</Section>

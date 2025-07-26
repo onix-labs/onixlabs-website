@@ -1,0 +1,230 @@
+@page "/Products/Corda/Business-Network-Management-System"
+
+<PageTitle>ONIXLabs | Corda BNMS</PageTitle>
+
+<Section Class="bg-corda-fade" Centered="true">
+    <Headline>Corda BNMS</Headline>
+    <Callout>Streamlined membership and relationships for Corda business networks</Callout>
+    <div class="col-12 col-md-4 offset-md-4">
+        <Image Class="img-fluid" Description="Business Network Management System for Corda"
+               Url="onixlabs/images/icons/corda/corda-bnms-outline.svg"/>
+    </div>
+    <Paragraph Lead="true">
+        A robust Corda framework for managing membership and multi-party relationships in business networks. It supports centralized or
+        decentralized governance through flexible permissions and attestations. Built on the ONIXLabs Identity Framework, it enables
+        interoperable, privacy-aware identity management via standardized APIs and claim-based workflows. Membership lifecycle events are
+        secured with tamper-resistant, multi-party processes.
+    </Paragraph>
+    <ActionButtons>
+        <ActionButton Class="btn-dark" Icon="fa-brands fa-github" Text="View GitHub Repository" OpenInNewTab="true"
+                      Url="https://github.com/onix-labs/onixlabs-corda-bnms"/>
+        <ActionButton Class="btn-dark" Icon="fa-solid fa-box-open" Text="View Maven Packages" OpenInNewTab="true"
+                      Url="https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-corda-bnms"/>
+    </ActionButtons>
+</Section>
+
+<Section>
+    <Headline Centered="true">APIs at a Glance</Headline>
+    <Callout Centered="true">Discover the capabilities built to elevate your Corda applications</Callout>
+
+    <Row>
+        <div class="col-12">
+            <h1 class="fw-bold mt-5">Business Network Interoperability</h1>
+            <Paragraph>
+                Corda nodes often participate in multiple business networks, each with unique standards for identity and governance. Without
+                consistent APIs, implementations diverge, leading to fractured networks and limited interoperability.
+            </Paragraph>
+            <Paragraph>
+                The ONIXLabs Corda BNMS addresses this by introducing a protocol-level, standardized framework for membership and
+                relationship governance. It enables business networks to operate autonomously while remaining interoperable with
+                others—scalable, secure, and extensible.
+            </Paragraph>
+            <Paragraph>
+                Built atop the ONIXLabs Corda Identity Framework, BNMS promotes not just business network interoperability, but also
+                seamless integration between Corda applications. Identity claims can be shared across networks, reducing duplication and
+                ensuring consistency.
+            </Paragraph>
+            <Paragraph>
+                The BNMS supports both centralized networks governed by an operator, and decentralized networks governed collectively by
+                their participants—offering full flexibility for regulatory, commercial, and trust-based governance models.
+            </Paragraph>
+        </div>
+    </Row>
+
+    <Row>
+        <Summary Title="Centralized Networks">
+            <Paragraph>
+                In centrally governed networks, a designated Business Network Operator (BNO) oversees all membership and relationship
+                activities. States must be attested by the BNO to be considered valid. This model ensures that the operator maintains full
+                visibility and trust over all network activity.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Decentralized Networks">
+            <Paragraph>
+                BNMS allows for self-governed networks where trust is distributed. Here, membership and relationships must be attested by
+                peers. Validity is subjective: a state is only recognized by those who have attested to it. This reflects a partial-trust
+                model aligned with decentralized principles.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Data Privacy">
+            <Paragraph>
+                Identity information is managed by the ONIXLabs Identity Framework. Claims are attested independently of membership states,
+                allowing identities to remain private while memberships remain verifiable. This separation ensures data minimization,
+                zero-knowledge compatibility, and secure verification.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Dynamic Smart Contracts">
+            <Paragraph>
+                Relationships in BNMS define rule sets and governance policies between parties. These are referenced by smart contracts at
+                runtime, enabling logic to adapt dynamically based on off-ledger or policy-driven context—while remaining deterministic.
+                This supports conditional access, multi-party authorization, and programmable governance models.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Membership Management">
+            <Paragraph>
+                Memberships reference a specific business network and include configurable identity data, roles, permissions, and
+                operational settings. A single node can manage multiple memberships across networks, each scoped independently and
+                optionally governed by a BNO.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Membership Issuance">
+            <Paragraph>
+                Memberships are always self-issued—initiated by the joining member. Authorization depends on attestation, either by a BNO or
+                by peer members. The issuer is the only required signer for the issuance transaction.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Membership Amendment">
+            <Paragraph>
+                Members or BNOs can propose amendments to membership data. These changes require full attestation to become valid. All
+                participants (including the member and the BNO or peers) must co-sign the amendment transaction.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Membership Revocation">
+            <Paragraph>
+                Memberships can be revoked by the member or optionally by a BNO. Revocation transactions require full participant consent to
+                ensure that network exits are intentional, coordinated, and auditable.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <Summary Title="Relationship Management">
+            <Paragraph>
+                Relationships define multi-party agreements within a business network. Each relationship encodes governance policies and
+                participation rules. Nodes can define multiple relationships per network, scoped by their role and operational intent.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Relationship Issuance">
+            <Paragraph>
+                Any member—or a BNO—may propose a new relationship. All parties must attest and co-sign for it to be valid. Revocation locks
+                are assigned at issuance to prevent accidental or malicious teardown. When decentralized, participants verify counterparties
+                via attestation before signing.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Relationship Amendment">
+            <Paragraph>
+                Participants or BNOs may propose amendments. These transactions require all involved parties to verify and sign. Each node
+                ensures updated states are consistent with previously attested versions before allowing amendments to proceed.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Relationship Revocation">
+            <Paragraph>
+                Any party can initiate revocation, but every participant must approve for it to succeed. Revocation locks—issued at
+                creation—must be released by each participant to prevent unauthorized termination, adding a strong safeguard against
+                unilateral exits.
+            </Paragraph>
+        </Summary>
+    </Row>
+
+    <Row>
+        <div class="col-12">
+            <h1 class="fw-bold mt-5">Network Attestations</h1>
+            <Paragraph>
+                Attestations are cryptographic acknowledgments of state. They are required for all decentralized membership and relationship
+                validations. Without attestations, peers cannot be sure of a state’s authenticity—especially in peer-governed networks.
+            </Paragraph>
+            <Paragraph>
+                When a state is amended, all existing attestations become invalidated. This guarantees that attesters always acknowledge the
+                latest state version. Each attestation explicitly points to a specific version of a state, supporting precise trust models.
+            </Paragraph>
+            <Paragraph>
+                Attestation flows ensure that all interactions are scoped to consented states, providing strong guarantees for identity,
+                authorization, and governance.
+            </Paragraph>
+        </div>
+    </Row>
+
+    <Row>
+        <Summary Title="Membership Attestation">
+            <Paragraph>
+                Members must attest to each other’s membership records to enable interaction. Attestations serve as approval or rejection of
+                a member’s identity, roles, and permissions. They are fundamental to flow-level authorization logic.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Attestation Issuance">
+            <Paragraph>
+                Only the attester can issue an attestation. This is a unidirectional trust signal—accepting or rejecting a specific
+                membership or relationship. Attestation issuance requires only the attester's signature.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Attestation Amendment">
+            <Paragraph>
+                When the underlying state changes, attesters must re-attest to the updated version. This ensures trust is always tied to
+                current state and prevents stale authorizations.
+            </Paragraph>
+        </Summary>
+
+        <Summary Title="Attestation Revocation">
+            <Paragraph>
+                Attesters can revoke previously granted attestations, signaling that a member or relationship is no longer trusted. This is
+                essential for flows that validate participant state at runtime.
+            </Paragraph>
+        </Summary>
+    </Row>
+</Section>
+
+<Section Class="bg-corda text-white">
+    <Headline Class="text-white" Centered="true">Other Products for Corda</Headline>
+
+    <hr class="mt-5"/>
+
+    <Product
+        Title="Core Library"
+        ImageUrl="onixlabs/images/icons/corda/corda-core-outline.svg"
+        InfoUrl="/Products/Corda/Core"
+        Hook="Signed and maintained by ONIXLabs, it’s the trusted foundation for building serious, production-grade CorDapps.">
+        Provides Corda developers with a modular toolkit of contract, workflow, and integration APIs to streamline CorDapp development.
+        Instead of a standalone app, it offers reusable abstractions, utilities, and patterns for building scalable, maintainable solutions.
+        With features like clean vault queries, transaction builders, standardized signing, and modular Gradle support, it reduces
+        boilerplate and enforces consistency. Clear structure and seamless integration make it easy to adopt across projects.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Identity Framework"
+        ImageUrl="onixlabs/images/icons/corda/corda-idfx-outline.svg"
+        InfoUrl="/Products/Corda/Identity-Framework"
+        Hook="Built for modern identity on Corda, it gives developers the tools to deliver privacy-first, standards-aligned identity systems with ease.">
+        A powerful toolkit for building scalable, interoperable digital identities on Corda, supporting both individuals and organizations.
+        Inspired by W3C Verifiable Credentials, it enables secure, privacy-preserving claims through a flexible hierarchy of types,
+        including pointers and attestations. It supports evolving identity state transitions while minimizing data exposure, and introduces
+        a multi-tenant account model with APIs for vault partitioning and cross-node account sharing.
+    </Product>
+</Section>

@@ -1,0 +1,184 @@
+@page "/Products"
+
+<PageTitle>ONIXLabs | Products</PageTitle>
+
+<Section Centered="true">
+    <Headline>Software, Supercharged</Headline>
+    <Callout>Design Quickly &bull; Deploy Reliably &bull; Deliver Confidently</Callout>
+    
+    <ThemeImage Class="img-fluid my-5" Description="Software, Supercharged" 
+                UrlLight="onixlabs/images/heroes/supercharged.svg" 
+                UrlDark="onixlabs/images/heroes/supercharged-dark.svg"/>
+    
+    <Paragraph Lead="true">
+        At ONIXLabs, we build powerful platforms, libraries, and frameworks that accelerate development and elevate engineering workflows.
+        Whether you're prototyping quickly, building complex systems, or scaling cleanly, our tools help you write better code with
+        confidence.
+    </Paragraph>
+</Section>
+
+<Section Class="bg-secondary-subtle bloom-reverse" Centered="true">
+    <Headline Class="text-white">Meet Aero Platform</Headline>
+    <Callout Class="text-white-50">The modular .NET platform for enterprise development</Callout>
+    <div class="col-12 col-md-6 offset-md-3 mt-5">
+        <ThemeImage
+            Class="img-fluid" Description="ONIXLabs Aero"
+            UrlDark="onixlabs/images/marketing/macbook-pro-dark.svg"
+            UrlLight="onixlabs/images/marketing/macbook-pro.svg"/>
+    </div>
+    <Paragraph class="mt-5" Lead="true">
+        <strong>Aero is the .NET platform for fast, scalable, enterprise-grade engineering.</strong>
+        <br/>
+        <span>It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.</span>
+    </Paragraph>
+    <ActionButtons>
+        <ActionButton Class="btn-dark" Url="/Products/Aero" Text="Find out More"/>
+        <ActionButton Class="btn-dark" Url="/Contact?reason=aero-demo" Text="Request a Demo"/>
+    </ActionButtons>
+</Section>
+
+<Section Class="bg-dotnet text-white">
+    <Headline Class="text-white" Centered="true">Products for .NET</Headline>
+    <Callout Class="text-white-50" Centered="true">Precision libraries for modern .NET development</Callout>
+    <Paragraph Class="my-5 text-white" Lead="true" Centered="true">
+        Discover a collection of focused, well-engineered libraries built to extend the power of the .NET ecosystem. Designed for
+        clarity, performance, and seamless integration, our tools help you build faster and more confidently across enterprise-grade
+        applications.
+    </Paragraph>
+
+    <hr/>
+
+    <Product
+        Title="Core Library"
+        ImageUrl="onixlabs/images/icons/dotnet/dotnet-core-outline.svg"
+        InfoUrl="/Products/DotNet/Core"
+        Hook="Designed to be lightweight and reusable, this module serves as the base layer for other ONIXLabs components while remaining broadly useful on its own.">
+        Provides essential abstractions and utilities for building clean, consistent applications. It includes standardized
+        interfaces for value equality, comparison, and binary conversion, along with extension methods and guard clauses to enhance
+        code clarity and safety, and functional constructs that enable explicit, exception-free error handling.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Numerics Library"
+        ImageUrl="onixlabs/images/icons/dotnet/dotnet-numerics-outline.svg"
+        InfoUrl="/Products/DotNet/Numerics"
+        Hook="Designed for flexibility and accuracy, the Numerics library empowers developers to reliably work with numbers in scientific, financial, or engineering contexts.">
+        Extends .NET's generic math with powerful tools for precision, formatting, and numeric analysis. Features include an
+        arbitrary-precision BigDecimal, culture-aware formatting, and a NumberInfo struct that reveals the inner workings of any number;
+        significand, exponent, scale, and more. It also adds smart extensions like Pow10 and SetScale for fine-grained decimal control.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Security Library"
+        ImageUrl="onixlabs/images/icons/dotnet/dotnet-security-outline.svg"
+        InfoUrl="/Products/DotNet/Security"
+        Hook="Built for high-assurance environments, it’s the cryptographic backbone of the ONIXLabs ecosystem.">
+        Provides robust tools for secure data handling and cryptographic operations in .NET applications. It includes primitives like salts,
+        hashes, digital signatures, key pairs, and a FIPS 202-compliant SHA-3 implementation. The library supports secure token generation
+        and in-memory secret management to minimize exposure risks. Features like Merkle tree construction enable data integrity checks in
+        distributed or tamper-resistant systems.
+    </Product>
+</Section>
+
+<Section Class="bg-corda text-white">
+    <Headline Class="text-white" Centered="true">Products for Corda</Headline>
+    <Callout Class="text-white-50" Centered="true">Distributed Ledger with Superpowers</Callout>
+    <Paragraph Class="my-5 text-white" Centered="true" Lead="true">
+        Unlock the full potential of Corda with a suite of powerful tools and libraries designed to enhance development, improve
+        productivity, and accelerate delivery. Whether you're building CorDapps, managing networks, or integrating with enterprise
+        systems, our products bring clarity, scalability, and performance to every layer of your distributed ledger solution.
+    </Paragraph>
+
+    <hr/>
+
+    <Product
+        Title="Core Library"
+        ImageUrl="onixlabs/images/icons/corda/corda-core-outline.svg"
+        InfoUrl="/Products/Corda/Core"
+        Hook="Signed and maintained by ONIXLabs, it’s the trusted foundation for building serious, production-grade CorDapps.">
+        Provides Corda developers with a modular toolkit of contract, workflow, and integration APIs to streamline CorDapp development.
+        Instead of a standalone app, it offers reusable abstractions, utilities, and patterns for building scalable, maintainable solutions.
+        With features like clean vault queries, transaction builders, standardized signing, and modular Gradle support, it reduces
+        boilerplate and enforces consistency. Clear structure and seamless integration make it easy to adopt across projects.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Identity Framework"
+        ImageUrl="onixlabs/images/icons/corda/corda-idfx-outline.svg"
+        InfoUrl="/Products/Corda/Identity-Framework"
+        Hook="Built for modern identity on Corda, it gives developers the tools to deliver privacy-first, standards-aligned identity systems with ease.">
+        A powerful toolkit for building scalable, interoperable digital identities on Corda, supporting both individuals and organizations.
+        Inspired by W3C Verifiable Credentials, it enables secure, privacy-preserving claims through a flexible hierarchy of types,
+        including pointers and attestations. It supports evolving identity state transitions while minimizing data exposure, and introduces
+        a multi-tenant account model with APIs for vault partitioning and cross-node account sharing.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Business Network Management System"
+        ImageUrl="onixlabs/images/icons/corda/corda-bnms-outline.svg"
+        InfoUrl="/Products/Corda/Business-Network-Management-System"
+        Hook="By streamlining governance and trust, the ONIXLabs BNMS lays the foundation for dynamic, secure smart contract execution in complex networks.">
+        A powerful Corda framework for defining and managing membership and multi-lateral relationships within business networks. It
+        supports both centralized and decentralized models, enabling governance by operators or members through flexible permissions and
+        attestations. Built on the ONIXLabs Identity Framework, it offers standardized APIs and claim-based mechanisms for interoperable,
+        privacy-aware identity management. Membership issuance, updates, and revocation are handled via configurable multi-party workflows
+        with built-in tamper resistance.
+    </Product>
+</Section>
+
+<Section Class="bg-kotlin text-white">
+    <Headline Class="text-white" Centered="true">Products for Kotlin</Headline>
+    <Callout Class="text-white-50" Centered="true">Unlock the JVM with modern, idiomatic Kotlin</Callout>
+    <Paragraph Class="my-5 text-white" Centered="true" Lead="true">
+        Designed with idiomatic Kotlin in mind, our products help developers write clean, expressive, and maintainable code. From utility
+        libraries to advanced tooling, each component is crafted to integrate seamlessly with modern Kotlin projects, boosting productivity
+        without adding complexity.
+    </Paragraph>
+
+    <hr/>
+    
+    <Product
+        Title="Core Library"
+        ImageUrl="onixlabs/images/icons/kotlin/kotlin-core-outline.svg"
+        InfoUrl="/Products/Kotlin/Core"
+        Hook="Not flashy, but fiercely practical. The kind of toolkit that's quietly dependable.">
+        Offers a comprehensive set of Kotlin extensions and utilities designed to streamline common programming tasks. It enhances standard
+        types like Byte, Int, Double, and String with fluent, expressive operations, while also extending collections and mathematical types
+        for cleaner code. The library includes time-related helpers, lightweight reflection tools, and flexible type conversion APIs to
+        reduce boilerplate and improve readability. Built with clarity and consistency in mind, it supports developers looking to write more
+        idiomatic and maintainable Kotlin.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Projection Library"
+        ImageUrl="onixlabs/images/icons/kotlin/kotlin-projection-outline.svg"
+        InfoUrl="/Products/Kotlin/Projection"
+        Hook="Deceptively simple on the outside. Pure Kotlin magic where it counts.">
+        A lightweight, convention-based projection library for Kotlin that enables clean, boilerplate-free mapping between data classes. It
+        auto-maps matching fields, supports custom overrides, and leverages Kotlin’s reflection for safe, type-aware transformations. Ideal
+        for converting between domain, DTO, and persistence models, it helps maintain clear layer separation with minimal overhead. Built
+        for clarity and efficiency, it simplifies a traditionally messy task.
+    </Product>
+
+    <hr/>
+
+    <Product
+        Title="Validation Library"
+        ImageUrl="onixlabs/images/icons/kotlin/kotlin-validation-outline.svg"
+        InfoUrl="/Products/Kotlin/Validation"
+        Hook="Not just a validator. It's the silent enforcer behind clean, dependable Kotlin code.">
+        A fluent, type-safe validation framework for Kotlin that enables clear, expressive checks across complex object graphs. It supports
+        nested rules, functional error accumulation, and reusable validators with customizable messaging. Designed for minimal boilerplate
+        and seamless domain integration, it makes enforcing business constraints straightforward and maintainable.
+    </Product>
+</Section>

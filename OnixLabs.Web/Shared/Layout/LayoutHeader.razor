@@ -1,0 +1,47 @@
+<header>
+    <nav class="navbar navbar-expand-lg fixed-top py-2 py-md-3" id="navbar">
+        <Container>
+            <NavLink class="navbar-brand" href="/">
+                <ThemeImage
+                    Description="ONIXLabs"
+                    Height="32"
+                    UrlDark="onixlabs/images/logo/logo-full-dark.svg"
+                    UrlLight="onixlabs/images/logo/logo-full-light.svg"
+                />
+            </NavLink>
+            <button class="navbar-toggler border-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbar-menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item">
+                        <NavLink Match="NavLinkMatch.All" class="nav-link" href="/">Home</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/Products">Products</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/Consulting">Consulting</NavLink>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <NavLink class="nav-link" href="/Documentation">Documentation</NavLink>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <NavLink class="nav-link" href="/Tools">Tools</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/Contact">Contact</NavLink>
+                    </li>
+                </ul>
+                <label class="theme-toggle d-flex flex-row align-items-center shadow-sm ms-lg-4">
+                    <span class="sr-only">Toggle Dark/Light Mode</span>
+                    <input id="themeToggle" class="d-none" type="checkbox">
+                    <div class="theme-toggle-button"></div>
+                </label>
+            </div>
+        </Container>
+    </nav>
+</header>

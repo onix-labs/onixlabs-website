@@ -1,0 +1,85 @@
+@page "/Tools/Guid-Generator"
+@using OnixLabs.Core.Linq
+@layout ToolsLayout
+
+<PageTitle>GUID Generator</PageTitle>
+
+<Card>
+    <CardHeader Class="fw-semibold">GUID Generator</CardHeader>
+    <CardBody>
+        <Row>
+            <div class="col">
+                <div class="form-floating">
+                    <InputSelect @bind-Value="version" class="form-select" id="version">
+                        <option value="0" selected disabled hidden></option>
+                        <option value="4">Version 4</option>
+                        <option value="7">Version 7</option>
+                    </InputSelect>
+                    <label for="version">Version</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <InputNumber @bind-Value="amount" class="form-control no-spinner" id="amount"/>
+                        <label for="amount">Amount</label>
+                    </div>
+                    <button @onclick="IncrementAmount" class="btn btn-secondary" type="button" tabindex="-1">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button @onclick="DecrementAmount" class="btn btn-secondary" type="button" tabindex="-1">
+                        <i class="fa-solid fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+        </Row>
+    </CardBody>
+    <CardFooter Class="d-flex justify-content-end py-3">
+        <button @onclick="Create" class="btn btn-min-width btn-secondary" type="button">Create</button>
+    </CardFooter>
+</Card>
+
+@if (guids.IsNotEmpty())
+{
+    <Card Class="mt-3">
+        <CardHeader>
+            <div class="d-flex flex-row gap-3 py-2">
+                <div class="btn-group flex-fill" role="group">
+                    <InputCheckbox @bind-Value="useHyphens" class="btn-check" id="useHyphens" autocomplete="off"/>
+                    <label class="btn btn-outline-secondary" for="useHyphens">Hyphens</label>
+
+                    <InputCheckbox @bind-Value="useBraces" class="btn-check" id="useBraces" autocomplete="off"/>
+                    <label class="btn btn-outline-secondary" for="useBraces">Braces</label>
+
+                    <InputCheckbox @bind-Value="useQuotes" class="btn-check" id="useQuotes"/>
+                    <label class="btn btn-outline-secondary" for="useQuotes">Quotes</label>
+
+                    <InputCheckbox @bind-Value="useCommas" class="btn-check" id="useCommas"/>
+                    <label class="btn btn-outline-secondary" for="useCommas">Commas</label>
+
+                    <InputCheckbox @bind-Value="useUppercase" class="btn-check" id="useUppercase"/>
+                    <label class="btn btn-outline-secondary" for="useUppercase">Uppercase</label>
+                </div>
+                <button @onclick="() => CopyToClipboard()" class="btn btn-min-width btn-secondary" type="button">
+                    <Icon class="fa-regular fa-paste"/>
+                    <span class="ms-2">Copy All</span>
+                </button>
+            </div>
+        </CardHeader>
+        <CardBody>
+            <Row Class="gap-3">
+                @foreach ((int index, Guid guid) in guids.Index())
+                {
+                    <div class="col-12">
+                        <div class="input-group">
+                            <input class="form-control font-monospace" type="text" readonly value="@Format(guid)">
+                            <button @onclick="() => CopyToClipboard(index)" class="btn btn-secondary" type="button">
+                                <Icon class="fa-regular fa-clipboard"/>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </Row>
+        </CardBody>
+    </Card>
+}

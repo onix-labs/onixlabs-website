@@ -1,0 +1,14 @@
+@if (IsLoading)
+{
+    <p>Loading...</p>
+}
+else if (!string.IsNullOrWhiteSpace(Error))
+{
+    <p class="text-danger">@Error</p>
+}
+else
+{
+    <section class="markdown-content">
+        @((MarkupString)HtmlContent)
+    </section>
+}

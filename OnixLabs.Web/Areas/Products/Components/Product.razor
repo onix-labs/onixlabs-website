@@ -1,0 +1,16 @@
+<Row Class="align-items-center">
+    
+</Row>
+<div class="row align-items-center">
+    <div class="col-12 col-sm-6 offset-sm-3 col-lg-4 offset-lg-0 @If(ReverseLayout, "order-lg-last")">
+        <img class="img-fluid" src="@ImageUrl" alt="@Title"/>
+    </div>
+    <div class="col-12 col-lg-8 @If(ReverseLayout, "order-lg-first")">
+        <h1 class="fw-semibold @TitleClass">@Title</h1>
+        <p class="lead">@Hook</p>
+        <p class="lead text-white-50">
+            @ChildContent
+        </p>
+        <NavLink class="btn btn-lg btn-outline-light mt-3" href="@InfoUrl">Find out More</NavLink>
+    </div>
+</div>

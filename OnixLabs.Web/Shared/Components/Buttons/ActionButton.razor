@@ -1,0 +1,14 @@
+<NavLink class="@("btn btn-lg " + Class)"
+         href="@Url"
+         target="@If(OpenInNewTab, "_blank")"
+         rel="@If(OpenInNewTab, "noopener noreferrer")">
+    @if (!string.IsNullOrWhiteSpace(Icon))
+    {
+        <Icon Class="@Icon"/>
+        <span class="ms-2">@Text</span>
+    }
+    else
+    {
+        @Text
+    }
+</NavLink>
