@@ -20,7 +20,7 @@ jobs:
 
       - name: Publish Blazor app
         run: |
-          dotnet publish OnixLabs.Web.csproj \
+          dotnet publish OnixLabs.Web\OnixLabs.Web.csproj \
             -c Release \
             -o release \
             --nologo
