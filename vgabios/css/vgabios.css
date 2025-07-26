@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'vga';
+    src: url('../fonts/Web437_IBM_BIOS.woff') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-feature-settings: 'kern' 0;
+}

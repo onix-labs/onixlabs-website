@@ -1,0 +1,263 @@
+[data-bs-theme="light"]:root {
+    --site-body-bg: var(--bs-gray-200);
+    --site-navbar-bg: var(--bs-gray-100);
+    --site-navbar-border: var(--bs-gray-400);
+    --site-footer-bg: var(--bs-gray-900);
+    --site-card-bg: var(--bs-gray-100);
+    --site-card-border-top: var(--bs-white);
+    --site-card-border-bottom: var(--bs-gray-400);
+    --site-card-border-middle: rgba(0, 0, 0, 0.075);
+    --site-text: var(--bs-gray-900);
+    --site-headline: var(--site-text);
+    --site-callout: rgba(0, 0, 0, 0.5);
+    --site-stars: var(--bs-gray-700);
+
+    --site-markdown-border: var(--bs-gray-400);
+    --site-markdown-quote: rgba(0, 0, 0, 0.04);
+}
+
+[data-bs-theme="dark"]:root {
+    --site-body-bg: var(--bs-gray-900);
+    --site-navbar-bg: var(--bs-gray-800);
+    --site-navbar-border: var(--bs-gray-700);
+    --site-footer-bg: var(--bs-gray-800);
+    --site-card-bg: var(--bs-gray-800);
+    --site-card-border-top: var(--bs-gray-700);
+    --site-card-border-bottom: rgba(0, 0, 0, 0.5);
+    --site-card-border-middle: rgba(0, 0, 0, 0.25);
+    --site-text: var(--bs-gray-100);
+    --site-headline: var(--site-text);
+    --site-callout: rgba(255, 255, 255, 0.5);
+    --site-stars: #FFFFFF;
+
+    --site-markdown-border: var(--bs-gray-700);
+    --site-markdown-quote: rgba(255, 255, 255, 0.04);
+}
+
+html, body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    background-color: var(--site-body-bg);
+    overscroll-behavior: none;
+}
+
+.boot-logo {
+    width: 8rem;
+    height: 8rem;
+    object-fit: contain;
+}
+
+#blazor-error-ui {
+    display: none;
+    z-index: 1000;
+}
+
+.bloom {
+    background-image: linear-gradient(to bottom, var(--site-body-bg) 0%, transparent 100%),
+    linear-gradient(to right, #F79533, #F37055, #EF4E7B, #A166AB, #5073B8, #1098AD, #07B39B, #6FBA82);
+}
+
+.bloom-reverse {
+    background-image: linear-gradient(to top, var(--site-body-bg) 0%, transparent 100%),
+    linear-gradient(to right, #F79533, #F37055, #EF4E7B, #A166AB, #5073B8, #1098AD, #07B39B, #6FBA82);
+}
+
+.action-buttons a {
+    min-width: 16rem;
+    padding: 1.5rem;
+    font-weight: 300;
+}
+
+.bg-dotnet {
+    background: linear-gradient(to right, #A166AB, #5073B8);
+}
+
+.bg-corda {
+    background-image: linear-gradient(to right, #F37055, #EF4E7B);
+}
+
+.bg-kotlin {
+    background: linear-gradient(to right, #1098AD, #5073B8);
+}
+
+.bg-dotnet-fade {
+    background-image: linear-gradient(to bottom, var(--site-body-bg) 0%, transparent 100%),
+    linear-gradient(to right, #A166AB, #5073B8);
+}
+
+.bg-corda-fade {
+    background-image: linear-gradient(to bottom, var(--site-body-bg) 0%, transparent 100%),
+    linear-gradient(to right, #F37055, #EF4E7B);
+}
+
+.bg-kotlin-fade {
+    background-image: linear-gradient(to bottom, var(--site-body-bg) 0%, transparent 100%),
+    linear-gradient(to right, #1098AD, #5073B8);
+}
+
+.text-justified {
+    text-align: justify;
+}
+
+.btn-min-width {
+    min-width: 7rem;
+}
+
+.form-control, .form-control:focus, .form-select, .form-select:focus {
+    height: auto !important;
+    border: 1px solid var(--bs-gray-600);
+    box-shadow: none !important;
+}
+
+.form-control.no-spinner::-webkit-outer-spin-button,
+.form-control.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form-control.no-spinner {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    display: none;
+}
+
+[data-bs-theme="dark"] .d-dark-none,
+[data-bs-theme="light"] .d-light-none {
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+}
+
+.markdown-content {
+    text-align: justify;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    font-weight: 700;
+}
+
+.markdown-content h1 {
+    font-size: 3rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--site-markdown-border);
+}
+
+.markdown-content code {
+    color: var(--site-text);
+    font-size: 1rem;
+    background: var(--site-markdown-border);
+    padding: 0 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.markdown-content blockquote {
+    background: var(--site-markdown-quote);
+    border-left: 0.3rem solid var(--site-markdown-border);
+    border-radius: 0.25rem;
+    padding: 1rem;
+}
+
+.markdown-content blockquote p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.markdown-content pre {
+    border: 0.0625rem solid var(--site-markdown-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 2rem 0;
+    background: var(--site-markdown-quote);
+}
+
+.markdown-content pre code {
+    background: transparent;
+    padding-left: 0;
+}
+
+.markdown-content strong {
+    font-weight: 600;
+}
+
+.markdown-content a {
+    text-decoration: none;
+}
+
+/* These styles are used by the documentation and tools views */
+
+.sticky-container {
+    height: calc(100vh - 248px);
+    overflow: hidden;
+}
+
+.sticky-sidebar {
+    height: 100%;
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+}
+
+.scrollable-content {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.accordion-item {
+    background: transparent;
+}
+
+.accordion-item:last-of-type .accordion-button {
+    border-bottom: none;
+}
+
+.accordion-item:first-of-type .accordion-button {
+    border-top: none;
+}
+
+.accordion-body {
+}
+
+.accordion-button {
+    background: transparent !important;
+    border-top: 0.0625rem solid var(--site-card-border-top);
+    border-bottom: 0.0625rem solid var(--site-card-border-bottom);
+    box-shadow: none !important;
+}
+
+.accordion-button::after {
+    filter: grayscale(1);
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--site-text);
+    font-weight: 500;
+}
+
+.accordion-body .nav-item .nav-link {
+    color: var(--site-text);
+}
+
+.accordion-body .nav-item .nav-link.active {
+    font-weight: 600;
+}
+
+.accordion-body .nav-item .nav-link:not(.active) {
+    opacity: 0.75;
+}

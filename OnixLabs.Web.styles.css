@@ -1,0 +1,162 @@
+/* /Areas/Consulting/Pages/Index.razor.rz.scp.css */
+/* /Areas/Contact/Pages/Index.razor.rz.scp.css */
+/* /Areas/Documentation/Components/MarkdownContent.razor.rz.scp.css */
+/* /Areas/Documentation/Layout/DocumentationLayout.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/Aero/IntroductionToAero.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/Corda/FlowDesignGuidelines1.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/Corda/FlowDesignGuidelines2.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/Corda/FlowDesignGuidelines3.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/Corda/RelationalDataAndPointers.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/CSharp/SyntacticSugarBitterAftertaste.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/CSharp/UnderscoreOverkill.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/Index.razor.rz.scp.css */
+/* /Areas/Documentation/Pages/NumberTheory/TheProblemWithDecimals.razor.rz.scp.css */
+/* /Areas/Home/Components/Biography.razor.rz.scp.css */
+/* /Areas/Home/Components/Contributor.razor.rz.scp.css */
+[b-8j61x25w45] {
+    .card {
+        padding-bottom: calc(0.5rem + 0.0625rem) !important;
+    }
+}
+/* /Areas/Home/Components/Tech.razor.rz.scp.css */
+a[b-4p4ip327mp] {
+    color: var(--bs-body-color);
+    text-decoration: none;
+    font-weight: 300;
+    transition: all ease-in-out 250ms;
+}
+
+a:hover[b-4p4ip327mp] {
+    transform: scale(1.2);
+}
+/* /Areas/Home/Pages/Contributors/Adam.razor.rz.scp.css */
+/* /Areas/Home/Pages/Contributors/Laura.razor.rz.scp.css */
+/* /Areas/Home/Pages/Contributors/Matt.razor.rz.scp.css */
+/* /Areas/Home/Pages/Contributors/Ryan.razor.rz.scp.css */
+/* /Areas/Home/Pages/Index.razor.rz.scp.css */
+/* /Areas/Products/Components/Product.razor.rz.scp.css */
+/* /Areas/Products/Components/Summary.razor.rz.scp.css */
+/* /Areas/Products/Pages/Aero/AeroPlatform.razor.rz.scp.css */
+/* /Areas/Products/Pages/Corda/CordaBnmsLibrary.razor.rz.scp.css */
+/* /Areas/Products/Pages/Corda/CordaCoreLibrary.razor.rz.scp.css */
+/* /Areas/Products/Pages/Corda/CordaIdfxLibrary.razor.rz.scp.css */
+/* /Areas/Products/Pages/DotNet/DotNetCoreLibrary.razor.rz.scp.css */
+/* /Areas/Products/Pages/DotNet/DotNetNumericsLibrary.razor.rz.scp.css */
+/* /Areas/Products/Pages/DotNet/DotNetSecurityLibrary.razor.rz.scp.css */
+/* /Areas/Products/Pages/Index.razor.rz.scp.css */
+/* /Areas/Products/Pages/Kotlin/KotlinCoreLibrary.razor.rz.scp.css */
+/* /Areas/Products/Pages/Kotlin/KotlinProjectionLibrary.razor.rz.scp.css */
+/* /Areas/Products/Pages/Kotlin/KotlinValidationLibrary.razor.rz.scp.css */
+/* /Areas/Tools/Components/Cryptography/HashGenerator.razor.rz.scp.css */
+/* /Areas/Tools/Components/DataTables/AsciiTable.razor.rz.scp.css */
+.dos-glyph[b-537ypq5qxz] {
+    font-family: 'vga', monospace;
+    font-size: 16px;
+}
+
+th[b-537ypq5qxz], td[b-537ypq5qxz] {
+    background: transparent;
+}
+/* /Areas/Tools/Components/Encoding/BaseEncoder.razor.rz.scp.css */
+/* /Areas/Tools/Components/Generators/GuidGenerator.razor.rz.scp.css */
+textarea[b-xd2ntd72v3] {
+    resize: vertical;
+}
+/* /Areas/Tools/Components/Generators/TokenGenerator.razor.rz.scp.css */
+/* /Areas/Tools/Components/Mathematics/RatioCalculator.razor.rz.scp.css */
+.btn-fixed[b-alu35i8r43] {
+    width: 40px;
+}
+/* /Areas/Tools/Layout/ToolsLayout.razor.rz.scp.css */
+/* /Areas/Tools/Pages/Index.razor.rz.scp.css */
+/* /Shared/Components/Accordion/Accordion.razor.rz.scp.css */
+/* /Shared/Components/Accordion/AccordionItem.razor.rz.scp.css */
+/* /Shared/Components/Buttons/ActionButton.razor.rz.scp.css */
+/* /Shared/Components/Buttons/ActionButtons.razor.rz.scp.css */
+/* /Shared/Components/Cards/Card.razor.rz.scp.css */
+.card[b-810i9h8pna] {
+    background-color: var(--site-card-bg);
+    border: none;
+    box-shadow: inset 0 0.07rem var(--site-card-border-top),
+                inset 0 -0.07rem var(--site-card-border-bottom),
+                0 0.125rem 0.75rem rgba(0, 0, 0, 0.1);
+}
+/* /Shared/Components/Cards/CardBody.razor.rz.scp.css */
+/* /Shared/Components/Cards/CardFooter.razor.rz.scp.css */
+.card-footer[b-zhgagwy9vu] {
+    background-color: transparent;
+    border-top: 0.0625rem solid var(--site-card-border-middle);
+}
+/* /Shared/Components/Cards/CardHeader.razor.rz.scp.css */
+.card-header[b-y1dny1rt2k] {
+    background-color: transparent;
+    border-bottom: 0.0625rem solid var(--site-card-border-middle);
+}
+/* /Shared/Components/Graphics/Icon.razor.rz.scp.css */
+/* /Shared/Components/Graphics/Image.razor.rz.scp.css */
+/* /Shared/Components/Graphics/ThemeImage.razor.rz.scp.css */
+/*[data-bs-theme="dark"] .d-dark-none {*/
+/*    display: none !important;*/
+/*}*/
+
+/*[data-bs-theme="light"] .d-light-none {*/
+/*    display: none !important;*/
+/*}*/
+/* /Shared/Components/Layout/Container.razor.rz.scp.css */
+/* /Shared/Components/Layout/Row.razor.rz.scp.css */
+/* /Shared/Components/Layout/Section.razor.rz.scp.css */
+/* /Shared/Components/Tiles/Tile.razor.rz.scp.css */
+/* /Shared/Components/Typography/Callout.razor.rz.scp.css */
+.callout[b-6wxtcsivt6] {
+    color: var(--site-callout);
+}
+/* /Shared/Components/Typography/Headline.razor.rz.scp.css */
+.headline[b-t9vmkmfcsi] {
+    color: var(--site-headline);
+}
+/* /Shared/Components/Typography/Paragraph.razor.rz.scp.css */
+/* /Shared/Layout/LayoutFooter.razor.rz.scp.css */
+footer[b-kfjuh0osi0] {
+    background-color: var(--site-footer-bg);
+}
+/* /Shared/Layout/LayoutHeader.razor.rz.scp.css */
+.navbar[b-sbh824of40] {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-bottom 0.3s ease;
+    background-color: var(--site-body-bg);
+    border-bottom: 1px solid transparent;
+}
+
+.scrolled[b-sbh824of40] {
+    background-color: var(--site-navbar-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-bottom-color: var(--site-navbar-border);
+}
+
+.theme-toggle[b-sbh824of40] {
+    background: var(--site-card-bg);
+    border: none;
+    border-top: 0.1rem solid var(--site-card-border-top);
+    border-bottom: 0.1rem solid var(--site-card-border-bottom);
+    border-radius: 50rem;
+    padding: 0.1rem 0.2rem 0.2rem;
+    width: 3rem;
+    cursor: pointer;
+}
+
+.theme-toggle:has(:checked)[b-sbh824of40] {
+    flex-direction: row-reverse !important;
+}
+
+.theme-toggle-button[b-sbh824of40] {
+    --bs-text-opacity: 1;
+    background: rgba(var(--bs-secondary-rgb), var(--bs-text-opacity));
+    border-radius: 100%;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+/* /Shared/Layout/LayoutMain.razor.rz.scp.css */
+main[b-1rq15vloa3] {
+    margin-top: 75px;
+}
+/* /Shared/Layout/LayoutRoot.razor.rz.scp.css */
+/* /Shared/Layout/NotFound.razor.rz.scp.css */
