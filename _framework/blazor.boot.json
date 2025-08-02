@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "OnixLabs.Web",
   "resources": {
-    "hash": "sha256-rGNp1WJ5cd8JBmcrAbr+0aw9GjLzdAoVB1+t9kx5G88=",
+    "hash": "sha256-41McHH/qaTGeYl+56oV+BpyGtmI3AT/jiEiE+B+EYz4=",
     "fingerprinting": {
       "Markdig.ato3fn3juu.wasm": "Markdig.wasm",
       "Microsoft.AspNetCore.Components.fdlsx2p8b0.wasm": "Microsoft.AspNetCore.Components.wasm",
@@ -55,7 +55,7 @@
       "System.Threading.jn6105gyvd.wasm": "System.Threading.wasm",
       "System.wznexm8bk2.wasm": "System.wasm",
       "System.Private.CoreLib.rkwi7lcg6s.wasm": "System.Private.CoreLib.wasm",
-      "OnixLabs.Web.lxkyc3u3ja.wasm": "OnixLabs.Web.wasm",
+      "OnixLabs.Web.ffv8z491wy.wasm": "OnixLabs.Web.wasm",
       "dotnet.js": "dotnet.js",
       "dotnet.native.st0ovrfdhi.js": "dotnet.native.js",
       "dotnet.native.67rumul467.wasm": "dotnet.native.wasm",
@@ -133,7 +133,7 @@
       "System.Text.RegularExpressions.uppli1il33.wasm": "sha256-cssgrj2fLKJui+a09EbhoMvUEqUJHPWKR47Ri3l887A=",
       "System.Threading.jn6105gyvd.wasm": "sha256-EXQRreBZRNntUAqAPXfCua2HzOpgyuiRJi1vC8p3/zI=",
       "System.wznexm8bk2.wasm": "sha256-/Imz/Enqa2AZc4T3k/CqtsM6674KRN9OUtvK4Nokhew=",
-      "OnixLabs.Web.lxkyc3u3ja.wasm": "sha256-ebY1GeZkYvcw6ttCn/iKEJXND4roM4G+6S6p8Klap68="
+      "OnixLabs.Web.ffv8z491wy.wasm": "sha256-5UtgSoMG1BzmDhev5iw2tKQFxlRsJsTLNP9cfMlRIsw="
     }
   },
   "cacheBootResources": true,
