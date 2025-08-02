@@ -1,0 +1,13 @@
+@typeparam T
+
+<div class="form-floating">
+    <InputSelect TItem="T"
+                 Value="Value"
+                 ValueChanged="ValueChanged"
+                 ValueExpression="ValueExpression"
+                 class="form-select"
+                 id="@Id">
+        @ChildContent
+    </InputSelect>
+    <label for="@Id">@Label</label>
+</div>

@@ -16,21 +16,18 @@
         </Row>
         <Row Class="mt-3">
             <div class="col">
-                <div class="form-floating">
-                    <InputSelect @bind-Value="algorithm.Value" class="form-select" id="algorithm">
-                        <option value="0" selected>SHA-1 (160 bits)</option>
-                        <option value="1">SHA-2 (256 bits)</option>
-                        <option value="2">SHA-2 (384 bits)</option>
-                        <option value="3">SHA-2 (512 bits)</option>
-                        <option value="4">SHA-3 (224 bits)</option>
-                        <option value="5">SHA-3 (256 bits)</option>
-                        <option value="6">SHA-3 (384 bits)</option>
-                        <option value="7">SHA-3 (512 bits)</option>
-                        <option value="8">SHA-3 SHAKE (128 bits)</option>
-                        <option value="9">SHA-3 SHAKE (256 bits)</option>
-                    </InputSelect>
-                    <label for="algorithm">Hash Algorithm</label>
-                </div>
+                <SelectInput @bind-Value="algorithm.Value" Label="Hash Algorithm">
+                    <option value="0" selected>SHA-1 (160 bits)</option>
+                    <option value="1">SHA-2 (256 bits)</option>
+                    <option value="2">SHA-2 (384 bits)</option>
+                    <option value="3">SHA-2 (512 bits)</option>
+                    <option value="4">SHA-3 (224 bits)</option>
+                    <option value="5">SHA-3 (256 bits)</option>
+                    <option value="6">SHA-3 (384 bits)</option>
+                    <option value="7">SHA-3 (512 bits)</option>
+                    <option value="8">SHA-3 SHAKE (128 bits)</option>
+                    <option value="9">SHA-3 SHAKE (256 bits)</option>
+                </SelectInput>
             </div>
             @if (algorithm.Value is 8 or 9)
             {
@@ -56,10 +53,10 @@
             <div class="col">
                 <div class="input-group">
                     <div class="form-floating">
-                        <InputText @bind-Value="hashResult" class="form-control" id="hashResult" readonly/>
+                        <InputText @bind-Value="hashResult" class="form-control form-control-lg" id="hashResult" readonly/>
                         <label for="hashResult">Hash Result</label>
                     </div>
-                    <button @onclick="CopyToClipboard" class="btn btn-secondary" type="button" tabindex="-1">
+                    <button @onclick="CopyToClipboard" class="btn btn-secondary px-4" type="button" tabindex="-1">
                         <Icon class="fa-regular fa-clipboard"/>
                     </button>
                 </div>
@@ -67,17 +64,3 @@
         </Row>
     </CardFooter>
 </Card>
-@* *@
-@* @if (!string.IsNullOrEmpty(hashResult)) *@
-@* { *@
-@*     <Card class="mt-3"> *@
-@*         <CardBody> *@
-@*             <div class="input-group"> *@
-@*                 <input class="form-control font-monospace" type="text" readonly value="@hashResult" /> *@
-@*                 <button class="btn btn-secondary" type="button" @onclick="CopyHash"> *@
-@*                     <i class="fa-regular fa-clipboard"></i> *@
-@*                 </button> *@
-@*             </div> *@
-@*         </CardBody> *@
-@*     </Card> *@
-@* } *@

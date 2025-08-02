@@ -1,0 +1,96 @@
+@page "/Tools/Color-Picker"
+@layout ToolsLayout
+
+<PageTitle>ONIXLabs | Color Picker</PageTitle>
+
+<Card>
+    <CardHeader Class="fw-semibold">Color Picker</CardHeader>
+    <CardBody Class="pt-0">
+        <Row>
+            <div class="col">
+                <input type="color" @bind="Value" id="color-picker"/>
+                <label class="form-color-control" for="color-picker" style="background-color: @Value">
+                    Color (@Value)
+                </label>
+            </div>
+        </Row>
+
+        <Row Class="mt-3">
+            <div class="col-4">
+                <NumberInput @bind-Value="Hue" Label="Hue"
+                             OnIncrementClicked="IncrementHue"
+                             OnDecrementClicked="DecrementHue"/>
+            </div>
+            <div class="col-4">
+                <NumberInput @bind-Value="Saturation" Label="Saturation"
+                             OnIncrementClicked="IncrementSaturation"
+                             OnDecrementClicked="DecrementSaturation"/>
+            </div>
+            <div class="col-4">
+                <NumberInput @bind-Value="Lightness" Label="Lightness"
+                             OnIncrementClicked="IncrementLightness"
+                             OnDecrementClicked="DecrementLightness"/>
+            </div>
+        </Row>
+
+        <Row Class="mt-3">
+            <div class="col-4">
+                <NumberInput @bind-Value="Red" Label="Red"
+                             OnIncrementClicked="IncrementRed"
+                             OnDecrementClicked="DecrementRed"/>
+            </div>
+            <div class="col-4">
+                <NumberInput @bind-Value="Green" Label="Green"
+                             OnIncrementClicked="IncrementGreen"
+                             OnDecrementClicked="DecrementGreen"/>
+            </div>
+            <div class="col-4">
+                <NumberInput @bind-Value="Blue" Label="Blue"
+                             OnIncrementClicked="IncrementBlue"
+                             OnDecrementClicked="DecrementBlue"/>
+            </div>
+        </Row>
+    </CardBody>
+
+    <CardFooter Class="d-flex flex-column py-3 gap-3">
+        <Row>
+            <div class="col">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input class="form-control form-control-lg font-monospace" type="text" readonly value="@HexValue">
+                        <label>CSS (HEX)</label>
+                    </div>
+                    <button class="btn btn-secondary px-4" type="button" @onclick="() => CopyToClipboard(HexValue)">
+                        <Icon Class="fa-regular fa-clipboard"/>
+                    </button>
+                </div>
+            </div>
+        </Row>
+        <Row>
+            <div class="col">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input class="form-control form-control-lg font-monospace" type="text" readonly value="@RgbValue">
+                        <label>CSS (RGB)</label>
+                    </div>
+                    <button class="btn btn-secondary px-4" type="button" @onclick="() => CopyToClipboard(RgbValue)">
+                        <Icon Class="fa-regular fa-clipboard"/>
+                    </button>
+                </div>
+            </div>
+        </Row>
+        <Row>
+            <div class="col">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input class="form-control form-control-lg font-monospace" type="text" readonly value="@HslValue">
+                        <label>CSS (HSL)</label>
+                    </div>
+                    <button class="btn btn-secondary px-4" type="button" @onclick="() => CopyToClipboard(HslValue)">
+                        <Icon Class="fa-regular fa-clipboard"/>
+                    </button>
+                </div>
+            </div>
+        </Row>
+    </CardFooter>
+</Card>

@@ -1,0 +1,25 @@
+@typeparam T
+
+<div class="input-group">
+    <div class="form-floating">
+        <InputNumber T="T"
+                     Value="Value"
+                     ValueChanged="ValueChanged"
+                     ValueExpression="ValueExpression"
+                     class="form-control no-spinner"
+                     id="@Id" />
+        <label for="@Id">@Label</label>
+    </div>
+    <button @onclick="OnIncrementClicked"
+            class="btn btn-secondary px-3"
+            type="button"
+            tabindex="-1">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+    <button @onclick="OnDecrementClicked"
+            class="btn btn-secondary px-3"
+            type="button"
+            tabindex="-1">
+        <i class="fa-solid fa-minus"></i>
+    </button>
+</div>

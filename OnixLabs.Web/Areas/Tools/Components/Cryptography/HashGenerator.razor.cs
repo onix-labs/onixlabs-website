@@ -21,6 +21,8 @@ public partial class HashGenerator : ComponentBase
         inputText.ValueChanged += (_, _) => Calculate();
         algorithm.ValueChanged += (_, _) => Calculate();
         shakeLength.ValueChanged += (_, _) => Calculate();
+        
+        Calculate();
     }
 
     private void IncrementLength()

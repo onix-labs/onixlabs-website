@@ -2,35 +2,21 @@
 @using OnixLabs.Core.Linq
 @layout ToolsLayout
 
-<PageTitle>GUID Generator</PageTitle>
+<PageTitle>ONIXLabs | GUID Generator</PageTitle>
 
 <Card>
     <CardHeader Class="fw-semibold">GUID Generator</CardHeader>
     <CardBody>
         <Row>
             <div class="col">
-                <div class="form-floating">
-                    <InputSelect @bind-Value="version" class="form-select" id="version">
-                        <option value="0" selected disabled hidden></option>
-                        <option value="4">Version 4</option>
-                        <option value="7">Version 7</option>
-                    </InputSelect>
-                    <label for="version">Version</label>
-                </div>
+                <SelectInput @bind-Value="version" Label="Version">
+                    <option value="0" selected disabled hidden></option>
+                    <option value="4">Version 4</option>
+                    <option value="7">Version 7</option>
+                </SelectInput>
             </div>
             <div class="col">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <InputNumber @bind-Value="amount" class="form-control no-spinner" id="amount"/>
-                        <label for="amount">Amount</label>
-                    </div>
-                    <button @onclick="IncrementAmount" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button @onclick="DecrementAmount" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-minus"></i>
-                    </button>
-                </div>
+                <NumberInput @bind-Value="amount" OnIncrementClicked="IncrementAmount" OnDecrementClicked="DecrementAmount"/>
             </div>
         </Row>
     </CardBody>
@@ -72,8 +58,8 @@
                 {
                     <div class="col-12">
                         <div class="input-group">
-                            <input class="form-control font-monospace" type="text" readonly value="@Format(guid)">
-                            <button @onclick="() => CopyToClipboard(index)" class="btn btn-secondary" type="button">
+                            <input class="form-control form-control-lg font-monospace" type="text" readonly value="@Format(guid)">
+                            <button @onclick="() => CopyToClipboard(index)" class="btn btn-secondary px-4" type="button">
                                 <Icon class="fa-regular fa-clipboard"/>
                             </button>
                         </div>

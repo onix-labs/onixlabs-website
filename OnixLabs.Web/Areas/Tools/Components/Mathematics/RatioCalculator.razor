@@ -1,49 +1,31 @@
 @page "/Tools/Ratio-Calculator"
 @layout ToolsLayout
 
-<PageTitle>Ratio Calculator</PageTitle>
+<PageTitle>ONIXLabs | Ratio Calculator</PageTitle>
 
 <Card>
     <CardHeader>Ratio Calculator</CardHeader>
     <CardBody>
         <Row>
             <div class="col">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <InputNumber @bind-Value="firstAntecedent" class="form-control no-spinner" id="firstAntecedent"/>
-                        <label for="firstAntecedent">First Antecedent</label>
-                    </div>
-                    <button @onclick="IncrementFirstAntecedent" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button @onclick="DecrementFirstAntecedent" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-minus"></i>
-                    </button>
-                </div>
+                <NumberInput @bind-Value="firstAntecedent" Label="First Antecedent"
+                             OnIncrementClicked="IncrementFirstAntecedent"
+                             OnDecrementClicked="DecrementFirstAntecedent"/>
             </div>
             <div class="col-auto d-flex justify-content-center align-items-center">
                 <span class="h4 m-0">:</span>
             </div>
             <div class="col">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <InputNumber @bind-Value="firstConsequent" class="form-control no-spinner" id="firstConsequent"/>
-                        <label for="firstConsequent">First Consequent</label>
-                    </div>
-                    <button @onclick="IncrementFirstConsequent" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button @onclick="DecrementFirstConsequent" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-minus"></i>
-                    </button>
-                </div>
+                <NumberInput @bind-Value="firstConsequent" Label="First Consequent"
+                             OnIncrementClicked="IncrementFirstConsequent"
+                             OnDecrementClicked="DecrementFirstConsequent"/>
             </div>
         </Row>
         <Row Class="my-3">
             <div class="col d-flex justify-content-center">
-                <button @onclick="ToggleAntecedentLock" 
-                        type="button" 
-                        class="btn btn-fixed btn-outline-secondary" 
+                <button @onclick="ToggleAntecedentLock"
+                        type="button"
+                        class="btn btn-fixed btn-outline-secondary"
                         data-bs-toggle="button"
                         tabindex="-1">
                     <i class="fa-solid @IfElse(isAntecedentLocked, "fa-lock", "fa-lock-open")"></i>
@@ -51,9 +33,9 @@
             </div>
             <div class="col-auto"></div>
             <div class="col d-flex justify-content-center">
-                <button @onclick="ToggleConsequentLock" 
-                        type="button" 
-                        class="btn btn-fixed btn-outline-secondary" 
+                <button @onclick="ToggleConsequentLock"
+                        type="button"
+                        class="btn btn-fixed btn-outline-secondary"
                         data-bs-toggle="button"
                         tabindex="-1">
                     <i class="fa-solid @IfElse(isConsequentLocked, "fa-lock", "fa-lock-open")"></i>
@@ -62,35 +44,17 @@
         </Row>
         <Row>
             <div class="col">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <InputNumber @bind-Value="secondAntecedent" class="form-control no-spinner" id="secondAntecedent"/>
-                        <label for="secondAntecedent">Second Antecedent</label>
-                    </div>
-                    <button @onclick="IncrementSecondAntecedent" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button @onclick="DecrementSecondAntecedent" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-minus"></i>
-                    </button>
-                </div>
+                <NumberInput @bind-Value="secondAntecedent" Label="Second Antecedent"
+                             OnIncrementClicked="IncrementSecondAntecedent"
+                             OnDecrementClicked="DecrementSecondAntecedent"/>
             </div>
             <div class="col-auto d-flex justify-content-center align-items-center">
                 <span class="h4 m-0">:</span>
             </div>
             <div class="col">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <InputNumber @bind-Value="secondConsequent" class="form-control no-spinner" id="secondConsequent"/>
-                        <label for="secondConsequent">Second Consequent</label>
-                    </div>
-                    <button @onclick="IncrementSecondConsequent" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button @onclick="DecrementSecondConsequent" class="btn btn-secondary" type="button" tabindex="-1">
-                        <i class="fa-solid fa-minus"></i>
-                    </button>
-                </div>
+                <NumberInput @bind-Value="secondConsequent" Label="Second Consequent"
+                             OnIncrementClicked="IncrementSecondConsequent"
+                             OnDecrementClicked="DecrementSecondConsequent"/>
             </div>
         </Row>
     </CardBody>

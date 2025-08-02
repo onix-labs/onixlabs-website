@@ -1,0 +1,13 @@
+<div class="input-group">
+    <div class="form-floating">
+        <InputNumber Value="Value"
+                     ValueChanged="ValueChanged"
+                     ValueExpression="ValueExpression"
+                     class="form-control no-spinner"
+                     id="@Id"/>
+        <label for="@Id">@Label</label>
+    </div>
+    <button @onclick="RandomizeSeedAsync" class="btn btn-secondary px-3" type="button">
+        <i class="fa-solid fa-dice"></i>
+    </button>
+</div>

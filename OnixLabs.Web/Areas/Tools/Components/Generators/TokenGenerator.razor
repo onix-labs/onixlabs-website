@@ -3,65 +3,32 @@
 @using OnixLabs.Security
 @layout ToolsLayout
 
-<PageTitle>Token Generator</PageTitle>
+<PageTitle>ONIXLabs | Token Generator</PageTitle>
 
 <Card>
     <CardHeader Class="fw-semibold">Token Generator</CardHeader>
     <CardBody>
         <Row>
             <div class="col">
-                <div class="form-floating">
-                    <InputSelect @bind-Value="generator" class="form-select" id="generator">
-                        <option value="0" selected disabled hidden></option>
-                        <option value="1">Pseudo-Random</option>
-                        <option value="2">Secure-Random</option>
-                    </InputSelect>
-                    <label for="generator">Random Number Generator</label>
-                </div>
+                <SelectInput @bind-Value="generator" Label="Random Number Generator">
+                    <option value="0" selected disabled hidden></option>
+                    <option value="1">Pseudo-Random</option>
+                    <option value="2">Secure-Random</option>
+                </SelectInput>
             </div>
             @if (generator == 1)
             {
                 <div class="col">
-                    <div class="input-group">
-                        <div class="form-floating">
-                            <InputNumber @bind-Value="seed" class="form-control no-spinner" id="seed"/>
-                            <label for="seed">Seed</label>
-                        </div>
-                        <button @onclick="RandomizeSeed" class="btn btn-secondary" type="button">
-                            <i class="fa-solid fa-dice"></i>
-                        </button>
-                    </div>
+                    <RandomNumberInput @bind-Value="seed" Label="Seed"/>
                 </div>
             }
         </Row>
         <Row Class="mt-3">
             <div class="col">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <InputNumber @bind-Value="length" class="form-control no-spinner" id="length"/>
-                        <label for="length">Length</label>
-                    </div>
-                    <button @onclick="IncrementLength" class="btn btn-secondary" type="button">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button @onclick="DecrementLength" class="btn btn-secondary" type="button">
-                        <i class="fa-solid fa-minus"></i>
-                    </button>
-                </div>
+                <NumberInput @bind-Value="length" Label="Length" OnIncrementClicked="IncrementLength" OnDecrementClicked="DecrementLength"/>
             </div>
             <div class="col">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <InputNumber @bind-Value="amount" class="form-control no-spinner" id="amount"/>
-                        <label for="amount">Amount</label>
-                    </div>
-                    <button @onclick="IncrementAmount" class="btn btn-secondary" type="button">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                    <button @onclick="DecrementAmount" class="btn btn-secondary" type="button">
-                        <i class="fa-solid fa-minus"></i>
-                    </button>
-                </div>
+                <NumberInput @bind-Value="amount" Label="Amount" OnIncrementClicked="IncrementAmount" OnDecrementClicked="DecrementAmount"/>
             </div>
         </Row>
         <Row Class="mt-3">
@@ -104,8 +71,8 @@
                 {
                     <div class="col-12">
                         <div class="input-group">
-                            <input class="form-control font-monospace" type="text" readonly value="@token">
-                            <button @onclick="() => CopyToClipboard(index)" class="btn btn-secondary" type="button">
+                            <input class="form-control form-control-lg font-monospace" type="text" readonly value="@token">
+                            <button @onclick="() => CopyToClipboard(index)" class="btn btn-secondary px-4" type="button">
                                 <i class="fa-regular fa-clipboard"></i>
                             </button>
                         </div>
