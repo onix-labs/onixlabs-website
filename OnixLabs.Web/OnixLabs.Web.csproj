@@ -17,21 +17,8 @@
         <PackageReference Include="OnixLabs.Security.Cryptography" Version="12.1.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Areas\Consulting\Components\" />
-      <Folder Include="Areas\Contact\Components\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Pages\Counter.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Home.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Weather.razor" />
-      <_ContentIncludedByDefault Remove="Areas\Contributors\Components\Biography.razor" />
-      <_ContentIncludedByDefault Remove="Areas\Contributors\Pages\Adam.razor" />
-      <_ContentIncludedByDefault Remove="Areas\Contributors\Pages\Laura.razor" />
-      <_ContentIncludedByDefault Remove="Areas\Contributors\Pages\Matt.razor" />
-      <_ContentIncludedByDefault Remove="Areas\Contributors\Pages\Ryan.razor" />
-      <_ContentIncludedByDefault Remove="Areas\Tools\Components\HashAlgorithms\Md5HashAlgorithm.razor" />
-    </ItemGroup>
-
+    <Target Name="CopyIndexTo404" AfterTargets="Publish">
+        <Copy SourceFiles="$(PublishDir)index.html" DestinationFiles="$(PublishDir)404.html" />
+    </Target>
+    
 </Project>
