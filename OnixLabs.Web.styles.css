@@ -63,6 +63,22 @@ textarea[b-xd2ntd72v3] {
     resize: vertical;
 }
 /* /Areas/Tools/Components/Generators/TokenGenerator.razor.rz.scp.css */
+/* /Areas/Tools/Components/Graphics/ColorPicker.razor.rz.scp.css */
+input[type="color"][b-iv0o39nccb] {
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.form-color-control[b-iv0o39nccb] {
+    border: 1px solid var(--site-navbar-border);
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    width: 100%;
+    height: 4rem;
+}
 /* /Areas/Tools/Components/Mathematics/RatioCalculator.razor.rz.scp.css */
 .btn-fixed[b-alu35i8r43] {
     width: 40px;
@@ -102,6 +118,9 @@ textarea[b-xd2ntd72v3] {
 /*[data-bs-theme="light"] .d-light-none {*/
 /*    display: none !important;*/
 /*}*/
+/* /Shared/Components/Inputs/NumberInput.razor.rz.scp.css */
+/* /Shared/Components/Inputs/RandomNumberInput.razor.rz.scp.css */
+/* /Shared/Components/Inputs/SelectInput.razor.rz.scp.css */
 /* /Shared/Components/Layout/Container.razor.rz.scp.css */
 /* /Shared/Components/Layout/Row.razor.rz.scp.css */
 /* /Shared/Components/Layout/Section.razor.rz.scp.css */
