@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>14</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,10 +12,10 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all"/>
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.7" />
-        <PackageReference Include="OnixLabs.Core" Version="12.1.1" />
-        <PackageReference Include="OnixLabs.Numerics" Version="12.1.1" />
-        <PackageReference Include="OnixLabs.Security" Version="12.1.1" />
-        <PackageReference Include="OnixLabs.Security.Cryptography" Version="12.1.1" />
+        <PackageReference Include="OnixLabs.Core" Version="13.0.0" />
+        <PackageReference Include="OnixLabs.Numerics" Version="13.0.0" />
+        <PackageReference Include="OnixLabs.Security" Version="13.0.0" />
+        <PackageReference Include="OnixLabs.Security.Cryptography" Version="13.0.0" />
     </ItemGroup>
 
     <Target Name="CopyIndexTo404" AfterTargets="Publish">
