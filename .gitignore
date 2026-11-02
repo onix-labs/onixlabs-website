@@ -3,3 +3,10 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+# Astro
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+.lighthouseci/

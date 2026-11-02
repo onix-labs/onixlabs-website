@@ -1,0 +1,23 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+    readonly href: string;
+    readonly text: string;
+    readonly class?: string;
+    readonly icon?: string;
+    readonly external?: boolean;
+}
+
+const { href, text, class: className = '', icon, external = false }: Props = Astro.props;
+---
+<a
+    class:list={['btn btn-lg', className]}
+    href={href}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+>
+    {icon !== undefined && <Icon name={icon} class="me-2" />}
+    {text}
+    {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+</a>

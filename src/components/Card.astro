@@ -1,0 +1,10 @@
+---
+interface Props {
+    readonly class?: string;
+}
+
+const { class: className = '' }: Props = Astro.props;
+---
+<div class:list={['card', className]}>
+    <slot />
+</div>

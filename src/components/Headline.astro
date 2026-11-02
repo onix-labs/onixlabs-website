@@ -1,0 +1,23 @@
+---
+// The page's first Headline is its <h1>; later ones are <h2> with the same display styling.
+interface Props {
+    readonly level?: 1 | 2;
+    readonly id?: string;
+    readonly class?: string;
+    readonly centered?: boolean;
+}
+
+const { level = 2, id, class: className = '', centered = false }: Props = Astro.props;
+const Tag: 'h1' | 'h2' = level === 1 ? 'h1' : 'h2';
+---
+<Tag id={id} class:list={['headline display-2 fw-bold', className, { 'text-center': centered }]}><slot /></Tag>
+
+<style>
+    .headline {
+        color: var(--site-headline);
+    }
+
+    .headline.text-white {
+        color: var(--bs-white);
+    }
+</style>

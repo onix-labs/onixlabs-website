@@ -1,0 +1,19 @@
+---
+// Inlines a Font Awesome Free SVG from src/icons (CC BY 4.0, attribution kept in each file).
+// Icons are decorative: the element that contains one must carry its own accessible name.
+interface Props {
+    readonly name: string;
+    readonly class?: string;
+}
+
+const icons: Record<string, string> = import.meta.glob<string>('../icons/*.svg', { query: '?raw', import: 'default', eager: true });
+const { name, class: className = '' }: Props = Astro.props;
+const svg: string | undefined = icons[`../icons/${name}.svg`];
+
+if (svg === undefined) {
+    throw new Error(`Unknown icon "${name}". Add ${name}.svg to src/icons.`);
+}
+
+const markup: string = svg.replace('<svg ', `<svg class="icon ${className}" aria-hidden="true" focusable="false" fill="currentColor" `);
+---
+<Fragment set:html={markup} />

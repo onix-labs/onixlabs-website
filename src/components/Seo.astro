@@ -1,0 +1,68 @@
+---
+import { site } from '../config/site';
+import { buildBreadcrumbList } from '../seo/build-breadcrumb-list';
+import { buildJsonLdGraph } from '../seo/build-json-ld-graph';
+import { buildOrganization } from '../seo/build-organization';
+import { buildWebsite } from '../seo/build-website';
+import { formatPageTitle } from '../seo/format-page-title';
+import { PageType } from '../seo/page-type';
+import { toAbsoluteUrl } from '../seo/to-absolute-url';
+import type { Breadcrumb } from '../seo/breadcrumb';
+import type { JsonLdObject } from '../seo/json-ld-object';
+
+interface Props {
+    readonly title: string;
+    readonly description: string;
+    readonly path: string;
+    readonly type?: PageType;
+    readonly image?: string;
+    readonly imageAlt?: string;
+    readonly noindex?: boolean;
+    readonly breadcrumbs?: ReadonlyArray<Breadcrumb>;
+    readonly structuredData?: ReadonlyArray<JsonLdObject>;
+}
+
+const {
+    title,
+    description,
+    path,
+    type = PageType.Website,
+    image = site.defaultImage,
+    imageAlt = site.defaultImageAlt,
+    noindex = false,
+    breadcrumbs = [],
+    structuredData = [],
+}: Props = Astro.props;
+
+const fullTitle: string = formatPageTitle(title, site.name);
+const canonicalUrl: string = toAbsoluteUrl(path, site.url);
+const imageUrl: string = toAbsoluteUrl(image, site.url);
+const graph: ReadonlyArray<JsonLdObject> = [
+    buildOrganization(site),
+    buildWebsite(site),
+    ...(breadcrumbs.length > 1 ? [buildBreadcrumbList(breadcrumbs, site.url)] : []),
+    ...structuredData,
+];
+---
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={imageAlt} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={site.twitterHandle} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+<script type="application/ld+json" is:inline set:html={buildJsonLdGraph(graph)} />

@@ -1,0 +1,19 @@
+---
+import ThemeImage from './ThemeImage.astro';
+
+// The icon is decorative (alt=""), because the title beneath it already names the tile.
+interface Props {
+    readonly title: string;
+    readonly light: string;
+    readonly dark: string;
+    readonly columns: 3 | 4;
+}
+
+const { title, light, dark, columns }: Props = Astro.props;
+const columnClass: string = columns === 3 ? 'col-12 col-md-4 mt-5' : 'col-12 col-md-6 col-lg-3 mt-5';
+---
+<div class={columnClass}>
+    <ThemeImage class="w-50 h-auto" light={light} dark={dark} alt="" width={128} height={128} />
+    <h3 class="h5 fw-normal mt-2">{title}</h3>
+    <p class="text-body-secondary mb-0"><slot /></p>
+</div>
