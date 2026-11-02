@@ -1,0 +1,32 @@
+import type { SitePage } from './site-page';
+
+// Every URL the Blazor site served (except /Tools, which is moving to its own site). They must keep working.
+export const sitePages: ReadonlyArray<SitePage> = [
+    { path: '/', title: 'ONIXLabs | Enterprise Software Engineering for .NET, Kotlin & Corda' },
+    { path: '/Products', title: 'Products | ONIXLabs' },
+    { path: '/Products/Aero', title: 'Aero: The Modular .NET Suite for Enterprise Engineering | ONIXLabs' },
+    { path: '/Products/DotNet/Core', title: 'Core Library for .NET | ONIXLabs' },
+    { path: '/Products/DotNet/Numerics', title: 'Numerics Library for .NET | ONIXLabs' },
+    { path: '/Products/DotNet/Security', title: 'Security Library for .NET | ONIXLabs' },
+    { path: '/Products/Corda/Core', title: 'Corda Core Library | ONIXLabs' },
+    { path: '/Products/Corda/Identity-Framework', title: 'Corda Identity Framework | ONIXLabs' },
+    { path: '/Products/Corda/Business-Network-Management-System', title: 'Corda BNMS | ONIXLabs' },
+    { path: '/Products/Kotlin/Core', title: 'Kotlin Core Library | ONIXLabs' },
+    { path: '/Products/Kotlin/Projection', title: 'Kotlin Projection Library | ONIXLabs' },
+    { path: '/Products/Kotlin/Validation', title: 'Kotlin Validation Library | ONIXLabs' },
+    { path: '/Consulting', title: 'Software Engineering Consulting | ONIXLabs' },
+    { path: '/Contact', title: 'Contact | ONIXLabs' },
+    { path: '/Documentation', title: 'Documentation | ONIXLabs' },
+    { path: '/Documentation/Aero/Introduction-To-Aero', title: 'Introduction to Aero | ONIXLabs' },
+    { path: '/Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste', title: 'Syntactic Sugar, Bitter Aftertaste | ONIXLabs' },
+    { path: '/Documentation/CSharp/Underscore-Overkill', title: 'Underscore, Overkill | ONIXLabs' },
+    { path: '/Documentation/Corda/Flow-Design-Guidelines-1', title: 'Flow Design Guidelines - Part 1 | ONIXLabs' },
+    { path: '/Documentation/Corda/Flow-Design-Guidelines-2', title: 'Flow Design Guidelines - Part 2 | ONIXLabs' },
+    { path: '/Documentation/Corda/Flow-Design-Guidelines-3', title: 'Flow Design Guidelines - Part 3 | ONIXLabs' },
+    { path: '/Documentation/Corda/Relational-Data-And-Pointers', title: 'Relational Data & Pointers | ONIXLabs' },
+    { path: '/Documentation/Number-Theory/The-Problem-With-Decimals', title: 'The Problem with Decimals | ONIXLabs' },
+    { path: '/Contributors/Matthew-Layton', title: 'Matthew Layton, Founder & Architect | ONIXLabs' },
+    { path: '/Contributors/Laura-Perez-Crespo', title: 'Laura Pérez Crespo, Software Engineer | ONIXLabs' },
+    { path: '/Contributors/Adam-Dry', title: 'Adam Dry, Integration Specialist | ONIXLabs' },
+    { path: '/Contributors/Ryan-Gledhill', title: 'Ryan Gledhill, Strategic Advisor | ONIXLabs' },
+];

@@ -1,4 +1,4 @@
-# Technologies shown on the home page, in display order.
+# Technologies shown on the home page. They are displayed in alphabetical order of id.
 - id: angular
   title: "Angular"
   image: /onixlabs/images/icons/technology/angular.svg
@@ -19,7 +19,7 @@
   title: "Docker"
   image: /onixlabs/images/icons/technology/docker.svg
   url: https://www.docker.com/
-- id: net
+- id: dotnet
   title: ".NET"
   image: /onixlabs/images/icons/technology/dotnet.svg
   url: https://dotnet.microsoft.com/en-us/

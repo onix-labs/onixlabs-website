@@ -5,13 +5,13 @@ import Icon from './Icon.astro';
 
 const currentYear: number = new Date().getFullYear();
 ---
-<footer class="site-footer text-white-50">
+<footer class="site-footer">
     <div class="d-flex flex-row align-items-center container py-3">
         <p class="small mb-0">&copy; {site.name} {site.foundingYear}&mdash;{currentYear}</p>
         <ul class="list-unstyled d-flex mb-0 ms-auto">
             {site.socialLinks.filter((link: SocialLink): boolean => link.isInFooter).map((link: SocialLink) => (
                 <li>
-                    <a class="btn btn-link text-white-50" href={link.url} target="_blank" rel="noopener noreferrer">
+                    <a class="btn btn-link" href={link.url} target="_blank" rel="noopener noreferrer">
                         <Icon name={link.icon} />
                         <span class="visually-hidden">{site.name} on {link.name} (opens in a new tab)</span>
                     </a>

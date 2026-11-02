@@ -16,7 +16,9 @@ import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/stars.css';
 
-const technologies: CollectionEntry<'technologies'>[] = await getCollection('technologies');
+const technologies: ReadonlyArray<CollectionEntry<'technologies'>> = (await getCollection('technologies')).toSorted(
+    (left: CollectionEntry<'technologies'>, right: CollectionEntry<'technologies'>): number => left.id.localeCompare(right.id),
+);
 const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
 ---
 <BaseLayout title="ONIXLabs | Enterprise Software Engineering for .NET, Kotlin & Corda" description={site.description} path="/">

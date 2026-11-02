@@ -14,6 +14,12 @@
 
     --site-markdown-border: var(--bs-gray-400);
     --site-markdown-quote: rgba(0, 0, 0, 0.04);
+
+    /* Bootstrap's default link blue is 3.8:1 on the grey page background; this shade clears WCAG AA. */
+    --bs-link-color: #0a58ca;
+    --bs-link-color-rgb: 10, 88, 202;
+    --bs-link-hover-color: #084298;
+    --bs-link-hover-color-rgb: 8, 66, 152;
 }
 
 [data-bs-theme="dark"]:root {
@@ -114,8 +120,11 @@ html, body {
     display: none !important;
 }
 
-.markdown-content {
-    text-align: justify;
+/* Justified text opens wide gaps between words on narrow screens, so only justify on larger ones. */
+@media (min-width: 992px) {
+    .markdown-content > p {
+        text-align: justify;
+    }
 }
 
 .markdown-content h1,
@@ -173,7 +182,8 @@ html, body {
 }
 
 .markdown-content a {
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
 }
 
 /* These styles are used by the documentation and tools views */
@@ -248,6 +258,16 @@ main:focus {
 
 .site-footer {
     background-color: var(--site-footer-bg);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.site-footer a {
+    color: inherit;
+}
+
+/* The secondary outline button's text is below 4.5:1 on the subtle grey sections. */
+.btn-outline-secondary {
+    --bs-btn-color: var(--bs-secondary-text-emphasis);
 }
 
 .icon {

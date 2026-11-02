@@ -5,6 +5,7 @@ import rehypeExternalLinks from 'rehype-external-links';
 
 import { site } from './src/config/site';
 import { rehypeBootstrapTables } from './src/markdown/rehype-bootstrap-tables';
+import { rehypeFocusableCodeBlocks } from './src/markdown/rehype-focusable-code-blocks';
 
 // URLs keep the PascalCase, extension-less paths of the Blazor site (e.g. /Products/DotNet/Core).
 // `build.format: 'file'` emits /Products/DotNet/Core.html, which GitHub Pages serves at the extension-less path
@@ -28,6 +29,7 @@ export default defineConfig({
         processor: unified({
             rehypePlugins: [
                 rehypeBootstrapTables,
+                rehypeFocusableCodeBlocks,
                 [rehypeExternalLinks, {
                     target: '_blank',
                     rel: ['noopener', 'noreferrer'],
