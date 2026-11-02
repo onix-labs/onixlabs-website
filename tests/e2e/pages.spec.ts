@@ -3,11 +3,12 @@ import type { BrowserContext, ConsoleMessage, Page, Response } from '@playwright
 import { serveDist } from './support/serve-dist';
 import { sitePages } from './support/site-pages';
 import type { SitePage } from './support/site-page';
+import type { TestArguments } from './support/test-arguments';
 import { expect, test } from './support/test';
 
 for (const sitePage of sitePages) {
     test.describe(sitePage.path, (): void => {
-        test('serves the full content without JavaScript errors or CSP violations', async ({ page }): Promise<void> => {
+        test('serves the full content without JavaScript errors or CSP violations', async ({ page }: TestArguments): Promise<void> => {
             const problems: string[] = [];
             page.on('console', (message: ConsoleMessage): void => {
                 if (message.type() === 'error') {
@@ -27,7 +28,7 @@ for (const sitePage of sitePages) {
             expect(problems).toEqual([]);
         });
 
-        test('declares canonical, description and social metadata', async ({ page }): Promise<void> => {
+        test('declares canonical, description and social metadata', async ({ page }: TestArguments): Promise<void> => {
             await page.goto(sitePage.path);
 
             const expectedUrl: string = `https://www.onixlabs.io${sitePage.path}`;
@@ -41,7 +42,7 @@ for (const sitePage of sitePages) {
             expect((): unknown => JSON.parse(structuredData ?? '')).not.toThrow();
         });
 
-        test('renders its content in the HTML without running JavaScript', async ({ browser }): Promise<void> => {
+        test('renders its content in the HTML without running JavaScript', async ({ browser }: TestArguments): Promise<void> => {
             const context: BrowserContext = await browser.newContext({ javaScriptEnabled: false });
             await serveDist(context);
             const page: Page = await context.newPage();
@@ -56,7 +57,7 @@ for (const sitePage of sitePages) {
     });
 }
 
-test('unknown URLs get the 404 page, marked noindex', async ({ page }): Promise<void> => {
+test('unknown URLs get the 404 page, marked noindex', async ({ page }: TestArguments): Promise<void> => {
     const response: Response | null = await page.goto('/Tools/Hash-Generator');
 
     expect(response?.status()).toBe(404);
@@ -64,7 +65,7 @@ test('unknown URLs get the 404 page, marked noindex', async ({ page }): Promise<
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
 });
 
-test('every internal link points at a page that exists', async ({ page }): Promise<void> => {
+test('every internal link points at a page that exists', async ({ page }: TestArguments): Promise<void> => {
     const paths: Set<string> = new Set<string>();
 
     for (const sitePage of sitePages) {

@@ -10,7 +10,7 @@ export function rehypeBootstrapTables(): (tree: Root) => void {
                 return;
             }
 
-            node.properties['className'] = ['table'];
+            node.properties.className = ['table'];
             const wrapper: Element = {
                 type: 'element',
                 tagName: 'div',

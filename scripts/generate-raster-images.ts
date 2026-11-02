@@ -31,7 +31,7 @@ async function embedsBitmap(filePath: string): Promise<boolean> {
 async function render(source: string, width: number): Promise<void> {
     const destination: string = source.replace(/\.svg$/, '.webp');
     await sharp(source, { limitInputPixels: false }).resize({ width }).webp({ quality: 82, effort: 6 }).toFile(destination);
-    console.log(`${path.relative(imagesRoot, destination)} (${width}px)`);
+    console.log(`${path.relative(imagesRoot, destination)} (${String(width)}px)`);
 }
 
 async function renderTarget(target: RasterTarget): Promise<void> {

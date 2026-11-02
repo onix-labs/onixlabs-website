@@ -6,7 +6,7 @@ export function rehypeFocusableCodeBlocks(): (tree: Root) => void {
     return (tree: Root): void => {
         visit(tree, 'element', (node: Element): void => {
             if (node.tagName === 'pre') {
-                node.properties['tabIndex'] = 0;
+                node.properties.tabIndex = 0;
             }
         });
     };

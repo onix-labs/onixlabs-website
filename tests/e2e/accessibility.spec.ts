@@ -2,6 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import type { AxeResults, Result } from 'axe-core';
 
 import { sitePages } from './support/site-pages';
+import type { TestArguments } from './support/test-arguments';
 import { expect, test } from './support/test';
 
 const themes: ReadonlyArray<'light' | 'dark'> = ['light', 'dark'];
@@ -16,7 +17,7 @@ for (const theme of themes) {
         test.use({ colorScheme: theme });
 
         for (const sitePage of sitePages) {
-            test(`${sitePage.path} has no WCAG 2.2 AA violations`, async ({ page }): Promise<void> => {
+            test(`${sitePage.path} has no WCAG 2.2 AA violations`, async ({ page }: TestArguments): Promise<void> => {
                 await page.emulateMedia({ reducedMotion: 'reduce' });
                 await page.goto(sitePage.path);
                 await expect(page.locator('html')).toHaveAttribute('data-bs-theme', theme);
