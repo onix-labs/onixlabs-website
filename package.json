@@ -12,7 +12,8 @@
     "check": "astro check",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "images": "node scripts/generate-raster-images.ts && node scripts/generate-social-images.ts"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.5",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.12",
     "@axe-core/playwright": "4.14.0",
+    "@lhci/cli": "0.16.0",
     "@playwright/test": "1.64.1",
     "@types/hast": "3.0.5",
     "axe-core": "4.14.0",
