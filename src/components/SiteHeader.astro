@@ -1,6 +1,7 @@
 ---
 import { isCurrentPath } from '../config/is-current-path';
 import { navigation } from '../config/navigation';
+import { toCanonicalPath } from '../config/to-canonical-path';
 import type { NavigationItem } from '../config/navigation-item';
 import Icon from './Icon.astro';
 import ThemeImage from './ThemeImage.astro';
@@ -37,7 +38,7 @@ const currentPath: string = Astro.url.pathname;
                         const isCurrent: boolean = isCurrentPath(item, currentPath);
                         return (
                             <li class="nav-item">
-                                <a class:list={['nav-link', { active: isCurrent }]} href={item.path} aria-current={isCurrent ? 'page' : undefined}>
+                                <a class:list={['nav-link', { active: isCurrent }]} href={toCanonicalPath(item.path)} aria-current={isCurrent ? 'page' : undefined}>
                                     {item.label}
                                 </a>
                             </li>

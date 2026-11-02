@@ -1,5 +1,7 @@
 import type { BrowserContext, ConsoleMessage, Page, Response } from '@playwright/test';
 
+import { sectionPaths } from '../../src/config/section-paths';
+import { toCanonicalPath } from '../../src/config/to-canonical-path';
 import { serveDist } from './support/serve-dist';
 import { sitePages } from './support/site-pages';
 import type { SitePage } from './support/site-page';
@@ -31,7 +33,7 @@ for (const sitePage of sitePages) {
         test('declares canonical, description and social metadata', async ({ page }: TestArguments): Promise<void> => {
             await page.goto(sitePage.path);
 
-            const expectedUrl: string = `https://www.onixlabs.io${sitePage.path}`;
+            const expectedUrl: string = `https://www.onixlabs.io${toCanonicalPath(sitePage.path)}`;
             await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', expectedUrl);
             await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', expectedUrl);
             await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.{50,}/);
@@ -74,7 +76,7 @@ test('every internal link points at a page that exists', async ({ page }: TestAr
             (anchors: Element[]): string[] => anchors.map((anchor: Element): string => anchor.getAttribute('href') ?? ''),
         );
         for (const href of hrefs) {
-            paths.add(new URL(href, 'https://www.onixlabs.io').pathname);
+            paths.add(new URL(href, 'https://www.onixlabs.io').pathname.replace(/(.)\/$/, '$1'));
         }
     }
 
@@ -82,3 +84,14 @@ test('every internal link points at a page that exists', async ({ page }: TestAr
     const unknown: string[] = [...paths].filter((linkPath: string): boolean => !knownPaths.has(linkPath));
     expect(unknown).toEqual([]);
 });
+
+for (const sectionPath of sectionPaths) {
+    test(`${sectionPath} resolves with and without a trailing slash`, async ({ page }: TestArguments): Promise<void> => {
+        for (const url of [sectionPath, `${sectionPath}/`]) {
+            const response: Response | null = await page.goto(url);
+
+            expect(response?.status()).toBe(200);
+            await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.onixlabs.io${sectionPath}/`);
+        }
+    });
+}

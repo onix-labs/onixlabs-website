@@ -1,9 +1,12 @@
 import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
+import type { SitemapItem } from '@astrojs/sitemap';
 import rehypeExternalLinks from 'rehype-external-links';
 
 import { site } from './src/config/site';
+import { toCanonicalPath } from './src/config/to-canonical-path';
+import { emitSectionIndexes } from './src/integrations/emit-section-indexes';
 import { rehypeBootstrapTables } from './src/markdown/rehype-bootstrap-tables';
 import { rehypeFocusableCodeBlocks } from './src/markdown/rehype-focusable-code-blocks';
 
@@ -13,14 +16,16 @@ import { rehypeFocusableCodeBlocks } from './src/markdown/rehype-focusable-code-
 export default defineConfig({
     site: site.url,
     output: 'static',
-    trailingSlash: 'never',
+    trailingSlash: 'ignore',
     build: {
         format: 'file',
     },
     integrations: [
         sitemap({
             filter: (page: string): boolean => !page.endsWith('/404'),
+            serialize: (item: SitemapItem): SitemapItem => ({ ...item, url: new URL(toCanonicalPath(new URL(item.url).pathname), site.url).href }),
         }),
+        emitSectionIndexes(),
     ],
     markdown: {
         // Shiki emits inline styles, which the hash-based CSP below would block. The Blazor site had no

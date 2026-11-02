@@ -1,5 +1,6 @@
 ---
 import { site } from '../config/site';
+import { toCanonicalPath } from '../config/to-canonical-path';
 import { buildBreadcrumbList } from '../seo/build-breadcrumb-list';
 import { buildJsonLdGraph } from '../seo/build-json-ld-graph';
 import { buildOrganization } from '../seo/build-organization';
@@ -35,12 +36,15 @@ const {
 }: Props = Astro.props;
 
 const fullTitle: string = formatPageTitle(title, site.name);
-const canonicalUrl: string = toAbsoluteUrl(path, site.url);
+const canonicalUrl: string = toAbsoluteUrl(toCanonicalPath(path), site.url);
+const canonicalBreadcrumbs: ReadonlyArray<Breadcrumb> = breadcrumbs.map(
+    (breadcrumb: Breadcrumb): Breadcrumb => ({ name: breadcrumb.name, path: toCanonicalPath(breadcrumb.path) }),
+);
 const imageUrl: string = toAbsoluteUrl(image, site.url);
 const graph: ReadonlyArray<JsonLdObject> = [
     buildOrganization(site),
     buildWebsite(site),
-    ...(breadcrumbs.length > 1 ? [buildBreadcrumbList(breadcrumbs, site.url)] : []),
+    ...(canonicalBreadcrumbs.length > 1 ? [buildBreadcrumbList(canonicalBreadcrumbs, site.url)] : []),
     ...structuredData,
 ];
 ---
