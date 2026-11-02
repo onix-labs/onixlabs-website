@@ -1,0 +1,29 @@
+---
+import ThemeImage from './ThemeImage.astro';
+
+// The device mock-up and strapline shared by the home page, the Products index and the Aero page.
+interface Props {
+    readonly eager?: boolean;
+    readonly imageClass?: string;
+    readonly leadClass?: string;
+}
+
+const { eager = false, imageClass = '', leadClass = '' }: Props = Astro.props;
+---
+<div class="col-12 col-md-6 offset-md-3 mt-5">
+    <ThemeImage
+        class:list={['img-fluid h-auto', imageClass]}
+        light="/onixlabs/images/marketing/macbook-pro.svg"
+        dark="/onixlabs/images/marketing/macbook-pro-dark.svg"
+        alt="Aero running on a laptop (for illustration purposes only)"
+        width={4534}
+        height={2702}
+        loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : 'auto'}
+    />
+</div>
+<p class:list={['lead mt-5', leadClass]}>
+    <strong>Aero is a modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>
+    <br />
+    <span>It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.</span>
+</p>

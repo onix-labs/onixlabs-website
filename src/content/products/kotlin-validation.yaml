@@ -1,0 +1,53 @@
+family: kotlin
+order: 3
+path: /Products/Kotlin/Validation
+title: "Validation Library for Kotlin"
+shortTitle: "Validation Library"
+pageTitle: "Kotlin Validation Library"
+description: >-
+    ONIXLabs Kotlin Validation Library: a validation builder DSL with member assertions, tree-structured results and
+    collection validations.
+callout: "Consistent, type-safe validation built for real-world data."
+icon: /onixlabs/images/icons/kotlin/kotlin-validation-outline.svg
+iconAlt: "Kotlin Validation Library"
+summary: >-
+    A fluent, type-safe validation framework for Kotlin that enables clear, expressive checks across complex object
+    graphs. It supports nested rules, functional error accumulation, and reusable validators with customizable
+    messaging. Designed for minimal boilerplate and seamless domain integration, it makes enforcing business constraints
+    straightforward and maintainable.
+hook: "Not just a validator. It's the silent enforcer behind clean, dependable Kotlin code."
+repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin-validation
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin-validation
+packagesLabel: "View Maven Packages"
+sections:
+  - features:
+        - title: "Validator & Validation Builder"
+          body: >-
+              The Validator class orchestrates object validation through a builder DSL. The ValidationBuilder exposes concise
+              property, function, and allProperties entry points that bind validations to data points. Assertions can be applied
+              to any callable—including functions with up to 9 parameters—enabling flexible, expressive validation rules.
+        - title: "Member Assertion Context"
+          body: >-
+              Each member under validation operates in a scoped MemberAssertionContext, which provides DSL-style syntax for
+              expressing constraints using validate(condition, message) or nesting validations using validateWith(...). This
+              enables clear local reasoning for both leaf and nested properties in complex object graphs.
+        - title: "Tree-Structured Validation Results"
+          body: >-
+              Validation results are composed into a graph of ValidationResult and MemberResult nodes. These support deep
+              inspection of validation failures across nested models, with automatic tracking of callables, types, and locations
+              in the graph. Each assertion captures its exact position and semantics, ideal for debugging or UI feedback.
+        - title: "Assertion Semantics & Types"
+          body: >-
+              Assertions are represented by MemberAssertion, which includes a failure message, type (relative or absolute), and a
+              ValidationCondition. This allows layering of contextualized error messaging while supporting flexible validation
+              modes.
+        - title: "Validation Modes & Exception Handling"
+          body: >-
+              The engine supports multiple modes: STOP_ON_ERROR halts validation at the first failure, while EMULATION collects
+              all failures into a complete result set. Exceptions are thrown as ValidationException or ValidationGraphException,
+              and include detailed paths to the failing assertion within the graph.
+        - title: "Collection & Map Validations"
+          body: >-
+              The API includes specialized support for Iterable, Map, String, Boolean, and Comparable extensions. These offer
+              idiomatic assertions like isNullOrEmpty(), isTrue(), hasSize(...), isGreaterThan(...), and more, enabling readable,
+              type-safe validation logic across domain types.

@@ -1,0 +1,66 @@
+family: corda
+order: 1
+path: /Products/Corda/Core
+title: "Corda Core Library"
+shortTitle: "Core Library"
+pageTitle: "Corda Core Library"
+description: >-
+    ONIXLabs Corda Core Library: contract APIs, chained and hashable states, vault query and transaction DSLs, flow
+    steps and messaging workflows.
+callout: "Powerful, general-purpose APIs for Corda developers"
+icon: /onixlabs/images/icons/corda/corda-core-outline.svg
+iconAlt: "Core Library for Corda"
+summary: >-
+    Provides Corda developers with a modular toolkit of contract, workflow, and integration APIs to streamline CorDapp
+    development. Instead of a standalone app, it offers reusable abstractions, utilities, and patterns for building
+    scalable, maintainable solutions. With features like clean vault queries, transaction builders, standardized
+    signing, and modular Gradle support, it reduces boilerplate and enforces consistency. Clear structure and seamless
+    integration make it easy to adopt across projects.
+hook: >-
+    Signed and maintained by ONIXLabs, it’s the trusted foundation for building serious, production-grade CorDapps.
+repositoryUrl: https://github.com/onix-labs/onixlabs-corda-core
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-corda-core
+packagesLabel: "View Maven Packages"
+sections:
+  - features:
+        - title: "Contract APIs"
+          body: |-
+              Implementing ContractID automates and standardizes how contract identifiers are generated and managed, eliminating boilerplate and reducing future refactoring. It ensures every contract has a deterministic and idiomatic ID from day one.
+
+              Corda's flows often require explicit verification of who initiated a transaction, which isn’t always straightforward in a decentralized context. To solve this, the library introduces SignatureData and SignedCommandData, enforcing that each command be signed by its originator before a counterparty can endorse the transaction. This mechanism strengthens authorization guarantees and provides clear attribution of transaction intent.
+        - title: "Enhanced State Types"
+          body: |-
+              Chained States create a cryptographic sequence of state transitions, preventing splits, merges, or duplicates and preserving a verifiable linear history.
+
+              Hashable States emit unique hashes at each transition to guarantee tamper-proof uniqueness and allow integrity verification without exposing underlying data.
+
+              Resolvable States enhance Corda's pointer model by enabling expressive relationships—one-to-one, one-to-many, or many-to-many. This empowers developers to model complex state relations with minimal code.
+        - title: "Vault Adapters"
+          body: >-
+              Vault access via CordaRPCOps and ServiceHub often varies subtly, leading to inconsistent implementations. ONIXLabs
+              Vault Adapters abstract these differences behind a cohesive interface for consistent and predictable vault queries.
+        - title: "Vault Query DSL"
+          body: >-
+              Pairing vault adapters with the expressive Vault Query DSL brings Corda's vault querying in line with idiomatic
+              Kotlin. Use familiar operators, such as where, filter, and map to write clear and extensible queries, improving
+              readability and reducing complexity.
+        - title: "Transaction DSL"
+          body: >-
+              The Transaction Builder DSL provides a clean, structured approach to constructing ledger transactions—grouping
+              inputs, outputs, commands, and signatures logically by intent. This enhances clarity and maintainability in flow
+              development.
+        - title: "Flow Steps"
+          body: >-
+              Complemented by reusable Flow Step utilities, the library standardizes tasks like session initiation, subflow
+              invocation, and error handling. These helpers eliminate boilerplate and simplify workflow logic for faster
+              development.
+        - title: "Messaging Workflows"
+          body: >-
+              The low-level messaging API enables reliable inter-node communication with built-in acknowledgement support. It also
+              simplifies distributing vault transaction notifications to counterparties, ensuring consistent and traceable
+              workflows.
+        - title: "Extensions"
+          body: >-
+              Powered by a rich collection of extension methods, covering transactions, key and flow management, signed
+              transactions, builders, and more, this library wraps common tasks into expressive, reusable functions that elevate
+              productivity and reduce errors.

@@ -1,0 +1,17 @@
+---
+import Callout from '../components/Callout.astro';
+import Headline from '../components/Headline.astro';
+import Section from '../components/Section.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page Not Found" description="The page you were looking for doesn't exist on the ONIXLabs website. Head back to the home page to keep exploring." path="/404" noindex>
+    <Section centered>
+        <Headline level={1}>Yikes!</Headline>
+        <Callout>Pretend you didn't see this.</Callout>
+        <p class="lead mt-5">
+            You’ve reached a page that doesn’t exist. It’s kind of like Narnia, but with fewer talking animals and more disappointment.
+            <br />Unless of course, you were looking for a whole lot of nothing, in which case...jackpot!
+        </p>
+        <a class="btn btn-lg btn-secondary mt-5 p-4" href="/">Begin a New Adventure</a>
+    </Section>
+</BaseLayout>

@@ -1,0 +1,73 @@
+family: corda
+order: 2
+path: /Products/Corda/Identity-Framework
+title: "Corda Identity Framework"
+shortTitle: "Identity Framework"
+pageTitle: "Corda Identity Framework"
+description: >-
+    ONIXLabs Corda Identity Framework: a claims-based identity model for Corda with claim states, claim pointers,
+    attestations and accounts.
+callout: "Secure, scalable identity management built for enterprise Corda"
+icon: /onixlabs/images/icons/corda/corda-idfx-outline.svg
+iconAlt: "Identity Framework for Corda"
+summary: >-
+    A powerful toolkit for building scalable, interoperable digital identities on Corda, supporting both individuals and
+    organizations. Inspired by W3C Verifiable Credentials, it enables secure, privacy-preserving claims through a
+    flexible hierarchy of types, including pointers and attestations. It supports evolving identity state transitions
+    while minimizing data exposure, and introduces a multi-tenant account model with APIs for vault partitioning and
+    cross-node account sharing.
+hook: >-
+    Built for modern identity on Corda, it gives developers the tools to deliver privacy-first, standards-aligned
+    identity systems with ease.
+repositoryUrl: https://github.com/onix-labs/onixlabs-corda-identity-framework
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-corda-identity-framework
+packagesLabel: "View Maven Packages"
+sections:
+  - heading: "Claims-Based Identity Model"
+    paragraphs:
+        - >-
+            A robust, claims-first identity framework tailored for Corda. A claim asserts a relationship in the form of a
+            subject-property/value; for example, an individual's role, organizational affiliation, or asset ownership. This
+            model delivers:
+    bullets:
+        - "Decentralized, self-controlled assertions."
+        - "Scalable, cohesive identity structures."
+        - "Enhanced resistance to forgery and impersonation."
+        - "Elimination of monolithic data repositories."
+        - "Minimal data disclosure for privacy."
+        - "Support for zero-knowledge workflows."
+        - "Data that remains secure, even if compromised."
+    closingParagraphs:
+        - >-
+            Claims in ONIXLabs Corda Identity Framework are modeled via an extensible type hierarchy, ready for immediate use,
+            yet flexible enough for custom claim types and domain-specific extensions.
+    features:
+        - title: "Claim States"
+          body: >-
+              Claim States represent assertions recorded on the ledger and shared between an issuer and holder, or self-issued
+              when both roles coincide. State values can evolve over time, and claims support selective distribution, ensuring
+              privacy through controlled disclosure.
+        - title: "Claim Pointers"
+          body: >-
+              Claim Pointers are lightweight claims that reference other claims without exposing the full data. They come in two
+              forms. Linear pointers always reference the latest version of a claim, whereas static pointers lock to a specific
+              historical version.
+        - title: "Attestations"
+          body: >-
+              Attestations serve as verifiable proofs that a state or claim has been reviewed; either validated or rejected.
+              Importantly, recipients can rely on the attestation's validity without seeing the underlying claim, enabling
+              privacy-preserving trust.
+        - title: "Accounts"
+          body: >-
+              The framework also supports a Corda-native account model, allowing ledger states to be segmented by account instead
+              of by node alone. Using AccountParty, this feature helps teams manage multi-tenant or identity-scoped workflows
+              within and across nodes.
+        - title: "Identity Workflows"
+          body: >-
+              Pre-built, end-to-end flows simplify working with identity constructs; issuing, amending, revoking, and publishing
+              claims, attestations, and accounts, so developers can integrate identity logic with minimal overhead.
+        - title: "Extension Services"
+          body: >-
+              Seamlessly integrate identity operations via CordaRPCOps with dedicated services for Claims, Attestations, and
+              Accounts. These services wrap complex workflows into intuitive, RPC-accessible APIs, enabling faster development and
+              operational clarity.

@@ -1,0 +1,149 @@
+# Aero platform content for /Products/Aero. Separate paragraphs in a body with a blank line.
+aero:
+  principles:
+    - title: Built for Acceleration
+      light: /onixlabs/images/icons/glass/rocket.svg
+      dark: /onixlabs/images/icons/glass/rocket-dark.svg
+      body: Get up and running in minutes, not months. Aero provides essential infrastructure, right out of the box.
+    - title: Modular by Design
+      light: /onixlabs/images/icons/glass/stack.svg
+      dark: /onixlabs/images/icons/glass/stack-dark.svg
+      body: Pick and choose the features you need. Everything is built around dependency injection for seamless, flexible
+        integration.
+    - title: Enterprise-Grade Foundations
+      light: /onixlabs/images/icons/glass/buildings.svg
+      dark: /onixlabs/images/icons/glass/buildings-dark.svg
+      body: Scalable, performant, and production-ready. Aero handles the heavy lifting so you can focus on your core domain.
+    - title: Modern and Legacy Friendly
+      light: /onixlabs/images/icons/glass/lambda.svg
+      dark: /onixlabs/images/icons/glass/lambda-dark.svg
+      body: Support for synchronous and asynchronous APIs means Aero plays nicely with both cutting-edge and established
+        systems.
+    - title: Security, Sorted
+      light: /onixlabs/images/icons/glass/shield-alt.svg
+      dark: /onixlabs/images/icons/glass/shield-alt-dark.svg
+      body: Built-in support for data privacy, integrity, secrets management, and digital signing using Hashicorp Vault.
+    - title: Observability First
+      light: /onixlabs/images/icons/glass/telemetry.svg
+      dark: /onixlabs/images/icons/glass/telemetry-dark.svg
+      body: Robust logging and telemetry tools included, so you can understand, debug, and optimize with confidence.
+  architecture:
+    - title: API-First Design
+      body: >-
+        Aero is built with a strict API-first philosophy. Every module defines a clean, public-facing contract that
+        exposes only what developers need; no internal clutter or implementation leakage. By hiding implementations
+        behind dependency injection, Aero ensures consistent separation of concerns, enforces modular design, and makes
+        swapping or mocking implementations effortless.
+
+
+        Where appropriate, Aero offers both synchronous and asynchronous APIs. This duality makes Aero uniquely
+        versatile: it integrates seamlessly with legacy codebases that rely on synchronous patterns, while also
+        embracing modern, non-blocking async workflows. Whether you’re modernizing existing systems or starting fresh,
+        Aero adapts to your architecture, not the other way around.
+    - title: Error Handling
+      body: >-
+        Aero standardizes error handling through the use of rich result types like Result and Optional. These
+        abstractions eliminate the ambiguity of exceptions-as-control-flow and make error states explicit in method
+        signatures, improving clarity and reducing unexpected failures.
+
+
+        Beyond just return types, Aero defines a consistent pattern for error identification, including structured error
+        types, names, and codes. Every failure scenario is catalogued and easy to trace, making debugging faster, more
+        reliable, and less dependent on guesswork or logs.
+
+
+        By embracing these patterns across its APIs, Aero encourages a functional, explicit, and predictable approach to
+        error handling, particularly valuable in complex or distributed systems where clarity and consistency are
+        critical.
+    - title: Logging
+      body: >-
+        Logging in Aero is built on the Microsoft Logging APIs and enhanced through ILogService<T> and
+        ILogServiceFactory. Every meaningful action in Aero is logged, offering deep insight into application behavior
+        with minimal developer effort.
+
+
+        This baked-in observability means faster debugging, clearer traceability, and operational transparency by
+        default; critical for production systems at scale.
+    - title: Configuration
+      body: >-
+        Aero integrates with Microsoft's Configuration APIs to support JSON files, in-memory settings, and
+        environment-based overrides. Every Aero module is configurable by design, meaning no hidden behavior and no need
+        for custom plumbing.
+
+
+        You get consistent, centralized control over runtime behavior; across services, environments, and teams.
+    - title: Data Access
+      body: >-
+        Aero offers a powerful, granular API for working with data. It embraces the repository pattern, supports
+        fine-grained roles (like read-only or write-only access), and enables unit-of-work coordination and
+        transactional workflows.
+
+
+        A production-ready Entity Framework implementation is included, giving teams a modern and familiar ORM
+        experience with best-practice abstractions on top.
+    - title: Serialization
+      body: >-
+        Serialization in Aero is simple, fast, and extensible. It includes support for JSON via .NET's built-in
+        libraries and high-performance binary serialization via MessagePack.
+
+
+        Whether you're storing data, communicating between services, or caching responses, Aero's serialization API
+        gives you consistent, pluggable control over data formats.
+    - title: Key and Secrets Management
+      body: >-
+        Aero provides robust APIs for both key and secrets management, offering a consistent and secure approach to
+        handling sensitive material across environments. Both systems support lightweight, in-memory implementations for
+        development and testing, enabling rapid iteration without complex setup.
+
+
+        For production, Aero integrates seamlessly with HashiCorp Vault to ensure strong security and centralized
+        control. Secrets, such as API keys, credentials, and tokens can be securely stored and retrieved. Cryptographic
+        keys, including ECDSA, are managed through Vault-backed implementations, with operations such as signing
+        performed entirely within the Vault for maximum security.
+
+
+        These abstractions decouple security concerns from application logic, making it easier to build maintainable,
+        auditable, and secure systems without sacrificing development speed or operational control.
+    - title: Digital Signing
+      body: >-
+        Digital signatures are a first-class capability in Aero, supported through a dedicated signing API designed for
+        both flexibility and security. The API allows developers to generate cryptographic signatures using trusted key
+        sources, including in-memory keys for local development and secure, Vault-managed keys for production
+        environments.
+
+
+        In production, Aero integrates with HashiCorp Vault to ensure private keys remain fully isolated. Signatures are
+        generated inside the Vault itself, meaning sensitive key material never leaves the secure boundary, protecting
+        against leaks, misuse, or unauthorized access.
+
+
+        This design enables strong guarantees of authenticity and integrity for digital documents, transactions, and
+        inter-service communication, while keeping signing workflows cleanly abstracted from application logic. Whether
+        you're building document verification systems, audit trails, or cryptographically verified services, Aero
+        provides a secure and consistent foundation.
+    - title: Ledger Infrastructure
+      body: >-
+        Aero introduces a world-first UTXO ledger, purpose-built for the .NET ecosystem. Unlike blockchain
+        implementations, Aero’s ledger is designed for centralized environments where trust and control are managed
+        internally, but data integrity and auditability remain critical.
+
+
+        At its core, the ledger maintains immutable state transitions using the Unspent Transaction Output (UTXO) model.
+        This ensures every transaction leaves a verifiable, tamper-proof trail of data, ideal for systems that demand
+        accountability, such as financial services, regulatory reporting, or digital governance. The infrastructure is
+        modular, secure, and ready for production-grade applications.
+    - title: Ledger Programming Models
+      body: >-
+        To meet a variety of use cases, Aero provides two distinct programming models for interacting with the ledger.
+        The general-purpose model gives developers full control over smart contract logic, enabling advanced,
+        domain-specific rules and state validations. This model is ideal for complex workflows, such as asset management
+        or financial settlements.
+
+
+        For simpler needs, Aero offers a streamlined model specifically designed for document-centric applications. This
+        includes built-in patterns for digital document lifecycle management, signing, state changes, and provenance
+        tracking, without the overhead of building a contract system from scratch.
+
+
+        Together, these models make the Aero ledger both powerful and approachable, supporting everything from
+        enterprise workflow automation to secure digital records.

@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import Card from './Card.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+    readonly contributor: CollectionEntry<'contributors'>;
+}
+
+const { contributor }: Props = Astro.props;
+const { name, jobTitle, teaser, photo, path, gitHubUrl, linkedInUrl }: CollectionEntry<'contributors'>['data'] = contributor.data;
+---
+<div class="d-flex flex-column col-12 col-md-6 col-lg-3 mt-5">
+    <Card class="contributor-card d-flex flex-column flex-fill rounded-4 p-2">
+        <img class="rounded-2 w-100 h-auto" src={photo} alt={`Portrait of ${name}`} width={640} height={640} loading="lazy" decoding="async" />
+        <div class="d-flex flex-column flex-fill text-start mt-3">
+            <h3 class="h4 mb-1">{name}</h3>
+            <p class="h6 text-body-secondary">{jobTitle}</p>
+            <p class="text-secondary-emphasis flex-fill">{teaser}</p>
+        </div>
+        <div class="btn-group w-100" role="group" aria-label={`Links for ${name}`}>
+            <a class="btn btn-secondary" href={path}>
+                <Icon name="square-plus" />
+                <span class="visually-hidden">Read {name}'s biography</span>
+            </a>
+            <a class="btn btn-dark" href={gitHubUrl} target="_blank" rel="noopener noreferrer">
+                <Icon name="square-github" />
+                <span class="visually-hidden">{name} on GitHub (opens in a new tab)</span>
+            </a>
+            <a class="btn btn-primary" href={linkedInUrl} target="_blank" rel="noopener noreferrer">
+                <Icon name="linkedin" />
+                <span class="visually-hidden">{name} on LinkedIn (opens in a new tab)</span>
+            </a>
+        </div>
+    </Card>
+</div>
+
+<style>
+    .contributor-card {
+        padding-bottom: calc(0.5rem + 0.0625rem) !important;
+    }
+</style>

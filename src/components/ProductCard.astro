@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    readonly product: CollectionEntry<'products'>;
+    readonly headingLevel?: 'h3' | 'h4';
+}
+
+const { product, headingLevel = 'h3' }: Props = Astro.props;
+const Heading: 'h3' | 'h4' = headingLevel;
+---
+<div class="row align-items-center">
+    <div class="col-12 col-sm-6 offset-sm-3 col-lg-4 offset-lg-0">
+        <img class="img-fluid" src={product.data.icon} alt="" width={400} height={400} loading="lazy" decoding="async" />
+    </div>
+    <div class="col-12 col-lg-8">
+        <Heading class="h1 fw-semibold">{product.data.shortTitle}</Heading>
+        <p class="lead">{product.data.hook}</p>
+        <p class="lead text-on-gradient-muted">{product.data.overview ?? product.data.summary}</p>
+        <a class="btn btn-lg btn-outline-light mt-3" href={product.data.path}>
+            Find out More<span class="visually-hidden"> about the {product.data.title}</span>
+        </a>
+    </div>
+</div>

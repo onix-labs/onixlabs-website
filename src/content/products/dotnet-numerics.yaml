@@ -1,0 +1,44 @@
+family: dotnet
+order: 2
+path: /Products/DotNet/Numerics
+title: ".NET Numerics Library"
+shortTitle: "Numerics Library"
+pageTitle: "Numerics Library for .NET"
+description: >-
+    ONIXLabs Numerics Library for .NET: arbitrary-precision BigDecimal, NumberInfo, culture-aware formatting and generic
+    math utilities.
+callout: "Enhanced math and arithmetic for .NET applications"
+icon: /onixlabs/images/icons/dotnet/dotnet-numerics-outline.svg
+iconAlt: "Numerics Library for .NET"
+summary: >-
+    Extends .NET's generic math with powerful tools for precision, formatting, and numeric analysis. Features include an
+    arbitrary-precision BigDecimal, culture-aware formatting, and a NumberInfo struct that reveals the inner workings of
+    any number; significand, exponent, scale, and more. It also adds smart extensions like Pow10 and SetScale for
+    fine-grained decimal control.
+hook: >-
+    Designed for flexibility and accuracy, the Numerics library empowers developers to reliably work with numbers in
+    scientific, financial, or engineering contexts.
+repositoryUrl: https://github.com/onix-labs/onixlabs-dotnet
+packagesUrl: https://www.nuget.org/packages?q=OnixLabs.Numerics
+packagesLabel: "View NuGet Packages"
+sections:
+  - features:
+        - title: "BigDecimal"
+          body: >-
+              The BigDecimal struct delivers arbitrary‑precision, base‑10 decimal arithmetic while implementing IFloatingPoint<T>.
+              This means your numeric logic integrates seamlessly with .NET's generic math ecosystem, without sacrificing
+              accuracy. Ideal for financial calculations, scientific models, and anywhere decimal exactness matters.
+        - title: "NumberInfo"
+          body: >-
+              The NumberInfo struct decomposes numbers into their core components; including unscaled value, scale, exponent,
+              precision, and sign. With built-in parsing and formatting, it's the ideal foundation for custom numeric types and
+              data analysis scenarios.
+        - title: "Generic Math Utilities"
+          body: >-
+              Extend .NET's generic math support with powerful helpers like Delta, Factorial, IntegerLength, MinMax, and Pow10.
+              These utilities simplify complex numeric operations across data types with reusable, type-safe methods.
+        - title: "Numeric Extensions"
+          body: >-
+              A comprehensive suite of extension methods enhances numeric workflows. Convert numbers to BigInteger, BigDecimal, or
+              NumberInfo, extract unscaled values, adjust decimal scales, and more. These helpers make complex transformations
+              feel intuitive and coding more expressive.

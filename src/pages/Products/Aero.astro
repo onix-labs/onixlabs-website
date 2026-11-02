@@ -1,0 +1,112 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import ActionButton from '../../components/ActionButton.astro';
+import ActionButtons from '../../components/ActionButtons.astro';
+import AeroPromotion from '../../components/AeroPromotion.astro';
+import Callout from '../../components/Callout.astro';
+import FeatureSummary from '../../components/FeatureSummary.astro';
+import Headline from '../../components/Headline.astro';
+import Section from '../../components/Section.astro';
+import ThemeImage from '../../components/ThemeImage.astro';
+import Tile from '../../components/Tile.astro';
+import { site } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type AeroData = CollectionEntry<'aero'>['data'];
+
+const entry: CollectionEntry<'aero'> | undefined = await getEntry('aero', 'aero');
+
+if (entry === undefined) {
+    throw new Error('src/content/aero.yaml must define an `aero` entry.');
+}
+
+const aero: AeroData = entry.data;
+---
+<BaseLayout
+    title="Aero: The Modular .NET Suite for Enterprise Engineering"
+    description="Aero is a modular suite of .NET APIs for fast, scalable enterprise engineering: logging, configuration, data access, secrets, signing and ledgers."
+    path="/Products/Aero"
+    breadcrumbs={[
+        { name: 'Home', path: '/' },
+        { name: 'Products', path: '/Products' },
+        { name: 'Aero', path: '/Products/Aero' },
+    ]}
+    structuredData={[
+        {
+            '@type': 'SoftwareApplication',
+            '@id': `${site.url}/Products/Aero#software`,
+            name: 'Aero',
+            applicationCategory: 'DeveloperApplication',
+            operatingSystem: '.NET',
+            description: 'A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.',
+            url: `${site.url}/Products/Aero`,
+            publisher: { '@id': `${site.url}/#organization` },
+        },
+    ]}
+>
+    <Section class="bg-secondary-subtle bloom" centered>
+        <h1 class="col-12 col-md-6 offset-md-3 mb-0">
+            <ThemeImage
+                class="img-fluid h-auto"
+                light="/onixlabs/images/logo/aero-dark.svg"
+                dark="/onixlabs/images/logo/aero-light.svg"
+                alt="Aero"
+                width={4000}
+                height={2000}
+                loading="eager"
+            />
+        </h1>
+        <Callout>The modular .NET suite for enterprise engineering</Callout>
+        <AeroPromotion eager />
+    </Section>
+
+    <Section centered labelledBy="founding-principles">
+        <Headline id="founding-principles">Founding Principles</Headline>
+        <Callout>Why build .NET applications with Aero</Callout>
+        <p class="lead mt-5">
+            Aero provides a rock-solid foundation for building modern .NET applications. Designed with flexibility and scalability in mind, it
+            helps teams move faster, adopt best practices by default, and build applications that are robust, maintainable, and ready for
+            growth.
+        </p>
+        <div class="row">
+            {aero.principles.map((principle: AeroData['principles'][number]) => (
+                <Tile columns={3} title={principle.title} light={principle.light} dark={principle.dark}>{principle.body}</Tile>
+            ))}
+        </div>
+    </Section>
+
+    <Section class="bg-secondary-subtle" labelledBy="aero-architecture">
+        <Headline id="aero-architecture" centered>Aero Architecture</Headline>
+        <Callout centered>The building blocks for enterprise-grade .NET applications</Callout>
+        <p class="lead mt-5 text-center">
+            Aero isn’t just another framework—it's your project's backbone. From APIs to infrastructure, each module is crafted to solve
+            real-world engineering challenges with clarity, performance, and security in mind. Whether you're launching something new or
+            evolving a legacy system, these core components give you the speed, structure, and scalability to build with confidence.
+        </p>
+        <div class="row">
+            {aero.architecture.map((module: AeroData['architecture'][number]) => (
+                <FeatureSummary title={module.title} body={module.body} />
+            ))}
+        </div>
+        <p class="lead mt-5">
+            Aero gives you more than just utilities—it gives you architecture. With thoughtfully designed APIs, production-ready integrations,
+            and deep flexibility across every layer of the stack, Aero equips .NET teams to deliver faster, scale confidently, and stay
+            maintainable from day one. This is modern enterprise development, without the drag.
+        </p>
+    </Section>
+
+    <Section centered labelledBy="aero-in-action">
+        <Headline id="aero-in-action">Aero In Action</Headline>
+        <Callout>Still curious to see what Aero can do?</Callout>
+        <p class="lead mt-5">
+            Whether you're evaluating it for your next project or just want a deeper look under the hood, we’d love to show you what Aero can
+            do. Book a product or technical demo and get a guided tour of the platform, explore real-world use cases, and ask questions tailored
+            to your team’s needs. See how Aero can accelerate your development, and transform the way you build with .NET.
+        </p>
+        <ActionButtons>
+            <ActionButton class="btn-secondary" href="/Contact?reason=aero-demo" text="Request a Demo" />
+        </ActionButtons>
+    </Section>
+</BaseLayout>

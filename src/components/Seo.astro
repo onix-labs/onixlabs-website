@@ -46,8 +46,7 @@ const graph: ReadonlyArray<JsonLdObject> = [
 ---
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonicalUrl} />
-{noindex && <meta name="robots" content="noindex, follow" />}
+{noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonicalUrl} />}
 
 <meta property="og:site_name" content={site.name} />
 <meta property="og:locale" content={site.locale} />

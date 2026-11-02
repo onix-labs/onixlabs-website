@@ -1,0 +1,69 @@
+---
+import { getEntry, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+
+import { loadArticles } from '../../../collections/load-articles';
+import { documentationCategories } from '../../../config/documentation-categories';
+import type { DocumentationCategory } from '../../../config/documentation-category';
+import { site } from '../../../config/site';
+import DocumentationLayout from '../../../layouts/DocumentationLayout.astro';
+import { buildTechArticle } from '../../../seo/build-tech-article';
+import { PageType } from '../../../seo/page-type';
+import type { JsonLdObject } from '../../../seo/json-ld-object';
+
+interface Props {
+    readonly article: CollectionEntry<'articles'>;
+}
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+    const articles: ReadonlyArray<CollectionEntry<'articles'>> = await loadArticles();
+
+    return articles.map((article: CollectionEntry<'articles'>) => {
+        const [, , category, slug]: ReadonlyArray<string | undefined> = article.data.path.split('/');
+        return { params: { category, article: slug }, props: { article } };
+    });
+}
+
+const { article }: Props = Astro.props;
+const { Content } = await render(article);
+const category: DocumentationCategory | undefined = documentationCategories.find(
+    (candidate: DocumentationCategory): boolean => candidate.id === article.data.category,
+);
+const author: CollectionEntry<'contributors'> | undefined = article.data.author === undefined ? undefined : await getEntry(article.data.author);
+const structuredData: ReadonlyArray<JsonLdObject> = [
+    buildTechArticle({
+        title: article.data.title,
+        description: article.data.description,
+        path: article.data.path,
+        section: category?.name ?? 'Documentation',
+        authorName: author?.data.name,
+        authorPath: author?.data.path,
+        published: article.data.published,
+        updated: article.data.updated,
+    }, site),
+];
+---
+<DocumentationLayout
+    title={article.data.title}
+    description={article.data.description}
+    path={article.data.path}
+    type={PageType.Article}
+    currentCategory={article.data.category}
+    breadcrumbs={[
+        { name: 'Home', path: '/' },
+        { name: 'Documentation', path: '/Documentation' },
+        { name: article.data.title, path: article.data.path },
+    ]}
+    structuredData={structuredData}
+>
+    <article class="markdown-content">
+        <header>
+            <h1>{article.data.title}</h1>
+            {author !== undefined && (
+                <p class="text-body-secondary">By <a href={author.data.path}>{author.data.name}</a></p>
+            )}
+        </header>
+        <Content />
+    </article>
+</DocumentationLayout>

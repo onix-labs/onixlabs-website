@@ -1,0 +1,131 @@
+---
+import Callout from '../components/Callout.astro';
+import Card from '../components/Card.astro';
+import Headline from '../components/Headline.astro';
+import Icon from '../components/Icon.astro';
+import Section from '../components/Section.astro';
+import ThemeImage from '../components/ThemeImage.astro';
+import { site } from '../config/site';
+import type { SocialLink } from '../config/social-link';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contactReasons } from '../scripts/contact-reasons';
+
+const reasons: ReadonlyArray<string> = [
+    'Aero Platform (General Inquiry)',
+    'Aero Platform (Book a Demo)',
+    'Product Line (.NET)',
+    'Product Line (Corda)',
+    'Product Line (Kotlin)',
+    'Consulting',
+    'Other',
+];
+const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
+
+for (const prefill of contactReasons.values()) {
+    if (!reasons.includes(prefill.reason)) {
+        throw new Error(`Contact prefill reason "${prefill.reason}" isn't one of the form's options.`);
+    }
+}
+---
+<BaseLayout
+    title="Contact"
+    description="Contact ONIXLabs about the Aero platform, our .NET, Corda and Kotlin product lines, or consulting. Send a message or book a meeting."
+    path="/Contact"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Contact', path: '/Contact' }]}
+    structuredData={[{ '@type': 'ContactPage', name: 'Contact ONIXLabs', url: `${site.url}/Contact`, about: { '@id': `${site.url}/#organization` } }]}
+>
+    <Section centered>
+        <Headline level={1}>Stay Connected</Headline>
+        <Callout>We'd love to hear from you</Callout>
+        <div class="col-12 col-md-4 offset-md-4">
+            <ThemeImage class="img-fluid h-auto" light="/onixlabs/images/icons/glass/envelope.svg" dark="/onixlabs/images/icons/glass/envelope-dark.svg" alt="" width={512} height={512} loading="eager" />
+        </div>
+        <p class="lead">
+            If you're interested in learning more about our Aero Platform, .NET, Corda, or Kotlin product lines, or if you're exploring
+            consulting opportunities, feel free to drop us a message. We're always happy to connect and help you find the right solution.
+        </p>
+
+        <div class="row mt-5">
+            <div class="col-12 col-lg-8 offset-lg-2">
+                <Card>
+                    <h2 class="card-header h6 fw-semibold text-start mb-0 py-2" id="contact-form-title">Contact Us</h2>
+                    <div class="card-body">
+                        <form class="d-flex flex-column gap-3" action={site.contactFormEndpoint} method="post" aria-labelledby="contact-form-title">
+                            <div class="form-floating">
+                                <input class="form-control" type="text" name="name" id="name" autocomplete="name" placeholder="Name" required />
+                                <label for="name">Name</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input class="form-control" type="email" name="email" id="email" autocomplete="email" placeholder="Email address" required />
+                                <label for="email">Email Address</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <select class="form-select" name="reason" id="reason" required>
+                                    <option value="" disabled selected hidden></option>
+                                    {reasons.map((reason: string) => <option>{reason}</option>)}
+                                </select>
+                                <label for="reason">Reason</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <textarea class="form-control" name="message" id="message" rows="6" placeholder="Message" required></textarea>
+                                <label for="message">Message</label>
+                            </div>
+
+                            <!-- Formspree's honeypot: real visitors never see or fill this field. -->
+                            <div class="d-none" aria-hidden="true">
+                                <label for="gotcha">Leave this field empty</label>
+                                <input type="text" name="_gotcha" id="gotcha" tabindex="-1" autocomplete="off" />
+                            </div>
+
+                            <button type="submit" class="btn btn-secondary align-self-end">
+                                <Icon name="paper-plane" />
+                                <span class="ms-2">Send Message</span>
+                            </button>
+                        </form>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    </Section>
+
+    <Section class="bg-secondary-subtle" centered labelledBy="book-a-meeting">
+        <Headline id="book-a-meeting">Book a Meeting</Headline>
+        <Callout>Let's talk, on your schedule</Callout>
+        <p class="lead mt-5">
+            Booking time with us is easy and flexible. Use our Calendly link to pick a time that works best for you — no back-and-forth emails,
+            just a straightforward way to connect. Whether it's a quick chat or a deep dive, we're here when you're ready.
+        </p>
+        <a class="btn btn-lg btn-outline-secondary p-4 px-5 mt-5" href={calendlyUrl} target="_blank" rel="noopener noreferrer">
+            <Icon name="calendar" />
+            <span class="ms-2">Book a Meeting</span>
+            <span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+    </Section>
+
+    <Section centered labelledBy="social-media">
+        <Headline id="social-media">Social Media</Headline>
+        <Callout>Follow us for updates and insights</Callout>
+        <p class="lead mt-5">
+            Stay connected with us on social media to get the latest news, product updates, and insights from our team.
+            Whether you're a developer, partner, or just curious, following us is the best way to stay in the loop.
+        </p>
+
+        <ul class="row mt-5 justify-content-center list-unstyled">
+            {site.socialLinks.map((link: SocialLink) => (
+                <li class="col-4 col-md-2 text-center">
+                    <a class="display-1 text-secondary" href={link.url} target="_blank" rel="noopener noreferrer">
+                        <Icon name={link.icon} />
+                        <span class="visually-hidden">{site.name} on {link.name} (opens in a new tab)</span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </Section>
+</BaseLayout>
+
+<script>
+    import '../scripts/contact';
+</script>

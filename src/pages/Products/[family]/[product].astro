@@ -1,0 +1,108 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+
+import { loadProducts } from '../../../collections/load-products';
+import type { ProductFeature } from '../../../collections/product-feature';
+import type { ProductSection } from '../../../collections/product-section';
+import ActionButton from '../../../components/ActionButton.astro';
+import ActionButtons from '../../../components/ActionButtons.astro';
+import Callout from '../../../components/Callout.astro';
+import FeatureSummary from '../../../components/FeatureSummary.astro';
+import Headline from '../../../components/Headline.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import Section from '../../../components/Section.astro';
+import { site } from '../../../config/site';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildSoftwareSourceCode } from '../../../seo/build-software-source-code';
+
+interface Props {
+    readonly product: CollectionEntry<'products'>;
+    readonly siblings: ReadonlyArray<CollectionEntry<'products'>>;
+}
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+    const products: ReadonlyArray<CollectionEntry<'products'>> = await loadProducts();
+
+    return products.map((product: CollectionEntry<'products'>) => {
+        const [, , family, slug]: ReadonlyArray<string | undefined> = product.data.path.split('/');
+        const siblings: ReadonlyArray<CollectionEntry<'products'>> = products.filter(
+            (candidate: CollectionEntry<'products'>): boolean => candidate.data.family.id === product.data.family.id && candidate.id !== product.id,
+        );
+        return { params: { family, product: slug }, props: { product, siblings } };
+    });
+}
+
+const { product, siblings }: Props = Astro.props;
+const family: CollectionEntry<'productFamilies'> = await getEntry(product.data.family);
+---
+<BaseLayout
+    title={product.data.pageTitle}
+    description={product.data.description}
+    path={product.data.path}
+    breadcrumbs={[
+        { name: 'Home', path: '/' },
+        { name: 'Products', path: '/Products' },
+        { name: product.data.title, path: product.data.path },
+    ]}
+    structuredData={[
+        buildSoftwareSourceCode({
+            name: product.data.title,
+            description: product.data.summary,
+            path: product.data.path,
+            repositoryUrl: product.data.repositoryUrl,
+            programmingLanguage: family.data.packageRegistry.programmingLanguage,
+            image: product.data.icon,
+        }, site),
+    ]}
+>
+    <Section class={family.data.heroBackgroundClass} centered>
+        <Headline level={1}>{product.data.title}</Headline>
+        <Callout>{product.data.callout}</Callout>
+        <div class="col-12 col-md-4 offset-md-4">
+            <img class="img-fluid" src={product.data.icon} alt={product.data.iconAlt} width={400} height={400} loading="eager" fetchpriority="high" decoding="async" />
+        </div>
+        <p class="lead">{product.data.summary}</p>
+        <ActionButtons>
+            <ActionButton class="btn-dark" icon="github" text="View GitHub Repository" href={product.data.repositoryUrl} external />
+            <ActionButton class="btn-dark" icon="box-open" text={product.data.packagesLabel} href={product.data.packagesUrl} external />
+        </ActionButtons>
+    </Section>
+
+    <Section labelledBy="capabilities">
+        <Headline id="capabilities" centered>APIs at a Glance</Headline>
+        <Callout centered>{family.data.capabilitiesCallout}</Callout>
+
+        {product.data.sections.map((section: ProductSection) => (
+            <div class="row">
+                {section.heading !== undefined && (
+                    <div class="col-12">
+                        <h3 class="h1 fw-bold mt-5">{section.heading}</h3>
+                        {section.paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+                        {section.bullets.length > 0 && (
+                            <ul>{section.bullets.map((bullet: string) => <li>{bullet}</li>)}</ul>
+                        )}
+                        {section.closingParagraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+                    </div>
+                )}
+                {section.features.map((feature: ProductFeature) => (
+                    <FeatureSummary title={feature.title} body={feature.body} headingLevel={section.heading === undefined ? 'h3' : 'h4'} />
+                ))}
+            </div>
+        ))}
+    </Section>
+
+    {siblings.length > 0 && (
+        <Section class={`${family.data.backgroundClass} text-white`} labelledBy="other-products">
+            <Headline id="other-products" class="text-white" centered>{family.data.otherProductsHeadline}</Headline>
+            <hr class="mt-5" />
+            {siblings.map((sibling: CollectionEntry<'products'>, index: number) => (
+                <Fragment>
+                    {index > 0 && <hr />}
+                    <ProductCard product={sibling} />
+                </Fragment>
+            ))}
+        </Section>
+    )}
+</BaseLayout>

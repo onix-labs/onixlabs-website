@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import { loadContributors } from '../collections/load-contributors';
+import ActionButton from '../components/ActionButton.astro';
+import ActionButtons from '../components/ActionButtons.astro';
+import AeroPromotion from '../components/AeroPromotion.astro';
+import Callout from '../components/Callout.astro';
+import ContributorCard from '../components/ContributorCard.astro';
+import Headline from '../components/Headline.astro';
+import Section from '../components/Section.astro';
+import TechnologyLogo from '../components/TechnologyLogo.astro';
+import Tile from '../components/Tile.astro';
+import { site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/stars.css';
+
+const technologies: CollectionEntry<'technologies'>[] = await getCollection('technologies');
+const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
+---
+<BaseLayout title="ONIXLabs | Enterprise Software Engineering for .NET, Kotlin & Corda" description={site.description} path="/">
+    <Section class="bloom position-relative overflow-hidden" centered>
+        <div id="stars1" aria-hidden="true"></div>
+        <div id="stars2" aria-hidden="true"></div>
+        <div id="stars3" aria-hidden="true"></div>
+        <div id="stars4" aria-hidden="true"></div>
+        <div id="stars5" aria-hidden="true"></div>
+        <div id="stars6" aria-hidden="true"></div>
+
+        <Headline level={1} class="animate__animated animate__fadeInUp">Introducing AERO</Headline>
+        <Callout class="animate__animated animate__fadeInUp">Blazing Fast &bull; Infinitely Scalable &bull; Built For Enterprise</Callout>
+        <AeroPromotion eager imageClass="animate__animated animate__fluent" leadClass="animate__animated animate__fadeInDown" />
+        <ActionButtons>
+            <ActionButton class="btn-dark animate__animated animate__fadeInDown" href="/Products/Aero" text="Find out More" />
+            <ActionButton class="btn-dark animate__animated animate__fadeInDown" href="/Contact?reason=aero-demo" text="Request a Demo" />
+        </ActionButtons>
+    </Section>
+
+    <Section centered labelledBy="powering-possibility">
+        <Headline id="powering-possibility">Powering Possibility</Headline>
+        <Callout>Code That Connects &bull; Software That Scales</Callout>
+        <p class="lead mt-5">
+            At ONIXLabs, we enhance the software development journey through a relentless focus on quality, crafting robust and scalable
+            enterprise solutions that empower innovation and growth.
+        </p>
+        <div class="row">
+            <Tile columns={4} title="Craftsmanship" light="/onixlabs/images/icons/glass/design.svg" dark="/onixlabs/images/icons/glass/design-dark.svg">
+                We treat code as a craft, writing software with precision, care, and pride in every detail.
+            </Tile>
+            <Tile columns={4} title="Integrity" light="/onixlabs/images/icons/glass/shield-alt.svg" dark="/onixlabs/images/icons/glass/shield-alt-dark.svg">
+                We uphold transparency, honesty, and reliability in every decision, from code to client collaboration.
+            </Tile>
+            <Tile columns={4} title="Performance" light="/onixlabs/images/icons/glass/gauge.svg" dark="/onixlabs/images/icons/glass/gauge-dark.svg">
+                We engineer solutions that are not only functional but fast, efficient, and built to scale.
+            </Tile>
+            <Tile columns={4} title="Enterprise" light="/onixlabs/images/icons/glass/buildings.svg" dark="/onixlabs/images/icons/glass/buildings-dark.svg">
+                Our platforms are designed for the complexity and demands of modern enterprises. Secure, scalable, and future-ready.
+            </Tile>
+            <Tile columns={4} title="Community" light="/onixlabs/images/icons/glass/user-group.svg" dark="/onixlabs/images/icons/glass/user-group-dark.svg">
+                We thrive on collaboration, contributing to open-source and growing together with the global developer community.
+            </Tile>
+            <Tile columns={4} title="Simplicity" light="/onixlabs/images/icons/glass/leaf.svg" dark="/onixlabs/images/icons/glass/leaf-dark.svg">
+                We believe the best solutions are intuitive, removing complexity to let clarity and function shine.
+            </Tile>
+            <Tile columns={4} title="Education" light="/onixlabs/images/icons/glass/documents.svg" dark="/onixlabs/images/icons/glass/documents-dark.svg">
+                We foster a culture of continuous learning, sharing knowledge, mentoring talent, and staying ahead of the curve.
+            </Tile>
+            <Tile columns={4} title="Support" light="/onixlabs/images/icons/glass/support.svg" dark="/onixlabs/images/icons/glass/support-dark.svg">
+                We stand by our software and our users, delivering responsive, reliable support that builds long-term trust.
+            </Tile>
+        </div>
+    </Section>
+
+    <Section class="bg-secondary-subtle" centered labelledBy="tools-that-fit">
+        <Headline id="tools-that-fit">Tools That Fit, Built To Last</Headline>
+        <Callout>Pioneering Engineering &bull; Purpose Over Preference</Callout>
+        <p class="lead mt-5">
+            At ONIXLabs, we don't believe that one-size-fits-all. We choose the right tools for the job, not just the ones we know. If we're
+            not the best fit, we'll learn fast or help connect you with those who are.
+        </p>
+        <ul class="row list-unstyled" aria-label="Technologies we work with">
+            {technologies.map((technology: CollectionEntry<'technologies'>) => (
+                <TechnologyLogo title={technology.data.title} image={technology.data.image} url={technology.data.url} />
+            ))}
+        </ul>
+    </Section>
+
+    <Section centered labelledBy="champions-of-contribution">
+        <Headline id="champions-of-contribution">Champions of Contribution</Headline>
+        <Callout>Bright Minds &bull; Open Source &bull; Built Together</Callout>
+        <p class="lead mt-5">
+            We believe great software is a shared effort. At ONIXLabs, we contribute to the tools we use,
+            collaborate with the community, and champion open-source innovation wherever we can.
+        </p>
+        <div class="row">
+            {contributors.map((contributor: CollectionEntry<'contributors'>) => <ContributorCard contributor={contributor} />)}
+        </div>
+    </Section>
+</BaseLayout>

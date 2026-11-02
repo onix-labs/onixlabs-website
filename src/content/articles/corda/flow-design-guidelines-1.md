@@ -1,4 +1,11 @@
-# Flow Design Guidelines - Part 1
+---
+title: "Flow Design Guidelines - Part 1"
+navigationTitle: "Flow Design Guidelines (Part 1)"
+description: "What Corda flows and flow sessions are, how to implement and extend the Corda Flow Framework, and best practices for designing reusable flows."
+category: corda
+order: 1
+path: /Documentation/Corda/Flow-Design-Guidelines-1
+---
 
 In this article we are going to take a look at flows in Corda, understanding what they are, how to implement them and extend the Corda Flow Framework, and identify some best practices for flow design.
 

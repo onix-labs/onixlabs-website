@@ -1,0 +1,72 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { loadProductFamilies } from '../../collections/load-product-families';
+import { loadProducts } from '../../collections/load-products';
+import ActionButton from '../../components/ActionButton.astro';
+import ActionButtons from '../../components/ActionButtons.astro';
+import AeroPromotion from '../../components/AeroPromotion.astro';
+import Callout from '../../components/Callout.astro';
+import Headline from '../../components/Headline.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Section from '../../components/Section.astro';
+import ThemeImage from '../../components/ThemeImage.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
+const products: ReadonlyArray<CollectionEntry<'products'>> = await loadProducts();
+
+function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<CollectionEntry<'products'>> {
+    return products.filter((product: CollectionEntry<'products'>): boolean => product.data.family.id === family.id);
+}
+---
+<BaseLayout
+    title="Products"
+    description="Platforms, libraries and frameworks from ONIXLabs: the Aero .NET suite plus open-source libraries for .NET, Corda and Kotlin."
+    path="/Products"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Products', path: '/Products' }]}
+>
+    <Section centered>
+        <Headline level={1}>Software, Supercharged</Headline>
+        <Callout>Design Quickly &bull; Deploy Reliably &bull; Deliver Confidently</Callout>
+        <ThemeImage
+            class="img-fluid h-auto my-5"
+            light="/onixlabs/images/heroes/supercharged.svg"
+            dark="/onixlabs/images/heroes/supercharged-dark.svg"
+            alt=""
+            width={1920}
+            height={512}
+            loading="eager"
+            fetchpriority="high"
+        />
+        <p class="lead">
+            At ONIXLabs, we build powerful platforms, libraries, and frameworks that accelerate development and elevate engineering workflows.
+            Whether you're prototyping quickly, building complex systems, or scaling cleanly, our tools help you write better code with
+            confidence.
+        </p>
+    </Section>
+
+    <Section class="bg-secondary-subtle bloom-reverse" centered labelledBy="introducing-aero">
+        <Headline id="introducing-aero" class="text-white">Introducing AERO</Headline>
+        <Callout class="text-white-50">The modular .NET suite for enterprise engineering</Callout>
+        <AeroPromotion />
+        <ActionButtons>
+            <ActionButton class="btn-dark" href="/Products/Aero" text="Find out More" />
+            <ActionButton class="btn-dark" href="/Contact?reason=aero-demo" text="Request a Demo" />
+        </ActionButtons>
+    </Section>
+
+    {families.map((family: CollectionEntry<'productFamilies'>) => (
+        <Section class={`${family.data.backgroundClass} text-white`} labelledBy={`products-${family.id}`}>
+            <Headline id={`products-${family.id}`} class="text-white" centered>{family.data.headline}</Headline>
+            <Callout class="text-white-50" centered>{family.data.callout}</Callout>
+            <p class="my-5 text-white lead text-center">{family.data.introduction}</p>
+            {productsIn(family).map((product: CollectionEntry<'products'>) => (
+                <Fragment>
+                    <hr />
+                    <ProductCard product={product} />
+                </Fragment>
+            ))}
+        </Section>
+    ))}
+</BaseLayout>

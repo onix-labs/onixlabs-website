@@ -1,0 +1,78 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+
+import { loadContributors } from '../../collections/load-contributors';
+import Card from '../../components/Card.astro';
+import Icon from '../../components/Icon.astro';
+import Section from '../../components/Section.astro';
+import { site } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildProfilePage } from '../../seo/build-profile-page';
+import { PageType } from '../../seo/page-type';
+
+interface Props {
+    readonly contributor: CollectionEntry<'contributors'>;
+}
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+    const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
+
+    return contributors.map((contributor: CollectionEntry<'contributors'>) => ({
+        params: { name: contributor.data.path.split('/')[2] },
+        props: { contributor },
+    }));
+}
+
+const { contributor }: Props = Astro.props;
+const { Content } = await render(contributor);
+const { name, givenName, familyName, jobTitle, headline, description, photo, path, linkedInUrl, gitHubUrl }: CollectionEntry<'contributors'>['data'] = contributor.data;
+---
+<BaseLayout
+    title={`${name}, ${jobTitle}`}
+    description={description}
+    path={path}
+    type={PageType.Profile}
+    image={photo}
+    imageAlt={`Portrait of ${name}`}
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name, path }]}
+    structuredData={[
+        buildProfilePage({ name, givenName, familyName, jobTitle, description, path, photo, sameAs: [linkedInUrl, gitHubUrl] }, site),
+    ]}
+>
+    <Section>
+        <div class="row">
+            <div class="col-12 col-sm-8 offset-sm-2 col-md-4 offset-md-0 col-lg-3 mb-4">
+                <Card class="rounded-4 p-2">
+                    <img class="rounded-2 w-100 h-auto" src={photo} alt={`Portrait of ${name}`} width={640} height={640} loading="eager" fetchpriority="high" />
+                    <div class="d-flex flex-row justify-content-evenly gap-2 mt-2">
+                        <a class="btn btn-primary w-100" href={linkedInUrl} target="_blank" rel="noopener noreferrer">
+                            <Icon name="linkedin" />
+                            <span class="ms-2">LinkedIn</span>
+                            <span class="visually-hidden"> (opens in a new tab)</span>
+                        </a>
+                        <a class="btn btn-dark w-100" href={gitHubUrl} target="_blank" rel="noopener noreferrer">
+                            <Icon name="github" />
+                            <span class="ms-2">GitHub</span>
+                            <span class="visually-hidden"> (opens in a new tab)</span>
+                        </a>
+                    </div>
+                </Card>
+            </div>
+            <div class="col-12 col-md-8 col-lg-9">
+                <h1 class="display-2 fw-bold">{name}</h1>
+                <p class="h2 fw-light text-body-secondary">{headline}</p>
+                <div class="biography mt-3">
+                    <Content />
+                </div>
+            </div>
+        </div>
+    </Section>
+</BaseLayout>
+
+<style>
+    .biography :global(p) {
+        text-align: justify;
+    }
+</style>

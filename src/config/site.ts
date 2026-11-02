@@ -15,7 +15,8 @@ export const site: SiteSettings = {
     foundingYear: 2020,
     contactFormEndpoint: 'https://formspree.io/f/xwpqpeay',
     socialLinks: [
-        { name: 'X (Twitter)', url: 'https://x.com/onix_labs', icon: 'x-twitter' },
-        { name: 'GitHub', url: 'https://github.com/onix-labs', icon: 'github' },
+        { name: 'X (Twitter)', url: 'https://x.com/onix_labs', icon: 'x-twitter', isInFooter: true },
+        { name: 'Hashnode', url: 'https://onixlabs.hashnode.dev/', icon: 'hashnode', isInFooter: false },
+        { name: 'GitHub', url: 'https://github.com/onix-labs', icon: 'github', isInFooter: true },
     ],
 };

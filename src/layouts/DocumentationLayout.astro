@@ -1,0 +1,92 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import Card from '../components/Card.astro';
+import Section from '../components/Section.astro';
+import { documentationCategories } from '../config/documentation-categories';
+import type { DocumentationCategory } from '../config/documentation-category';
+import { loadArticles } from '../collections/load-articles';
+import type { PageType } from '../seo/page-type';
+import type { Breadcrumb } from '../seo/breadcrumb';
+import type { JsonLdObject } from '../seo/json-ld-object';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+    readonly title: string;
+    readonly description: string;
+    readonly path: string;
+    readonly type?: PageType;
+    readonly breadcrumbs?: ReadonlyArray<Breadcrumb>;
+    readonly structuredData?: ReadonlyArray<JsonLdObject>;
+    readonly currentCategory?: string;
+}
+
+const props: Props = Astro.props;
+const articles: ReadonlyArray<CollectionEntry<'articles'>> = await loadArticles();
+
+function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEntry<'articles'>> {
+    return articles.filter((article: CollectionEntry<'articles'>): boolean => article.data.category === category.id);
+}
+---
+<BaseLayout {...props}>
+    <Section>
+        <div class="row">
+            <div class="col-12 col-lg-4 mb-4 mb-lg-0">
+                <nav class="documentation-sidebar" aria-label="Documentation">
+                    <Card>
+                        <div class="accordion" id="documentation-navigation">
+                            {documentationCategories.map((category: DocumentationCategory) => {
+                                const isOpen: boolean = category.id === props.currentCategory;
+                                const panelId: string = `documentation-${category.id}`;
+                                return (
+                                    <div class="accordion-item border-0">
+                                        <h2 class="accordion-header">
+                                            <button
+                                                class:list={['accordion-button', { collapsed: !isOpen }]}
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target={`#${panelId}`}
+                                                aria-expanded={isOpen ? 'true' : 'false'}
+                                                aria-controls={panelId}
+                                            >
+                                                {category.name}
+                                            </button>
+                                        </h2>
+                                        <div id={panelId} class:list={['accordion-collapse collapse', { show: isOpen }]} data-bs-parent="#documentation-navigation">
+                                            <div class="accordion-body">
+                                                <ul class="nav flex-column">
+                                                    {articlesIn(category).map((article: CollectionEntry<'articles'>) => {
+                                                        const isCurrent: boolean = article.data.path === props.path;
+                                                        return (
+                                                            <li class="nav-item">
+                                                                <a class:list={['nav-link', { active: isCurrent }]} href={article.data.path} aria-current={isCurrent ? 'page' : undefined}>
+                                                                    {article.data.navigationTitle}
+                                                                </a>
+                                                            </li>
+                                                        );
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </Card>
+                </nav>
+            </div>
+            <div class="col-12 col-lg-8">
+                <slot />
+            </div>
+        </div>
+    </Section>
+</BaseLayout>
+
+<style>
+    @media (min-width: 992px) {
+        .documentation-sidebar {
+            position: sticky;
+            top: 6rem;
+        }
+    }
+</style>

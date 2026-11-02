@@ -1,4 +1,11 @@
-# Underscore, Overkill
+---
+title: "Underscore, Overkill"
+navigationTitle: "Underscore, Overkill"
+description: "Why prefixing members with underscores is overkill: the history of the convention, the arguments for it, and the readability costs it introduces."
+category: csharp
+order: 2
+path: /Documentation/CSharp/Underscore-Overkill
+---
 
 This article takes a deep dive into the use of underscores to denote member scope in code, exploring the historical context behind the convention, the common arguments made in its favor, the potential downsides it introduces in terms of readability and consistency, and the reasons why I personally believe that relying on more explicit naming conventions, rather than visual markers like underscores, leads to cleaner, more maintainable, and more modern codebases.
 

@@ -1,0 +1,36 @@
+---
+interface Props {
+    readonly title: string;
+    readonly image: string;
+    readonly url: string;
+}
+
+const { title, image, url }: Props = Astro.props;
+---
+<li class="col-6 col-md-4 col-lg-2 mt-5">
+    <a class="technology-logo d-block" href={url} target="_blank" rel="noopener noreferrer">
+        <img class="w-75 h-auto" src={image} alt="" width={512} height={512} loading="lazy" decoding="async" />
+        <span class="d-block h6 mt-2 fw-normal">{title}<span class="visually-hidden"> (opens in a new tab)</span></span>
+    </a>
+</li>
+
+<style>
+    .technology-logo {
+        color: var(--bs-body-color);
+        text-decoration: none;
+        font-weight: 300;
+        transition: transform ease-in-out 250ms;
+    }
+
+    .technology-logo:hover,
+    .technology-logo:focus-visible {
+        transform: scale(1.2);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .technology-logo:hover,
+        .technology-logo:focus-visible {
+            transform: none;
+        }
+    }
+</style>

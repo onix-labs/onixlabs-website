@@ -1,0 +1,62 @@
+---
+import ActionButton from '../components/ActionButton.astro';
+import ActionButtons from '../components/ActionButtons.astro';
+import Callout from '../components/Callout.astro';
+import Headline from '../components/Headline.astro';
+import Section from '../components/Section.astro';
+import ThemeImage from '../components/ThemeImage.astro';
+import Tile from '../components/Tile.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+    title="Software Engineering Consulting"
+    description="Engineering-first consulting from ONIXLabs: strategy, development, testing, CI/CD integration, documentation and cloud delivery for startups and enterprises."
+    path="/Consulting"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Consulting', path: '/Consulting' }]}
+>
+    <Section centered>
+        <Headline level={1}>Consulting</Headline>
+        <Callout>Seamless integration with your team, tools, and tech stack</Callout>
+        <p class="lead mt-5">
+            We help startups and enterprises build robust, scalable software, faster. Whether you're launching a product, scaling a system,
+            or untangling legacy code, our engineering-first consulting cuts through the noise to deliver real solutions. From architecture
+            to implementation, we partner with your team to ship software that works.
+        </p>
+        <div class="row">
+            <Tile columns={3} title="Strategy" light="/onixlabs/images/icons/glass/dice.svg" dark="/onixlabs/images/icons/glass/dice-dark.svg">
+                We help define your product roadmap, identify market fit, and architect scalable solutions aligned with your business goals.
+            </Tile>
+            <Tile columns={3} title="Development" light="/onixlabs/images/icons/glass/code.svg" dark="/onixlabs/images/icons/glass/code-dark.svg">
+                We design and build robust, maintainable software using modern best practices, delivering clean, efficient code that scales with your team.
+            </Tile>
+            <Tile columns={3} title="Testing" light="/onixlabs/images/icons/glass/vials.svg" dark="/onixlabs/images/icons/glass/vials-dark.svg">
+                We implement robust testing strategies across unit, integration, and end-to-end levels to ensure quality and confidence at every stage.
+            </Tile>
+            <Tile columns={3} title="Integration" light="/onixlabs/images/icons/glass/git-merge.svg" dark="/onixlabs/images/icons/glass/git-merge-dark.svg">
+                We implement CI/CD workflows that automate testing, deployment, and release, accelerating feedback and ensuring smooth, reliable delivery.
+            </Tile>
+            <Tile columns={3} title="Documentation" light="/onixlabs/images/icons/glass/scroll.svg" dark="/onixlabs/images/icons/glass/scroll-dark.svg">
+                We produce comprehensive, developer-friendly documentation, from code docs to full technical guides.
+            </Tile>
+            <Tile columns={3} title="Delivery" light="/onixlabs/images/icons/glass/cloud-upload.svg" dark="/onixlabs/images/icons/glass/cloud-upload-dark.svg">
+                We handle production-ready cloud deployments, service monitoring, and uptime strategies to keep your software running smoothly.
+            </Tile>
+        </div>
+    </Section>
+
+    <Section class="bg-secondary-subtle" centered labelledBy="stay-connected">
+        <Headline id="stay-connected">Stay Connected</Headline>
+        <Callout>We're here to help your business thrive</Callout>
+        <div class="col-12 col-md-4 offset-md-4">
+            <ThemeImage class="img-fluid" light="/onixlabs/images/icons/glass/envelope.svg" dark="/onixlabs/images/icons/glass/envelope-dark.svg" alt="" width={512} height={512} />
+        </div>
+        <p class="lead">
+            Whether you have a question, need a custom solution, or just want to explore what’s possible, we're just a message away. Let's start
+            the conversation and see how we can support your goals.
+        </p>
+        <ActionButtons>
+            <ActionButton class="btn-secondary" icon="paper-plane" text="Send a Message" href="/Contact?reason=consulting" />
+            <ActionButton class="btn-secondary" icon="calendar" text="Book a Meeting" href="https://calendly.com/matthew-layton/30min" />
+        </ActionButtons>
+    </Section>
+</BaseLayout>

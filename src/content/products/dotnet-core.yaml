@@ -1,0 +1,89 @@
+family: dotnet
+order: 1
+path: /Products/DotNet/Core
+title: ".NET Core Library"
+shortTitle: "Core Library"
+pageTitle: "Core Library for .NET"
+description: >-
+    ONIXLabs Core Library for .NET: smart enumerations, value semantics, Result and Optional monads, guard clauses, LINQ
+    enhancements and text encoding.
+callout: "Powerful, general-purpose APIs for .NET developers"
+icon: /onixlabs/images/icons/dotnet/dotnet-core-outline.svg
+iconAlt: "Core Library for .NET"
+summary: >-
+    Provides essential abstractions and utilities for building clean, consistent applications. It includes standardized
+    interfaces for value equality, comparison, and binary conversion, along with extension methods and guard clauses to
+    enhance code clarity and safety, and functional constructs that enable explicit, exception-free error handling.
+hook: >-
+    Designed to be lightweight and reusable, this module serves as the base layer for other ONIXLabs components while
+    remaining broadly useful on its own.
+repositoryUrl: https://github.com/onix-labs/onixlabs-dotnet
+packagesUrl: https://www.nuget.org/packages?q=OnixLabs.Core
+packagesLabel: "View NuGet Packages"
+sections:
+  - features:
+        - title: "Smart Enumerations"
+          body: >-
+              The Enumeration class implements the strongly typed enumeration pattern, providing a powerful alternative to
+              standard enums. Unlike native enum types, smart enumerations can encapsulate additional data and behavior, making
+              them ideal for domain-driven design scenarios where richer semantics and extensibility are required.
+        - title: "Composable Specifications"
+          body: >-
+              The Specification class abstracts the specification pattern to enable reusable, composable, and parameterized query
+              logic. Specifications can be used with in-memory collections or translated to LINQ queries against data sources like
+              Entity Framework. Logical operators such as AND, OR, and NOT are fully supported, making this an expressive and
+              testable mechanism for encapsulating business rules and query criteria.
+        - title: "Value Semantics"
+          body: >-
+              IValueEquatable and IValueComparable extend IEquatable and IComparable to include operator overloads for equality
+              and comparison. These abstractions simplify the creation of value types that behave consistently across .NET's
+              equality and sorting mechanisms, encouraging clarity and correctness in value semantics.
+        - title: "Binary Conversion Interfaces"
+          body: >-
+              Interfaces like IBinaryConvertible, IMemoryBinaryConvertible, and ISpanBinaryConvertible allow types to expose their
+              underlying data as byte representations. This supports efficient serialization, cryptographic operations, and
+              low-level data manipulation, and is especially useful in performance-sensitive or binary-focused applications.
+        - title: "Result Monad"
+          body: >-
+              Aero’s Result and Result<T> types provide a structured approach to success/failure modeling. Each result is either a
+              Success or a Failure, with error states represented using Exception, allowing deep integration with the language's
+              native error-handling mechanisms. These types support rich functional workflows, including async integration,
+              chaining, pattern matching, and comprehensive extension methods that make error propagation explicit and
+              maintainable.
+        - title: "Optional Monad"
+          body: >-
+              The Optional<T> type provides a clear abstraction for representing optional values. With explicit Some and None
+              states, it removes the ambiguity of null and promotes safer handling of optional data. The library includes
+              extensive methods and async-compatible workflows for transforming, filtering, and consuming optional values in a
+              fluent, expressive way.
+        - title: "Precondition Utilities"
+          body: >-
+              Methods such as Check, Require, CheckIsNotNull, RequireNotNullOrEmpty, etc. provide idiomatic, parameterized
+              precondition validation. These utilities offer consistent and expressive ways to enforce method contracts and fail
+              fast when inputs don't meet expectations, improving both developer ergonomics and runtime safety.
+        - title: "Extension Methods"
+          body: >-
+              The Core library includes a broad collection of extension methods for working with objects, arrays, strings, dates &
+              times, sequences, and more. These helpers reduce boilerplate, improve code readability, and enhance developer
+              productivity across a wide range of everyday tasks.
+        - title: "Functional Collections"
+          body: >-
+              Factory methods like ListOf, HashSetOf, ImmutableQueueOf, EmptyList, EmptyDictionary, etc. offer a concise,
+              functional approach to creating strongly typed collections. Unlike .NET's collection expressions, these utilities
+              guarantee type consistency and enable functional chaining, supporting cleaner, more declarative collection handling.
+        - title: "LINQ Enhancements"
+          body: >-
+              LINQ is supercharged with extensions like AllEqualBy, AnyEqualBy, IsEmpty, WhereNot, and CountNot, among others.
+              These extensions are designed to work seamlessly with IEnumerable and IEnumerable<T>, offering expressive shortcuts
+              and structural clarity for common operations.
+        - title: "Advanced Type Reflection"
+          body: >-
+              The library provides a customizable C# type formatter for reflection scenarios. It supports fully qualified names,
+              generic type arguments, nullable shorthand, and tuple formatting with named elements. This is ideal for diagnostics,
+              logging, or developer tooling where precise type display is essential.
+        - title: "Flexible Text Encoding"
+          body: >-
+              The library includes a powerful encoding framework with built-in support for Base-16, Base-32, Base-58, and Base-64.
+              Format providers and alphabet variants are supported out-of-the-box, and extension methods enhance interoperability
+              with .NET's Encoding and StringBuilder classes. Whether you’re encoding binary data or building secure identifiers,
+              this API is built for precision and performance.

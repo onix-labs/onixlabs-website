@@ -1,0 +1,31 @@
+---
+import Callout from '../../components/Callout.astro';
+import Headline from '../../components/Headline.astro';
+import Section from '../../components/Section.astro';
+import ThemeImage from '../../components/ThemeImage.astro';
+import DocumentationLayout from '../../layouts/DocumentationLayout.astro';
+---
+<DocumentationLayout
+    title="Documentation"
+    description="Technical articles, product blogs and API references from ONIXLabs, covering Aero, C#, Corda and number theory for enterprise software engineers."
+    path="/Documentation"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/Documentation' }]}
+>
+    <Section class="pt-0" centered>
+        <Headline level={1}>Documentation</Headline>
+        <Callout>Articles &bull; API Docs &bull; Blog Posts</Callout>
+        <ThemeImage
+            class="img-fluid"
+            light="/onixlabs/images/heroes/documentation.svg"
+            dark="/onixlabs/images/heroes/documentation-dark.svg"
+            alt=""
+            width={1440}
+            height={512}
+            loading="eager"
+        />
+        <p class="lead">
+            Explore our official documentation. From technical articles and product blogs to in-depth API references, everything's written,
+            organized, and maintained to give you clear, consistent answers, fast.
+        </p>
+    </Section>
+</DocumentationLayout>

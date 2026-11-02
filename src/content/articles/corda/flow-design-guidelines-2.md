@@ -1,4 +1,11 @@
-# Flow Design Guidelines - Part 2
+---
+title: "Flow Design Guidelines - Part 2"
+navigationTitle: "Flow Design Guidelines (Part 2)"
+description: "Best practices for transactional Corda flows that cause ledger state transitions, including how to specify the notary and flow sessions."
+category: corda
+order: 2
+path: /Documentation/Corda/Flow-Design-Guidelines-2
+---
 
 In Part 1 we identified some fundamental design guidelines for implementing flows in Corda; specifically, allowing us to build flows that can be used as **initiating flows** and **non-initiating flows** (or sub-flows), without having to duplicate business logic.
 

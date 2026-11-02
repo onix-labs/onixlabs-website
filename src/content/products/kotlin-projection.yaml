@@ -1,0 +1,46 @@
+family: kotlin
+order: 2
+path: /Products/Kotlin/Projection
+title: "Kotlin Projection Library"
+shortTitle: "Projection Library"
+pageTitle: "Kotlin Projection Library"
+description: >-
+    ONIXLabs Kotlin Projection Library: type-safe, reflection-based object projection with a builder DSL and type
+    converter configuration.
+callout: "Streamlined data transformation for layered architectures"
+icon: /onixlabs/images/icons/kotlin/kotlin-projection-outline.svg
+iconAlt: "Kotlin Projection Library"
+summary: >-
+    A lightweight, convention-based projection library for Kotlin that enables clean, boilerplate-free mapping between
+    data classes. It auto-maps matching fields, supports custom overrides, and leverages Kotlin’s reflection for safe,
+    type-aware transformations. Ideal for converting between domain, DTO, and persistence models, it helps maintain
+    clear layer separation with minimal overhead. Built for clarity and efficiency, it simplifies a traditionally messy
+    task.
+hook: "Deceptively simple on the outside. Pure Kotlin magic where it counts."
+repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin-projection
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin-projection
+packagesLabel: "View Maven Packages"
+sections:
+  - features:
+        - title: "Type-Safe Projection"
+          body: >-
+              The Kotlin Projection API provides a robust, type-safe mechanism for mapping one object to another using Kotlin
+              reflection. At its core is the Projector abstract class, which drives the transformation logic by inspecting
+              constructor parameters and applying registered type converters. Projections can be fully automatic or manually
+              customized through builder lambdas.
+        - title: "Projection Builder DSL"
+          body: >-
+              The ProjectionBuilder offers a fluent DSL for defining projection rules, including support for custom value
+              injection, conditional mapping, and cross-property conversions. It supports multiple syntaxes (e.g., by property, by
+              name, or via lambda), enabling fine-grained control over how data flows from source to target types.
+        - title: "Type Converter Configuration"
+          body: >-
+              Projections rely on a flexible TypeConverterConfiguration registry that resolves appropriate converters between
+              types. Default behavior includes identity conversion for matching types and custom error handling for unknown
+              mappings. You can register your own converters or override defaults for granular control of how values are
+              translated.
+        - title: "Projection Safety"
+          body: >-
+              Projection failures are wrapped in ProjectionException, with contextual diagnostics such as mismatched types,
+              missing parameters, and nullability violations. ProjectionContext ensures every value is validated against its
+              target parameter's constraints, enforcing safe, predictable transformation logic during runtime.
