@@ -10,7 +10,7 @@ import tseslint from 'typescript-eslint';
 // from the named-exports rule.
 export default tseslint.config(
     {
-        ignores: ['dist/', '.astro/', 'node_modules/', 'OnixLabs.Web/', 'test-results/', 'playwright-report/', '.lighthouseci/'],
+        ignores: ['dist/', '.astro/', 'node_modules/', 'test-results/', 'playwright-report/', '.lighthouseci/'],
     },
     js.configs.recommended,
     ...astro.configs['flat/recommended'],
