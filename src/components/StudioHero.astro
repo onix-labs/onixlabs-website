@@ -1,0 +1,394 @@
+---
+import Aurora from './Aurora.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import type { StudioScreen } from './studio-screen';
+
+// The ONIXLabs Studio hero: a display headline, the download and GitHub actions, and a window that crossfades
+// through Studio's screens while a row of chips lights up in step. Choosing a chip (click, or arrow keys) pins that
+// screen. It's CSS only: radio buttons record the choice, :has() reacts to it, and the timing rules below are
+// generated per screen. Under reduced motion it holds the first screen until another is chosen.
+//
+// The screens' order and count are mirrored in the generated CSS (.shot-N, .chip-N); regenerate both together.
+//
+// Every screenshot is lazy: the variant for the other theme is display:none, so it never downloads, and the first
+// screen is fetched at high priority while the queued ones wait at low priority.
+const screens: ReadonlyArray<StudioScreen> = [
+    { id: 'mission-control', label: 'Mission Control', icon: 'rocket-launch', alt: 'Mission Control: two agents side by side, one waiting for permission to run a command' },
+    { id: 'agent', label: 'Agents', icon: 'sparkle', alt: 'An agent tab answering a question, with its reasoning shown' },
+    { id: 'workspace-split', label: 'Workbench', icon: 'layout', alt: 'The workbench split into panels: a project explorer, code side by side, and an agent' },
+    { id: 'code', label: 'Code editor', icon: 'code', alt: 'The code editor with a terminal beneath it and an agent alongside' },
+    { id: 'terminal', label: 'Terminals', icon: 'terminal-window', alt: 'A terminal session with an agent working in the same window' },
+    { id: 'version-control', label: 'Source control', icon: 'git-branch', alt: 'Source control: branches, a commit graph and pending changes' },
+    { id: 'history', label: 'History', icon: 'clock-counter-clockwise', alt: 'A file’s history with a side-by-side diff' },
+    { id: 'docker', label: 'Containers', icon: 'shipping-container', alt: 'The container panel listing running containers and images' },
+    { id: 'dbexplorer', label: 'Databases', icon: 'database', alt: 'The database explorer running a query against a table' },
+    { id: 'binedit', label: 'Binary editor', icon: 'binary', alt: 'The binary editor showing a file byte by byte' },
+    { id: 'markdown', label: 'Markdown', icon: 'markdown-logo', alt: 'The Markdown editor previewing a README' },
+    { id: 'workspace', label: 'Workspace', icon: 'squares-four', alt: 'A workspace with the project explorer, editors and an agent' },
+    { id: 'welcome', label: 'Get started', icon: 'hand-waving', alt: 'The welcome window for opening or creating a project' },
+];
+const releasesUrl: string = 'https://github.com/onix-labs/onixlabs-studio/releases';
+const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
+---
+<section class="studio-hero" aria-labelledby="studio-title">
+    <Aurora palette="studio" />
+    <div class="studio-copy">
+        <p class="label rise">ONIXLabs Studio · Public beta</p>
+        <h1 id="studio-title" class="display studio-title">
+            <span class="mask-line"><span>Every tool you need.</span></span>
+            <span class="mask-line"><span class="gradient-text">In one studio.</span></span>
+        </h1>
+        <p class="lead rise rise-2">
+            An agentic development environment, where you and your AI agents work in the same project, the same terminals and
+            the same editor. One window replaces an editor, a terminal, a git client and a handful of separate AI chats.
+        </p>
+        <div class="cluster studio-actions rise rise-3">
+            <Button href={releasesUrl} variant="primary" size="large" icon="download-simple" external>Download the beta</Button>
+            <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
+        </div>
+        <p class="studio-meta rise rise-4">
+            <span class="platforms">
+                <Icon name="apple-logo" /><span class="visually-hidden">macOS,</span>
+                <Icon name="windows-logo" /><span class="visually-hidden">Windows and</span>
+                <Icon name="linux-logo" /><span class="visually-hidden">Linux.</span>
+                <span aria-hidden="true">macOS · Windows · Linux</span>
+            </span>
+            <span class="meta-divider" aria-hidden="true"></span>
+            <span>Free and open source (MIT)</span>
+        </p>
+    </div>
+
+    <div class="studio-showcase">
+        <div class="stage settle">
+            <div class="stage-glow" aria-hidden="true"></div>
+            {screens.map((screen: StudioScreen, index: number) => (
+                <figure class={`shot shot-${String(index)}`}>
+                    <img
+                        class="shot-light"
+                        src={`/onixlabs/images/studio/${screen.id}-light-1600.webp`}
+                        srcset={`/onixlabs/images/studio/${screen.id}-light-960.webp 960w, /onixlabs/images/studio/${screen.id}-light-1600.webp 1600w`}
+                        sizes="(min-width: 80rem) 72rem, 94vw"
+                        alt={screen.alt}
+                        width={1600}
+                        height={1039}
+                        loading="lazy"
+                        fetchpriority={index === 0 ? 'high' : 'low'}
+                        decoding="async"
+                    />
+                    <img
+                        class="shot-dark"
+                        src={`/onixlabs/images/studio/${screen.id}-dark-1600.webp`}
+                        srcset={`/onixlabs/images/studio/${screen.id}-dark-960.webp 960w, /onixlabs/images/studio/${screen.id}-dark-1600.webp 1600w`}
+                        sizes="(min-width: 80rem) 72rem, 94vw"
+                        alt={screen.alt}
+                        width={1600}
+                        height={1039}
+                        loading="lazy"
+                        fetchpriority={index === 0 ? 'high' : 'low'}
+                        decoding="async"
+                    />
+                </figure>
+            ))}
+        </div>
+
+        <fieldset class="picker">
+            <legend class="visually-hidden">Show a Studio screen</legend>
+            {screens.map((screen: StudioScreen, index: number) => (
+                <Fragment>
+                    <input class="visually-hidden" type="radio" name="studio-screen" id={`studio-screen-${String(index)}`} value={screen.id} />
+                    <label class={`chip chip-${String(index)}`} for={`studio-screen-${String(index)}`}>
+                        <Icon name={screen.icon} />
+                        <span>{screen.label}</span>
+                    </label>
+                </Fragment>
+            ))}
+        </fieldset>
+    </div>
+</section>
+
+<style>
+    .studio-hero {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        padding-block: clamp(3.5rem, 2.5rem + 5vw, 7.5rem) clamp(3rem, 2rem + 4vw, 6rem);
+    }
+
+    .studio-copy {
+        display: grid;
+        gap: 1.4rem;
+        justify-items: center;
+        width: min(100% - 2 * var(--gutter), 76rem);
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .studio-title {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-weight: 600;
+    }
+
+    .studio-copy .lead {
+        max-width: 44rem;
+    }
+
+    .studio-actions {
+        justify-content: center;
+        margin-top: 0.4rem;
+    }
+
+    .studio-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem 1rem;
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .platforms {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .platforms :global(.icon) {
+        font-size: 1.1rem;
+        color: var(--heading);
+    }
+
+    .platforms > span[aria-hidden='true'] {
+        margin-left: 0.25rem;
+    }
+
+    .meta-divider {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--text-muted);
+    }
+
+    .studio-showcase {
+        display: grid;
+        gap: clamp(1.25rem, 1rem + 1vw, 2rem);
+        width: min(100% - 2 * var(--gutter), 76rem);
+        margin: clamp(3rem, 2rem + 4vw, 5rem) auto 0;
+    }
+
+    /* The window: each screen is stacked in the same place and fades in turn. */
+    .stage {
+        position: relative;
+        display: grid;
+        aspect-ratio: 1600 / 1039;
+    }
+
+    .stage-glow {
+        position: absolute;
+        inset: 18% 8% -4%;
+        z-index: -1;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, color-mix(in srgb, var(--brand-violet) 55%, transparent), color-mix(in srgb, var(--brand-blue) 30%, transparent) 60%, transparent);
+        filter: blur(50px);
+        opacity: var(--glow);
+    }
+
+    .shot {
+        grid-area: 1 / 1;
+        margin: 0;
+        opacity: 0;
+    }
+
+    .shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .shot-0 {
+        opacity: 1;
+    }
+
+    :global([data-theme='light']) .shot-dark,
+    :global([data-theme='dark']) .shot-light {
+        display: none;
+    }
+
+    /* The chips: one per screen, scrolling sideways on narrow screens. */
+    .picker {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        min-inline-size: 0;
+    }
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.85rem;
+        border: none;
+        border-top: var(--border-width) solid transparent;
+        border-bottom: var(--border-width) solid transparent;
+        border-radius: var(--radius-pill);
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-medium);
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background-color var(--transition), color var(--transition);
+    }
+
+    .chip:hover {
+        color: var(--heading);
+    }
+
+    .chip-0 {
+        background-color: var(--surface);
+        color: var(--heading);
+        box-shadow: var(--shadow-sm);
+        border-top-color: var(--edge-light);
+        border-bottom-color: var(--edge-dark);
+    }
+
+    @media (max-width: 40rem) {
+        .studio-meta {
+            flex-direction: column;
+        }
+
+        .meta-divider {
+            display: none;
+        }
+
+        .picker {
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            margin-inline: calc(var(--gutter) * -1);
+            padding: 0.25rem var(--gutter);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+    }
+
+    /*
+     * Autoplay: the screens and chips cycle together, pausing while the pointer is over the showcase. Negative delays
+     * start every animation at once, each already part-way through the cycle, so nothing sits in its first keyframe
+     * waiting for its turn.
+     */
+    @media (prefers-reduced-motion: no-preference) {
+        .shot {
+            animation: shot-cycle 58.5s linear infinite both;
+        }
+
+        .chip {
+            animation: chip-cycle 58.5s linear infinite both;
+        }
+
+        .studio-showcase:hover .shot,
+        .studio-showcase:hover .chip,
+        .studio-showcase:focus-within .shot,
+        .studio-showcase:focus-within .chip {
+            animation-play-state: paused;
+        }
+
+        .shot-0, .chip-0 { animation-delay: 0s; }
+        .shot-1, .chip-1 { animation-delay: -54s; }
+        .shot-2, .chip-2 { animation-delay: -49.5s; }
+        .shot-3, .chip-3 { animation-delay: -45s; }
+        .shot-4, .chip-4 { animation-delay: -40.5s; }
+        .shot-5, .chip-5 { animation-delay: -36s; }
+        .shot-6, .chip-6 { animation-delay: -31.5s; }
+        .shot-7, .chip-7 { animation-delay: -27s; }
+        .shot-8, .chip-8 { animation-delay: -22.5s; }
+        .shot-9, .chip-9 { animation-delay: -18s; }
+        .shot-10, .chip-10 { animation-delay: -13.5s; }
+        .shot-11, .chip-11 { animation-delay: -9s; }
+        .shot-12, .chip-12 { animation-delay: -4.5s; }
+    }
+
+    /* Choosing a screen stops the cycle and pins it. */
+    .studio-hero:has(.picker input:checked) .shot {
+        animation: none;
+        opacity: 0;
+    }
+
+    .studio-hero:has(.picker input:checked) .chip {
+        animation: none;
+        background-color: transparent;
+        color: var(--text-muted);
+        box-shadow: none;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+    }
+
+    .studio-hero:has(#studio-screen-0:checked) .shot-0,
+    .studio-hero:has(#studio-screen-1:checked) .shot-1,
+    .studio-hero:has(#studio-screen-2:checked) .shot-2,
+    .studio-hero:has(#studio-screen-3:checked) .shot-3,
+    .studio-hero:has(#studio-screen-4:checked) .shot-4,
+    .studio-hero:has(#studio-screen-5:checked) .shot-5,
+    .studio-hero:has(#studio-screen-6:checked) .shot-6,
+    .studio-hero:has(#studio-screen-7:checked) .shot-7,
+    .studio-hero:has(#studio-screen-8:checked) .shot-8,
+    .studio-hero:has(#studio-screen-9:checked) .shot-9,
+    .studio-hero:has(#studio-screen-10:checked) .shot-10,
+    .studio-hero:has(#studio-screen-11:checked) .shot-11,
+    .studio-hero:has(#studio-screen-12:checked) .shot-12 {
+        opacity: 1;
+    }
+
+    .studio-hero:has(#studio-screen-0:checked) .chip-0,
+    .studio-hero:has(#studio-screen-1:checked) .chip-1,
+    .studio-hero:has(#studio-screen-2:checked) .chip-2,
+    .studio-hero:has(#studio-screen-3:checked) .chip-3,
+    .studio-hero:has(#studio-screen-4:checked) .chip-4,
+    .studio-hero:has(#studio-screen-5:checked) .chip-5,
+    .studio-hero:has(#studio-screen-6:checked) .chip-6,
+    .studio-hero:has(#studio-screen-7:checked) .chip-7,
+    .studio-hero:has(#studio-screen-8:checked) .chip-8,
+    .studio-hero:has(#studio-screen-9:checked) .chip-9,
+    .studio-hero:has(#studio-screen-10:checked) .chip-10,
+    .studio-hero:has(#studio-screen-11:checked) .chip-11,
+    .studio-hero:has(#studio-screen-12:checked) .chip-12 {
+        background-color: var(--surface);
+        color: var(--heading);
+        box-shadow: var(--shadow-sm);
+        border-top-color: var(--edge-light);
+        border-bottom-color: var(--edge-dark);
+    }
+
+    .studio-hero:has(#studio-screen-0:focus-visible) .chip-0,
+    .studio-hero:has(#studio-screen-1:focus-visible) .chip-1,
+    .studio-hero:has(#studio-screen-2:focus-visible) .chip-2,
+    .studio-hero:has(#studio-screen-3:focus-visible) .chip-3,
+    .studio-hero:has(#studio-screen-4:focus-visible) .chip-4,
+    .studio-hero:has(#studio-screen-5:focus-visible) .chip-5,
+    .studio-hero:has(#studio-screen-6:focus-visible) .chip-6,
+    .studio-hero:has(#studio-screen-7:focus-visible) .chip-7,
+    .studio-hero:has(#studio-screen-8:focus-visible) .chip-8,
+    .studio-hero:has(#studio-screen-9:focus-visible) .chip-9,
+    .studio-hero:has(#studio-screen-10:focus-visible) .chip-10,
+    .studio-hero:has(#studio-screen-11:focus-visible) .chip-11,
+    .studio-hero:has(#studio-screen-12:focus-visible) .chip-12 {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+    }
+
+    @keyframes shot-cycle {
+        0% { opacity: 0; }
+        1.368% { opacity: 1; }
+        7.692% { opacity: 1; }
+        9.060%, 100% { opacity: 0; }
+    }
+
+    @keyframes chip-cycle {
+        0%, 7.692% { background-color: var(--surface); color: var(--heading); box-shadow: var(--shadow-sm); border-top-color: var(--edge-light); border-bottom-color: var(--edge-dark); }
+        7.702%, 100% { background-color: transparent; color: var(--text-muted); box-shadow: none; border-top-color: transparent; border-bottom-color: transparent; }
+    }
+</style>

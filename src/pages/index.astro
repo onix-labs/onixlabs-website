@@ -1,10 +1,15 @@
 ---
-import { site } from '../config/site';
+import StudioHero from '../components/StudioHero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// A blank canvas: the new home page will be designed here from the design language (/design in the dev server).
-// The previous site lives under /archive. Not indexed while it's empty.
+// The new home page, built up from the design language (/design in the dev server). The previous site lives under
+// /archive. Not indexed while it's a work in progress.
 ---
-<BaseLayout title={site.name} description={site.description} path="/" noindex>
-    <h1 class="visually-hidden">{site.name}</h1>
+<BaseLayout
+    title="ONIXLabs | ONIXLabs Studio, the agentic development environment"
+    description="ONIXLabs Studio is an agentic development environment: code, terminals, source control, containers, databases and AI agents in one window."
+    path="/"
+    noindex
+>
+    <StudioHero />
 </BaseLayout>
