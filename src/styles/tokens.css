@@ -170,7 +170,7 @@
     --error: var(--danger);
 
     /* Site chrome */
-    --header-bg: color-mix(in srgb, #e9ecef 82%, transparent);
+    --header-bg: color-mix(in srgb, var(--bg) 85%, transparent);   /* the page colour, frosted over content beneath */
     --header-text: #212529;
     --code-bg: #dee2e6;
     --selection: rgba(161, 102, 171, 0.25);
@@ -231,7 +231,7 @@
     --info-subtle: #071a3a;
     --error: var(--danger);
 
-    --header-bg: color-mix(in srgb, #343a40 82%, transparent);
+    --header-bg: color-mix(in srgb, var(--bg) 85%, transparent);
     --header-text: #f8f9fa;
     --code-bg: #1b1f23;
     --selection: rgba(161, 102, 171, 0.45);
