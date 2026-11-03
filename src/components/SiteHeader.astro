@@ -102,7 +102,7 @@ const currentPath: string = Astro.url.pathname;
 
     .brand-logo {
         width: auto;
-        height: 1.05rem;
+        height: 1.5rem;
     }
 
     :global([data-theme='light']) .brand-logo-dark,
@@ -111,20 +111,20 @@ const currentPath: string = Astro.url.pathname;
     }
 
     .primary-nav {
-        flex: 1;
-        max-width: 36rem;
+        margin-left: auto;
     }
 
     .primary-nav ul {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
+        gap: 0.25rem;
     }
 
     .nav-link {
         display: block;
-        padding: 0.35rem 0.5rem;
+        padding: 0.35rem 0.75rem;
         color: var(--header-text);
-        font-size: var(--text-xs);
+        font-size: var(--text-base);
         letter-spacing: -0.005em;
         opacity: 0.8;
         transition: opacity var(--duration);
