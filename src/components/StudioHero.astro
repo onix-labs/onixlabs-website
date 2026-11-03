@@ -1,6 +1,8 @@
 ---
 import Button from './Button.astro';
 import Icon from './Icon.astro';
+import { loadStudioRelease } from '../collections/load-studio-release';
+import type { StudioRelease } from '../collections/studio-release';
 import type { StudioScreen } from './studio-screen';
 
 // The ONIXLabs Studio hero, after the Blazor site's Aero hero: grey at the top, melting into the header, blooming
@@ -12,6 +14,9 @@ import type { StudioScreen } from './studio-screen';
 // The carousel's order and count are mirrored in the generated CSS (.shot-N, the coverflow keyframes); regenerate
 // both together. Every screenshot is lazy, so the other theme's variant never downloads; the front screen is fetched
 // at high priority and the rest at low.
+//
+// The download button links to the latest release's page; initialise-studio-download.ts swaps in the installer for
+// the visitor's platform from the data-download-* attributes, which are looked up from GitHub at build time.
 const screens: ReadonlyArray<StudioScreen> = [
     { id: 'mission-control', label: 'Mission Control', icon: 'rocket-launch', alt: 'Mission Control: two agents side by side, one waiting for permission to run a command' },
     { id: 'agent', label: 'Agents', icon: 'sparkle', alt: 'An agent tab answering a question, with its reasoning shown' },
@@ -25,19 +30,18 @@ const screens: ReadonlyArray<StudioScreen> = [
     { id: 'binedit', label: 'Binary editor', icon: 'binary', alt: 'The binary editor showing a file byte by byte' },
     { id: 'markdown', label: 'Markdown', icon: 'markdown-logo', alt: 'The Markdown editor previewing a README' },
     { id: 'workspace', label: 'Workspace', icon: 'squares-four', alt: 'A workspace with the project explorer, editors and an agent' },
-    { id: 'welcome', label: 'Get started', icon: 'hand-waving', alt: 'The welcome window for opening or creating a project' },
 ];
 const releasesUrl: string = 'https://github.com/onix-labs/onixlabs-studio/releases';
+const release: StudioRelease | undefined = await loadStudioRelease();
 const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
 ---
 <section class="studio-hero" aria-labelledby="studio-title">
     <div class="studio-copy">
-        <p class="label blur-in">ONIXLabs Studio · Public beta</p>
-        <h1 id="studio-title" class="display studio-title blur-in blur-in-2">
-            Every tool you need.
-            <span class="gradient-text">In one studio.</span>
+        <h1 id="studio-title" class="display studio-title blur-in">
+            Every tool you need
+            <span class="gradient-text">In one studio</span>
         </h1>
-        <p class="lead blur-in blur-in-3">
+        <p class="lead blur-in blur-in-2">
             An agentic development environment, where you and your AI agents work in the same project, the same terminals and
             the same editor. One window replaces an editor, a terminal, a git client and a handful of separate AI chats.
         </p>
@@ -76,21 +80,19 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
         </div>
     </div>
 
-    <div class="studio-actions">
-        <div class="cluster is-centered">
-            <Button href={releasesUrl} variant="primary" size="large" icon="download-simple" external>Download the beta</Button>
-            <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
-        </div>
-        <p class="studio-meta">
-            <span class="platforms">
-                <Icon name="apple-logo" /><span class="visually-hidden">macOS,</span>
-                <Icon name="windows-logo" /><span class="visually-hidden">Windows and</span>
-                <Icon name="linux-logo" /><span class="visually-hidden">Linux.</span>
-                <span aria-hidden="true">macOS · Windows · Linux</span>
-            </span>
-            <span class="meta-divider" aria-hidden="true"></span>
-            <span>Free and open source (MIT)</span>
-        </p>
+    <div class="cluster is-centered studio-actions">
+        <a
+            class="button button-primary button-large"
+            href={release?.pageUrl ?? releasesUrl}
+            data-studio-download
+            data-download-macos={release?.macOSAppleSilicon}
+            data-download-windows={release?.windows}
+            data-download-linux={release?.linux}
+        >
+            <Icon name="download-simple" />
+            <span data-download-label>Download the beta</span>
+        </a>
+        <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
     </div>
 </section>
 
@@ -130,7 +132,7 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
     }
 
     .studio-copy .lead {
-        max-width: 44rem;
+        max-width: 54rem;
     }
 
     /* The carousel: a 3D stage; each screen moves through the same sequence of positions, offset in time. */
@@ -139,12 +141,13 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
         margin: clamp(2.5rem, 2rem + 3vw, 4.5rem) auto 0;
         width: min(100%, 84rem);
         perspective: 1800px;
-        perspective-origin: 50% 40%;
+        perspective-origin: 50% 100%;
     }
 
     .carousel-track {
         display: grid;
         justify-items: center;
+        align-items: end;
         transform-style: preserve-3d;
     }
 
@@ -152,6 +155,7 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
         grid-area: 1 / 1;
         width: min(68%, 54rem);
         margin: 0;
+        transform-origin: 50% 100%;
         transform-style: preserve-3d;
         will-change: transform, opacity, filter;
     }
@@ -176,14 +180,13 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
     .shot-6 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
     .shot-7 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
     .shot-8 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-    .shot-9 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-    .shot-10 { transform: translateX(-96%) translateZ(-820px) rotateY(32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
-    .shot-11 { transform: translateX(-74%) translateZ(-560px) rotateY(28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
-    .shot-12 { transform: translateX(-44%) translateZ(-280px) rotateY(20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
+    .shot-9 { transform: translateX(-96%) translateZ(-820px) rotateY(32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
+    .shot-10 { transform: translateX(-74%) translateZ(-560px) rotateY(28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
+    .shot-11 { transform: translateX(-44%) translateZ(-280px) rotateY(20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
 
     @media (prefers-reduced-motion: no-preference) {
         .shot {
-            animation: coverflow 52s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
+            animation: coverflow 48s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
         }
 
         .carousel:hover .shot {
@@ -197,85 +200,36 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
         .shot-4 { animation-delay: -8s; }
         .shot-5 { animation-delay: -4s; }
         .shot-6 { animation-delay: 0s; }
-        .shot-7 { animation-delay: -48s; }
-        .shot-8 { animation-delay: -44s; }
-        .shot-9 { animation-delay: -40s; }
-        .shot-10 { animation-delay: -36s; }
-        .shot-11 { animation-delay: -32s; }
-        .shot-12 { animation-delay: -28s; }
+        .shot-7 { animation-delay: -44s; }
+        .shot-8 { animation-delay: -40s; }
+        .shot-9 { animation-delay: -36s; }
+        .shot-10 { animation-delay: -32s; }
+        .shot-11 { animation-delay: -28s; }
     }
 
     .studio-actions {
-        display: grid;
-        gap: 1.25rem;
-        justify-items: center;
-        width: min(100% - 2 * var(--gutter), 60rem);
-        margin: clamp(2rem, 1.5rem + 2vw, 3rem) auto 0;
-    }
-
-    /* The meta line sits on the vibrant part of the bloom, so it gets a raised surface of its own. */
-    .studio-meta {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem 0.9rem;
-        padding: 0.45rem 1rem;
-        border-top: var(--border-width) solid var(--edge-light);
-        border-bottom: var(--border-width) solid var(--edge-dark);
-        border-radius: var(--radius-pill);
-        background: var(--surface);
-        box-shadow: var(--shadow-sm);
-        color: var(--text);
-        font-size: var(--text-sm);
-    }
-
-    .platforms {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-    }
-
-    .platforms :global(.icon) {
-        font-size: 1.05rem;
-        color: var(--heading);
-    }
-
-    .platforms > span[aria-hidden='true'] {
-        margin-left: 0.2rem;
-    }
-
-    .meta-divider {
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: var(--text-muted);
+        margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
     }
 
     @media (max-width: 40rem) {
         .shot {
             width: 84%;
         }
-
-        .meta-divider {
-            display: none;
-        }
     }
 
     @keyframes coverflow {
-        0.000%, 5.538% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        7.692%, 13.231% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        15.385%, 20.923% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        23.077%, 28.615% { transform: translateX(96%) translateZ(-820px) rotateY(-32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
-        30.769%, 36.308% { transform: translateX(74%) translateZ(-560px) rotateY(-28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
-        38.462%, 44.000% { transform: translateX(44%) translateZ(-280px) rotateY(-20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
-        46.154%, 51.692% { transform: translateX(0%) translateZ(0px) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
-        53.846%, 59.385% { transform: translateX(-44%) translateZ(-280px) rotateY(20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
-        61.538%, 67.077% { transform: translateX(-74%) translateZ(-560px) rotateY(28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
-        69.231%, 74.769% { transform: translateX(-96%) translateZ(-820px) rotateY(32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
-        76.923%, 82.462% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        84.615%, 90.154% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        92.308%, 97.846% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        0.000%, 6.000% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        8.333%, 14.333% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        16.667%, 22.667% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        25.000%, 31.000% { transform: translateX(96%) translateZ(-820px) rotateY(-32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
+        33.333%, 39.333% { transform: translateX(74%) translateZ(-560px) rotateY(-28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
+        41.667%, 47.667% { transform: translateX(44%) translateZ(-280px) rotateY(-20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
+        50.000%, 56.000% { transform: translateX(0%) translateZ(0px) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
+        58.333%, 64.333% { transform: translateX(-44%) translateZ(-280px) rotateY(20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
+        66.667%, 72.667% { transform: translateX(-74%) translateZ(-560px) rotateY(28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
+        75.000%, 81.000% { transform: translateX(-96%) translateZ(-820px) rotateY(32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
+        83.333%, 89.333% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        91.667%, 97.667% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
         100% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
     }
 </style>

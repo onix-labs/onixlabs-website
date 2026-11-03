@@ -39,8 +39,12 @@ jobs:
         run: npm test
 
       # `npm run build` runs `astro check` first; content that breaks a schema in src/content.config.ts fails here.
+      # The build looks up the latest ONIXLabs Studio release for the download button; the token avoids GitHub's
+      # anonymous rate limit on shared runners.
       - name: Type-check and build
         run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
