@@ -1,24 +1,99 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
+import Icon from './Icon.astro';
+
+// A product summary that links to its page, tinted with its family's colours.
 interface Props {
     readonly product: CollectionEntry<'products'>;
-    readonly headingLevel?: 'h3' | 'h4';
+    readonly showOverview?: boolean;
 }
 
-const { product, headingLevel = 'h3' }: Props = Astro.props;
-const Heading: 'h3' | 'h4' = headingLevel;
+const { product, showOverview = false }: Props = Astro.props;
 ---
-<div class="row align-items-center">
-    <div class="col-12 col-sm-6 offset-sm-3 col-lg-4 offset-lg-0">
-        <img class="img-fluid" src={product.data.icon} alt="" width={400} height={400} loading="lazy" decoding="async" />
+<a class={`card product-card family-${product.data.family.id} reveal`} href={product.data.path}>
+    <div class="product-icon" aria-hidden="true">
+        <img src={product.data.icon} alt="" width={96} height={96} loading="lazy" decoding="async" />
     </div>
-    <div class="col-12 col-lg-8">
-        <Heading class="h1 fw-semibold">{product.data.shortTitle}</Heading>
-        <p class="lead">{product.data.hook}</p>
-        <p class="lead text-on-gradient-muted">{product.data.overview ?? product.data.summary}</p>
-        <a class="btn btn-lg btn-outline-light mt-3" href={product.data.path}>
-            Find out More<span class="visually-hidden"> about the {product.data.title}</span>
-        </a>
-    </div>
-</div>
+    <h3>{product.data.shortTitle}<span class="visually-hidden"> ({product.data.title})</span></h3>
+    <p class="product-hook">{product.data.hook}</p>
+    {showOverview && <p class="product-overview">{product.data.overview ?? product.data.summary}</p>}
+    <span class="product-link">Explore <Icon name="arrow-right" class="icon-arrow" /></span>
+</a>
+
+<style>
+    .product-card {
+        --family-from: var(--brand-violet);
+        --family-to: var(--brand-blue);
+        --spot-color: var(--family-from);
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        padding: 1.75rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .family-dotnet { --family-from: var(--family-dotnet-from); --family-to: var(--family-dotnet-to); }
+    .family-corda { --family-from: var(--family-corda-from); --family-to: var(--family-corda-to); }
+    .family-kotlin { --family-from: var(--family-kotlin-from); --family-to: var(--family-kotlin-to); }
+
+    .product-card::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto;
+        height: 2px;
+        background: linear-gradient(90deg, var(--family-from), var(--family-to));
+        opacity: 0.85;
+    }
+
+    .product-icon {
+        display: grid;
+        place-items: center;
+        width: 4rem;
+        height: 4rem;
+        margin-bottom: 0.4rem;
+        border-radius: 1.1rem;
+        background: linear-gradient(135deg, var(--family-from), var(--family-to));
+        box-shadow: 0 12px 30px -12px color-mix(in srgb, var(--family-from) 70%, transparent);
+        transition: transform 500ms var(--ease-out);
+    }
+
+    .product-card:hover .product-icon {
+        transform: rotate(-6deg) scale(1.06);
+    }
+
+    .product-icon img {
+        width: 2.6rem;
+        height: 2.6rem;
+    }
+
+    .product-hook {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .product-overview {
+        color: var(--text-subtle);
+        font-size: var(--text-sm);
+    }
+
+    .product-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-top: auto;
+        padding-top: 0.5rem;
+        color: var(--heading);
+        font-size: var(--text-sm);
+        font-weight: 600;
+    }
+
+    .product-card:hover .product-link :global(.icon-arrow) {
+        transform: translateX(4px);
+    }
+
+    .product-link :global(.icon-arrow) {
+        transition: transform var(--duration) var(--ease-out);
+    }
+</style>

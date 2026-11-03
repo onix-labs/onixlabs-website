@@ -1,0 +1,146 @@
+/* Long-form text: articles and biographies rendered from Markdown. */
+
+.prose {
+    color: var(--text);
+    font-size: var(--text-lg);
+    line-height: 1.8;
+}
+
+.prose > * + * {
+    margin-top: 1.25em;
+}
+
+.prose h2 {
+    margin-top: 2.4em;
+    font-size: var(--text-2xl);
+    letter-spacing: -0.03em;
+}
+
+.prose h3 {
+    margin-top: 2em;
+    font-size: var(--text-xl);
+}
+
+.prose h4 {
+    margin-top: 1.75em;
+}
+
+.prose h2 + *,
+.prose h3 + *,
+.prose h4 + * {
+    margin-top: 0.75em;
+}
+
+.prose a {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--link) 45%, transparent);
+    transition: text-decoration-color var(--duration);
+}
+
+.prose a:hover {
+    text-decoration-color: currentColor;
+}
+
+.prose ul,
+.prose ol {
+    padding-left: 1.4em;
+}
+
+.prose li + li {
+    margin-top: 0.45em;
+}
+
+.prose li::marker {
+    color: var(--text-subtle);
+}
+
+.prose blockquote {
+    position: relative;
+    padding: 1.1rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-style: normal;
+}
+
+.prose blockquote::before {
+    content: '';
+    position: absolute;
+    inset: 0.9rem auto 0.9rem 0;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--brand-gradient);
+}
+
+.prose :not(pre) > code {
+    padding: 0.15em 0.4em;
+    border: 1px solid var(--border);
+    border-radius: 0.35rem;
+    background: var(--surface-2);
+    color: var(--heading);
+    font-size: 0.85em;
+}
+
+.prose pre {
+    position: relative;
+    padding: 1.25rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--code-bg);
+    font-size: 0.82em;
+    line-height: 1.7;
+    overflow-x: auto;
+}
+
+.prose pre::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: var(--brand-gradient);
+    opacity: 0.5;
+}
+
+.prose pre code {
+    color: var(--text);
+}
+
+.prose .table-responsive {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow-x: auto;
+}
+
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+}
+
+.prose th,
+.prose td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.prose th {
+    background: var(--surface-2);
+    color: var(--heading);
+    font-weight: 600;
+}
+
+.prose tr:last-child td {
+    border-bottom: 0;
+}
+
+.prose img {
+    border-radius: var(--radius);
+}
+
+.prose hr {
+    margin-block: 2.5em;
+}

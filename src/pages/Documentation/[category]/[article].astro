@@ -1,36 +1,43 @@
 ---
 import { getEntry, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
 import type { GetStaticPathsResult } from 'astro';
 
+import { estimateReadingMinutes } from '../../../collections/estimate-reading-minutes';
 import { loadArticles } from '../../../collections/load-articles';
+import Icon from '../../../components/Icon.astro';
 import { documentationCategories } from '../../../config/documentation-categories';
 import type { DocumentationCategory } from '../../../config/documentation-category';
 import { site } from '../../../config/site';
 import DocumentationLayout from '../../../layouts/DocumentationLayout.astro';
 import { buildTechArticle } from '../../../seo/build-tech-article';
-import { PageType } from '../../../seo/page-type';
 import type { JsonLdObject } from '../../../seo/json-ld-object';
+import { PageType } from '../../../seo/page-type';
 
 interface Props {
     readonly article: CollectionEntry<'articles'>;
+    readonly previous: CollectionEntry<'articles'> | undefined;
+    readonly next: CollectionEntry<'articles'> | undefined;
 }
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
     const articles: ReadonlyArray<CollectionEntry<'articles'>> = await loadArticles();
 
-    return articles.map((article: CollectionEntry<'articles'>) => {
+    return articles.map((article: CollectionEntry<'articles'>, index: number) => {
         const [, , category, slug]: ReadonlyArray<string | undefined> = article.data.path.split('/');
-        return { params: { category, article: slug }, props: { article } };
+        return { params: { category, article: slug }, props: { article, previous: articles[index - 1], next: articles[index + 1] } };
     });
 }
 
-const { article }: Props = Astro.props;
-const { Content } = await render(article);
+const { article, previous, next }: Props = Astro.props;
+const { Content, headings } = await render(article);
+const outline: ReadonlyArray<MarkdownHeading> = headings.filter((heading: MarkdownHeading): boolean => heading.depth === 2);
 const category: DocumentationCategory | undefined = documentationCategories.find(
     (candidate: DocumentationCategory): boolean => candidate.id === article.data.category,
 );
 const author: CollectionEntry<'contributors'> | undefined = article.data.author === undefined ? undefined : await getEntry(article.data.author);
+const readingMinutes: number = estimateReadingMinutes(article.body ?? '');
 const structuredData: ReadonlyArray<JsonLdObject> = [
     buildTechArticle({
         title: article.data.title,
@@ -57,13 +64,142 @@ const structuredData: ReadonlyArray<JsonLdObject> = [
     ]}
     structuredData={structuredData}
 >
-    <article class="markdown-content">
-        <header>
+    <article class="article">
+        <header class="article-header">
+            <p class="eyebrow">{category?.name}</p>
             <h1>{article.data.title}</h1>
-            {author !== undefined && (
-                <p class="text-body-secondary">By <a href={author.data.path}>{author.data.name}</a></p>
-            )}
+            <p class="article-description">{article.data.description}</p>
+            <p class="article-meta">
+                <span><Icon name="clock" /> {readingMinutes} min read</span>
+                {author !== undefined && <span>By <a href={author.data.path}>{author.data.name}</a></span>}
+            </p>
         </header>
-        <Content />
+        <div class="prose">
+            <Content />
+        </div>
+        <nav class="pager" aria-label="More articles">
+            {previous !== undefined && (
+                <a class="card pager-link" href={previous.data.path} rel="prev">
+                    <span class="pager-label">Previous</span>
+                    <span class="pager-title">{previous.data.navigationTitle}</span>
+                </a>
+            )}
+            {next !== undefined && (
+                <a class="card pager-link pager-next" href={next.data.path} rel="next">
+                    <span class="pager-label">Next</span>
+                    <span class="pager-title">{next.data.navigationTitle}</span>
+                </a>
+            )}
+        </nav>
     </article>
+
+    {outline.length > 1 && (
+        <nav slot="rail" class="outline" aria-labelledby="outline-title">
+            <p id="outline-title" class="outline-title">On this page</p>
+            <ul role="list">
+                {outline.map((heading: MarkdownHeading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+            </ul>
+        </nav>
+    )}
 </DocumentationLayout>
+
+<style>
+    .article {
+        max-width: 46rem;
+    }
+
+    .article-header {
+        display: grid;
+        gap: 1rem;
+        padding-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .article-header h1 {
+        font-size: var(--text-4xl);
+    }
+
+    .article-description {
+        color: var(--text-muted);
+        font-size: var(--text-xl);
+    }
+
+    .article-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+        color: var(--text-subtle);
+        font-size: var(--text-sm);
+    }
+
+    .article-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+    }
+
+    .pager {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+        margin-top: 4rem;
+    }
+
+    .pager-link {
+        display: grid;
+        gap: 0.25rem;
+        padding: 1.25rem 1.5rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .pager-next {
+        text-align: right;
+        grid-column: -2;
+    }
+
+    .pager-label {
+        color: var(--text-subtle);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .pager-title {
+        color: var(--heading);
+        font-weight: 600;
+    }
+
+    .outline {
+        font-size: var(--text-sm);
+    }
+
+    .outline-title {
+        margin-bottom: 0.75rem;
+        color: var(--text-subtle);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .outline ul {
+        display: grid;
+        gap: 0.5rem;
+        padding-left: 0.9rem;
+        border-left: 1px solid var(--border);
+    }
+
+    .outline a {
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color var(--duration);
+    }
+
+    .outline a:hover {
+        color: var(--heading);
+    }
+</style>

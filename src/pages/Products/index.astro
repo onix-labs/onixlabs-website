@@ -3,14 +3,12 @@ import type { CollectionEntry } from 'astro:content';
 
 import { loadProductFamilies } from '../../collections/load-product-families';
 import { loadProducts } from '../../collections/load-products';
-import ActionButton from '../../components/ActionButton.astro';
-import ActionButtons from '../../components/ActionButtons.astro';
-import AeroPromotion from '../../components/AeroPromotion.astro';
-import Callout from '../../components/Callout.astro';
-import Headline from '../../components/Headline.astro';
+import AeroShowcase from '../../components/AeroShowcase.astro';
+import Button from '../../components/Button.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PageHero from '../../components/PageHero.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import Section from '../../components/Section.astro';
-import ThemeImage from '../../components/ThemeImage.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
@@ -26,47 +24,75 @@ function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<C
     path="/Products"
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Products', path: '/Products' }]}
 >
-    <Section centered>
-        <Headline level={1}>Software, Supercharged</Headline>
-        <Callout>Design Quickly &bull; Deploy Reliably &bull; Deliver Confidently</Callout>
-        <ThemeImage
-            class="img-fluid h-auto my-5"
-            light="/onixlabs/images/heroes/supercharged.svg"
-            dark="/onixlabs/images/heroes/supercharged-dark.svg"
-            alt=""
-            width={1920}
-            height={512}
-            loading="eager"
-            fetchpriority="high"
-        />
-        <p class="lead">
-            At ONIXLabs, we build powerful platforms, libraries, and frameworks that accelerate development and elevate engineering workflows.
-            Whether you're prototyping quickly, building complex systems, or scaling cleanly, our tools help you write better code with
-            confidence.
-        </p>
-    </Section>
+    <PageHero eyebrow="Products" title="Software," highlight="supercharged." centered>
+        We build powerful platforms, libraries, and frameworks that accelerate development and elevate engineering workflows.
+        Whether you're prototyping quickly, building complex systems, or scaling cleanly, our tools help you write better code with
+        confidence.
+        <Fragment slot="actions">
+            <Button href="#aero" variant="primary" arrow>Aero platform</Button>
+            <Button href="#dotnet">Open-source libraries</Button>
+        </Fragment>
+    </PageHero>
 
-    <Section class="bg-secondary-subtle bloom-reverse" centered labelledBy="introducing-aero">
-        <Headline id="introducing-aero" class="text-white">Introducing AERO</Headline>
-        <Callout class="text-white-50">The modular .NET suite for enterprise engineering</Callout>
-        <AeroPromotion />
-        <ActionButtons>
-            <ActionButton class="btn-dark" href="/Products/Aero" text="Find out More" />
-            <ActionButton class="btn-dark" href="/Contact?reason=aero-demo" text="Request a Demo" />
-        </ActionButtons>
-    </Section>
+    <section class="section-tight" id="aero" aria-labelledby="aero-title">
+        <div class="container">
+            <div class="aero-feature gradient-border reveal">
+                <div class="aero-feature-copy">
+                    <p class="eyebrow">Platform</p>
+                    <h2 id="aero-title">Introducing <span class="gradient-text">Aero</span></h2>
+                    <p class="lead">
+                        <strong>A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
+                        It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
+                    </p>
+                    <div class="cluster">
+                        <Button href="/Products/Aero" variant="primary" arrow>Find out more</Button>
+                        <Button href="/Contact?reason=aero-demo">Request a demo</Button>
+                    </div>
+                </div>
+                <AeroShowcase eager />
+            </div>
+        </div>
+    </section>
 
     {families.map((family: CollectionEntry<'productFamilies'>) => (
-        <Section class={`${family.data.backgroundClass} text-white`} labelledBy={`products-${family.id}`}>
-            <Headline id={`products-${family.id}`} class="text-white" centered>{family.data.headline}</Headline>
-            <Callout class="text-white-50" centered>{family.data.callout}</Callout>
-            <p class="my-5 text-white lead text-center">{family.data.introduction}</p>
-            {productsIn(family).map((product: CollectionEntry<'products'>) => (
-                <Fragment>
-                    <hr />
-                    <ProductCard product={product} />
-                </Fragment>
-            ))}
-        </Section>
+        <section class="section-tight family" id={family.id} aria-labelledby={`family-${family.id}`}>
+            <div class="container">
+                <SectionHeader eyebrow={`Products for ${family.data.name}`} title={family.data.callout} id={`family-${family.id}`}>
+                    {family.data.introduction}
+                </SectionHeader>
+                <div class="grid grid-3">
+                    {productsIn(family).map((product: CollectionEntry<'products'>) => <ProductCard product={product} showOverview />)}
+                </div>
+            </div>
+        </section>
     ))}
+
+    <CtaBand title="Not sure which product fits?" primaryText="Ask us">
+        Tell us what you're building and we'll point you to the right platform or library, or help you build it.
+    </CtaBand>
 </BaseLayout>
+
+<style>
+    .aero-feature {
+        display: grid;
+        gap: clamp(2rem, 1.5rem + 3vw, 4rem);
+        align-items: center;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+        padding: clamp(1.75rem, 1.25rem + 3vw, 4rem);
+        border-radius: var(--radius-xl);
+        background:
+            radial-gradient(ellipse 70% 90% at 90% 40%, color-mix(in srgb, var(--brand-rose) calc(var(--glow-strength) * 22%), transparent), transparent),
+            var(--surface);
+        overflow: hidden;
+    }
+
+    .aero-feature-copy {
+        display: grid;
+        gap: 1.4rem;
+        justify-items: start;
+    }
+
+    .family {
+        scroll-margin-top: var(--header-height);
+    }
+</style>

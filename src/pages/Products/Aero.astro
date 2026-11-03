@@ -2,15 +2,12 @@
 import { getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
-import ActionButton from '../../components/ActionButton.astro';
-import ActionButtons from '../../components/ActionButtons.astro';
-import AeroPromotion from '../../components/AeroPromotion.astro';
-import Callout from '../../components/Callout.astro';
-import FeatureSummary from '../../components/FeatureSummary.astro';
-import Headline from '../../components/Headline.astro';
-import Section from '../../components/Section.astro';
-import ThemeImage from '../../components/ThemeImage.astro';
-import Tile from '../../components/Tile.astro';
+import AeroShowcase from '../../components/AeroShowcase.astro';
+import Button from '../../components/Button.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import FeatureCard from '../../components/FeatureCard.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import { site } from '../../config/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
@@ -46,67 +43,86 @@ const aero: AeroData = entry.data;
         },
     ]}
 >
-    <Section class="bg-secondary-subtle bloom" centered>
-        <h1 class="col-12 col-md-6 offset-md-3 mb-0">
-            <ThemeImage
-                class="img-fluid h-auto"
-                light="/onixlabs/images/logo/aero-dark.webp"
-                dark="/onixlabs/images/logo/aero-light.webp"
-                alt="Aero"
-                width={4000}
-                height={2000}
-                loading="eager"
-            />
-        </h1>
-        <Callout>The modular .NET suite for enterprise engineering</Callout>
-        <AeroPromotion eager />
-    </Section>
-
-    <Section centered labelledBy="founding-principles">
-        <Headline id="founding-principles">Founding Principles</Headline>
-        <Callout>Why build .NET applications with Aero</Callout>
-        <p class="lead mt-5">
-            Aero provides a rock-solid foundation for building modern .NET applications. Designed with flexibility and scalability in mind, it
-            helps teams move faster, adopt best practices by default, and build applications that are robust, maintainable, and ready for
-            growth.
-        </p>
-        <div class="row">
-            {aero.principles.map((principle: AeroData['principles'][number]) => (
-                <Tile columns={3} title={principle.title} light={principle.light} dark={principle.dark}>{principle.body}</Tile>
-            ))}
+    <PageHero eyebrow="Aero platform" title="The modular .NET suite for" highlight="enterprise engineering." palette="aero">
+        <strong>Aero is a modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
+        It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
+        <Fragment slot="actions">
+            <Button href="/Contact?reason=aero-demo" variant="primary" size="large" arrow>Request a demo</Button>
+            <Button href="#aero-architecture" size="large">Explore the architecture</Button>
+        </Fragment>
+        <div slot="media" class="aero-media">
+            <img class="aero-wordmark aero-wordmark-light" src="/onixlabs/images/logo/aero-dark.webp" alt="" width={1280} height={640} loading="eager" />
+            <img class="aero-wordmark aero-wordmark-dark" src="/onixlabs/images/logo/aero-light.webp" alt="" width={1280} height={640} loading="eager" />
+            <AeroShowcase eager />
         </div>
-    </Section>
+    </PageHero>
 
-    <Section class="bg-secondary-subtle" labelledBy="aero-architecture">
-        <Headline id="aero-architecture" centered>Aero Architecture</Headline>
-        <Callout centered>The building blocks for enterprise-grade .NET applications</Callout>
-        <p class="lead mt-5 text-center">
-            Aero isn’t just another framework—it's your project's backbone. From APIs to infrastructure, each module is crafted to solve
-            real-world engineering challenges with clarity, performance, and security in mind. Whether you're launching something new or
-            evolving a legacy system, these core components give you the speed, structure, and scalability to build with confidence.
-        </p>
-        <div class="row">
-            {aero.architecture.map((module: AeroData['architecture'][number]) => (
-                <FeatureSummary title={module.title} body={module.body} />
-            ))}
+    <section class="section" aria-labelledby="founding-principles">
+        <div class="container">
+            <SectionHeader eyebrow="Founding principles" title="Why build .NET applications" highlight="with Aero." id="founding-principles">
+                Aero provides a rock-solid foundation for building modern .NET applications. Designed with flexibility and scalability in
+                mind, it helps teams move faster, adopt best practices by default, and build applications that are robust, maintainable,
+                and ready for growth.
+            </SectionHeader>
+            <div class="grid grid-3">
+                {aero.principles.map((principle: AeroData['principles'][number]) => (
+                    <FeatureCard title={principle.title} icon={principle.icon} body={principle.body} />
+                ))}
+            </div>
         </div>
-        <p class="lead mt-5">
-            Aero gives you more than just utilities—it gives you architecture. With thoughtfully designed APIs, production-ready integrations,
-            and deep flexibility across every layer of the stack, Aero equips .NET teams to deliver faster, scale confidently, and stay
-            maintainable from day one. This is modern enterprise development, without the drag.
-        </p>
-    </Section>
+    </section>
 
-    <Section centered labelledBy="aero-in-action">
-        <Headline id="aero-in-action">Aero In Action</Headline>
-        <Callout>Still curious to see what Aero can do?</Callout>
-        <p class="lead mt-5">
-            Whether you're evaluating it for your next project or just want a deeper look under the hood, we’d love to show you what Aero can
-            do. Book a product or technical demo and get a guided tour of the platform, explore real-world use cases, and ask questions tailored
-            to your team’s needs. See how Aero can accelerate your development, and transform the way you build with .NET.
-        </p>
-        <ActionButtons>
-            <ActionButton class="btn-secondary" href="/Contact?reason=aero-demo" text="Request a Demo" />
-        </ActionButtons>
-    </Section>
+    <section class="section architecture" id="aero-architecture" aria-labelledby="aero-architecture-title">
+        <div class="container">
+            <SectionHeader eyebrow="Aero architecture" title="The building blocks for enterprise-grade" highlight=".NET applications." id="aero-architecture-title">
+                Aero isn’t just another framework—it's your project's backbone. From APIs to infrastructure, each module is crafted to
+                solve real-world engineering challenges with clarity, performance, and security in mind.
+            </SectionHeader>
+            <div class="grid grid-2">
+                {aero.architecture.map((module: AeroData['architecture'][number], index: number) => (
+                    <FeatureCard title={module.title} body={module.body} index={index + 1} />
+                ))}
+            </div>
+            <p class="lead closing reveal">
+                Aero gives you more than just utilities—it gives you architecture. With thoughtfully designed APIs, production-ready
+                integrations, and deep flexibility across every layer of the stack, Aero equips .NET teams to deliver faster, scale
+                confidently, and stay maintainable from day one. <strong>This is modern enterprise development, without the drag.</strong>
+            </p>
+        </div>
+    </section>
+
+    <CtaBand title="See Aero in action." primaryText="Request a demo" primaryHref="/Contact?reason=aero-demo">
+        Whether you're evaluating it for your next project or just want a deeper look under the hood, book a product or technical demo
+        for a guided tour, real-world use cases, and answers tailored to your team’s needs.
+    </CtaBand>
 </BaseLayout>
+
+<style>
+    .aero-media {
+        display: grid;
+        gap: 1.5rem;
+        justify-items: center;
+        width: 100%;
+    }
+
+    .aero-wordmark {
+        width: min(60%, 18rem);
+        height: auto;
+    }
+
+    :global([data-theme='light']) .aero-wordmark-dark,
+    :global([data-theme='dark']) .aero-wordmark-light {
+        display: none;
+    }
+
+    .architecture {
+        border-top: 1px solid var(--border);
+        background: var(--bg-elevated);
+    }
+
+    .closing {
+        max-width: 52rem;
+        margin: clamp(3rem, 2.5rem + 2vw, 4.5rem) auto 0;
+        text-align: center;
+    }
+</style>

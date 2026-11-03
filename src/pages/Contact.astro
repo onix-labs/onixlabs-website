@@ -1,10 +1,6 @@
 ---
-import Callout from '../components/Callout.astro';
-import Card from '../components/Card.astro';
-import Headline from '../components/Headline.astro';
 import Icon from '../components/Icon.astro';
-import Section from '../components/Section.astro';
-import ThemeImage from '../components/ThemeImage.astro';
+import PageHero from '../components/PageHero.astro';
 import { site } from '../config/site';
 import type { SocialLink } from '../config/social-link';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -34,98 +30,178 @@ for (const prefill of contactReasons.values()) {
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Contact', path: '/Contact' }]}
     structuredData={[{ '@type': 'ContactPage', name: 'Contact ONIXLabs', url: `${site.url}/Contact`, about: { '@id': `${site.url}/#organization` } }]}
 >
-    <Section centered>
-        <Headline level={1}>Stay Connected</Headline>
-        <Callout>We'd love to hear from you</Callout>
-        <div class="col-12 col-md-4 offset-md-4">
-            <ThemeImage class="img-fluid h-auto" light="/onixlabs/images/icons/glass/envelope.webp" dark="/onixlabs/images/icons/glass/envelope-dark.webp" alt="" width={512} height={512} loading="eager" />
-        </div>
-        <p class="lead">
-            If you're interested in learning more about our Aero Platform, .NET, Corda, or Kotlin product lines, or if you're exploring
-            consulting opportunities, feel free to drop us a message. We're always happy to connect and help you find the right solution.
-        </p>
+    <PageHero eyebrow="Contact" title="We'd love to" highlight="hear from you.">
+        If you're interested in learning more about our Aero Platform, .NET, Corda, or Kotlin product lines, or if you're exploring
+        consulting opportunities, drop us a message. We're always happy to connect and help you find the right solution.
+    </PageHero>
 
-        <div class="row mt-5">
-            <div class="col-12 col-lg-8 offset-lg-2">
-                <Card>
-                    <h2 class="card-header h6 fw-semibold text-start mb-0 py-2" id="contact-form-title">Contact Us</h2>
-                    <div class="card-body">
-                        <form class="d-flex flex-column gap-3" action={site.contactFormEndpoint} method="post" aria-labelledby="contact-form-title">
-                            <div class="form-floating">
-                                <input class="form-control" type="text" name="name" id="name" autocomplete="name" placeholder="Name" required />
-                                <label for="name">Name</label>
-                            </div>
-
-                            <div class="form-floating">
-                                <input class="form-control" type="email" name="email" id="email" autocomplete="email" placeholder="Email address" required />
-                                <label for="email">Email Address</label>
-                            </div>
-
-                            <div class="form-floating">
-                                <select class="form-select" name="reason" id="reason" required>
-                                    <option value="" disabled selected hidden></option>
-                                    {reasons.map((reason: string) => <option>{reason}</option>)}
-                                </select>
-                                <label for="reason">Reason</label>
-                            </div>
-
-                            <div class="form-floating">
-                                <textarea class="form-control" name="message" id="message" rows="6" placeholder="Message" required></textarea>
-                                <label for="message">Message</label>
-                            </div>
-
-                            <!-- Formspree's honeypot: real visitors never see or fill this field. -->
-                            <div class="d-none" aria-hidden="true">
-                                <label for="gotcha">Leave this field empty</label>
-                                <input type="text" name="_gotcha" id="gotcha" tabindex="-1" autocomplete="off" />
-                            </div>
-
-                            <button type="submit" class="btn btn-secondary align-self-end">
-                                <Icon name="paper-plane" />
-                                <span class="ms-2">Send Message</span>
-                            </button>
-                        </form>
+    <section class="section-tight contact" aria-label="Contact options">
+        <div class="container contact-grid">
+            <div class="card form-card gradient-border reveal">
+                <h2 id="contact-form-title">Send us a message</h2>
+                <form action={site.contactFormEndpoint} method="post" aria-labelledby="contact-form-title">
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="name">Name</label>
+                            <input class="input" type="text" name="name" id="name" autocomplete="name" required />
+                        </div>
+                        <div class="field">
+                            <label for="email">Email address</label>
+                            <input class="input" type="email" name="email" id="email" autocomplete="email" required />
+                        </div>
                     </div>
-                </Card>
+
+                    <div class="field">
+                        <label for="reason">Reason</label>
+                        <select class="input" name="reason" id="reason" required>
+                            <option value="" disabled selected>Choose a topic</option>
+                            {reasons.map((reason: string) => <option>{reason}</option>)}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea class="input" name="message" id="message" rows="6" required></textarea>
+                    </div>
+
+                    <!-- Formspree's honeypot: real visitors never see or fill this field. -->
+                    <div class="honeypot" aria-hidden="true">
+                        <label for="gotcha">Leave this field empty</label>
+                        <input type="text" name="_gotcha" id="gotcha" tabindex="-1" autocomplete="off" />
+                    </div>
+
+                    <button type="submit" class="button button-primary button-large">
+                        <Icon name="paper-plane" />
+                        <span>Send message</span>
+                    </button>
+                </form>
             </div>
-        </div>
-    </Section>
 
-    <Section class="bg-secondary-subtle" centered labelledBy="book-a-meeting">
-        <Headline id="book-a-meeting">Book a Meeting</Headline>
-        <Callout>Let's talk, on your schedule</Callout>
-        <p class="lead mt-5">
-            Booking time with us is easy and flexible. Use our Calendly link to pick a time that works best for you — no back-and-forth emails,
-            just a straightforward way to connect. Whether it's a quick chat or a deep dive, we're here when you're ready.
-        </p>
-        <a class="btn btn-lg btn-outline-secondary p-4 px-5 mt-5" href={calendlyUrl} target="_blank" rel="noopener noreferrer">
-            <Icon name="calendar" />
-            <span class="ms-2">Book a Meeting</span>
-            <span class="visually-hidden"> (opens in a new tab)</span>
-        </a>
-    </Section>
-
-    <Section centered labelledBy="social-media">
-        <Headline id="social-media">Social Media</Headline>
-        <Callout>Follow us for updates and insights</Callout>
-        <p class="lead mt-5">
-            Stay connected with us on social media to get the latest news, product updates, and insights from our team.
-            Whether you're a developer, partner, or just curious, following us is the best way to stay in the loop.
-        </p>
-
-        <ul class="row mt-5 justify-content-center list-unstyled">
-            {site.socialLinks.map((link: SocialLink) => (
-                <li class="col-4 col-md-2 text-center">
-                    <a class="display-1 text-secondary" href={link.url} target="_blank" rel="noopener noreferrer">
-                        <Icon name={link.icon} />
-                        <span class="visually-hidden">{site.name} on {link.name} (opens in a new tab)</span>
+            <aside class="contact-aside">
+                <div class="card aside-card reveal">
+                    <span class="icon-chip"><Icon name="calendar" /></span>
+                    <h2>Book a meeting</h2>
+                    <p>
+                        Pick a time that works best for you — no back-and-forth emails, just a straightforward way to connect. Whether it's
+                        a quick chat or a deep dive, we're here when you're ready.
+                    </p>
+                    <a class="button" href={calendlyUrl} target="_blank" rel="noopener noreferrer">
+                        Open Calendly <Icon name="arrow-up-right-from-square" />
+                        <span class="visually-hidden"> (opens in a new tab)</span>
                     </a>
-                </li>
-            ))}
-        </ul>
-    </Section>
+                </div>
+
+                <div class="card aside-card reveal">
+                    <span class="icon-chip"><Icon name="users" /></span>
+                    <h2>Follow along</h2>
+                    <p>The latest news, product updates, and insights from our team.</p>
+                    <ul class="socials" role="list">
+                        {site.socialLinks.map((link: SocialLink) => (
+                            <li>
+                                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                                    <Icon name={link.icon} />
+                                    <span>{link.name}</span>
+                                    <span class="visually-hidden"> (opens in a new tab)</span>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </section>
 </BaseLayout>
 
 <script>
     import '../scripts/contact';
 </script>
+
+<style>
+    .contact {
+        padding-top: 0;
+    }
+
+    .contact-grid {
+        display: grid;
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    @media (min-width: 62rem) {
+        .contact-grid {
+            grid-template-columns: 1.6fr 1fr;
+        }
+    }
+
+    .form-card {
+        display: grid;
+        gap: 1.75rem;
+        padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    }
+
+    .form-card h2,
+    .aside-card h2 {
+        font-size: var(--text-2xl);
+    }
+
+    form {
+        display: grid;
+        gap: 1.25rem;
+    }
+
+    .form-row {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    }
+
+    form .button {
+        justify-self: start;
+    }
+
+    .honeypot {
+        display: none;
+    }
+
+    .contact-aside {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .aside-card {
+        display: grid;
+        gap: 1rem;
+        justify-items: start;
+        padding: 1.75rem;
+    }
+
+    .aside-card p {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .socials {
+        display: grid;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .socials a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 0.9rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--heading);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        text-decoration: none;
+        transition: border-color var(--duration), background-color var(--duration);
+    }
+
+    .socials a:hover {
+        border-color: var(--border-strong);
+        background: var(--surface-2);
+    }
+</style>

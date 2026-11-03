@@ -110,8 +110,8 @@ const aero = defineCollection({
     schema: z.object({
         principles: z.array(z.object({
             title: z.string(),
-            light: publicImage,
-            dark: publicImage,
+            // The name of an SVG in src/icons.
+            icon: z.string(),
             body: z.string(),
         })).min(1),
         architecture: z.array(z.object({

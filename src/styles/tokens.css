@@ -1,0 +1,114 @@
+/*
+ * Design tokens. The brand palette comes from the ONIXLabs logo orb; everything else is a neutral scale that
+ * lets it glow. Dark is the signature theme; light mirrors it with the same structure.
+ */
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+:root {
+    /* Brand */
+    --brand-amber: #F79533;
+    --brand-coral: #F37055;
+    --brand-rose: #EF4E7B;
+    --brand-violet: #A166AB;
+    --brand-blue: #5073B8;
+    --brand-cyan: #1098AD;
+    --brand-teal: #07B39B;
+    --brand-green: #6FBA82;
+    --brand-gradient: linear-gradient(90deg, var(--brand-amber), var(--brand-coral), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-cyan), var(--brand-teal), var(--brand-green));
+    --brand-conic: conic-gradient(from var(--angle), var(--brand-amber), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-cyan), var(--brand-teal), var(--brand-green), var(--brand-amber));
+
+    /* Product families */
+    --family-dotnet-from: var(--brand-violet);
+    --family-dotnet-to: var(--brand-blue);
+    --family-corda-from: var(--brand-coral);
+    --family-corda-to: var(--brand-rose);
+    --family-kotlin-from: var(--brand-cyan);
+    --family-kotlin-to: var(--brand-blue);
+    --family-aero-from: var(--brand-amber);
+    --family-aero-to: var(--brand-rose);
+
+    /* Type */
+    --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: clamp(1.15rem, 1.05rem + 0.4vw, 1.3rem);
+    --text-2xl: clamp(1.35rem, 1.15rem + 0.8vw, 1.75rem);
+    --text-3xl: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+    --text-4xl: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+    --text-5xl: clamp(2.75rem, 1.8rem + 4.2vw, 5rem);
+
+    /* Space and shape */
+    --space-section: clamp(4.5rem, 3rem + 6vw, 8.5rem);
+    --container: 76rem;
+    --container-narrow: 48rem;
+    --gutter: clamp(1.25rem, 0.75rem + 2vw, 2rem);
+    --radius-sm: 0.5rem;
+    --radius: 0.875rem;
+    --radius-lg: 1.25rem;
+    --radius-xl: 1.75rem;
+    --header-height: 4.25rem;
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --duration: 220ms;
+}
+
+:root,
+[data-theme='dark'] {
+    color-scheme: dark;
+    --bg: #07080b;
+    --bg-elevated: #0d0f14;
+    --surface: #11141a;
+    --surface-2: #171b23;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text: #eef0f4;
+    --text-muted: #a3abb9;
+    --text-subtle: #8a93a3;
+    --heading: #ffffff;
+    --link: #8fb4ff;
+    --focus: #8fb4ff;
+    --button-primary-bg: #ffffff;
+    --button-primary-text: #07080b;
+    --grid-line: rgba(255, 255, 255, 0.045);
+    --glow-strength: 0.55;
+    --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+    --header-bg: rgba(7, 8, 11, 0.72);
+    --code-bg: #0b0d12;
+    --selection: rgba(80, 115, 184, 0.45);
+}
+
+[data-theme='light'] {
+    color-scheme: light;
+    --bg: #fbfbfd;
+    --bg-elevated: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f3f4f7;
+    --border: rgba(12, 18, 32, 0.09);
+    --border-strong: rgba(12, 18, 32, 0.18);
+    --text: #1b1f27;
+    --text-muted: #4f5868;
+    --text-subtle: #5f6878;
+    --heading: #07080b;
+    --link: #2752a8;
+    --focus: #2752a8;
+    --button-primary-bg: #0b0d12;
+    --button-primary-text: #ffffff;
+    --grid-line: rgba(12, 18, 32, 0.055);
+    --glow-strength: 0.32;
+    --shadow: 0 1px 2px rgba(12, 18, 32, 0.04), 0 18px 40px -22px rgba(12, 18, 32, 0.22);
+    --header-bg: rgba(251, 251, 253, 0.75);
+    --code-bg: #f4f5f8;
+    --selection: rgba(80, 115, 184, 0.22);
+}

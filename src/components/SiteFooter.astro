@@ -1,22 +1,207 @@
 ---
+import type { CollectionEntry } from 'astro:content';
+
+import { loadContributors } from '../collections/load-contributors';
+import { loadProductFamilies } from '../collections/load-product-families';
 import { site } from '../config/site';
 import type { SocialLink } from '../config/social-link';
 import Icon from './Icon.astro';
 
 const currentYear: number = new Date().getFullYear();
+const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
+const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
 ---
 <footer class="site-footer">
-    <div class="d-flex flex-row align-items-center container py-3">
-        <p class="small mb-0">&copy; {site.name} {site.foundingYear}&mdash;{currentYear}</p>
-        <ul class="list-unstyled d-flex mb-0 ms-auto">
-            {site.socialLinks.filter((link: SocialLink): boolean => link.isInFooter).map((link: SocialLink) => (
-                <li>
-                    <a class="btn btn-link" href={link.url} target="_blank" rel="noopener noreferrer">
-                        <Icon name={link.icon} />
-                        <span class="visually-hidden">{site.name} on {link.name} (opens in a new tab)</span>
-                    </a>
-                </li>
-            ))}
-        </ul>
+    <div class="footer-glow" aria-hidden="true"></div>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img class="footer-logo footer-logo-light" src="/onixlabs/images/logo/logo-full-light.webp" alt="ONIXLabs" width={153} height={29} loading="lazy" />
+                <img class="footer-logo footer-logo-dark" src="/onixlabs/images/logo/logo-full-dark.webp" alt="ONIXLabs" width={153} height={29} loading="lazy" />
+                <p>Enterprise software engineering for .NET, Kotlin, the JVM and Corda: platforms, libraries and consulting built to last.</p>
+                <ul class="social" role="list">
+                    {site.socialLinks.map((link: SocialLink) => (
+                        <li>
+                            <a href={link.url} target="_blank" rel="noopener noreferrer">
+                                <Icon name={link.icon} />
+                                <span class="visually-hidden">{site.name} on {link.name} (opens in a new tab)</span>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <nav class="footer-column" aria-labelledby="footer-products">
+                <h2 id="footer-products">Products</h2>
+                <ul role="list">
+                    <li><a href="/Products/Aero">Aero</a></li>
+                    {families.map((family: CollectionEntry<'productFamilies'>) => (
+                        <li><a href={`/Products/#${family.id}`}>{family.data.name} libraries</a></li>
+                    ))}
+                </ul>
+            </nav>
+
+            <nav class="footer-column" aria-labelledby="footer-company">
+                <h2 id="footer-company">Company</h2>
+                <ul role="list">
+                    <li><a href="/Consulting">Consulting</a></li>
+                    <li><a href="/Documentation/">Documentation</a></li>
+                    <li><a href="/Contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <nav class="footer-column" aria-labelledby="footer-people">
+                <h2 id="footer-people">People</h2>
+                <ul role="list">
+                    {contributors.map((contributor: CollectionEntry<'contributors'>) => (
+                        <li><a href={contributor.data.path}>{contributor.data.name}</a></li>
+                    ))}
+                </ul>
+            </nav>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; {site.foundingYear}&ndash;{currentYear} {site.name}. All rights reserved.</p>
+            <p class="footer-mark" aria-hidden="true">Code that connects &middot; Software that scales</p>
+        </div>
     </div>
 </footer>
+
+<style>
+    .site-footer {
+        position: relative;
+        margin-top: auto;
+        padding-block: clamp(3.5rem, 3rem + 3vw, 5.5rem) 2rem;
+        border-top: 1px solid var(--border);
+        background: var(--bg-elevated);
+        overflow: hidden;
+        isolation: isolate;
+    }
+
+    .site-footer::before {
+        content: '';
+        position: absolute;
+        inset: -1px 0 auto;
+        height: 1px;
+        background: var(--brand-gradient);
+        opacity: 0.6;
+    }
+
+    .footer-glow {
+        position: absolute;
+        inset: auto 50% -18rem auto;
+        z-index: -1;
+        width: 40rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(circle, color-mix(in srgb, var(--brand-blue) 55%, transparent), transparent 65%);
+        filter: blur(80px);
+        opacity: calc(var(--glow-strength) * 0.6);
+        transform: translateX(50%);
+    }
+
+    .footer-grid {
+        display: grid;
+        gap: 2.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    }
+
+    .footer-brand {
+        display: grid;
+        gap: 1.1rem;
+        align-content: start;
+        grid-column: 1 / -1;
+        max-width: 24rem;
+    }
+
+    @media (min-width: 60rem) {
+        .footer-grid {
+            grid-template-columns: 2fr repeat(3, 1fr);
+        }
+
+        .footer-brand {
+            grid-column: auto;
+        }
+    }
+
+    .footer-logo {
+        width: auto;
+        height: 1.6rem;
+    }
+
+    :global([data-theme='light']) .footer-logo-dark,
+    :global([data-theme='dark']) .footer-logo-light {
+        display: none;
+    }
+
+    .footer-brand p {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .social {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .social a {
+        display: grid;
+        place-items: center;
+        width: 2.4rem;
+        height: 2.4rem;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--text-muted);
+        transition: color var(--duration), border-color var(--duration), transform var(--duration) var(--ease-out);
+    }
+
+    .social a:hover {
+        border-color: var(--border-strong);
+        color: var(--heading);
+        transform: translateY(-2px);
+    }
+
+    .footer-column h2 {
+        margin-bottom: 1rem;
+        color: var(--text-subtle);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .footer-column ul {
+        display: grid;
+        gap: 0.7rem;
+    }
+
+    .footer-column a {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        text-decoration: none;
+        transition: color var(--duration);
+    }
+
+    .footer-column a:hover {
+        color: var(--heading);
+    }
+
+    .footer-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: clamp(3rem, 2.5rem + 2vw, 4.5rem);
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        color: var(--text-subtle);
+        font-size: var(--text-xs);
+    }
+
+    .footer-mark {
+        font-family: var(--font-mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+</style>

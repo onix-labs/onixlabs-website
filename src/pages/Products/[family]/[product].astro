@@ -6,13 +6,13 @@ import type { GetStaticPathsResult } from 'astro';
 import { loadProducts } from '../../../collections/load-products';
 import type { ProductFeature } from '../../../collections/product-feature';
 import type { ProductSection } from '../../../collections/product-section';
-import ActionButton from '../../../components/ActionButton.astro';
-import ActionButtons from '../../../components/ActionButtons.astro';
-import Callout from '../../../components/Callout.astro';
-import FeatureSummary from '../../../components/FeatureSummary.astro';
-import Headline from '../../../components/Headline.astro';
+import Button from '../../../components/Button.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import FeatureCard from '../../../components/FeatureCard.astro';
+import PageHero from '../../../components/PageHero.astro';
+import type { AuroraPalette } from '../../../components/aurora-palette';
 import ProductCard from '../../../components/ProductCard.astro';
-import Section from '../../../components/Section.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
 import { site } from '../../../config/site';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { buildSoftwareSourceCode } from '../../../seo/build-software-source-code';
@@ -36,6 +36,14 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
 
 const { product, siblings }: Props = Astro.props;
 const family: CollectionEntry<'productFamilies'> = await getEntry(product.data.family);
+const palettes: ReadonlyMap<string, AuroraPalette> = new Map<string, AuroraPalette>([['dotnet', 'dotnet'], ['corda', 'corda'], ['kotlin', 'kotlin']]);
+const palette: AuroraPalette = palettes.get(family.id) ?? 'brand';
+let featureNumber: number = 0;
+
+function nextFeatureNumber(): number {
+    featureNumber += 1;
+    return featureNumber;
+}
 ---
 <BaseLayout
     title={product.data.pageTitle}
@@ -57,52 +65,155 @@ const family: CollectionEntry<'productFamilies'> = await getEntry(product.data.f
         }, site),
     ]}
 >
-    <Section class={family.data.heroBackgroundClass} centered>
-        <Headline level={1}>{product.data.title}</Headline>
-        <Callout>{product.data.callout}</Callout>
-        <div class="col-12 col-md-4 offset-md-4">
-            <img class="img-fluid" src={product.data.icon} alt={product.data.iconAlt} width={400} height={400} loading="eager" fetchpriority="high" decoding="async" />
-        </div>
-        <p class="lead">{product.data.summary}</p>
-        <ActionButtons>
-            <ActionButton class="btn-dark" icon="github" text="View GitHub Repository" href={product.data.repositoryUrl} external />
-            <ActionButton class="btn-dark" icon="box-open" text={product.data.packagesLabel} href={product.data.packagesUrl} external />
-        </ActionButtons>
-    </Section>
+    <div class={`family-${family.id}`}>
+        <PageHero eyebrow={`${family.data.name} · Open source`} title={product.data.title} palette={palette}>
+            <p class="callout">{product.data.callout}</p>
+            <p>{product.data.summary}</p>
+            <Fragment slot="actions">
+                <Button href={product.data.repositoryUrl} variant="primary" icon="github" external>View on GitHub</Button>
+                <Button href={product.data.packagesUrl} icon="box-open" external>{product.data.packagesLabel.replace(/^View /, '')}</Button>
+            </Fragment>
+            <div slot="media" class="product-emblem">
+                <div class="orb-ring emblem-ring" aria-hidden="true"></div>
+                <div class="emblem-tile">
+                    <img src={product.data.icon} alt={product.data.iconAlt} width={400} height={400} loading="eager" fetchpriority="high" decoding="async" />
+                </div>
+            </div>
+        </PageHero>
 
-    <Section labelledBy="capabilities">
-        <Headline id="capabilities" centered>APIs at a Glance</Headline>
-        <Callout centered>{family.data.capabilitiesCallout}</Callout>
+        <section class="section" aria-labelledby="capabilities">
+            <div class="container">
+                <SectionHeader eyebrow="APIs at a glance" title="What's inside" id="capabilities">
+                    {family.data.capabilitiesCallout}.
+                </SectionHeader>
 
-        {product.data.sections.map((section: ProductSection) => (
-            <div class="row">
-                {section.heading !== undefined && (
-                    <div class="col-12">
-                        <h3 class="h1 fw-bold mt-5">{section.heading}</h3>
-                        {section.paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
-                        {section.bullets.length > 0 && (
-                            <ul>{section.bullets.map((bullet: string) => <li>{bullet}</li>)}</ul>
+                {product.data.sections.map((section: ProductSection) => (
+                    <div class="product-section">
+                        {section.heading !== undefined && (
+                            <div class="section-intro reveal">
+                                <h3>{section.heading}</h3>
+                                {section.paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+                                {section.bullets.length > 0 && (
+                                    <ul class="checklist" role="list">{section.bullets.map((bullet: string) => <li>{bullet}</li>)}</ul>
+                                )}
+                                {section.closingParagraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+                            </div>
                         )}
-                        {section.closingParagraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+                        <div class="grid grid-2">
+                            {section.features.map((feature: ProductFeature) => (
+                                <FeatureCard title={feature.title} body={feature.body} index={nextFeatureNumber()} headingLevel={section.heading === undefined ? 'h3' : 'h4'} />
+                            ))}
+                        </div>
                     </div>
-                )}
-                {section.features.map((feature: ProductFeature) => (
-                    <FeatureSummary title={feature.title} body={feature.body} headingLevel={section.heading === undefined ? 'h3' : 'h4'} />
                 ))}
             </div>
-        ))}
-    </Section>
+        </section>
 
-    {siblings.length > 0 && (
-        <Section class={`${family.data.backgroundClass} text-white`} labelledBy="other-products">
-            <Headline id="other-products" class="text-white" centered>{family.data.otherProductsHeadline}</Headline>
-            <hr class="mt-5" />
-            {siblings.map((sibling: CollectionEntry<'products'>, index: number) => (
-                <Fragment>
-                    {index > 0 && <hr />}
-                    <ProductCard product={sibling} />
-                </Fragment>
-            ))}
-        </Section>
-    )}
+        {siblings.length > 0 && (
+            <section class="section-tight" aria-labelledby="other-products">
+                <div class="container">
+                    <SectionHeader eyebrow={`More for ${family.data.name}`} title={family.data.otherProductsHeadline} id="other-products" />
+                    <div class="grid grid-2">
+                        {siblings.map((sibling: CollectionEntry<'products'>) => <ProductCard product={sibling} showOverview />)}
+                    </div>
+                </div>
+            </section>
+        )}
+
+        <CtaBand title={`Building with ${family.data.name}?`} primaryText="Talk to the team">
+            We built these libraries for our own enterprise work. If you need help adopting them, extending them, or building on top of
+            them, we'd love to hear from you.
+        </CtaBand>
+    </div>
 </BaseLayout>
+
+<style>
+    .family-dotnet { --family-from: var(--family-dotnet-from); --family-to: var(--family-dotnet-to); }
+    .family-corda { --family-from: var(--family-corda-from); --family-to: var(--family-corda-to); }
+    .family-kotlin { --family-from: var(--family-kotlin-from); --family-to: var(--family-kotlin-to); }
+
+    .callout {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.3;
+    }
+
+    .callout + p {
+        margin-top: 1rem;
+        font-size: var(--text-lg);
+    }
+
+    .product-emblem {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: min(100%, 24rem);
+        aspect-ratio: 1;
+    }
+
+    .emblem-ring {
+        inset: 0;
+        width: 100%;
+    }
+
+    .emblem-tile {
+        display: grid;
+        place-items: center;
+        width: 62%;
+        aspect-ratio: 1;
+        border-radius: 28%;
+        background: linear-gradient(135deg, var(--family-from), var(--family-to));
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+            0 40px 80px -30px color-mix(in srgb, var(--family-from) 80%, transparent);
+        transform: rotate(-6deg);
+    }
+
+    .emblem-tile img {
+        width: 62%;
+        transform: rotate(6deg);
+    }
+
+    .product-section + .product-section {
+        margin-top: clamp(3rem, 2.5rem + 3vw, 5rem);
+    }
+
+    .section-intro {
+        display: grid;
+        gap: 1rem;
+        max-width: 48rem;
+        margin-bottom: 2rem;
+        color: var(--text-muted);
+    }
+
+    .section-intro h3 {
+        font-size: var(--text-3xl);
+        letter-spacing: -0.035em;
+    }
+
+    .checklist {
+        display: grid;
+        gap: 0.6rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    }
+
+    .checklist li {
+        position: relative;
+        padding-left: 1.6rem;
+        color: var(--text);
+    }
+
+    .checklist li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.55em;
+        width: 0.7rem;
+        height: 0.7rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--family-from), var(--family-to));
+    }
+</style>

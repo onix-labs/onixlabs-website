@@ -1,16 +1,16 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import Card from '../components/Card.astro';
-import Section from '../components/Section.astro';
+import { loadArticles } from '../collections/load-articles';
 import { documentationCategories } from '../config/documentation-categories';
 import type { DocumentationCategory } from '../config/documentation-category';
-import { loadArticles } from '../collections/load-articles';
-import type { PageType } from '../seo/page-type';
 import type { Breadcrumb } from '../seo/breadcrumb';
 import type { JsonLdObject } from '../seo/json-ld-object';
+import type { PageType } from '../seo/page-type';
 import BaseLayout from './BaseLayout.astro';
 
+// Documentation pages: a sidebar of every article grouped by category (native <details>, no JavaScript), the
+// content, and an optional right-hand rail (e.g. "On this page").
 interface Props {
     readonly title: string;
     readonly description: string;
@@ -29,64 +29,168 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
 }
 ---
 <BaseLayout {...props}>
-    <Section>
-        <div class="row">
-            <div class="col-12 col-lg-4 mb-4 mb-lg-0">
-                <nav class="documentation-sidebar" aria-label="Documentation">
-                    <Card>
-                        <div class="accordion" id="documentation-navigation">
-                            {documentationCategories.map((category: DocumentationCategory) => {
-                                const isOpen: boolean = category.id === props.currentCategory;
-                                const panelId: string = `documentation-${category.id}`;
-                                return (
-                                    <div class="accordion-item border-0">
-                                        <h2 class="accordion-header">
-                                            <button
-                                                class:list={['accordion-button', { collapsed: !isOpen }]}
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target={`#${panelId}`}
-                                                aria-expanded={isOpen ? 'true' : 'false'}
-                                                aria-controls={panelId}
-                                            >
-                                                {category.name}
-                                            </button>
-                                        </h2>
-                                        <div id={panelId} class:list={['accordion-collapse collapse', { show: isOpen }]} data-bs-parent="#documentation-navigation">
-                                            <div class="accordion-body">
-                                                <ul class="nav flex-column">
-                                                    {articlesIn(category).map((article: CollectionEntry<'articles'>) => {
-                                                        const isCurrent: boolean = article.data.path === props.path;
-                                                        return (
-                                                            <li class="nav-item">
-                                                                <a class:list={['nav-link', { active: isCurrent }]} href={article.data.path} aria-current={isCurrent ? 'page' : undefined}>
-                                                                    {article.data.navigationTitle}
-                                                                </a>
-                                                            </li>
-                                                        );
-                                                    })}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </Card>
-                </nav>
-            </div>
-            <div class="col-12 col-lg-8">
-                <slot />
-            </div>
+    <div class="docs-backdrop" aria-hidden="true"></div>
+    <div class:list={['container docs', { 'has-rail': Astro.slots.has('rail') }]}>
+        <nav class="docs-sidebar" aria-label="Documentation">
+            <a class="docs-home" href="/Documentation/" aria-current={props.path === '/Documentation' ? 'page' : undefined}>All documentation</a>
+            {documentationCategories.map((category: DocumentationCategory) => (
+                <details class="docs-category" open={category.id === props.currentCategory || props.currentCategory === undefined}>
+                    <summary>{category.name}</summary>
+                    <ul role="list">
+                        {articlesIn(category).map((article: CollectionEntry<'articles'>) => (
+                            <li>
+                                <a href={article.data.path} aria-current={article.data.path === props.path ? 'page' : undefined}>
+                                    {article.data.navigationTitle}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </details>
+            ))}
+        </nav>
+        <div class="docs-content">
+            <slot />
         </div>
-    </Section>
+        {Astro.slots.has('rail') && <aside class="docs-rail"><slot name="rail" /></aside>}
+    </div>
 </BaseLayout>
 
 <style>
-    @media (min-width: 992px) {
-        .documentation-sidebar {
+    .docs-backdrop {
+        position: absolute;
+        inset: 0 0 auto;
+        z-index: -1;
+        height: 32rem;
+        background: radial-gradient(ellipse 60% 100% at 30% 0%, color-mix(in srgb, var(--brand-blue) calc(var(--glow-strength) * 30%), transparent), transparent 70%);
+        pointer-events: none;
+    }
+
+    .docs {
+        display: grid;
+        gap: 2.5rem;
+        padding-block: calc(var(--header-height) + 3rem) var(--space-section);
+    }
+
+    @media (min-width: 60rem) {
+        .docs {
+            grid-template-columns: 15rem minmax(0, 1fr);
+            gap: 3.5rem;
+        }
+    }
+
+    @media (min-width: 80rem) {
+        .docs.has-rail {
+            grid-template-columns: 15rem minmax(0, 1fr) 13rem;
+        }
+    }
+
+    .docs-sidebar {
+        display: grid;
+        gap: 0.5rem;
+        align-content: start;
+        font-size: var(--text-sm);
+    }
+
+    @media (min-width: 60rem) {
+        .docs-sidebar {
             position: sticky;
-            top: 6rem;
+            top: calc(var(--header-height) + 2rem);
+            max-height: calc(100dvh - var(--header-height) - 4rem);
+            overflow-y: auto;
+        }
+    }
+
+    .docs-home,
+    .docs-category a {
+        display: block;
+        padding: 0.4rem 0.75rem;
+        border-radius: var(--radius-sm);
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color var(--duration), background-color var(--duration);
+    }
+
+    .docs-home {
+        margin-bottom: 0.5rem;
+        color: var(--heading);
+        font-weight: 600;
+    }
+
+    .docs-home:hover,
+    .docs-category a:hover {
+        background: color-mix(in srgb, var(--text) 6%, transparent);
+        color: var(--heading);
+    }
+
+    .docs-category summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.4rem 0.75rem;
+        border-radius: var(--radius-sm);
+        color: var(--text-subtle);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .docs-category summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .docs-category summary::after {
+        content: '';
+        width: 0.4rem;
+        height: 0.4rem;
+        border-right: 1.5px solid currentColor;
+        border-bottom: 1.5px solid currentColor;
+        transform: rotate(-45deg);
+        transition: transform var(--duration);
+    }
+
+    .docs-category[open] summary::after {
+        transform: rotate(45deg);
+    }
+
+    .docs-category ul {
+        display: grid;
+        gap: 0.15rem;
+        margin: 0.25rem 0 0.75rem 0.75rem;
+        padding-left: 0.5rem;
+        border-left: 1px solid var(--border);
+    }
+
+    .docs-category a[aria-current='page'],
+    .docs-home[aria-current='page'] {
+        position: relative;
+        background: color-mix(in srgb, var(--brand-blue) 14%, transparent);
+        color: var(--heading);
+        font-weight: 500;
+    }
+
+    .docs-category a[aria-current='page']::before {
+        content: '';
+        position: absolute;
+        inset: 0.35rem auto 0.35rem -0.55rem;
+        width: 2px;
+        border-radius: 2px;
+        background: var(--brand-gradient);
+    }
+
+    .docs-rail {
+        display: none;
+    }
+
+    @media (min-width: 80rem) {
+        .docs-rail {
+            display: block;
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            align-self: start;
         }
     }
 </style>

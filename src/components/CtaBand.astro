@@ -1,0 +1,77 @@
+---
+import Button from './Button.astro';
+
+// The closing call to action on most pages.
+interface Props {
+    readonly title?: string;
+    readonly primaryText?: string;
+    readonly primaryHref?: string;
+}
+
+const {
+    title = 'Let’s build something that lasts.',
+    primaryText = 'Send a message',
+    primaryHref = '/Contact',
+}: Props = Astro.props;
+const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
+---
+<section class="section-tight" aria-labelledby="cta-title">
+    <div class="container">
+        <div class="cta gradient-border reveal">
+            <div class="cta-glow" aria-hidden="true"></div>
+            <div class="cta-copy">
+                <h2 id="cta-title">{title}</h2>
+                <p class="lead"><slot>Whether you have a question, need a custom solution, or just want to explore what’s possible, we’re just a message away.</slot></p>
+            </div>
+            <div class="cluster">
+                <Button href={primaryHref} variant="primary" size="large" arrow>{primaryText}</Button>
+                <Button href={calendlyUrl} size="large" icon="calendar" external>Book a meeting</Button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .cta {
+        position: relative;
+        display: grid;
+        gap: 2rem;
+        align-items: center;
+        padding: clamp(2rem, 1.5rem + 3vw, 4rem);
+        border-radius: var(--radius-xl);
+        background: var(--surface);
+        overflow: hidden;
+    }
+
+    @media (min-width: 60rem) {
+        .cta {
+            grid-template-columns: 1fr auto;
+        }
+    }
+
+    .cta-copy {
+        display: grid;
+        gap: 0.9rem;
+        max-width: 38rem;
+    }
+
+    .cta h2 {
+        font-size: var(--text-3xl);
+    }
+
+    .cta .lead {
+        font-size: var(--text-lg);
+    }
+
+    .cta-glow {
+        position: absolute;
+        inset: auto -10% -70% auto;
+        z-index: -1;
+        width: 60%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(circle, color-mix(in srgb, var(--brand-violet) 60%, transparent), transparent 65%);
+        filter: blur(60px);
+        opacity: var(--glow-strength);
+    }
+</style>

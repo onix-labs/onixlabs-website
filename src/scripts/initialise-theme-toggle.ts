@@ -9,7 +9,7 @@ export function initialiseThemeToggle(): void {
     const toggleElement: HTMLElement | null = document.getElementById('theme-toggle');
     const toggle: HTMLElement | undefined = toggleElement ?? undefined;
     const darkQuery: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
-    const currentTheme: Theme = document.documentElement.getAttribute('data-bs-theme') === Theme.Dark ? Theme.Dark : Theme.Light;
+    const currentTheme: Theme = document.documentElement.getAttribute('data-theme') === Theme.Dark ? Theme.Dark : Theme.Light;
 
     applyTheme(currentTheme, toggle);
 

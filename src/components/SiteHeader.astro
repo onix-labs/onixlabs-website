@@ -1,97 +1,243 @@
 ---
 import { isCurrentPath } from '../config/is-current-path';
 import { navigation } from '../config/navigation';
-import { toCanonicalPath } from '../config/to-canonical-path';
 import type { NavigationItem } from '../config/navigation-item';
+import { toCanonicalPath } from '../config/to-canonical-path';
 import Icon from './Icon.astro';
-import ThemeImage from './ThemeImage.astro';
 
 const currentPath: string = Astro.url.pathname;
 ---
-<header>
-    <nav class="navbar navbar-expand-lg fixed-top py-2 py-md-3" id="navbar" aria-label="Main">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <ThemeImage
-                    light="/onixlabs/images/logo/logo-full-light.webp"
-                    dark="/onixlabs/images/logo/logo-full-dark.webp"
-                    alt="ONIXLabs home"
-                    height={32}
-                    width={170}
-                    loading="eager"
-                />
-            </a>
-            <button
-                class="navbar-toggler border-0"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbar-menu"
-                aria-controls="navbar-menu"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
+<header class="site-header">
+    <div class="container header-inner">
+        <a class="brand" href="/">
+            <img class="brand-logo brand-logo-light" src="/onixlabs/images/logo/logo-full-light.webp" alt="ONIXLabs home" width={153} height={29} />
+            <img class="brand-logo brand-logo-dark" src="/onixlabs/images/logo/logo-full-dark.webp" alt="ONIXLabs home" width={153} height={29} />
+        </a>
+
+        <nav class="primary-nav" aria-label="Main">
+            <ul role="list">
+                {navigation.map((item: NavigationItem) => {
+                    const isCurrent: boolean = isCurrentPath(item, currentPath);
+                    return (
+                        <li>
+                            <a class="nav-link" href={toCanonicalPath(item.path)} aria-current={isCurrent ? 'page' : undefined}>{item.label}</a>
+                        </li>
+                    );
+                })}
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <button id="theme-toggle" class="theme-toggle" type="button" role="switch" aria-checked="true" aria-label="Dark mode">
+                <Icon name="sun" class="theme-icon-sun" />
+                <Icon name="moon" class="theme-icon-moon" />
+            </button>
+            <a class="button button-primary header-cta" href="/Contact">Get in touch</a>
+            <button class="menu-button" type="button" popovertarget="mobile-menu" aria-label="Toggle navigation">
                 <Icon name="bars" />
             </button>
-            <div class="collapse navbar-collapse" id="navbar-menu">
-                <ul class="navbar-nav ms-auto gap-2">
-                    {navigation.map((item: NavigationItem) => {
-                        const isCurrent: boolean = isCurrentPath(item, currentPath);
-                        return (
-                            <li class="nav-item">
-                                <a class:list={['nav-link', { active: isCurrent }]} href={toCanonicalPath(item.path)} aria-current={isCurrent ? 'page' : undefined}>
-                                    {item.label}
-                                </a>
-                            </li>
-                        );
-                    })}
-                </ul>
-                <button
-                    id="theme-toggle"
-                    class="theme-toggle d-flex flex-row align-items-center shadow-sm ms-lg-4 my-2 my-lg-0"
-                    type="button"
-                    role="switch"
-                    aria-checked="false"
-                    aria-label="Dark mode"
-                >
-                    <span class="theme-toggle-button"></span>
-                </button>
-            </div>
         </div>
-    </nav>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu" popover>
+        <nav aria-label="Mobile">
+            <ul role="list">
+                {navigation.map((item: NavigationItem) => (
+                    <li>
+                        <a href={toCanonicalPath(item.path)} aria-current={isCurrentPath(item, currentPath) ? 'page' : undefined}>
+                            {item.label}
+                            <Icon name="arrow-right" />
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    </div>
 </header>
 
 <style>
-    .navbar {
-        transition: background-color 0.3s ease, box-shadow 0.3s ease, border-bottom 0.3s ease;
-        background-color: var(--site-body-bg);
+    .site-header {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 100;
         border-bottom: 1px solid transparent;
+        transition: background-color 300ms, border-color 300ms, backdrop-filter 300ms;
     }
 
-    .navbar:global(.scrolled) {
-        background-color: var(--site-navbar-bg);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        border-bottom-color: var(--site-navbar-border);
+    .site-header:global(.is-scrolled) {
+        border-bottom-color: var(--border);
+        background: var(--header-bg);
+        -webkit-backdrop-filter: saturate(160%) blur(16px);
+        backdrop-filter: saturate(160%) blur(16px);
     }
 
-    .theme-toggle {
-        background: var(--site-card-bg);
-        border: none;
-        border-top: 0.1rem solid var(--site-card-border-top);
-        border-bottom: 0.1rem solid var(--site-card-border-bottom);
-        border-radius: 50rem;
-        padding: 0.1rem 0.2rem 0.2rem;
-        width: 3rem;
-        cursor: pointer;
+    .header-inner {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        height: var(--header-height);
     }
 
-    .theme-toggle[aria-checked='true'] {
-        flex-direction: row-reverse !important;
+    .brand {
+        display: flex;
+        flex: none;
+        border-radius: 6px;
     }
 
-    .theme-toggle-button {
-        background: rgba(var(--bs-secondary-rgb), 1);
-        border-radius: 100%;
-        width: 1.25rem;
-        height: 1.25rem;
+    .brand-logo {
+        width: auto;
+        height: 1.8rem;
+    }
+
+    :global([data-theme='light']) .brand-logo-dark,
+    :global([data-theme='dark']) .brand-logo-light {
+        display: none;
+    }
+
+    .primary-nav {
+        margin-left: auto;
+    }
+
+    .primary-nav ul {
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    .nav-link {
+        position: relative;
+        display: block;
+        padding: 0.5rem 0.85rem;
+        border-radius: 999px;
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        text-decoration: none;
+        transition: color var(--duration), background-color var(--duration);
+    }
+
+    .nav-link:hover {
+        color: var(--heading);
+        background: color-mix(in srgb, var(--text) 6%, transparent);
+    }
+
+    .nav-link[aria-current='page'] {
+        color: var(--heading);
+    }
+
+    .nav-link[aria-current='page']::after {
+        content: '';
+        position: absolute;
+        inset: auto 0.85rem 0.15rem;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--brand-gradient);
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .theme-toggle,
+    .menu-button {
+        display: grid;
+        place-items: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text-muted);
+        transition: color var(--duration), border-color var(--duration), transform 500ms var(--ease-out);
+    }
+
+    .theme-toggle:hover,
+    .menu-button:hover {
+        border-color: var(--border-strong);
+        color: var(--heading);
+    }
+
+    .theme-toggle:active {
+        transform: rotate(45deg);
+    }
+
+    .theme-toggle :global(.icon) {
+        grid-area: 1 / 1;
+        transition: opacity 300ms, transform 500ms var(--ease-out);
+    }
+
+    .theme-toggle[aria-checked='true'] :global(.theme-icon-sun),
+    .theme-toggle[aria-checked='false'] :global(.theme-icon-moon) {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0.5);
+    }
+
+    .header-cta {
+        min-height: 2.5rem;
+        padding: 0.55rem 1.05rem;
+    }
+
+    .menu-button {
+        display: none;
+    }
+
+    .mobile-menu {
+        inset: var(--header-height) 0 auto;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0.75rem var(--gutter) 1.5rem;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+    }
+
+    .mobile-menu::backdrop {
+        background: rgba(0, 0, 0, 0.35);
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+    }
+
+    .mobile-menu a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.95rem 0.25rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+    }
+
+    .mobile-menu a[aria-current='page'] {
+        background: var(--brand-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .mobile-menu a :global(.icon) {
+        color: var(--text-subtle);
+    }
+
+    @media (max-width: 52rem) {
+        .primary-nav,
+        .header-cta {
+            display: none;
+        }
+
+        .header-actions {
+            margin-left: auto;
+        }
+
+        .menu-button {
+            display: grid;
+        }
     }
 </style>

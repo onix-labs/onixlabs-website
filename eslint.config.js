@@ -3,18 +3,25 @@ import astro from 'eslint-plugin-astro';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import { importX } from 'eslint-plugin-import-x';
 import globals from 'globals';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 // TypeScript house style: strict type-aware linting for every .ts file, plus Astro's recommended and
 // accessibility rules for .astro templates. Config files that the tools require to default-export are exempt
 // from the named-exports rule.
-export default tseslint.config(
+export default defineConfig(
     {
         ignores: ['dist/', '.astro/', 'node_modules/', 'test-results/', 'playwright-report/', '.lighthouseci/'],
     },
     js.configs.recommended,
     ...astro.configs['flat/recommended'],
     ...astro.configs['flat/jsx-a11y-strict'],
+    {
+        rules: {
+            // Safari drops list semantics from lists styled with list-style: none, so unstyled lists say role="list".
+            'astro/jsx-a11y/no-redundant-roles': ['error', { ul: ['list'], ol: ['list'] }],
+        },
+    },
     {
         files: ['**/*.ts'],
         extends: [...tseslint.configs.strictTypeChecked, ...tseslint.configs.stylisticTypeChecked],

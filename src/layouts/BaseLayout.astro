@@ -1,12 +1,12 @@
 ---
-import '@fontsource/poppins/300.css';
-import '@fontsource/poppins/400.css';
-import '@fontsource/poppins/500.css';
-import '@fontsource/poppins/600.css';
-import '@fontsource/poppins/700.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'animate.css/animate.min.css';
-import '../styles/global.css';
+import '@fontsource/poppins/latin-500.css';
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/effects.css';
+import '../styles/prose.css';
 
 import Seo from '../components/Seo.astro';
 import SiteFooter from '../components/SiteFooter.astro';
@@ -31,14 +31,14 @@ interface Props {
 const props: Props = Astro.props;
 ---
 <!doctype html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-theme="dark">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <ThemeInitialiser />
         <meta name="color-scheme" content="light dark" />
-        <meta name="theme-color" content="#e9ecef" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#212529" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#07080b" media="(prefers-color-scheme: dark)" />
         <meta name="generator" content={Astro.generator} />
 
         <link rel="icon" sizes="48x48" type="image/png" href="/onixlabs/images/logo/logo-orb-48.png" />
@@ -49,10 +49,10 @@ const props: Props = Astro.props;
 
         <Seo {...props} />
     </head>
-    <body class="min-vh-100 d-flex flex-column">
+    <body>
         <a class="skip-link" href="#main-content">Skip to main content</a>
         <SiteHeader />
-        <main id="main-content" class="flex-grow-1" tabindex="-1">
+        <main id="main-content" tabindex="-1">
             <slot />
         </main>
         <SiteFooter />

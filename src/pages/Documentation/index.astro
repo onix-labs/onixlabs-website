@@ -1,9 +1,17 @@
 ---
-import Callout from '../../components/Callout.astro';
-import Headline from '../../components/Headline.astro';
-import Section from '../../components/Section.astro';
-import ThemeImage from '../../components/ThemeImage.astro';
+import type { CollectionEntry } from 'astro:content';
+
+import { loadArticles } from '../../collections/load-articles';
+import Icon from '../../components/Icon.astro';
+import { documentationCategories } from '../../config/documentation-categories';
+import type { DocumentationCategory } from '../../config/documentation-category';
 import DocumentationLayout from '../../layouts/DocumentationLayout.astro';
+
+const articles: ReadonlyArray<CollectionEntry<'articles'>> = await loadArticles();
+
+function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEntry<'articles'>> {
+    return articles.filter((article: CollectionEntry<'articles'>): boolean => article.data.category === category.id);
+}
 ---
 <DocumentationLayout
     title="Documentation"
@@ -11,21 +19,85 @@ import DocumentationLayout from '../../layouts/DocumentationLayout.astro';
     path="/Documentation"
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/Documentation' }]}
 >
-    <Section class="pt-0" centered>
-        <Headline level={1}>Documentation</Headline>
-        <Callout>Articles &bull; API Docs &bull; Blog Posts</Callout>
-        <ThemeImage
-            class="img-fluid"
-            light="/onixlabs/images/heroes/documentation.svg"
-            dark="/onixlabs/images/heroes/documentation-dark.svg"
-            alt=""
-            width={1440}
-            height={512}
-            loading="eager"
-        />
+    <header class="docs-intro">
+        <p class="eyebrow">Articles · API docs · Blog posts</p>
+        <h1>Documentation</h1>
         <p class="lead">
-            Explore our official documentation. From technical articles and product blogs to in-depth API references, everything's written,
-            organized, and maintained to give you clear, consistent answers, fast.
+            Explore our official documentation. From technical articles and product blogs to in-depth API references, everything's
+            written, organized, and maintained to give you clear, consistent answers, fast.
         </p>
-    </Section>
+    </header>
+
+    {documentationCategories.map((category: DocumentationCategory) => (
+        <section class="docs-group" aria-labelledby={`category-${category.id}`}>
+            <h2 id={`category-${category.id}`}>{category.name}</h2>
+            <div class="grid grid-2">
+                {articlesIn(category).map((article: CollectionEntry<'articles'>) => (
+                    <a class="card article-card reveal" href={article.data.path}>
+                        <h3>{article.data.title}</h3>
+                        <p>{article.data.description}</p>
+                        <span class="article-link">Read article <Icon name="arrow-right" /></span>
+                    </a>
+                ))}
+            </div>
+        </section>
+    ))}
 </DocumentationLayout>
+
+<style>
+    .docs-intro {
+        display: grid;
+        gap: 1rem;
+        max-width: 44rem;
+        margin-bottom: 3.5rem;
+    }
+
+    .docs-intro h1 {
+        font-size: var(--text-5xl);
+    }
+
+    .docs-group + .docs-group {
+        margin-top: 3rem;
+    }
+
+    .docs-group h2 {
+        margin-bottom: 1.25rem;
+        font-size: var(--text-2xl);
+    }
+
+    .article-card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1.5rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .article-card h3 {
+        font-size: var(--text-lg);
+    }
+
+    .article-card p {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .article-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-top: auto;
+        color: var(--heading);
+        font-size: var(--text-sm);
+        font-weight: 600;
+    }
+
+    .article-link :global(.icon) {
+        transition: transform var(--duration) var(--ease-out);
+    }
+
+    .article-card:hover .article-link :global(.icon) {
+        transform: translateX(4px);
+    }
+</style>

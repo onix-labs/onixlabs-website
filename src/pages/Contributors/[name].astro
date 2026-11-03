@@ -4,9 +4,10 @@ import type { CollectionEntry } from 'astro:content';
 import type { GetStaticPathsResult } from 'astro';
 
 import { loadContributors } from '../../collections/load-contributors';
-import Card from '../../components/Card.astro';
-import Icon from '../../components/Icon.astro';
-import Section from '../../components/Section.astro';
+import Aurora from '../../components/Aurora.astro';
+import Button from '../../components/Button.astro';
+import ContributorCard from '../../components/ContributorCard.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import { site } from '../../config/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { buildProfilePage } from '../../seo/build-profile-page';
@@ -14,6 +15,7 @@ import { PageType } from '../../seo/page-type';
 
 interface Props {
     readonly contributor: CollectionEntry<'contributors'>;
+    readonly colleagues: ReadonlyArray<CollectionEntry<'contributors'>>;
 }
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
@@ -21,13 +23,16 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
 
     return contributors.map((contributor: CollectionEntry<'contributors'>) => ({
         params: { name: contributor.data.path.split('/')[2] },
-        props: { contributor },
+        props: {
+            contributor,
+            colleagues: contributors.filter((colleague: CollectionEntry<'contributors'>): boolean => colleague.id !== contributor.id),
+        },
     }));
 }
 
-const { contributor }: Props = Astro.props;
+const { contributor, colleagues }: Props = Astro.props;
 const { Content } = await render(contributor);
-const { name, givenName, familyName, jobTitle, headline, description, photo, path, linkedInUrl, gitHubUrl }: CollectionEntry<'contributors'>['data'] = contributor.data;
+const { name, givenName, familyName, jobTitle, description, photo, path, linkedInUrl, gitHubUrl }: CollectionEntry<'contributors'>['data'] = contributor.data;
 ---
 <BaseLayout
     title={`${name}, ${jobTitle}`}
@@ -41,40 +46,88 @@ const { name, givenName, familyName, jobTitle, headline, description, photo, pat
         buildProfilePage({ name, givenName, familyName, jobTitle, description, path, photo, sameAs: [linkedInUrl, gitHubUrl] }, site),
     ]}
 >
-    <Section>
-        <div class="row">
-            <div class="col-12 col-sm-8 offset-sm-2 col-md-4 offset-md-0 col-lg-3 mb-4">
-                <Card class="rounded-4 p-2">
-                    <img class="rounded-2 w-100 h-auto" src={photo} alt={`Portrait of ${name}`} width={640} height={640} loading="eager" fetchpriority="high" />
-                    <div class="d-flex flex-row justify-content-evenly gap-2 mt-2">
-                        <a class="btn btn-primary w-100" href={linkedInUrl} target="_blank" rel="noopener noreferrer">
-                            <Icon name="linkedin" />
-                            <span class="ms-2">LinkedIn</span>
-                            <span class="visually-hidden"> (opens in a new tab)</span>
-                        </a>
-                        <a class="btn btn-dark w-100" href={gitHubUrl} target="_blank" rel="noopener noreferrer">
-                            <Icon name="github" />
-                            <span class="ms-2">GitHub</span>
-                            <span class="visually-hidden"> (opens in a new tab)</span>
-                        </a>
-                    </div>
-                </Card>
+    <section class="profile">
+        <Aurora />
+        <div class="container profile-grid">
+            <div class="portrait rise">
+                <div class="portrait-frame gradient-border">
+                    <img src={photo} alt={`Portrait of ${name}`} width={640} height={640} loading="eager" fetchpriority="high" />
+                </div>
+                <div class="cluster">
+                    <Button href={linkedInUrl} icon="linkedin" external>LinkedIn</Button>
+                    <Button href={gitHubUrl} icon="github" external>GitHub</Button>
+                </div>
             </div>
-            <div class="col-12 col-md-8 col-lg-9">
-                <h1 class="display-2 fw-bold">{name}</h1>
-                <p class="h2 fw-light text-body-secondary">{headline}</p>
-                <div class="biography mt-3">
+            <div class="biography">
+                <p class="eyebrow rise">{jobTitle}</p>
+                <h1 class="rise rise-2">{name}</h1>
+                <div class="prose rise rise-3">
                     <Content />
                 </div>
             </div>
         </div>
-    </Section>
+    </section>
+
+    <section class="section-tight" aria-labelledby="colleagues">
+        <div class="container">
+            <SectionHeader eyebrow="The team" title="Meet the rest of the team" id="colleagues" />
+            <div class="grid grid-3">
+                {colleagues.map((colleague: CollectionEntry<'contributors'>) => <ContributorCard contributor={colleague} />)}
+            </div>
+        </div>
+    </section>
 </BaseLayout>
 
 <style>
-    @media (min-width: 768px) {
-        .biography :global(p) {
-            text-align: justify;
+    .profile {
+        position: relative;
+        isolation: isolate;
+        padding-block: calc(var(--header-height) + 4rem) var(--space-section);
+        overflow: hidden;
+    }
+
+    .profile-grid {
+        display: grid;
+        gap: clamp(2.5rem, 2rem + 3vw, 5rem);
+        align-items: start;
+    }
+
+    @media (min-width: 56rem) {
+        .profile-grid {
+            grid-template-columns: minmax(16rem, 22rem) 1fr;
         }
+
+        .portrait {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+        }
+    }
+
+    .portrait {
+        display: grid;
+        gap: 1.25rem;
+        max-width: 26rem;
+    }
+
+    .portrait-frame {
+        padding: 0.5rem;
+        border-radius: var(--radius-xl);
+        background: var(--surface);
+    }
+
+    .portrait-frame img {
+        width: 100%;
+        border-radius: calc(var(--radius-xl) - 0.5rem);
+    }
+
+    .biography {
+        display: grid;
+        gap: 1rem;
+        max-width: 46rem;
+    }
+
+    .biography .prose {
+        margin-top: 1rem;
+        color: var(--text-muted);
     }
 </style>

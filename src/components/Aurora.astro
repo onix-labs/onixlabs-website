@@ -1,0 +1,18 @@
+---
+import type { AuroraPalette } from './aurora-palette';
+
+// Decorative drifting light behind a section, in the brand palette or a product family's colours.
+
+interface Props {
+    readonly palette?: AuroraPalette;
+    readonly grid?: boolean;
+}
+
+const { palette = 'brand', grid = true }: Props = Astro.props;
+---
+{grid && <div class="grid-backdrop" aria-hidden="true"></div>}
+<div class={`aurora aurora-${palette}`} aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>

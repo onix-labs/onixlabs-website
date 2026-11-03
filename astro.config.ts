@@ -20,6 +20,12 @@ export default defineConfig({
     build: {
         format: 'file',
     },
+    vite: {
+        build: {
+            // Vite inlines small assets (including some font subsets) as data: URIs, which font-src 'self' blocks.
+            assetsInlineLimit: 0,
+        },
+    },
     integrations: [
         sitemap({
             filter: (page: string): boolean => !page.endsWith('/404'),

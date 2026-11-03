@@ -1,0 +1,57 @@
+---
+// The Aero product shot, lit by the turning logo ring.
+interface Props {
+    readonly eager?: boolean;
+}
+
+const { eager = false }: Props = Astro.props;
+---
+<div class="showcase">
+    <div class="orb-ring showcase-ring" aria-hidden="true"></div>
+    <img
+        class="showcase-image showcase-light"
+        src="/onixlabs/images/marketing/macbook-pro.webp"
+        alt="The Aero platform running on a laptop (for illustration purposes only)"
+        width={1400}
+        height={834}
+        loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : 'auto'}
+        decoding="async"
+    />
+    <img
+        class="showcase-image showcase-dark"
+        src="/onixlabs/images/marketing/macbook-pro-dark.webp"
+        alt="The Aero platform running on a laptop (for illustration purposes only)"
+        width={1400}
+        height={834}
+        loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : 'auto'}
+        decoding="async"
+    />
+</div>
+
+<style>
+    .showcase {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        isolation: isolate;
+    }
+
+    .showcase-ring {
+        z-index: -1;
+        width: 78%;
+    }
+
+    .showcase-image {
+        position: relative;
+        width: 100%;
+        filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.45));
+    }
+
+    :global([data-theme='light']) .showcase-dark,
+    :global([data-theme='dark']) .showcase-light {
+        display: none;
+    }
+</style>

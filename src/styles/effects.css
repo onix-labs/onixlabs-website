@@ -1,0 +1,300 @@
+/*
+ * Effects. All motion here is CSS-only and switches off under prefers-reduced-motion. Scroll reveals use
+ * scroll-driven animations where supported; elsewhere content is simply visible, so nothing depends on JavaScript.
+ */
+
+@keyframes rotate-angle {
+    to {
+        --angle: 360deg;
+    }
+}
+
+@keyframes drift-a {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(8%, 6%, 0) scale(1.12); }
+}
+
+@keyframes drift-b {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+    50% { transform: translate3d(-10%, 4%, 0) scale(0.92); }
+}
+
+@keyframes drift-c {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(0.95); }
+    50% { transform: translate3d(4%, -8%, 0) scale(1.1); }
+}
+
+@keyframes shimmer {
+    to { background-position: 200% center; }
+}
+
+@keyframes marquee {
+    to { transform: translateX(calc(-50% - var(--marquee-gap) / 2)); }
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+        transform: translateY(2rem);
+    }
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+        filter: blur(6px);
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Aurora: blurred brand-coloured light drifting behind a section. Decorative only. */
+.aurora {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
+    mask-image: linear-gradient(to bottom, #000 40%, transparent);
+}
+
+.aurora span {
+    position: absolute;
+    width: 46vmax;
+    height: 46vmax;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: var(--glow-strength);
+    will-change: transform;
+}
+
+.aurora span:nth-child(1) {
+    top: -22vmax;
+    left: -8vmax;
+    background: radial-gradient(circle, var(--aurora-a, var(--brand-violet)), transparent 65%);
+    animation: drift-a 22s var(--ease-in-out) infinite;
+}
+
+.aurora span:nth-child(2) {
+    top: -26vmax;
+    right: -14vmax;
+    background: radial-gradient(circle, var(--aurora-b, var(--brand-blue)), transparent 65%);
+    animation: drift-b 26s var(--ease-in-out) infinite;
+}
+
+.aurora span:nth-child(3) {
+    top: -12vmax;
+    left: 30%;
+    width: 34vmax;
+    height: 34vmax;
+    background: radial-gradient(circle, var(--aurora-c, var(--brand-rose)), transparent 65%);
+    animation: drift-c 30s var(--ease-in-out) infinite;
+    opacity: calc(var(--glow-strength) * 0.7);
+}
+
+/* A faint engineering grid, faded out towards the edges. */
+.grid-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    background-position: center top;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 75%);
+}
+
+/* Brand-gradient text with a slow shimmer. */
+.gradient-text {
+    background: linear-gradient(90deg, var(--brand-amber), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-teal), var(--brand-green), var(--brand-amber));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 8s linear infinite;
+}
+
+/* A 1px border drawn with the rotating brand conic gradient. */
+.gradient-border {
+    position: relative;
+    isolation: isolate;
+}
+
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--brand-conic);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    animation: rotate-angle 8s linear infinite;
+    pointer-events: none;
+}
+
+/* The ring from the logo orb, slowly turning. */
+.orb-ring {
+    position: absolute;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--brand-conic);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    animation: rotate-angle 14s linear infinite;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.orb-ring::after {
+    content: '';
+    position: absolute;
+    inset: -30%;
+    border-radius: 50%;
+    background: var(--brand-conic);
+    filter: blur(60px);
+    opacity: 0.35;
+}
+
+/* Spotlight cards: a soft light follows the pointer (src/scripts/initialise-spotlight.ts sets --pointer-x/y). */
+.card {
+    --pointer-x: 50%;
+    --pointer-y: -20%;
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    isolation: isolate;
+    overflow: hidden;
+    transition: border-color var(--duration), transform 400ms var(--ease-out);
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(28rem circle at var(--pointer-x) var(--pointer-y), color-mix(in srgb, var(--spot-color, var(--brand-violet)) calc(var(--glow-strength) * 32%), transparent), transparent 60%);
+    opacity: 0;
+    transition: opacity 400ms;
+    pointer-events: none;
+}
+
+.card:hover {
+    border-color: var(--border-strong);
+}
+
+.card:hover::after {
+    opacity: 1;
+}
+
+a.card:hover,
+.card.is-interactive:hover {
+    transform: translateY(-3px);
+}
+
+/* Logo marquee. The list is duplicated (the copy is aria-hidden) so the loop is seamless. */
+.marquee {
+    --marquee-gap: 3.5rem;
+    display: flex;
+    gap: var(--marquee-gap);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.marquee-track {
+    display: flex;
+    flex: none;
+    gap: var(--marquee-gap);
+    min-width: max-content;
+    animation: marquee 45s linear infinite;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+}
+
+/* Page-load entrance for hero content, staggered with --delay. */
+.rise {
+    animation: rise 900ms var(--ease-out) both;
+    animation-delay: var(--delay, 0ms);
+}
+
+/* Scroll reveal, driven by the scroll position rather than JavaScript. */
+@supports (animation-timeline: view()) {
+    .reveal {
+        animation: reveal linear both;
+        animation-timeline: view();
+        animation-range: entry 5% cover 28%;
+    }
+}
+
+/* Native cross-document view transitions: pages cross-fade, the header stays put. */
+@view-transition {
+    navigation: auto;
+}
+
+.site-header {
+    view-transition-name: site-header;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 280ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .reveal,
+    .rise {
+        animation: none !important;
+    }
+
+    .marquee {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .marquee-track {
+        flex-wrap: wrap;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    .marquee-track[aria-hidden='true'] {
+        display: none;
+    }
+
+    @view-transition {
+        navigation: none;
+    }
+}
+
+/* Aurora palettes */
+.aurora-dotnet { --aurora-a: var(--family-dotnet-from); --aurora-b: var(--family-dotnet-to); --aurora-c: var(--brand-cyan); }
+.aurora-corda { --aurora-a: var(--family-corda-from); --aurora-b: var(--family-corda-to); --aurora-c: var(--brand-amber); }
+.aurora-kotlin { --aurora-a: var(--family-kotlin-from); --aurora-b: var(--family-kotlin-to); --aurora-c: var(--brand-teal); }
+.aurora-aero { --aurora-a: var(--brand-amber); --aurora-b: var(--brand-rose); --aurora-c: var(--brand-violet); }
+
+.rise-2 { --delay: 120ms; }
+.rise-3 { --delay: 240ms; }
+.rise-4 { --delay: 360ms; }

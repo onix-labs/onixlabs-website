@@ -1,0 +1,60 @@
+---
+import { splitParagraphs } from '../collections/split-paragraphs';
+import Icon from './Icon.astro';
+
+// A card with an icon chip or a numbered index, a title and one or more paragraphs.
+interface Props {
+    readonly title: string;
+    readonly body: string;
+    readonly icon?: string;
+    readonly index?: number;
+    readonly headingLevel?: 'h3' | 'h4';
+}
+
+const { title, body, icon, index, headingLevel = 'h3' }: Props = Astro.props;
+const Heading: 'h3' | 'h4' = headingLevel;
+---
+<article class="card feature-card reveal">
+    {icon !== undefined && <span class="icon-chip"><Icon name={icon} /></span>}
+    {index !== undefined && <span class="feature-index" aria-hidden="true">{String(index).padStart(2, '0')}</span>}
+    <Heading class="feature-title">{title}</Heading>
+    {splitParagraphs(body).map((paragraph: string) => <p>{paragraph}</p>)}
+</article>
+
+<style>
+    .feature-card {
+        display: grid;
+        align-content: start;
+        gap: 0.85rem;
+        padding: clamp(1.4rem, 1.1rem + 1vw, 1.9rem);
+    }
+
+    .feature-card p {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        line-height: 1.7;
+    }
+
+    .feature-title {
+        margin-top: 0.35rem;
+        font-size: var(--text-lg);
+    }
+
+    .feature-index {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: var(--text-subtle);
+    }
+
+    .feature-index::after {
+        content: '';
+        display: inline-block;
+        width: 1.5rem;
+        height: 1px;
+        margin-left: 0.6rem;
+        vertical-align: middle;
+        background: var(--brand-gradient);
+    }
+</style>

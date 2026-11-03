@@ -2,30 +2,24 @@
 aero:
   principles:
     - title: Built for Acceleration
-      light: /onixlabs/images/icons/glass/rocket.webp
-      dark: /onixlabs/images/icons/glass/rocket-dark.webp
+      icon: rocket
       body: Get up and running in minutes, not months. Aero provides essential infrastructure, right out of the box.
     - title: Modular by Design
-      light: /onixlabs/images/icons/glass/stack.webp
-      dark: /onixlabs/images/icons/glass/stack-dark.webp
+      icon: layer-group
       body: Pick and choose the features you need. Everything is built around dependency injection for seamless, flexible
         integration.
     - title: Enterprise-Grade Foundations
-      light: /onixlabs/images/icons/glass/buildings.webp
-      dark: /onixlabs/images/icons/glass/buildings-dark.webp
+      icon: building
       body: Scalable, performant, and production-ready. Aero handles the heavy lifting so you can focus on your core domain.
     - title: Modern and Legacy Friendly
-      light: /onixlabs/images/icons/glass/lambda.webp
-      dark: /onixlabs/images/icons/glass/lambda-dark.webp
+      icon: code-compare
       body: Support for synchronous and asynchronous APIs means Aero plays nicely with both cutting-edge and established
         systems.
     - title: Security, Sorted
-      light: /onixlabs/images/icons/glass/shield-alt.webp
-      dark: /onixlabs/images/icons/glass/shield-alt-dark.webp
+      icon: shield-halved
       body: Built-in support for data privacy, integrity, secrets management, and digital signing using Hashicorp Vault.
     - title: Observability First
-      light: /onixlabs/images/icons/glass/telemetry.webp
-      dark: /onixlabs/images/icons/glass/telemetry-dark.webp
+      icon: chart-line
       body: Robust logging and telemetry tools included, so you can understand, debug, and optimize with confidence.
   architecture:
     - title: API-First Design

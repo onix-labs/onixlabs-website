@@ -1,0 +1,72 @@
+---
+import Aurora from './Aurora.astro';
+import type { AuroraPalette } from './aurora-palette';
+
+// The top of every inner page: aurora, eyebrow, the page's <h1>, a lead and optional actions and media.
+interface Props {
+    readonly eyebrow?: string;
+    readonly title: string;
+    readonly highlight?: string;
+    readonly palette?: AuroraPalette;
+    readonly centered?: boolean;
+}
+
+const { eyebrow, title, highlight, palette = 'brand', centered = false }: Props = Astro.props;
+---
+<section class:list={['page-hero', { 'is-centered': centered, 'has-media': Astro.slots.has('media') }]}>
+    <Aurora palette={palette} />
+    <div class="container page-hero-inner">
+        <div class="page-hero-copy">
+            {eyebrow !== undefined && <p class="eyebrow rise">{eyebrow}</p>}
+            <h1 class="rise">{title}{highlight !== undefined && <Fragment> <span class="gradient-text">{highlight}</span></Fragment>}</h1>
+            {Astro.slots.has('default') && <div class="lead rise rise-2"><slot /></div>}
+            {Astro.slots.has('actions') && <div class="cluster page-hero-actions rise rise-3"><slot name="actions" /></div>}
+        </div>
+        {Astro.slots.has('media') && <div class="page-hero-media rise rise-3"><slot name="media" /></div>}
+    </div>
+</section>
+
+<style>
+    .page-hero {
+        position: relative;
+        isolation: isolate;
+        padding-block: calc(var(--header-height) + clamp(3.5rem, 2rem + 6vw, 7rem)) clamp(3.5rem, 2.5rem + 4vw, 6rem);
+        overflow: hidden;
+    }
+
+    .page-hero-inner {
+        display: grid;
+        gap: clamp(2.5rem, 2rem + 3vw, 4rem);
+        align-items: center;
+    }
+
+    .page-hero.has-media .page-hero-inner {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+    }
+
+    .page-hero-copy {
+        display: grid;
+        gap: 1.4rem;
+        max-width: 46rem;
+    }
+
+    .page-hero.is-centered .page-hero-copy {
+        margin-inline: auto;
+        justify-items: center;
+        text-align: center;
+    }
+
+    .page-hero-actions {
+        margin-top: 0.6rem;
+    }
+
+    .page-hero.is-centered .page-hero-actions {
+        justify-content: center;
+    }
+
+    .page-hero-media {
+        position: relative;
+        display: grid;
+        place-items: center;
+    }
+</style>
