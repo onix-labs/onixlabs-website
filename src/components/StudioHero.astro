@@ -1,18 +1,17 @@
 ---
-import Aurora from './Aurora.astro';
 import Button from './Button.astro';
 import Icon from './Icon.astro';
 import type { StudioScreen } from './studio-screen';
 
-// The ONIXLabs Studio hero: a display headline, the download and GitHub actions, and a window that crossfades
-// through Studio's screens while a row of chips lights up in step. Choosing a chip (click, or arrow keys) pins that
-// screen. It's CSS only: radio buttons record the choice, :has() reacts to it, and the timing rules below are
-// generated per screen. Under reduced motion it holds the first screen until another is chosen.
+// The ONIXLabs Studio hero, after the Blazor site's Aero hero: grey at the top, melting into the header, blooming
+// into the full brand spectrum at the bottom. The headline sharpens into place; below it Studio's screens turn in a
+// cover-flow carousel, the current screen in front and its neighbours receding into depth on either side; the
+// actions sit beneath. All CSS: under reduced motion (or without animation support) the carousel holds its first
+// arrangement.
 //
-// The screens' order and count are mirrored in the generated CSS (.shot-N, .chip-N); regenerate both together.
-//
-// Every screenshot is lazy: the variant for the other theme is display:none, so it never downloads, and the first
-// screen is fetched at high priority while the queued ones wait at low priority.
+// The carousel's order and count are mirrored in the generated CSS (.shot-N, the coverflow keyframes); regenerate
+// both together. Every screenshot is lazy, so the other theme's variant never downloads; the front screen is fetched
+// at high priority and the rest at low.
 const screens: ReadonlyArray<StudioScreen> = [
     { id: 'mission-control', label: 'Mission Control', icon: 'rocket-launch', alt: 'Mission Control: two agents side by side, one waiting for permission to run a command' },
     { id: 'agent', label: 'Agents', icon: 'sparkle', alt: 'An agent tab answering a question, with its reasoning shown' },
@@ -32,43 +31,27 @@ const releasesUrl: string = 'https://github.com/onix-labs/onixlabs-studio/releas
 const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
 ---
 <section class="studio-hero" aria-labelledby="studio-title">
-    <Aurora palette="studio" />
     <div class="studio-copy">
-        <p class="label rise">ONIXLabs Studio · Public beta</p>
-        <h1 id="studio-title" class="display studio-title">
-            <span class="mask-line"><span>Every tool you need.</span></span>
-            <span class="mask-line"><span class="gradient-text">In one studio.</span></span>
+        <p class="label blur-in">ONIXLabs Studio · Public beta</p>
+        <h1 id="studio-title" class="display studio-title blur-in blur-in-2">
+            Every tool you need.
+            <span class="gradient-text">In one studio.</span>
         </h1>
-        <p class="lead rise rise-2">
+        <p class="lead blur-in blur-in-3">
             An agentic development environment, where you and your AI agents work in the same project, the same terminals and
             the same editor. One window replaces an editor, a terminal, a git client and a handful of separate AI chats.
         </p>
-        <div class="cluster studio-actions rise rise-3">
-            <Button href={releasesUrl} variant="primary" size="large" icon="download-simple" external>Download the beta</Button>
-            <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
-        </div>
-        <p class="studio-meta rise rise-4">
-            <span class="platforms">
-                <Icon name="apple-logo" /><span class="visually-hidden">macOS,</span>
-                <Icon name="windows-logo" /><span class="visually-hidden">Windows and</span>
-                <Icon name="linux-logo" /><span class="visually-hidden">Linux.</span>
-                <span aria-hidden="true">macOS · Windows · Linux</span>
-            </span>
-            <span class="meta-divider" aria-hidden="true"></span>
-            <span>Free and open source (MIT)</span>
-        </p>
     </div>
 
-    <div class="studio-showcase">
-        <div class="stage settle">
-            <div class="stage-glow" aria-hidden="true"></div>
+    <div class="carousel" aria-label="ONIXLabs Studio screens" role="group">
+        <div class="carousel-track">
             {screens.map((screen: StudioScreen, index: number) => (
                 <figure class={`shot shot-${String(index)}`}>
                     <img
                         class="shot-light"
                         src={`/onixlabs/images/studio/${screen.id}-light-1600.webp`}
                         srcset={`/onixlabs/images/studio/${screen.id}-light-960.webp 960w, /onixlabs/images/studio/${screen.id}-light-1600.webp 1600w`}
-                        sizes="(min-width: 80rem) 72rem, 94vw"
+                        sizes="(min-width: 80rem) 52rem, 70vw"
                         alt={screen.alt}
                         width={1600}
                         height={1039}
@@ -80,7 +63,7 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
                         class="shot-dark"
                         src={`/onixlabs/images/studio/${screen.id}-dark-1600.webp`}
                         srcset={`/onixlabs/images/studio/${screen.id}-dark-960.webp 960w, /onixlabs/images/studio/${screen.id}-dark-1600.webp 1600w`}
-                        sizes="(min-width: 80rem) 72rem, 94vw"
+                        sizes="(min-width: 80rem) 52rem, 70vw"
                         alt={screen.alt}
                         width={1600}
                         height={1039}
@@ -91,28 +74,39 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
                 </figure>
             ))}
         </div>
+    </div>
 
-        <fieldset class="picker">
-            <legend class="visually-hidden">Show a Studio screen</legend>
-            {screens.map((screen: StudioScreen, index: number) => (
-                <Fragment>
-                    <input class="visually-hidden" type="radio" name="studio-screen" id={`studio-screen-${String(index)}`} value={screen.id} />
-                    <label class={`chip chip-${String(index)}`} for={`studio-screen-${String(index)}`}>
-                        <Icon name={screen.icon} />
-                        <span>{screen.label}</span>
-                    </label>
-                </Fragment>
-            ))}
-        </fieldset>
+    <div class="studio-actions">
+        <div class="cluster is-centered">
+            <Button href={releasesUrl} variant="primary" size="large" icon="download-simple" external>Download the beta</Button>
+            <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
+        </div>
+        <p class="studio-meta">
+            <span class="platforms">
+                <Icon name="apple-logo" /><span class="visually-hidden">macOS,</span>
+                <Icon name="windows-logo" /><span class="visually-hidden">Windows and</span>
+                <Icon name="linux-logo" /><span class="visually-hidden">Linux.</span>
+                <span aria-hidden="true">macOS · Windows · Linux</span>
+            </span>
+            <span class="meta-divider" aria-hidden="true"></span>
+            <span>Free and open source (MIT)</span>
+        </p>
     </div>
 </section>
 
 <style>
+    /*
+     * The bloom: the page grey holds solid behind the headline, then gives way to the full brand spectrum, which is
+     * at full strength along the bottom edge.
+     */
     .studio-hero {
         position: relative;
         isolation: isolate;
         overflow: hidden;
-        padding-block: clamp(3.5rem, 2.5rem + 5vw, 7.5rem) clamp(3rem, 2rem + 4vw, 6rem);
+        padding-block: clamp(3.5rem, 2.5rem + 5vw, 7rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+        background:
+            linear-gradient(to bottom, var(--bg) 0%, var(--bg) 34%, color-mix(in srgb, var(--bg) 0%, transparent) 100%),
+            var(--brand-gradient);
     }
 
     .studio-copy {
@@ -130,22 +124,109 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
         font-weight: 600;
     }
 
+    .studio-title .gradient-text {
+        display: block;
+        padding-bottom: 0.06em;
+    }
+
     .studio-copy .lead {
         max-width: 44rem;
     }
 
-    .studio-actions {
-        justify-content: center;
-        margin-top: 0.4rem;
+    /* The carousel: a 3D stage; each screen moves through the same sequence of positions, offset in time. */
+    .carousel {
+        position: relative;
+        margin: clamp(2.5rem, 2rem + 3vw, 4.5rem) auto 0;
+        width: min(100%, 84rem);
+        perspective: 1800px;
+        perspective-origin: 50% 40%;
     }
 
+    .carousel-track {
+        display: grid;
+        justify-items: center;
+        transform-style: preserve-3d;
+    }
+
+    .shot {
+        grid-area: 1 / 1;
+        width: min(68%, 54rem);
+        margin: 0;
+        transform-style: preserve-3d;
+        will-change: transform, opacity, filter;
+    }
+
+    .shot img {
+        width: 100%;
+        height: auto;
+    }
+
+    :global([data-theme='light']) .shot-dark,
+    :global([data-theme='dark']) .shot-light {
+        display: none;
+    }
+
+    /* The first arrangement, which is also the static fallback. */
+    .shot-0 { transform: translateX(0%) translateZ(0px) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
+    .shot-1 { transform: translateX(44%) translateZ(-280px) rotateY(-20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
+    .shot-2 { transform: translateX(74%) translateZ(-560px) rotateY(-28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
+    .shot-3 { transform: translateX(96%) translateZ(-820px) rotateY(-32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
+    .shot-4 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+    .shot-5 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+    .shot-6 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+    .shot-7 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+    .shot-8 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+    .shot-9 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+    .shot-10 { transform: translateX(-96%) translateZ(-820px) rotateY(32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
+    .shot-11 { transform: translateX(-74%) translateZ(-560px) rotateY(28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
+    .shot-12 { transform: translateX(-44%) translateZ(-280px) rotateY(20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .shot {
+            animation: coverflow 52s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
+        }
+
+        .carousel:hover .shot {
+            animation-play-state: paused;
+        }
+
+        .shot-0 { animation-delay: -24s; }
+        .shot-1 { animation-delay: -20s; }
+        .shot-2 { animation-delay: -16s; }
+        .shot-3 { animation-delay: -12s; }
+        .shot-4 { animation-delay: -8s; }
+        .shot-5 { animation-delay: -4s; }
+        .shot-6 { animation-delay: 0s; }
+        .shot-7 { animation-delay: -48s; }
+        .shot-8 { animation-delay: -44s; }
+        .shot-9 { animation-delay: -40s; }
+        .shot-10 { animation-delay: -36s; }
+        .shot-11 { animation-delay: -32s; }
+        .shot-12 { animation-delay: -28s; }
+    }
+
+    .studio-actions {
+        display: grid;
+        gap: 1.25rem;
+        justify-items: center;
+        width: min(100% - 2 * var(--gutter), 60rem);
+        margin: clamp(2rem, 1.5rem + 2vw, 3rem) auto 0;
+    }
+
+    /* The meta line sits on the vibrant part of the bloom, so it gets a raised surface of its own. */
     .studio-meta {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem 1rem;
-        color: var(--text-muted);
+        gap: 0.4rem 0.9rem;
+        padding: 0.45rem 1rem;
+        border-top: var(--border-width) solid var(--edge-light);
+        border-bottom: var(--border-width) solid var(--edge-dark);
+        border-radius: var(--radius-pill);
+        background: var(--surface);
+        box-shadow: var(--shadow-sm);
+        color: var(--text);
         font-size: var(--text-sm);
     }
 
@@ -156,12 +237,12 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
     }
 
     .platforms :global(.icon) {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: var(--heading);
     }
 
     .platforms > span[aria-hidden='true'] {
-        margin-left: 0.25rem;
+        margin-left: 0.2rem;
     }
 
     .meta-divider {
@@ -171,224 +252,30 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
         background: var(--text-muted);
     }
 
-    .studio-showcase {
-        display: grid;
-        gap: clamp(1.25rem, 1rem + 1vw, 2rem);
-        width: min(100% - 2 * var(--gutter), 76rem);
-        margin: clamp(3rem, 2rem + 4vw, 5rem) auto 0;
-    }
-
-    /* The window: each screen is stacked in the same place and fades in turn. */
-    .stage {
-        position: relative;
-        display: grid;
-        aspect-ratio: 1600 / 1039;
-    }
-
-    .stage-glow {
-        position: absolute;
-        inset: 18% 8% -4%;
-        z-index: -1;
-        border-radius: 50%;
-        background: radial-gradient(closest-side, color-mix(in srgb, var(--brand-violet) 55%, transparent), color-mix(in srgb, var(--brand-blue) 30%, transparent) 60%, transparent);
-        filter: blur(50px);
-        opacity: var(--glow);
-    }
-
-    .shot {
-        grid-area: 1 / 1;
-        margin: 0;
-        opacity: 0;
-    }
-
-    .shot img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-
-    .shot-0 {
-        opacity: 1;
-    }
-
-    :global([data-theme='light']) .shot-dark,
-    :global([data-theme='dark']) .shot-light {
-        display: none;
-    }
-
-    /* The chips: one per screen, scrolling sideways on narrow screens. */
-    .picker {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.4rem;
-        margin: 0;
-        padding: 0;
-        border: 0;
-        min-inline-size: 0;
-    }
-
-    .chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.45rem 0.85rem;
-        border: none;
-        border-top: var(--border-width) solid transparent;
-        border-bottom: var(--border-width) solid transparent;
-        border-radius: var(--radius-pill);
-        color: var(--text-muted);
-        font-size: var(--text-sm);
-        font-weight: var(--weight-medium);
-        white-space: nowrap;
-        cursor: pointer;
-        transition: background-color var(--transition), color var(--transition);
-    }
-
-    .chip:hover {
-        color: var(--heading);
-    }
-
-    .chip-0 {
-        background-color: var(--surface);
-        color: var(--heading);
-        box-shadow: var(--shadow-sm);
-        border-top-color: var(--edge-light);
-        border-bottom-color: var(--edge-dark);
-    }
-
     @media (max-width: 40rem) {
-        .studio-meta {
-            flex-direction: column;
+        .shot {
+            width: 84%;
         }
 
         .meta-divider {
             display: none;
         }
-
-        .picker {
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            margin-inline: calc(var(--gutter) * -1);
-            padding: 0.25rem var(--gutter);
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
     }
 
-    /*
-     * Autoplay: the screens and chips cycle together, pausing while the pointer is over the showcase. Negative delays
-     * start every animation at once, each already part-way through the cycle, so nothing sits in its first keyframe
-     * waiting for its turn.
-     */
-    @media (prefers-reduced-motion: no-preference) {
-        .shot {
-            animation: shot-cycle 58.5s linear infinite both;
-        }
-
-        .chip {
-            animation: chip-cycle 58.5s linear infinite both;
-        }
-
-        .studio-showcase:hover .shot,
-        .studio-showcase:hover .chip,
-        .studio-showcase:focus-within .shot,
-        .studio-showcase:focus-within .chip {
-            animation-play-state: paused;
-        }
-
-        .shot-0, .chip-0 { animation-delay: 0s; }
-        .shot-1, .chip-1 { animation-delay: -54s; }
-        .shot-2, .chip-2 { animation-delay: -49.5s; }
-        .shot-3, .chip-3 { animation-delay: -45s; }
-        .shot-4, .chip-4 { animation-delay: -40.5s; }
-        .shot-5, .chip-5 { animation-delay: -36s; }
-        .shot-6, .chip-6 { animation-delay: -31.5s; }
-        .shot-7, .chip-7 { animation-delay: -27s; }
-        .shot-8, .chip-8 { animation-delay: -22.5s; }
-        .shot-9, .chip-9 { animation-delay: -18s; }
-        .shot-10, .chip-10 { animation-delay: -13.5s; }
-        .shot-11, .chip-11 { animation-delay: -9s; }
-        .shot-12, .chip-12 { animation-delay: -4.5s; }
-    }
-
-    /* Choosing a screen stops the cycle and pins it. */
-    .studio-hero:has(.picker input:checked) .shot {
-        animation: none;
-        opacity: 0;
-    }
-
-    .studio-hero:has(.picker input:checked) .chip {
-        animation: none;
-        background-color: transparent;
-        color: var(--text-muted);
-        box-shadow: none;
-        border-top-color: transparent;
-        border-bottom-color: transparent;
-    }
-
-    .studio-hero:has(#studio-screen-0:checked) .shot-0,
-    .studio-hero:has(#studio-screen-1:checked) .shot-1,
-    .studio-hero:has(#studio-screen-2:checked) .shot-2,
-    .studio-hero:has(#studio-screen-3:checked) .shot-3,
-    .studio-hero:has(#studio-screen-4:checked) .shot-4,
-    .studio-hero:has(#studio-screen-5:checked) .shot-5,
-    .studio-hero:has(#studio-screen-6:checked) .shot-6,
-    .studio-hero:has(#studio-screen-7:checked) .shot-7,
-    .studio-hero:has(#studio-screen-8:checked) .shot-8,
-    .studio-hero:has(#studio-screen-9:checked) .shot-9,
-    .studio-hero:has(#studio-screen-10:checked) .shot-10,
-    .studio-hero:has(#studio-screen-11:checked) .shot-11,
-    .studio-hero:has(#studio-screen-12:checked) .shot-12 {
-        opacity: 1;
-    }
-
-    .studio-hero:has(#studio-screen-0:checked) .chip-0,
-    .studio-hero:has(#studio-screen-1:checked) .chip-1,
-    .studio-hero:has(#studio-screen-2:checked) .chip-2,
-    .studio-hero:has(#studio-screen-3:checked) .chip-3,
-    .studio-hero:has(#studio-screen-4:checked) .chip-4,
-    .studio-hero:has(#studio-screen-5:checked) .chip-5,
-    .studio-hero:has(#studio-screen-6:checked) .chip-6,
-    .studio-hero:has(#studio-screen-7:checked) .chip-7,
-    .studio-hero:has(#studio-screen-8:checked) .chip-8,
-    .studio-hero:has(#studio-screen-9:checked) .chip-9,
-    .studio-hero:has(#studio-screen-10:checked) .chip-10,
-    .studio-hero:has(#studio-screen-11:checked) .chip-11,
-    .studio-hero:has(#studio-screen-12:checked) .chip-12 {
-        background-color: var(--surface);
-        color: var(--heading);
-        box-shadow: var(--shadow-sm);
-        border-top-color: var(--edge-light);
-        border-bottom-color: var(--edge-dark);
-    }
-
-    .studio-hero:has(#studio-screen-0:focus-visible) .chip-0,
-    .studio-hero:has(#studio-screen-1:focus-visible) .chip-1,
-    .studio-hero:has(#studio-screen-2:focus-visible) .chip-2,
-    .studio-hero:has(#studio-screen-3:focus-visible) .chip-3,
-    .studio-hero:has(#studio-screen-4:focus-visible) .chip-4,
-    .studio-hero:has(#studio-screen-5:focus-visible) .chip-5,
-    .studio-hero:has(#studio-screen-6:focus-visible) .chip-6,
-    .studio-hero:has(#studio-screen-7:focus-visible) .chip-7,
-    .studio-hero:has(#studio-screen-8:focus-visible) .chip-8,
-    .studio-hero:has(#studio-screen-9:focus-visible) .chip-9,
-    .studio-hero:has(#studio-screen-10:focus-visible) .chip-10,
-    .studio-hero:has(#studio-screen-11:focus-visible) .chip-11,
-    .studio-hero:has(#studio-screen-12:focus-visible) .chip-12 {
-        outline: 2px solid var(--focus);
-        outline-offset: 2px;
-    }
-
-    @keyframes shot-cycle {
-        0% { opacity: 0; }
-        1.368% { opacity: 1; }
-        7.692% { opacity: 1; }
-        9.060%, 100% { opacity: 0; }
-    }
-
-    @keyframes chip-cycle {
-        0%, 7.692% { background-color: var(--surface); color: var(--heading); box-shadow: var(--shadow-sm); border-top-color: var(--edge-light); border-bottom-color: var(--edge-dark); }
-        7.702%, 100% { background-color: transparent; color: var(--text-muted); box-shadow: none; border-top-color: transparent; border-bottom-color: transparent; }
+    @keyframes coverflow {
+        0.000%, 5.538% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        7.692%, 13.231% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        15.385%, 20.923% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        23.077%, 28.615% { transform: translateX(96%) translateZ(-820px) rotateY(-32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
+        30.769%, 36.308% { transform: translateX(74%) translateZ(-560px) rotateY(-28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
+        38.462%, 44.000% { transform: translateX(44%) translateZ(-280px) rotateY(-20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
+        46.154%, 51.692% { transform: translateX(0%) translateZ(0px) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
+        53.846%, 59.385% { transform: translateX(-44%) translateZ(-280px) rotateY(20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
+        61.538%, 67.077% { transform: translateX(-74%) translateZ(-560px) rotateY(28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
+        69.231%, 74.769% { transform: translateX(-96%) translateZ(-820px) rotateY(32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
+        76.923%, 82.462% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        84.615%, 90.154% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        92.308%, 97.846% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+        100% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
     }
 </style>
