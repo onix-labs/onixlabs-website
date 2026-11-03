@@ -1,0 +1,88 @@
+---
+import Card from '../../components/ui/Card.astro';
+import DescriptionList from '../../components/ui/DescriptionList.astro';
+import type { DescriptionItem } from '../../components/ui/description-item';
+import Stat from '../../components/ui/Stat.astro';
+import Specimen from '../Specimen.astro';
+
+const details: ReadonlyArray<DescriptionItem> = [
+    { term: 'Name', description: 'Sample project' },
+    { term: 'Status', description: 'In progress' },
+    { term: 'Owner', description: 'Ada Lovelace' },
+    { term: 'Last updated', description: '12 March' },
+];
+---
+<Specimen title="Stat" code={'<Stat label="Messages" value="1,284" caption="+8% this week" />\n<Stat label="Calls" value="57" caption="3 missed" />\n<Stat label="Uptime" value="99.9%" />'}>
+    <Fragment slot="notes">
+        <p>A single figure: a muted label, a large bold value and an optional muted caption for context or trend. Values use tabular numerals so a row of stats lines up.</p>
+        <p>The <code>value</code> slot replaces the prop when the figure needs markup, such as a unit.</p>
+    </Fragment>
+    <div class="stats">
+        <Stat label="Messages" value="1,284" caption="+8% this week" />
+        <Stat label="Calls" value="57" caption="3 missed" />
+        <Stat label="Uptime" value="99.9%" />
+        <Stat label="Response time">
+            <Fragment slot="value">240<span class="unit">ms</span></Fragment>
+        </Stat>
+    </div>
+</Specimen>
+
+<Specimen title="Stats in cards" code={'<div class="grid grid-3">\n    <Card padded><Stat label="Messages" value="1,284" caption="+8% this week" /></Card>\n</div>'}>
+    <Fragment slot="notes"><p>On a dashboard, each stat sits in its own padded card.</p></Fragment>
+    <div class="grid grid-3">
+        <Card padded><Stat label="Messages" value="1,284" caption="+8% this week" /></Card>
+        <Card padded><Stat label="Calls" value="57" caption="3 missed" /></Card>
+        <Card padded><Stat label="Uptime" value="99.9%" caption="Last 30 days" /></Card>
+    </div>
+</Specimen>
+
+<Specimen title="Description list" code={'<DescriptionList items={[\n    { term: \'Name\', description: \'Sample project\' },\n    { term: \'Status\', description: \'In progress\' },\n]} />'}>
+    <Fragment slot="notes">
+        <p>Term–description pairs in two aligned columns: muted medium terms, body-coloured descriptions. Pass <code>items</code>, or write your own <code>&lt;dt&gt;</code> and <code>&lt;dd&gt;</code> pairs in the slot when a description needs markup.</p>
+    </Fragment>
+    <div class="sample">
+        <Card padded><DescriptionList items={details} /></Card>
+    </div>
+</Specimen>
+
+<Specimen title="Custom pairs and stacked" code={'<DescriptionList stacked>\n    <dt>Repository</dt>\n    <dd><a href="…">github.com/…</a></dd>\n</DescriptionList>'}>
+    <Fragment slot="notes"><p><code>stacked</code> puts each description under its term, for narrow containers such as sidebars.</p></Fragment>
+    <div class="grid grid-2">
+        <Card padded>
+            <DescriptionList>
+                <dt>Version</dt>
+                <dd><code>1.0.0</code></dd>
+                <dt>Link</dt>
+                <dd><a href="#custom-pairs-and-stacked">Sample link</a></dd>
+            </DescriptionList>
+        </Card>
+        <Card padded><DescriptionList items={details} stacked /></Card>
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>Stats and a description list in the dark palette.</p></Fragment>
+    <div class="grid grid-2">
+        <Card padded><Stat label="Messages" value="1,284" caption="+8% this week" /></Card>
+        <Card padded><DescriptionList items={details} /></Card>
+    </div>
+</Specimen>
+
+<style>
+    .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-5) var(--space-7);
+    }
+
+    .unit {
+        margin-inline-start: 0.15em;
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        font-weight: var(--weight-medium);
+    }
+
+    .sample {
+        max-width: 26rem;
+    }
+</style>

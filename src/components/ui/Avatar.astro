@@ -1,0 +1,90 @@
+---
+// A circular avatar (Stride's Avatar): the image at `src` when supplied, otherwise `initials` on a subtle disc. The
+// default slot is an adornment (a status badge or icon) pinned to the bottom-right, outside the disc's circular clip.
+// `alt` names the person: it is the image's alt text, or visually hidden text beside the initials. Leave it empty only
+// when the name is already written next to the avatar.
+interface Props {
+    readonly src?: string;
+    readonly initials?: string;
+    readonly alt?: string;
+    readonly size?: 'small' | 'default' | 'large' | 'xlarge';
+    readonly class?: string;
+}
+
+const { src, initials = '', alt = '', size = 'default', class: className = '' }: Props = Astro.props;
+const hasImage: boolean = src !== undefined && src.trim() !== '';
+const hasName: boolean = alt.trim() !== '';
+---
+<span class:list={['avatar', `avatar-${size}`, className]} title={hasName ? alt : undefined}>
+    <span class="avatar-disc">
+        {hasImage
+            ? <img class="avatar-image" src={src} alt={alt} width="80" height="80" loading="lazy" decoding="async" />
+            : <span class="avatar-initials" aria-hidden={hasName ? 'true' : undefined}>{initials}</span>}
+        {!hasImage && hasName && <span class="visually-hidden">{alt}</span>}
+    </span>
+    {Astro.slots.has('default') && <span class="avatar-adornment"><slot /></span>}
+</span>
+
+<style>
+    /* The root is the positioning context for the adornment; it must not clip, so the circular clip lives on the disc. */
+    .avatar {
+        --avatar-size: 2.5rem;
+        position: relative;
+        display: inline-flex;
+        flex-shrink: 0;
+        width: var(--avatar-size);
+        height: var(--avatar-size);
+    }
+
+    .avatar-small {
+        --avatar-size: 2rem;
+    }
+
+    .avatar-large {
+        --avatar-size: 3rem;
+    }
+
+    .avatar-xlarge {
+        --avatar-size: 4rem;
+    }
+
+    .avatar-disc {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        border-radius: var(--radius-pill);
+        /* A circle, not a squircle: base.css applies squircle corners everywhere they are supported. */
+        corner-shape: round;
+        background-color: var(--primary-subtle);
+        color: var(--primary);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-semibold);
+        overflow: hidden;
+        box-shadow: var(--avatar-ring, none);
+    }
+
+    .avatar-image {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
+    }
+
+    .avatar-initials {
+        text-transform: uppercase;
+        line-height: 1;
+    }
+
+    /* An optional status adornment (badge or icon) pinned to the bottom-right, outside the disc's circular clip. */
+    .avatar-adornment {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+</style>

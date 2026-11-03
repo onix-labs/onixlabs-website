@@ -1,0 +1,71 @@
+---
+import Card from '../../components/ui/Card.astro';
+import Divider from '../../components/ui/Divider.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Horizontal" code={'<Divider />'}>
+    <Fragment slot="notes">
+        <p>A hairline <code>&lt;hr&gt;</code> in the border colour, with a little space above and below. As in Stride, the light-mode border is close to the page grey, so dividers belong on raised surfaces such as cards.</p>
+    </Fragment>
+    <div class="sample">
+        <Card padded>
+            <p>Content above the rule.</p>
+            <Divider />
+            <p>Content below the rule.</p>
+        </Card>
+    </div>
+</Specimen>
+
+<Specimen title="Vertical" code={'<div class="row">\n    <span>One</span>\n    <Divider vertical />\n    <span>Two</span>\n</div>'}>
+    <Fragment slot="notes"><p>Inside a flex row, a vertical divider stretches to the row's height. It is exposed as a vertical separator.</p></Fragment>
+    <div class="sample">
+        <Card padded>
+            <div class="row">
+                <span>One</span>
+                <Divider vertical />
+                <span>Two</span>
+                <Divider vertical />
+                <span>Three</span>
+            </div>
+        </Card>
+    </div>
+</Specimen>
+
+<Specimen title="With a label" code={'<Divider label="or" />'}>
+    <Fragment slot="notes"><p>A short label centred between two rules, such as "or" between two options. The rules are decoration; only the label is read.</p></Fragment>
+    <div class="sample">
+        <Card padded>
+            <p>First option.</p>
+            <Divider label="or" />
+            <p>Second option.</p>
+        </Card>
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>In the dark palette the border is a translucent black, which reads on any dark surface.</p></Fragment>
+    <div class="sample">
+        <Card padded>
+            <p>Content above the rule.</p>
+            <Divider />
+            <div class="row">
+                <span>One</span>
+                <Divider vertical />
+                <span>Two</span>
+            </div>
+            <Divider label="or" />
+            <p>Content below the rule.</p>
+        </Card>
+    </div>
+</Specimen>
+
+<style>
+    .sample {
+        max-width: 26rem;
+    }
+
+    .row {
+        display: flex;
+        align-items: center;
+    }
+</style>

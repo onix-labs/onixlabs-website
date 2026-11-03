@@ -1,0 +1,41 @@
+---
+import Tabs from '../../components/ui/Tabs.astro';
+import type { TabItem } from '../../components/ui/tab-item';
+import Specimen from '../Specimen.astro';
+
+const tabs: ReadonlyArray<TabItem> = [
+    { id: 'overview', label: 'Overview' },
+    { id: 'activity', label: 'Activity' },
+    { id: 'settings', label: 'Settings' },
+];
+---
+<Specimen title="Tabs" code={'<Tabs id="example" label="Example sections" tabs={[{ id: \'overview\', label: \'Overview\' }, …]}>\n    <div slot="overview">…</div>\n    <div slot="activity">…</div>\n</Tabs>'}>
+    <Fragment slot="notes">
+        <p>A strip of tabs over the panel they switch between. The selected tab takes the primary colour and a 2px underline that sits on the strip's hairline.</p>
+        <p>Each tab's content is the named slot matching its id. Tab into the strip, then use the arrow keys, Home and End to move between tabs; the panel follows the focus.</p>
+        <p>Without JavaScript the page shows every panel, one after another under a small label, and no strip. A short script (<code>src/scripts/initialise-tabs.ts</code>) then reveals the strip, gives the strip and panels their tab roles and hides the panels that aren't selected, so nothing is lost if it never runs.</p>
+    </Fragment>
+    <Tabs id="tabs-default" label="Example sections" tabs={tabs}>
+        <div slot="overview"><p>The overview tab panel.</p></div>
+        <div slot="activity"><p>The activity tab panel.</p></div>
+        <div slot="settings"><p>The settings tab panel.</p></div>
+    </Tabs>
+</Specimen>
+
+<Specimen title="Initial tab" code={'<Tabs id="…" label="…" tabs={tabs} selected="activity">…</Tabs>'}>
+    <Fragment slot="notes"><p>The first tab is selected unless <code>selected</code> names another.</p></Fragment>
+    <Tabs id="tabs-selected" label="Example sections, second selected" tabs={tabs} selected="activity">
+        <div slot="overview"><p>The overview tab panel.</p></div>
+        <div slot="activity"><p>The activity tab panel, selected on load.</p></div>
+        <div slot="settings"><p>The settings tab panel.</p></div>
+    </Tabs>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same tabs inside a dark band, where the primary turns near-white.</p></Fragment>
+    <Tabs id="tabs-dark" label="Example sections on a dark band" tabs={tabs}>
+        <div slot="overview"><p>The overview tab panel.</p></div>
+        <div slot="activity"><p>The activity tab panel.</p></div>
+        <div slot="settings"><p>The settings tab panel.</p></div>
+    </Tabs>
+</Specimen>

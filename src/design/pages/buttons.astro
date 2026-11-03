@@ -2,14 +2,15 @@
 import Button from '../../components/Button.astro';
 import Specimen from '../Specimen.astro';
 ---
-<Specimen title="Variants" code={'<Button href="…" variant="primary">Primary</Button>\n<Button href="…">Secondary</Button>\n<Button href="…" variant="spectral">Spectral</Button>'}>
+<Specimen title="Variants" surface="alt" code={'<Button href="…" variant="primary">Primary</Button>\n<Button href="…">Secondary</Button>\n<Button href="…" variant="danger">Danger</Button>\n<Button href="…" variant="spectral">Spectral</Button>'}>
     <Fragment slot="notes">
-        <p><strong>Primary</strong> is the one action that matters most in a section: a solid pill, near-black in light mode and white in dark, that picks up a brand-gradient glow on hover.</p>
-        <p><strong>Secondary</strong> is an outlined pill for the alternative. <strong>Spectral</strong> wears the turning brand gradient as its border; use it at most once per page.</p>
+        <p>Stride's buttons: soft squircle rectangles with a lighter edge on top and a darker one underneath, lifting slightly on hover and pressing in on click.</p>
+        <p><strong>Primary</strong> is the monochrome brand (near-black in light, near-white in dark) for the one action that matters most. <strong>Secondary</strong> is Stride's outline button, a raised surface. <strong>Danger</strong> is for destructive actions. <strong>Spectral</strong> is the ONIXLabs addition: a raised button wearing the turning brand gradient, at most once per page.</p>
     </Fragment>
     <div class="cluster">
         <Button href="#variants" variant="primary">Primary</Button>
         <Button href="#variants">Secondary</Button>
+        <Button href="#variants" variant="danger">Danger</Button>
         <Button href="#variants" variant="spectral">Spectral</Button>
     </div>
 </Specimen>
@@ -19,16 +20,18 @@ import Specimen from '../Specimen.astro';
     <div class="cluster">
         <Button href="#on-a-dark-band" variant="primary">Primary</Button>
         <Button href="#on-a-dark-band">Secondary</Button>
+        <Button href="#on-a-dark-band" variant="danger">Danger</Button>
         <Button href="#on-a-dark-band" variant="spectral">Spectral</Button>
     </div>
 </Specimen>
 
-<Specimen title="Sizes" code={'<Button href="…" variant="primary" size="large">Large</Button>'}>
-    <Fragment slot="notes"><p>Large buttons belong in heroes and the closing call to action; default size everywhere else.</p></Fragment>
+<Specimen title="Sizes" code={'<Button href="…" size="small">Small</Button>\n<Button href="…" size="large">Large</Button>'}>
+    <Fragment slot="notes"><p>Large buttons belong in heroes and the closing call to action, small ones in dense controls; default size everywhere else.</p></Fragment>
     <div class="cluster">
-        <Button href="#sizes" variant="primary" size="large">Large primary</Button>
-        <Button href="#sizes" size="large">Large secondary</Button>
+        <Button href="#sizes" variant="primary" size="large">Large</Button>
         <Button href="#sizes" variant="primary">Default</Button>
+        <Button href="#sizes" variant="primary" size="small">Small</Button>
+        <Button href="#sizes" size="small">Small secondary</Button>
     </div>
 </Specimen>
 

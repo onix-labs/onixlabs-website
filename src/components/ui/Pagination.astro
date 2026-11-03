@@ -1,0 +1,143 @@
+---
+import Icon from '../Icon.astro';
+import type { PageHref } from './page-href';
+
+// Page navigation (Stride's Pagination): previous and next plus a link for each page, with the current page filled and
+// marked aria-current. The site renders without JavaScript, so pages are links built by `href`. Beyond seven pages the
+// run is shortened to the first, last and neighbouring pages, with gaps shown as an ellipsis.
+interface Props {
+    readonly pageCount: number;
+    readonly currentPage?: number;
+    readonly href: PageHref;
+    readonly label?: string;
+    readonly class?: string;
+}
+
+const { pageCount, currentPage = 1, href, label = 'Pagination', class: className = '' }: Props = Astro.props;
+const count: number = Math.max(1, Math.floor(pageCount));
+const current: number = Math.min(Math.max(1, Math.floor(currentPage)), count);
+
+function visiblePages(): ReadonlyArray<number | 'gap'> {
+    const all: Array<number> = Array.from({ length: count }, (_: unknown, index: number): number => index + 1);
+
+    if (count <= 7) {
+        return all;
+    }
+
+    const start: number = Math.min(Math.max(2, current - 1), count - 4);
+    const end: number = Math.max(Math.min(count - 1, current + 1), 5);
+    const pages: Array<number | 'gap'> = [1];
+
+    if (start > 2) {
+        pages.push('gap');
+    }
+
+    for (let page: number = start; page <= end; page += 1) {
+        pages.push(page);
+    }
+
+    if (end < count - 1) {
+        pages.push('gap');
+    }
+
+    pages.push(count);
+    return pages;
+}
+
+const pages: ReadonlyArray<number | 'gap'> = visiblePages();
+const hasPrevious: boolean = current > 1;
+const hasNext: boolean = current < count;
+---
+<nav class:list={['pagination', className]} aria-label={label}>
+    <ul class="pagination-list" role="list">
+        <li>
+            {hasPrevious
+                ? <a class="page page-step" href={href(current - 1)}><Icon name="chevron-right" class="page-previous" /><span class="visually-hidden">Previous page</span></a>
+                : <span class="page page-step page-disabled" aria-hidden="true"><Icon name="chevron-right" class="page-previous" /><span class="visually-hidden">Previous page</span></span>}
+        </li>
+        {pages.map((page: number | 'gap') => (
+            <li>
+                {page === 'gap'
+                    ? <span class="page-gap" aria-hidden="true">…</span>
+                    : <a class:list={['page', { 'page-active': page === current }]} href={href(page)} aria-current={page === current ? 'page' : undefined}><span class="visually-hidden">Page </span>{page}</a>}
+            </li>
+        ))}
+        <li>
+            {hasNext
+                ? <a class="page page-step" href={href(current + 1)}><Icon name="chevron-right" /><span class="visually-hidden">Next page</span></a>
+                : <span class="page page-step page-disabled" aria-hidden="true"><Icon name="chevron-right" /><span class="visually-hidden">Next page</span></span>}
+        </li>
+    </ul>
+</nav>
+
+<style>
+    .pagination-list {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: var(--space-1);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .page {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2rem;
+        height: 2rem;
+        padding: 0 var(--space-2);
+        color: var(--text);
+        background-color: var(--surface);
+        border: none;
+        border-top: var(--border-width) solid var(--edge-light);
+        border-bottom: var(--border-width) solid var(--edge-dark);
+        border-radius: var(--radius);
+        corner-shape: var(--corner-shape);
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+        text-decoration: none;
+    }
+
+    a.page:hover {
+        background-color: var(--surface-alt);
+        text-decoration: none;
+    }
+
+    .page:focus-visible {
+        border-radius: var(--radius);
+    }
+
+    .page-disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .page-step :global(.icon) {
+        width: 0.7em;
+        height: 0.7em;
+    }
+
+    .page-step :global(.page-previous) {
+        transform: scaleX(-1);
+    }
+
+    .page.page-active,
+    a.page.page-active:hover {
+        color: var(--primary-contrast);
+        background-color: var(--primary);
+        border-color: var(--primary);
+    }
+
+    .page-gap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2rem;
+        height: 2rem;
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+</style>

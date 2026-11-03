@@ -1,0 +1,118 @@
+---
+import type { TabItem } from './tab-item';
+
+// Stride's Tabs: a strip of tabs over the panel they switch between. Each tab's content is the named slot that
+// matches its id: <Tabs id="…" label="…" tabs={[{ id: 'overview', label: 'Overview' }]}><div slot="overview">…</div>.
+//
+// Progressive: the HTML shows every panel in turn under its own label, and src/scripts/initialise-tabs.ts turns that
+// into an ARIA tabs widget (arrow keys, Home and End) once it runs.
+interface Props {
+    readonly id: string;
+    readonly label: string;
+    readonly tabs: ReadonlyArray<TabItem>;
+    readonly selected?: string;
+    readonly class?: string;
+}
+
+interface RenderedTab {
+    readonly tab: TabItem;
+    readonly tabId: string;
+    readonly panelId: string;
+    readonly isSelected: boolean;
+    readonly html: string;
+}
+
+const { id, label, tabs, selected, class: className }: Props = Astro.props;
+const selectedId: string | undefined = selected ?? tabs[0]?.id;
+const rendered: ReadonlyArray<RenderedTab> = await Promise.all(tabs.map(async (tab: TabItem): Promise<RenderedTab> => ({
+    tab,
+    tabId: `${id}-tab-${tab.id}`,
+    panelId: `${id}-panel-${tab.id}`,
+    isSelected: tab.id === selectedId,
+    html: Astro.slots.has(tab.id) ? await Astro.slots.render(tab.id) : '',
+})));
+---
+<div class:list={['tabs', className]} id={id} data-tabs>
+    <div class="tab-list" role="tablist" aria-label={label} hidden>
+        {rendered.map((item: RenderedTab) => (
+            <button type="button" class="tab" role="tab" id={item.tabId} aria-controls={item.panelId} aria-selected={item.isSelected ? 'true' : 'false'} tabindex={item.isSelected ? 0 : -1}>{item.tab.label}</button>
+        ))}
+    </div>
+    <div class="tab-panels">
+        {rendered.map((item: RenderedTab) => (
+            <div class="tab-panel" id={item.panelId}>
+                <p class="tab-panel-label label label-muted">{item.tab.label}</p>
+                <Fragment set:html={item.html} />
+            </div>
+        ))}
+    </div>
+</div>
+
+<script>
+    import { initialiseTabs } from '../../scripts/initialise-tabs';
+
+    initialiseTabs();
+</script>
+
+<style>
+    .tab-list {
+        display: flex;
+        gap: var(--space-1);
+        border-bottom: var(--border-width) solid var(--border);
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .tab-list[hidden] {
+        display: none;
+    }
+
+    .tab {
+        margin-bottom: calc(var(--border-width) * -1);
+        padding: var(--space-3) var(--space-4);
+        border: none;
+        border-bottom: 2px solid transparent;
+        background: none;
+        color: var(--text-muted);
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .tab:hover {
+        color: var(--text);
+    }
+
+    /* Inset, so the strip's scroll container doesn't clip the outline. */
+    .tab:focus-visible {
+        outline-offset: -2px;
+    }
+
+    .tab[aria-selected='true'] {
+        border-bottom-color: var(--primary);
+        color: var(--primary);
+        font-weight: var(--weight-medium);
+    }
+
+    .tab-panels {
+        display: grid;
+        gap: var(--space-5);
+    }
+
+    .tabs.is-enhanced .tab-panels {
+        padding-block-start: var(--space-4);
+    }
+
+    .tab-panel[hidden] {
+        display: none;
+    }
+
+    .tab-panel-label {
+        margin-bottom: var(--space-2);
+    }
+
+    .tabs.is-enhanced .tab-panel-label {
+        display: none;
+    }
+</style>

@@ -1,0 +1,93 @@
+---
+// One collapsible panel of an Accordion: a native <details>, so it opens and closes without JavaScript and its
+// content stays findable with find-in-page. Give every item in an accordion the same name to make them exclusive.
+interface Props {
+    readonly title: string;
+    readonly open?: boolean;
+    readonly name?: string;
+}
+
+const { title, open = false, name }: Props = Astro.props;
+---
+<details class="accordion-item" name={name} open={open}>
+    <summary class="accordion-header">
+        <span class="accordion-title">{title}</span>
+        <span class="accordion-marker" aria-hidden="true"></span>
+    </summary>
+    <div class="accordion-body"><slot /></div>
+</details>
+
+<style>
+    .accordion-item {
+        border-bottom: var(--border-width) solid var(--border);
+        interpolate-size: allow-keywords;
+    }
+
+    .accordion-item:last-child {
+        border-bottom: none;
+    }
+
+    .accordion-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+        width: 100%;
+        padding: var(--space-3) var(--space-4);
+        background: none;
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        font-weight: var(--weight-medium);
+        text-align: start;
+        list-style: none;
+        cursor: pointer;
+    }
+
+    .accordion-header::-webkit-details-marker {
+        display: none;
+    }
+
+    .accordion-header::marker {
+        content: '';
+    }
+
+    .accordion-header:hover {
+        background-color: var(--surface-alt);
+    }
+
+    /* Inset, so the accordion's clipped edges don't cut the outline off. */
+    .accordion-header:focus-visible {
+        border-radius: 0;
+        outline-offset: -2px;
+    }
+
+    .accordion-marker {
+        flex: none;
+        color: var(--text-muted);
+    }
+
+    .accordion-marker::before {
+        content: '+';
+    }
+
+    .accordion-item[open] .accordion-marker::before {
+        content: '\2212';
+    }
+
+    .accordion-body {
+        padding: var(--space-4);
+        border-top: var(--border-width) solid var(--border);
+    }
+
+    /* Stride's Collapse: the panel eases open and shut where the browser can animate to and from auto. */
+    .accordion-item::details-content {
+        block-size: 0;
+        overflow: hidden;
+        transition: block-size var(--transition), content-visibility var(--transition) allow-discrete;
+    }
+
+    .accordion-item[open]::details-content {
+        block-size: auto;
+    }
+</style>

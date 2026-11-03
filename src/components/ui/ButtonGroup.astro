@@ -1,0 +1,57 @@
+---
+// Related buttons joined into one segmented control (Stride's ButtonGroup). Put `.button` elements (or <Button>
+// components) in the default slot; only the outer corners stay rounded. `label` names the group for assistive
+// technology. For a set of links where one is current, give the current one `button-primary` and aria-current.
+interface Props {
+    readonly label: string;
+    readonly class?: string;
+}
+
+const { label, class: className = '' }: Props = Astro.props;
+---
+<div class:list={['button-group', className]} role="group" aria-label={label}>
+    <slot />
+</div>
+
+<style>
+    .button-group {
+        display: inline-flex;
+        border-radius: var(--radius);
+        corner-shape: var(--corner-shape);
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* Segments share edges: square inner corners, a hairline between neighbours, and no lift on hover. */
+    .button-group > :global(.button) {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .button-group > :global(.button:hover),
+    .button-group > :global(.button:active) {
+        transform: none;
+    }
+
+    .button-group > :global(.button:hover:not(.button-primary, .button-danger)) {
+        --button-bg: var(--surface-alt);
+    }
+
+    .button-group > :global(.button + .button) {
+        border-inline-start: var(--border-width) solid var(--border);
+    }
+
+    .button-group > :global(.button:first-child) {
+        border-start-start-radius: var(--radius);
+        border-end-start-radius: var(--radius);
+    }
+
+    .button-group > :global(.button:last-child) {
+        border-start-end-radius: var(--radius);
+        border-end-end-radius: var(--radius);
+    }
+
+    /* Keep the focus ring above the neighbouring segment. */
+    .button-group > :global(.button:focus-visible) {
+        z-index: 1;
+    }
+</style>

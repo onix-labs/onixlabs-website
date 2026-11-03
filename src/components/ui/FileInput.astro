@@ -1,0 +1,120 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import FormField from './FormField.astro';
+import type { FileInputVariant } from './file-input-variant';
+
+// A file picker (Stride's FileInput), labelled by a FormField. Stride hides the native input behind a styled label;
+// here the native <input type="file"> stays visible and its ::file-selector-button wears the button styles instead,
+// so the browser shows the chosen file names without any script. The trigger's wording is the browser's own. The
+// variants follow Button: primary (the default), secondary (a raised surface) and danger.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly label: string;
+    readonly accept?: string;
+    readonly multiple?: boolean;
+    readonly variant?: FileInputVariant;
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly class?: string;
+}
+
+const { id, name, label, accept, multiple = false, variant = 'primary', required = false, disabled = false, help, error, class: className = '' }: Props = Astro.props;
+
+const attributes: HTMLAttributes<'input'> = {
+    id,
+    name,
+    type: 'file',
+    accept,
+    multiple,
+    required,
+    disabled,
+    'aria-describedby': error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined,
+    'aria-invalid': error !== undefined ? 'true' : undefined,
+};
+---
+<FormField for={id} label={label} help={help} error={error} required={required} class={className}>
+    <input class:list={['file-input', `file-input-${variant}`]} {...attributes} />
+</FormField>
+
+<style>
+    .file-input {
+        --file-bg: var(--primary);
+        --file-text: var(--primary-contrast);
+        --file-edge-top: color-mix(in srgb, var(--primary), white 25%);
+        --file-edge-bottom: color-mix(in srgb, var(--primary), black 25%);
+        display: block;
+        max-width: 100%;
+        border-radius: var(--radius);
+        corner-shape: var(--corner-shape);
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        cursor: pointer;
+    }
+
+    .file-input-secondary {
+        --file-bg: var(--surface);
+        --file-text: var(--primary);
+        --file-edge-top: var(--edge-light);
+        --file-edge-bottom: var(--edge-dark);
+    }
+
+    .file-input-danger {
+        --file-bg: var(--danger);
+        --file-text: var(--danger-contrast);
+        --file-edge-top: color-mix(in srgb, var(--danger), white 25%);
+        --file-edge-bottom: color-mix(in srgb, var(--danger), black 25%);
+    }
+
+    /* The trigger: Stride's raised button, with a lighter edge on top and a darker one underneath. */
+    .file-input::file-selector-button {
+        display: inline-flex;
+        align-items: center;
+        margin-inline-end: var(--space-3);
+        padding: var(--space-2) var(--space-4);
+        border: none;
+        border-top: var(--border-width) solid var(--file-edge-top);
+        border-bottom: var(--border-width) solid var(--file-edge-bottom);
+        border-radius: var(--radius);
+        corner-shape: var(--corner-shape);
+        background-color: var(--file-bg);
+        color: var(--file-text);
+        box-shadow: var(--shadow-sm);
+        font: inherit;
+        font-weight: var(--weight-medium);
+        cursor: pointer;
+        transition: background-color var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .file-input:hover::file-selector-button {
+        transform: translateY(-1px) scale(1.02);
+    }
+
+    .file-input:active::file-selector-button {
+        transform: translateY(1px);
+    }
+
+    .file-input[aria-invalid='true']::file-selector-button {
+        box-shadow: 0 0 0 2px var(--danger), var(--shadow-sm);
+    }
+
+    .file-input:focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 3px;
+        border-radius: var(--radius);
+    }
+
+    .file-input:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* A disabled trigger stays put. */
+    .file-input:disabled::file-selector-button {
+        cursor: not-allowed;
+        transform: none;
+    }
+</style>

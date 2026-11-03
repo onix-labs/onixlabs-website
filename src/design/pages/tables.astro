@@ -1,0 +1,92 @@
+---
+import Card from '../../components/ui/Card.astro';
+import Table from '../../components/ui/Table.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Basic" code={'<Card>\n    <Table label="Settings">\n        <thead><tr><th scope="col">Key</th><th scope="col">Value</th></tr></thead>\n        <tbody>…</tbody>\n    </Table>\n</Card>'}>
+    <Fragment slot="notes">
+        <p>The Stride table: no rules between rows, a recessed header row in small muted capitals, and roomy cells. It has no surface of its own, so it is normally set in an unpadded card.</p>
+        <p>The wrapper scrolls sideways when the table is wider than its container. It is a labelled region that takes focus, so keyboard users can scroll it; <code>label</code> names it. Mark header cells with <code>scope</code>.</p>
+    </Fragment>
+    <Card>
+        <Table label="Settings">
+            <thead><tr><th scope="col">Key</th><th scope="col">Value</th></tr></thead>
+            <tbody>
+                <tr><td>Region</td><td>EU</td></tr>
+                <tr><td>Plan</td><td>Pro</td></tr>
+            </tbody>
+        </Table>
+    </Card>
+</Specimen>
+
+<Specimen title="Striped" code={'<Table label="People" striped>…</Table>'}>
+    <Fragment slot="notes"><p>Alternate rows take the alternate surface. Row header cells (<code>&lt;th scope="row"&gt;</code>) are set in the heading colour.</p></Fragment>
+    <Card>
+        <Table label="People, striped" striped>
+            <thead><tr><th scope="col">Name</th><th scope="col">Channel</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">Ada</th><td>Chat</td><td><span class="badge badge-success">Online</span></td></tr>
+                <tr><th scope="row">Grace</th><td>Mail</td><td><span class="badge">Offline</span></td></tr>
+                <tr><th scope="row">Alan</th><td>Call</td><td><span class="badge badge-warning">Away</span></td></tr>
+                <tr><th scope="row">Katherine</th><td>Chat</td><td><span class="badge badge-success">Online</span></td></tr>
+            </tbody>
+        </Table>
+    </Card>
+</Specimen>
+
+<Specimen title="Hover" code={'<Table label="People" hover>…</Table>'}>
+    <Fragment slot="notes"><p>Rows highlight under the pointer. Use it for tables whose rows link somewhere; combined with striping, a hovered stripe goes one step deeper.</p></Fragment>
+    <div class="grid grid-2">
+        <Card>
+            <Table label="People, hover" hover>
+                <thead><tr><th scope="col">Name</th><th scope="col">Channel</th></tr></thead>
+                <tbody>
+                    <tr><th scope="row">Ada</th><td>Chat</td></tr>
+                    <tr><th scope="row">Grace</th><td>Mail</td></tr>
+                    <tr><th scope="row">Alan</th><td>Call</td></tr>
+                </tbody>
+            </Table>
+        </Card>
+        <Card>
+            <Table label="People, striped with hover" striped hover>
+                <thead><tr><th scope="col">Name</th><th scope="col">Channel</th></tr></thead>
+                <tbody>
+                    <tr><th scope="row">Ada</th><td>Chat</td></tr>
+                    <tr><th scope="row">Grace</th><td>Mail</td></tr>
+                    <tr><th scope="row">Alan</th><td>Call</td></tr>
+                </tbody>
+            </Table>
+        </Card>
+    </div>
+</Specimen>
+
+<Specimen title="Wide tables and captions" code={'<Table label="Releases">\n    <caption>Releases by quarter</caption>\n    …\n</Table>'}>
+    <Fragment slot="notes"><p>A wide table scrolls inside its card instead of stretching the page; tab to it and use the arrow keys. A <code>&lt;caption&gt;</code> renders as a muted line above the header row.</p></Fragment>
+    <Card>
+        <Table label="Releases by quarter">
+            <caption>Releases by quarter</caption>
+            <thead>
+                <tr><th scope="col">Package</th><th scope="col">Q1</th><th scope="col">Q2</th><th scope="col">Q3</th><th scope="col">Q4</th><th scope="col">Total</th><th scope="col">Notes</th></tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row">Package one</th><td>2</td><td>3</td><td>1</td><td>4</td><td>10</td><td>A longer note that keeps the table wide on small screens.</td></tr>
+                <tr><th scope="row">Package two</th><td>1</td><td>0</td><td>2</td><td>2</td><td>5</td><td>Another long note so the columns need room.</td></tr>
+                <tr><th scope="row">Package three</th><td>0</td><td>1</td><td>1</td><td>1</td><td>3</td><td>A third note.</td></tr>
+            </tbody>
+        </Table>
+    </Card>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The striped table in the dark palette.</p></Fragment>
+    <Card>
+        <Table label="People on dark" striped hover>
+            <thead><tr><th scope="col">Name</th><th scope="col">Channel</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">Ada</th><td>Chat</td><td><span class="badge badge-success">Online</span></td></tr>
+                <tr><th scope="row">Grace</th><td>Mail</td><td><span class="badge">Offline</span></td></tr>
+                <tr><th scope="row">Alan</th><td>Call</td><td><span class="badge badge-warning">Away</span></td></tr>
+            </tbody>
+        </Table>
+    </Card>
+</Specimen>

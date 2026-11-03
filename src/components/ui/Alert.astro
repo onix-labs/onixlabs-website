@@ -1,0 +1,130 @@
+---
+import CloseButton from './CloseButton.astro';
+import type { FeedbackIntent } from './feedback-intent';
+
+// Stride's Alert: a contextual feedback banner coloured by intent, with an optional title and an optional dismiss
+// button. A dismissible alert is an open <details> whose <summary> is the close button, so it dismisses without
+// JavaScript. Use role="alert" only for urgent messages inserted after load; "status" for anything else.
+interface Props {
+    readonly intent?: FeedbackIntent;
+    readonly title?: string;
+    readonly dismissible?: boolean;
+    readonly dismissLabel?: string;
+    readonly role?: 'alert' | 'status';
+    readonly class?: string;
+}
+
+const { intent = 'info', title, dismissible = false, dismissLabel = 'Dismiss', role = 'alert', class: className }: Props = Astro.props;
+const classes: ReadonlyArray<string | Record<string, boolean> | undefined> = ['alert', `alert-${intent}`, { 'alert-dismissible': dismissible }, className];
+---
+{dismissible ? (
+    <details class:list={classes} open>
+        <CloseButton element="summary" class="alert-close" label={dismissLabel} />
+        <div class="alert-content" role={role}>
+            {title !== undefined && <p class="alert-title">{title}</p>}
+            <div class="alert-body"><slot /></div>
+        </div>
+    </details>
+) : (
+    <div class:list={classes}>
+        <div class="alert-content" role={role}>
+            {title !== undefined && <p class="alert-title">{title}</p>}
+            <div class="alert-body"><slot /></div>
+        </div>
+    </div>
+)}
+
+<style>
+    .alert {
+        --alert-intent: var(--info);
+        --alert-subtle: var(--info-subtle);
+        --alert-edge: var(--alert-intent);
+        /* AA: Stride's light intents fall below 4.5:1 on their own subtle fill, so the ink is deepened in light. */
+        --alert-ink: light-dark(color-mix(in srgb, var(--alert-intent), black 25%), var(--alert-intent));
+        position: relative;
+        padding: var(--space-4) var(--space-5);
+        border: var(--border-width) solid var(--alert-edge);
+        border-radius: var(--radius-sm);
+        corner-shape: var(--corner-shape);
+        background-color: var(--alert-subtle);
+        color: var(--alert-ink);
+        font-size: var(--text-sm);
+    }
+
+    .alert-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+    }
+
+    .alert-title {
+        font-weight: var(--weight-semibold);
+    }
+
+    .alert :global(a),
+    .alert :global(strong) {
+        color: inherit;
+    }
+
+    .alert :global(a) {
+        font-weight: var(--weight-medium);
+        text-decoration-color: currentColor;
+    }
+
+    .alert-dismissible {
+        padding-inline-end: var(--space-7);
+    }
+
+    .alert-dismissible:not([open]) {
+        display: none;
+    }
+
+    .alert :global(.alert-close) {
+        position: absolute;
+        top: var(--space-2);
+        right: var(--space-3);
+        color: inherit;
+        font-size: var(--text-sm);
+        opacity: 0.75;
+    }
+
+    .alert :global(.alert-close:hover) {
+        background-color: color-mix(in srgb, currentColor 10%, transparent);
+        color: inherit;
+        opacity: 1;
+    }
+
+    .alert-primary {
+        --alert-intent: var(--primary);
+        --alert-subtle: var(--primary-subtle);
+    }
+
+    .alert-secondary {
+        --alert-intent: var(--secondary);
+        --alert-subtle: var(--secondary-subtle);
+        --alert-edge: var(--border);
+        --alert-ink: var(--text);
+    }
+
+    .alert-success {
+        --alert-intent: var(--success);
+        --alert-subtle: var(--success-subtle);
+    }
+
+    .alert-warning {
+        --alert-intent: var(--warning);
+        --alert-subtle: var(--warning-subtle);
+        /* AA: the light warning amber is a fill colour, far too pale for text; it needs a much deeper ink. */
+        --alert-ink: light-dark(color-mix(in srgb, var(--warning), black 60%), var(--warning));
+    }
+
+    .alert-danger {
+        --alert-intent: var(--danger);
+        --alert-subtle: var(--danger-subtle);
+    }
+
+    .alert-info {
+        --alert-intent: var(--info);
+        --alert-subtle: var(--info-subtle);
+    }
+</style>

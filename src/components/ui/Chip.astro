@@ -1,0 +1,109 @@
+---
+import Icon from '../Icon.astro';
+
+// A compact tag for a filter, selection or category (Stride's Chip), coloured by intent and optionally removable.
+// The remove button is a plain <button type="button">, so wiring it up is the page's job; set `removeLabel` to name
+// what it removes ("Remove Design"), since the icon alone has no accessible name.
+interface Props {
+    readonly intent?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+    readonly removable?: boolean;
+    readonly removeLabel?: string;
+    readonly class?: string;
+}
+
+const { intent = 'secondary', removable = false, removeLabel = 'Remove', class: className = '' }: Props = Astro.props;
+---
+<span class:list={['chip', `chip-${intent}`, className]}>
+    <span class="chip-label"><slot /></span>
+    {removable && (
+        <button type="button" class="chip-remove" aria-label={removeLabel}>
+            <Icon name="xmark" />
+        </button>
+    )}
+</span>
+
+<style>
+    .chip {
+        --chip-intent: var(--secondary);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-1) var(--space-2);
+        color: var(--chip-text, var(--chip-intent));
+        background-color: var(--chip-subtle, var(--secondary-subtle));
+        border: var(--border-width) solid color-mix(in srgb, var(--chip-intent), white 50%);
+        border-radius: var(--radius-sm);
+        corner-shape: var(--corner-shape);
+        font-size: var(--text-sm);
+        line-height: var(--leading-normal);
+    }
+
+    /* A 24px target (WCAG 2.2 target size) that doesn't make the chip any taller. */
+    .chip-remove {
+        display: inline-grid;
+        place-items: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-block: calc(var(--space-1) * -1);
+        margin-inline-end: calc(var(--space-1) * -1);
+        padding: 0;
+        color: inherit;
+        background: none;
+        border: none;
+        border-radius: calc(var(--radius-sm) - var(--space-1));
+        corner-shape: var(--corner-shape);
+        font-size: var(--text-xs);
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .chip-remove:hover {
+        background-color: color-mix(in srgb, currentColor 14%, transparent);
+    }
+
+    .chip-remove:focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 1px;
+        border-radius: calc(var(--radius-sm) - var(--space-1));
+    }
+
+    /*
+     * Each intent tints the border and background. The label is the intent colour deepened a fifth of the way toward the
+     * heading colour (darker in light mode, lighter in dark) so it clears WCAG AA on the subtle fill in both themes;
+     * warning's amber is a fill colour, so its label is mostly heading.
+     */
+    .chip-primary {
+        --chip-intent: var(--primary);
+        --chip-subtle: var(--primary-subtle);
+    }
+
+    .chip-secondary {
+        --chip-intent: var(--secondary);
+        --chip-subtle: var(--secondary-subtle);
+        --chip-text: var(--text);
+    }
+
+    .chip-success {
+        --chip-intent: var(--success);
+        --chip-subtle: var(--success-subtle);
+        --chip-text: color-mix(in srgb, var(--success) 80%, var(--heading));
+    }
+
+    .chip-warning {
+        --chip-intent: var(--warning);
+        --chip-subtle: var(--warning-subtle);
+        --chip-text: color-mix(in srgb, var(--warning) 35%, var(--heading));
+    }
+
+    .chip-danger {
+        --chip-intent: var(--danger);
+        --chip-subtle: var(--danger-subtle);
+        --chip-text: color-mix(in srgb, var(--danger) 80%, var(--heading));
+    }
+
+    .chip-info {
+        --chip-intent: var(--info);
+        --chip-subtle: var(--info-subtle);
+        --chip-text: color-mix(in srgb, var(--info) 80%, var(--heading));
+    }
+</style>

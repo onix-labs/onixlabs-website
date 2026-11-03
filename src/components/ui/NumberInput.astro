@@ -1,0 +1,83 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import FormField from './FormField.astro';
+
+// A numeric input (Stride's NumberInput): the shared .input with the browser's spinner buttons hidden, as Stride does.
+// The value still steps with the arrow keys (by `step`, within `min` and `max`), and touch devices show a numeric
+// keyboard. With a `label` it renders inside a FormField; without one it renders the bare <input>, and `describedBy`
+// and `invalid` are yours to pass.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly label?: string;
+    readonly value?: number;
+    readonly min?: number;
+    readonly max?: number;
+    readonly step?: number | 'any';
+    readonly placeholder?: string;
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly readOnly?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly describedBy?: string;
+    readonly invalid?: boolean;
+    readonly class?: string;
+}
+
+const {
+    id,
+    name,
+    label,
+    value,
+    min,
+    max,
+    step,
+    placeholder,
+    required = false,
+    disabled = false,
+    readOnly = false,
+    help,
+    error,
+    describedBy,
+    invalid = false,
+    class: className = '',
+}: Props = Astro.props;
+
+const isLabelled: boolean = label !== undefined;
+const description: string | undefined = isLabelled ? (error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined) : describedBy;
+const isInvalid: boolean = isLabelled ? error !== undefined : invalid;
+const attributes: HTMLAttributes<'input'> = {
+    id,
+    name,
+    type: 'number',
+    value,
+    min,
+    max,
+    step,
+    placeholder,
+    required,
+    disabled,
+    readonly: readOnly,
+    'aria-describedby': description,
+    'aria-invalid': isInvalid ? 'true' : undefined,
+};
+---
+{label !== undefined
+    ? <FormField for={id} label={label} help={help} error={error} required={required} class={className}><input class="input number-input" {...attributes} /></FormField>
+    : <input class:list={['input', 'number-input', className]} {...attributes} />}
+
+<style>
+    .number-input {
+        appearance: textfield;
+        -moz-appearance: textfield;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .number-input::-webkit-inner-spin-button,
+    .number-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>

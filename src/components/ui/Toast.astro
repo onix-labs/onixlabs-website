@@ -1,0 +1,122 @@
+---
+import CloseButton from './CloseButton.astro';
+import type { FeedbackIntent } from './feedback-intent';
+
+// Stride's Toast: a short notification on a raised surface, its intent shown as a coloured leading edge.
+//
+// Without an id it is static, in the flow of the page (a dismissible one is an open <details> whose <summary> is the
+// close button). With an id it is a manual popover pinned to the bottom corner of the viewport, as Stride's
+// ToastContainer places it: show it with <button popovertarget="id">, and its close button hides it again. Neither
+// needs JavaScript.
+interface Props {
+    readonly intent?: FeedbackIntent;
+    readonly id?: string;
+    readonly dismissible?: boolean;
+    readonly dismissLabel?: string;
+    readonly class?: string;
+}
+
+const { intent = 'secondary', id, dismissible = false, dismissLabel = 'Dismiss', class: className }: Props = Astro.props;
+const classes: ReadonlyArray<string | Record<string, boolean> | undefined> = ['toast', `toast-${intent}`, { 'toast-dismissible': dismissible, 'toast-popover': id !== undefined }, className];
+---
+{id !== undefined && (
+    <div id={id} class:list={classes} popover="manual" role="status">
+        <div class="toast-body"><slot /></div>
+        {dismissible && <CloseButton class="toast-close" label={dismissLabel} popovertarget={id} popovertargetaction="hide" />}
+    </div>
+)}
+{id === undefined && dismissible && (
+    <details class="toast-dismiss" open>
+        <CloseButton element="summary" class="toast-close" label={dismissLabel} />
+        <div class:list={classes} role="status">
+            <div class="toast-body"><slot /></div>
+        </div>
+    </details>
+)}
+{id === undefined && !dismissible && (
+    <div class:list={classes} role="status">
+        <div class="toast-body"><slot /></div>
+    </div>
+)}
+
+<style>
+    .toast {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-3);
+        min-width: 16rem;
+        max-width: 24rem;
+        padding: var(--space-3) var(--space-4);
+        border: none;
+        border-top: var(--border-width) solid var(--edge-light);
+        border-bottom: var(--border-width) solid var(--edge-dark);
+        border-left: 4px solid var(--toast-intent, var(--border));
+        border-radius: var(--radius-lg);
+        corner-shape: var(--corner-shape);
+        background-color: var(--surface);
+        color: var(--text);
+        box-shadow: var(--shadow-md);
+        font-size: var(--text-sm);
+    }
+
+    .toast-body {
+        flex: 1;
+    }
+
+    .toast-dismissible {
+        padding-inline-end: var(--space-7);
+    }
+
+    .toast-dismiss {
+        position: relative;
+        width: fit-content;
+    }
+
+    .toast-dismiss:not([open]) {
+        display: none;
+    }
+
+    .toast-dismiss > :global(.toast-close),
+    .toast :global(.toast-close) {
+        position: absolute;
+        z-index: 1;
+        top: var(--space-2);
+        right: var(--space-3);
+    }
+
+    /* As a popover: pinned to the bottom corner, above everything, with a short rise on entry. */
+    .toast-popover {
+        position: fixed;
+        inset: auto var(--space-5) var(--space-5) auto;
+        z-index: var(--z-toast);
+        margin: 0;
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition: opacity var(--transition), transform var(--transition), overlay var(--transition) allow-discrete, display var(--transition) allow-discrete;
+    }
+
+    .toast-popover:not(:popover-open) {
+        display: none;
+    }
+
+    .toast-popover:popover-open {
+        display: flex;
+        opacity: 1;
+        transform: none;
+    }
+
+    @starting-style {
+        .toast-popover:popover-open {
+            opacity: 0;
+            transform: translateY(0.5rem);
+        }
+    }
+
+    .toast-primary { --toast-intent: var(--primary); }
+    .toast-secondary { --toast-intent: var(--border); }
+    .toast-success { --toast-intent: var(--success); }
+    .toast-warning { --toast-intent: var(--warning); }
+    .toast-danger { --toast-intent: var(--danger); }
+    .toast-info { --toast-intent: var(--info); }
+</style>

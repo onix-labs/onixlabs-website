@@ -1,0 +1,28 @@
+---
+// A labelled form field (Stride's FormField): a label, the control (the default slot), and either help text or an
+// error message below it. The error replaces the help text, as in Stride. The help and error are given the ids
+// `<for>-help` and `<for>-error`; point the control's aria-describedby at whichever is shown. TextInput, TextArea,
+// Select, NumberInput, RangeInput and FileInput wrap themselves in a FormField and do that for you.
+interface Props {
+    readonly for: string;
+    readonly label: string;
+    readonly help?: string | undefined;
+    readonly error?: string | undefined;
+    readonly required?: boolean;
+    readonly class?: string;
+}
+
+const { for: controlId, label, help, error, required = false, class: className = '' }: Props = Astro.props;
+---
+<div class:list={['field', className]}>
+    <label for={controlId}>{label}{required && <span class="required" aria-hidden="true"> *</span>}</label>
+    <slot />
+    {error !== undefined && <p class="field-error" id={`${controlId}-error`}>{error}</p>}
+    {error === undefined && help !== undefined && <p class="field-hint" id={`${controlId}-help`}>{help}</p>}
+</div>
+
+<style>
+    .required {
+        color: var(--text-muted);
+    }
+</style>

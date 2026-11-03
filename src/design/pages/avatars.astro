@@ -1,0 +1,106 @@
+---
+import Avatar from '../../components/ui/Avatar.astro';
+import AvatarGroup from '../../components/ui/AvatarGroup.astro';
+import Card from '../../components/ui/Card.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Initials" code={'<Avatar initials="AL" alt="Ada Lovelace" size="small" />\n<Avatar initials="GH" alt="Grace Hopper" />\n<Avatar initials="AT" alt="Alan Turing" size="large" />\n<Avatar initials="KJ" alt="Katherine Johnson" size="xlarge" />'}>
+    <Fragment slot="notes">
+        <p>Without an image, an avatar shows initials on the subtle primary disc. Four sizes: small (2rem), default (2.5rem), large (3rem) and extra large (4rem).</p>
+        <p><code>alt</code> names the person: assistive technology reads the name, not the initials. Leave it empty only when the name is written beside the avatar.</p>
+    </Fragment>
+    <div class="row">
+        <Avatar initials="AL" alt="Ada Lovelace" size="small" />
+        <Avatar initials="GH" alt="Grace Hopper" />
+        <Avatar initials="AT" alt="Alan Turing" size="large" />
+        <Avatar initials="KJ" alt="Katherine Johnson" size="xlarge" />
+    </div>
+</Specimen>
+
+<Specimen title="Images" code={'<Avatar src="/onixlabs/images/contributors/matt.jpeg" alt="Matthew" size="large" />'}>
+    <Fragment slot="notes"><p>A photo fills the circle and is cropped to cover it. Square sources work best.</p></Fragment>
+    <div class="row">
+        <Avatar src="/onixlabs/images/contributors/matt.jpeg" alt="Matthew" size="small" />
+        <Avatar src="/onixlabs/images/contributors/laura.jpeg" alt="Laura" />
+        <Avatar src="/onixlabs/images/contributors/adam.jpeg" alt="Adam" size="large" />
+        <Avatar src="/onixlabs/images/contributors/ryan.jpeg" alt="Ryan" size="xlarge" />
+    </div>
+</Specimen>
+
+<Specimen title="Adornments" code={'<Avatar initials="AL" alt="Ada Lovelace" size="large">\n    <span class="badge badge-pill badge-success">3<span class="visually-hidden"> new</span></span>\n</Avatar>'}>
+    <Fragment slot="notes"><p>The default slot is pinned to the bottom-right, outside the circular clip: a status badge or a small icon. Give it text that makes sense out of context.</p></Fragment>
+    <div class="row">
+        <Avatar initials="AL" alt="Ada Lovelace" size="large">
+            <span class="badge badge-pill badge-success">3<span class="visually-hidden"> new</span></span>
+        </Avatar>
+        <Avatar src="/onixlabs/images/contributors/laura.jpeg" alt="Laura" size="large">
+            <span class="status"><span class="visually-hidden">Online</span></span>
+        </Avatar>
+        <Avatar initials="GH" alt="Grace Hopper" size="large">
+            <span class="status status-away"><span class="visually-hidden">Away</span></span>
+        </Avatar>
+    </div>
+</Specimen>
+
+<Specimen title="Groups" code={'<AvatarGroup label="Contributors" more={4}>\n    <Avatar src="…" alt="Matthew" />\n    <Avatar src="…" alt="Laura" />\n</AvatarGroup>'}>
+    <Fragment slot="notes">
+        <p>A group overlaps its avatars and rings each in the colour behind it. <code>more</code> adds a final count for the people not shown. The group is labelled, so it reads as one unit.</p>
+        <p>Set <code>on="surface"</code> when the group sits on a card or tile, so the ring matches the surface.</p>
+    </Fragment>
+    <div class="stack">
+        <AvatarGroup label="Contributors" more={4}>
+            <Avatar src="/onixlabs/images/contributors/matt.jpeg" alt="Matthew" />
+            <Avatar src="/onixlabs/images/contributors/laura.jpeg" alt="Laura" />
+            <Avatar src="/onixlabs/images/contributors/adam.jpeg" alt="Adam" />
+            <Avatar src="/onixlabs/images/contributors/ryan.jpeg" alt="Ryan" />
+        </AvatarGroup>
+        <div class="sample">
+            <Card padded>
+                <AvatarGroup label="Reviewers" on="surface" size="small" more={2}>
+                    <Avatar initials="AL" alt="Ada Lovelace" size="small" />
+                    <Avatar initials="GH" alt="Grace Hopper" size="small" />
+                    <Avatar initials="AT" alt="Alan Turing" size="small" />
+                </AvatarGroup>
+            </Card>
+        </div>
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>Initials take the dark palette's subtle disc; the group ring follows the band.</p></Fragment>
+    <div class="row">
+        <Avatar initials="AL" alt="Ada Lovelace" size="large" />
+        <AvatarGroup label="Contributors" more={2}>
+            <Avatar src="/onixlabs/images/contributors/matt.jpeg" alt="Matthew" size="large" />
+            <Avatar src="/onixlabs/images/contributors/laura.jpeg" alt="Laura" size="large" />
+            <Avatar initials="GH" alt="Grace Hopper" size="large" />
+        </AvatarGroup>
+    </div>
+</Specimen>
+
+<style>
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.25rem;
+    }
+
+    .sample {
+        max-width: 20rem;
+    }
+
+    .status {
+        display: block;
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        corner-shape: round;
+        background: var(--success);
+        box-shadow: 0 0 0 2px var(--bg);
+    }
+
+    .status-away {
+        background: var(--warning);
+    }
+</style>

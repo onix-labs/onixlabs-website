@@ -1,0 +1,23 @@
+---
+// Stride's Accordion: a vertical stack of AccordionItem panels, divided by hairlines. Like Stride's it has no frame of
+// its own; put it inside a card or a .surface. Each item toggles independently unless the items share a name, in
+// which case the browser keeps at most one of them open.
+interface Props {
+    readonly class?: string;
+}
+
+const { class: className }: Props = Astro.props;
+---
+<div class:list={['accordion', className]}>
+    <slot />
+</div>
+
+<style>
+    .accordion {
+        display: flex;
+        flex-direction: column;
+        border: none;
+        background-color: var(--surface);
+        overflow: hidden;
+    }
+</style>

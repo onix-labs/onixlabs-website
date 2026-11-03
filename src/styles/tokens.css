@@ -1,10 +1,16 @@
 /*
- * Design tokens for the ONIXLabs design language (see /design/language in the dev server).
+ * Design tokens: the Stride design system (onixlabs-stride, D26), mapped onto the website.
  *
- * The canvas is quiet (white, soft grey and near-black bands) so the brand can glow where it means something:
- * the logo gradient lights heroes and one phrase per headline, the eight brand swatches mark structure, and each
- * product family owns a colour block. Light and dark get equal care; the visitor's OS setting picks one and the
- * header switch overrides it. .tone-dark forces the dark palette on a full-bleed band in either theme.
+ * Stride is a soft-UI language: surfaces sit raised above a mid-grey page with a light top edge and a dark bottom
+ * edge, very rounded (squircle) corners, soft shadows, a monochrome primary (near-black in light, near-white in dark)
+ * and Poppins for all text. The website keeps the same token names it always had (--bg, --surface, --heading…) so
+ * components read one vocabulary; each is set to its Stride value, and Stride's own extras (edges, fields, semantic
+ * intents, z-index) are added alongside.
+ *
+ * Accessibility adjustments to Stride: muted text, the coral label and the semantic fills are deepened where Stride's
+ * values fall below WCAG AA (4.5:1) on Stride's own surfaces. Each is marked "AA".
+ *
+ * The ONIXLabs brand (logo gradient, product families) layers on top for marketing moments.
  */
 
 :root {
@@ -36,107 +42,230 @@
     --family-kotlin-from: var(--brand-cyan);
     --family-kotlin-to: var(--brand-blue);
 
-    /* Type: Poppins for display, Inter for reading, JetBrains Mono for small technical labels and code. */
-    --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
-    --font-body: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --font-sans: var(--font-body);
-    --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    /* Type (Stride): Poppins for all text; a monospace for code and technical labels. */
+    --font-display: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-body: var(--font-display);
+    --font-sans: var(--font-display);
+    --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
 
+    /* Stride's named scale, plus fluid display sizes for marketing headlines. */
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
-    --text-base: 1.0625rem;
-    --text-lg: 1.1875rem;
-    --text-xl: clamp(1.1875rem, 1.1rem + 0.35vw, 1.3125rem);
-    --text-2xl: clamp(1.3125rem, 1.15rem + 0.7vw, 1.75rem);
-    --text-3xl: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.375rem;
+    --text-2xl: 1.75rem;
+    --text-3xl: 2.25rem;
     --text-4xl: clamp(2.25rem, 1.55rem + 3vw, 3.5rem);
     --text-5xl: clamp(2.75rem, 1.6rem + 4.8vw, 5rem);
-    --text-hero: clamp(3.25rem, 1.4rem + 7.4vw, 7.5rem);
+    --text-hero: clamp(3.25rem, 1.4rem + 7.4vw, 7rem);
 
-    /* Space and shape */
-    --space-section: clamp(5rem, 3.5rem + 6vw, 10rem);
-    --container: 64rem;
-    --container-wide: 80rem;
-    --container-narrow: 43rem;
+    --weight-normal: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+    --leading-tight: 1.2;
+    --leading-normal: 1.5;
+    --leading-loose: 1.75;
+
+    /* Spacing (Stride): a fixed 0.25rem-based scale for components, fluid tokens for page rhythm. */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+    --space-section: clamp(4.5rem, 3rem + 5vw, 8.5rem);
     --gutter: clamp(1.25rem, 0.8rem + 2vw, 2.75rem);
     --tile-gap: clamp(0.75rem, 0.6rem + 0.6vw, 1.25rem);
-    --radius-sm: 0.75rem;
-    --radius: 1.125rem;
-    --radius-lg: 1.75rem;
-    --radius-xl: 2.25rem;
-    --header-height: 3.25rem;
+
+    /* Layout */
+    --container: 72rem;
+    --container-wide: 80rem;
+    --container-narrow: 43rem;
+    --header-height: 3.5rem;
     --local-nav-height: 3.25rem;
 
-    /* Motion */
+    /* Radius (Stride). The scale is set in the @supports blocks at the end: wider for squircle corners, narrower for
+       circular ones, so the perceived roundness is the same either way. The pill is constant. */
+    --radius-pill: 9999px;
+
+    /* Borders and shadows (Stride) */
+    --border-width: 1px;
+    --shadow-sm: 0 0.125rem 0.25rem rgba(16, 24, 40, 0.075);
+    --shadow-md: 0 0.5rem 1rem rgba(16, 24, 40, 0.12);
+    --shadow-lg: 0 1rem 3rem rgba(16, 24, 40, 0.175);
+
+    /* Motion (Stride) */
+    --duration: 200ms;
+    --transition: var(--duration) ease;
     --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-    --duration: 240ms;
+
+    /* Layering (Stride) */
+    --z-dropdown: 1000;
+    --z-sticky: 1010;
+    --z-overlay: 1040;
+    --z-modal: 1050;
+    --z-toast: 1080;
+}
+
+/* Light (Stride's default theme). */
+:root,
+[data-theme='light'] {
+    color-scheme: light;
+
+    /* Surfaces: a mid-grey page, so surfaces read as raised. */
+    --bg: #ced4da;
+    --bg-alt: #dee2e6;                 /* the alternate band: Stride's recessed grey */
+    --surface: #e9ecef;
+    --surface-raised: #e9ecef;
+    --surface-alt: #dee2e6;
+    --field: color-mix(in srgb, #dee2e6, white 25%);
+    --field-border: #6a7178;            /* AA: Stride uses #bcbec1 (1.6:1); a control's edge needs 3:1 */
+
+    /* The signature raised treatment: a light top edge and a dark bottom edge. */
+    --edge-light: #ffffff;
+    --edge-dark: #adb5bd;
+
+    /* Text */
+    --text: #343a40;
+    --heading: #212529;
+    --text-muted: #4f565d;              /* AA: Stride uses #6c757d (3.1:1 on the page) */
+    --label: #9c3a24;                   /* AA: brand coral, deepened for the grey page */
+    --border: #c3c9cf;
+    --border-strong: #a7aeb5;
+    --link: #212529;
+    --link-decoration: rgba(33, 37, 41, 0.4);
+    --focus: #212529;
+    --focus-ring: rgba(33, 37, 41, 0.3);
+
+    /* Monochrome primary */
+    --accent: #212529;
+    --accent-hover: #000000;
+    --on-accent: #ffffff;
+
+    /* Semantic intents: base fill, text on the fill, subtle background. */
+    --primary: #212529;
+    --primary-contrast: #ffffff;
+    --primary-subtle: #dee2e6;
+    --secondary: #5c636a;               /* AA: Stride uses #6c757d */
+    --secondary-contrast: #ffffff;
+    --secondary-subtle: #dee2e6;
+    --success: #1e7a4f;                 /* AA: Stride uses #34a16e */
+    --success-contrast: #ffffff;
+    --success-subtle: #d1e7dd;
+    --warning: #ffbe45;
+    --warning-contrast: #212529;
+    --warning-subtle: #fff3cd;
+    --danger: #a82633;                  /* AA: Stride uses #f1505f; deep enough for error text on the page */
+    --danger-contrast: #ffffff;
+    --danger-subtle: #f8d7da;
+    --info: #1f62cc;                    /* AA: Stride uses #287fff */
+    --info-contrast: #ffffff;
+    --info-subtle: #d6e5ff;
+    --error: var(--danger);
+
+    /* Site chrome */
+    --header-bg: color-mix(in srgb, #e9ecef 82%, transparent);
+    --header-text: #212529;
+    --code-bg: #dee2e6;
+    --selection: rgba(161, 102, 171, 0.25);
+    --glow: 0.3;
+    --shadow-tile: var(--shadow-sm);
+    --shadow-tile-hover: var(--shadow-md);
+    --shadow-product: 0 40px 70px -40px rgba(16, 24, 40, 0.45);
 }
 
 /* Dark, and any full-bleed .tone-dark band in either theme. */
-:root,
 [data-theme='dark'],
 [data-theme] .tone-dark {
     color-scheme: dark;
-    --bg: #000000;
-    --bg-alt: #0e0e10;
-    --surface: #161618;
-    --surface-raised: #1c1c1f;
-    --border: rgba(255, 255, 255, 0.1);
-    --border-strong: rgba(255, 255, 255, 0.22);
-    --text: #f5f5f7;
-    --text-muted: #a1a1a6;
-    --heading: #f5f5f7;
-    --label: var(--brand-coral);
-    --link: #f5f5f7;
-    --link-decoration: rgba(245, 245, 247, 0.4);
-    --focus: #8fb4ff;
-    --error: #ff8a80;
-    --accent: #f5f5f7;
+
+    --bg: #212529;
+    --bg-alt: #1b1f23;
+    --surface: #343a40;
+    --surface-raised: #343a40;
+    --surface-alt: #2b3036;
+    --field: #2b3036;
+    --field-border: #858b92;            /* AA: Stride uses #494d52 */
+
+    --edge-light: rgba(255, 255, 255, 0.08);
+    --edge-dark: #000000;
+
+    --text: #e9ecef;
+    --heading: #f8f9fa;
+    --text-muted: #b4bbc2;
+    --label: #f58a73;                   /* AA: brand coral, lifted for the dark surfaces */
+    --border: rgba(0, 0, 0, 0.6);
+    --border-strong: #5c636a;
+    --link: #f8f9fa;
+    --link-decoration: rgba(248, 249, 250, 0.4);
+    --focus: #f8f9fa;
+    --focus-ring: rgba(248, 249, 250, 0.35);
+
+    --accent: #f8f9fa;
     --accent-hover: #ffffff;
-    --on-accent: #000000;
-    --header-bg: rgba(10, 10, 12, 0.72);
-    --header-text: #f5f5f7;
-    --code-bg: #0e0e10;
+    --on-accent: #212529;
+
+    --primary: #f8f9fa;
+    --primary-contrast: #212529;
+    --primary-subtle: #2b3036;
+    --secondary: #adb5bd;
+    --secondary-contrast: #212529;
+    --secondary-subtle: #343a40;
+    --success: #5cc993;
+    --success-contrast: #0d2a1c;
+    --success-subtle: #0d2a1c;
+    --warning: #ffbe45;
+    --warning-contrast: #212529;
+    --warning-subtle: #332701;
+    --danger: #ff7b87;
+    --danger-contrast: #2c0b0e;
+    --danger-subtle: #2c0b0e;
+    --info: #7aaeff;
+    --info-contrast: #071a3a;
+    --info-subtle: #071a3a;
+    --error: var(--danger);
+
+    --header-bg: color-mix(in srgb, #343a40 82%, transparent);
+    --header-text: #f8f9fa;
+    --code-bg: #1b1f23;
     --selection: rgba(161, 102, 171, 0.45);
-    --glow: 0.5;
-    --shadow-tile: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
-    --shadow-tile-hover: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 30px 60px -30px rgba(0, 0, 0, 0.9);
+    --glow: 0.45;
+    --shadow-tile: var(--shadow-sm);
+    --shadow-tile-hover: var(--shadow-md);
     --shadow-product: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
 }
 
-/* Light. Declared after dark so it wins over the :root default once the theme initialiser sets it. */
-[data-theme='light'] {
-    color-scheme: light;
-    --bg: #ffffff;
-    --bg-alt: #f5f5f7;
-    --surface: #f5f5f7;
-    --surface-raised: #ffffff;
-    --border: rgba(0, 0, 0, 0.08);
-    --border-strong: rgba(0, 0, 0, 0.18);
-    --text: #1d1d1f;
-    --text-muted: #6e6e73;
-    --heading: #1d1d1f;
-    /* Brand coral, deepened until small text clears 4.5:1 on white and on the grey band. */
-    --label: #b8452c;
-    --link: #1d1d1f;
-    --link-decoration: rgba(29, 29, 31, 0.35);
-    --focus: #3c60a6;
-    --error: #c0392b;
-    --accent: #1d1d1f;
-    --accent-hover: #000000;
-    --on-accent: #ffffff;
-    --header-bg: rgba(255, 255, 255, 0.72);
-    --header-text: #1d1d1f;
-    --code-bg: #f5f5f7;
-    --selection: rgba(161, 102, 171, 0.22);
-    --glow: 0.35;
-    --shadow-tile: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -12px rgba(0, 0, 0, 0.1);
-    --shadow-tile-hover: 0 1px 2px rgba(0, 0, 0, 0.05), 0 28px 50px -24px rgba(0, 0, 0, 0.22);
-    --shadow-product: 0 40px 70px -40px rgba(0, 0, 0, 0.35);
+/*
+ * Corner radii, branched on squircle support (Stride's single central feature query). A squircle corner pulls in
+ * tighter than a circular one, so the radii widen when corner-shape is available and narrow when it isn't.
+ */
+@supports (corner-shape: squircle) {
+    :root {
+        --radius-sm: 0.625rem;
+        --radius: 1.125rem;
+        --radius-lg: 1.625rem;
+        --radius-xl: 2.25rem;
+        --corner-shape: squircle;
+    }
 }
 
-/* Tiles sitting on the grey band are white (light) or a step brighter (dark). */
+@supports not (corner-shape: squircle) {
+    :root {
+        --radius-sm: 0.5rem;
+        --radius: 0.875rem;
+        --radius-lg: 1.25rem;
+        --radius-xl: 1.75rem;
+        --corner-shape: round;
+    }
+}
+
+/* Panels on the alt band use the raised surface so they still read as distinct from it. */
 .tone-alt {
     --surface: var(--surface-raised);
 }

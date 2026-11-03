@@ -1,0 +1,61 @@
+---
+import Accordion from '../../components/ui/Accordion.astro';
+import AccordionItem from '../../components/ui/AccordionItem.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Accordion" code={'<div class="surface">\n    <Accordion>\n        <AccordionItem title="First question" open>…</AccordionItem>\n        <AccordionItem title="Second question">…</AccordionItem>\n    </Accordion>\n</div>'}>
+    <Fragment slot="notes">
+        <p>A vertical stack of collapsible panels divided by hairlines. Each item is a native <code>&lt;details&gt;</code>: it opens with a click, Enter or Space, needs no JavaScript, and find-in-page opens the item that holds a match.</p>
+        <p>Like Stride's, the accordion has no frame of its own, so set it in a card or a <code>.surface</code>. Each item toggles independently; <code>open</code> starts one expanded.</p>
+    </Fragment>
+    <div class="surface frame">
+        <Accordion>
+            <AccordionItem title="What is an accordion for?" open>
+                <p>Long, optional detail that most readers can skip, such as answers to common questions.</p>
+            </AccordionItem>
+            <AccordionItem title="Can several items be open at once?">
+                <p>Yes. Without a shared name, each item opens and closes on its own.</p>
+            </AccordionItem>
+            <AccordionItem title="Does it work without JavaScript?">
+                <p>Yes. The browser handles the disclosure, the keyboard and the open state.</p>
+            </AccordionItem>
+        </Accordion>
+    </div>
+</Specimen>
+
+<Specimen title="Exclusive" code={'<AccordionItem name="faq" title="…">…</AccordionItem>\n<AccordionItem name="faq" title="…">…</AccordionItem>'}>
+    <Fragment slot="notes"><p>Give every item the same <code>name</code> and the browser keeps at most one open: opening an item closes the one that was open.</p></Fragment>
+    <div class="surface frame">
+        <Accordion>
+            <AccordionItem name="exclusive-demo" title="First item" open>
+                <p>Opening another item closes this one.</p>
+            </AccordionItem>
+            <AccordionItem name="exclusive-demo" title="Second item">
+                <p>Only one item in this group is open at a time.</p>
+            </AccordionItem>
+            <AccordionItem name="exclusive-demo" title="Third item">
+                <p>The exclusivity comes from the shared name attribute.</p>
+            </AccordionItem>
+        </Accordion>
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same accordion inside a dark band.</p></Fragment>
+    <div class="surface frame">
+        <Accordion>
+            <AccordionItem title="First item" open>
+                <p>Panel content in the dark tone.</p>
+            </AccordionItem>
+            <AccordionItem title="Second item">
+                <p>More panel content.</p>
+            </AccordionItem>
+        </Accordion>
+    </div>
+</Specimen>
+
+<style>
+    .frame {
+        max-width: 40rem;
+    }
+</style>

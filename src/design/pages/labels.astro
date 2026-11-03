@@ -11,24 +11,37 @@ import Specimen from '../Specimen.astro';
     </div>
 </Specimen>
 
-<Specimen title="Badges" code={'<span class="badge">Open source</span>\n<span class="badge badge-outline">v1.0</span>\n<span class="badge badge-brand">New</span>\n<span class="badge badge-family family-studio">Studio</span>'}>
-    <Fragment slot="notes"><p>Short markers for status, version or product. Brand and family badges use the deepened gradient so white text stays legible.</p></Fragment>
+<Specimen title="Badges" code={'<span class="badge">Secondary</span>\n<span class="badge badge-primary">Primary</span>\n<span class="badge badge-success">Success</span>   /* warning | danger | info */\n<span class="badge badge-pill">Pill</span>\n<span class="badge badge-family family-studio">Studio</span>'}>
+    <Fragment slot="notes"><p>Stride's badges: short markers for status, version or category, in a semantic intent, squared off (small radius) or as a pill. ONIXLabs adds family badges on the deepened product gradient.</p></Fragment>
     <div class="row">
-        <span class="badge">Open source</span>
+        <span class="badge">Secondary</span>
+        <span class="badge badge-primary">Primary</span>
+        <span class="badge badge-success">Success</span>
+        <span class="badge badge-warning">Warning</span>
+        <span class="badge badge-danger">Danger</span>
+        <span class="badge badge-info">Info</span>
         <span class="badge badge-outline">v1.0</span>
-        <span class="badge badge-brand">New</span>
-        <span class="badge badge-family family-aero">Aero</span>
-        <span class="badge badge-family family-studio">Studio</span>
-        <span class="badge badge-family family-player">ONIXPlayer</span>
+    </div>
+    <div class="row spaced">
+        <span class="badge badge-pill">Pill</span>
+        <span class="badge badge-pill badge-primary">Open source</span>
+        <span class="badge badge-pill badge-brand">New</span>
+        <span class="badge badge-pill badge-family family-aero">Aero</span>
+        <span class="badge badge-pill badge-family family-studio">Studio</span>
+        <span class="badge badge-pill badge-family family-player">ONIXPlayer</span>
     </div>
 </Specimen>
 
-<Specimen title="Announcement pill" code={'<a class="pill" href="…"><span class="badge badge-brand">New</span> Introducing Aero <Icon name="chevron-right" /></a>'}>
+<Specimen title="Announcement pill" code={'<a class="pill" href="…"><span class="badge badge-pill badge-brand">New</span> Introducing Aero <Icon name="chevron-right" /></a>'}>
     <Fragment slot="notes"><p>One per page at most, above the hero headline, for a launch or a headline product.</p></Fragment>
-    <a class="pill" href="#announcement-pill"><span class="badge badge-brand">New</span> Introducing Aero, the modular .NET suite <Icon name="chevron-right" /></a>
+    <a class="pill" href="#announcement-pill"><span class="badge badge-pill badge-brand">New</span> Introducing Aero, the modular .NET suite <Icon name="chevron-right" /></a>
 </Specimen>
 
 <style>
+    .spaced {
+        margin-top: 1.25rem;
+    }
+
     .row {
         display: flex;
         flex-wrap: wrap;

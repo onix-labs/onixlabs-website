@@ -1,0 +1,80 @@
+---
+import Radio from './Radio.astro';
+import type { RadioOption } from './radio-option';
+
+// A group of mutually exclusive options (Stride's RadioGroup): an element with role="radiogroup", named by its visible
+// label through aria-labelledby, holding stacked Radio options that share `name`, with help text or an error (which
+// replaces the help) linked to the group by aria-describedby. Pass `options` for plain labels, or put Radio components
+// in the slot instead (then pass `disabled` and `invalid` to each). The option ids are `<id>-<value>`.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly label: string;
+    readonly options?: ReadonlyArray<RadioOption>;
+    readonly value?: string;
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly class?: string;
+}
+
+const { id, name, label, options, value, required = false, disabled = false, help, error, class: className = '' }: Props = Astro.props;
+const description: string | undefined = error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined;
+const isInvalid: boolean = error !== undefined;
+---
+<div
+    class:list={['radio-group', className]}
+    id={id}
+    role="radiogroup"
+    aria-labelledby={`${id}-label`}
+    aria-disabled={disabled ? 'true' : undefined}
+    aria-describedby={description}
+    aria-invalid={isInvalid ? 'true' : undefined}
+    aria-required={required ? 'true' : undefined}
+>
+    <div class="radio-group-label" id={`${id}-label`}>{label}{required && <span class="required" aria-hidden="true"> *</span>}</div>
+    <div class="radio-group-options">
+        {options === undefined
+            ? <slot />
+            : options.map((option: RadioOption) => (
+                <Radio
+                    id={`${id}-${option.value}`}
+                    name={name}
+                    value={option.value}
+                    label={option.label}
+                    checked={option.value === value}
+                    required={required}
+                    disabled={disabled || option.disabled === true}
+                    invalid={isInvalid}
+                />
+            ))}
+    </div>
+    {error !== undefined && <p class="field-error" id={`${id}-error`}>{error}</p>}
+    {error === undefined && help !== undefined && <p class="field-hint" id={`${id}-help`}>{help}</p>}
+</div>
+
+<style>
+    .radio-group {
+        display: grid;
+        gap: var(--space-2);
+    }
+
+    /* Matches the FormField label. */
+    .radio-group-label {
+        color: var(--text);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-medium);
+    }
+
+    .required {
+        color: var(--text-muted);
+    }
+
+    .radio-group-options {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
+</style>

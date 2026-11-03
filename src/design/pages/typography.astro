@@ -8,18 +8,18 @@ const scale: ReadonlyArray<TypeStep> = [
     { token: '--text-4xl', use: 'Heading 2' },
     { token: '--text-3xl', use: 'Large tile headings' },
     { token: '--text-2xl', use: 'Sub-section headings' },
-    { token: '--text-xl', use: 'Heading 3, standfirst' },
-    { token: '--text-lg', use: 'Large body, link-style calls to action' },
-    { token: '--text-base', use: 'Body copy (17px)' },
+    { token: '--text-xl', use: 'Heading 3, standfirst (Stride xl, 1.375rem)' },
+    { token: '--text-lg', use: 'Large body, link-style calls to action (Stride lg)' },
+    { token: '--text-base', use: 'Body copy (Stride md, 16px)' },
     { token: '--text-sm', use: 'Secondary text, captions' },
     { token: '--text-xs', use: 'Labels' },
 ];
 ---
-<Specimen title="Typefaces" code={'--font-display: Poppins (500, 600)\n--font-body: Inter Variable\n--font-mono: JetBrains Mono Variable'}>
-    <Fragment slot="notes"><p>Three families, each with one job. All are self-hosted, so nothing loads from a third party.</p></Fragment>
+<Specimen title="Typefaces" code={'--font-display, --font-body: Poppins (400, 500, 600, 700)\n--font-mono: JetBrains Mono Variable'}>
+    <Fragment slot="notes"><p>Stride sets every word in Poppins: headlines, body, buttons and navigation. A monospace carries code and small technical labels. Both are self-hosted.</p></Fragment>
     <div class="faces">
-        <div><p class="label label-muted">Display</p><p class="face face-display">Poppins</p><p class="muted">Headlines and display type. Weights 500 and 600, tightly tracked.</p></div>
-        <div><p class="label label-muted">Body</p><p class="face face-body">Inter</p><p class="muted">Everything you read: body copy, standfirsts, buttons, navigation.</p></div>
+        <div><p class="label label-muted">Everything</p><p class="face face-display">Poppins</p><p class="muted">Regular 400 for reading, Medium 500 for controls, Semibold 600 and Bold 700 for headings.</p></div>
+        <div><p class="label label-muted">Weights</p><p class="weights"><span class="w4">Regular</span> <span class="w5">Medium</span> <span class="w6">Semibold</span> <span class="w7">Bold</span></p></div>
         <div><p class="label label-muted">Mono</p><p class="face face-mono">JetBrains Mono</p><p class="muted">Labels, code, and technical detail.</p></div>
     </div>
 </Specimen>
@@ -71,7 +71,7 @@ const scale: ReadonlyArray<TypeStep> = [
 
 <Specimen title="Body copy" code={'<p>…</p>'}>
     <div class="measure stack-sm">
-        <p>Body copy is Inter at 17px with a generous line height, set to a comfortable measure of about 70 characters. It supports <a href="#body-copy">inline links</a>, <strong>strong emphasis</strong>, <em>emphasis</em> and <code>inline code</code>.</p>
+        <p>Body copy is Poppins at 16px with a 1.5 line height, set to a comfortable measure of about 70 characters. It supports <a href="#body-copy">inline links</a>, <strong>strong emphasis</strong>, <em>emphasis</em> and <code>inline code</code>.</p>
         <p class="muted small">Secondary text uses the muted colour at a smaller size, for captions and supporting detail.</p>
     </div>
 </Specimen>
@@ -109,7 +109,11 @@ const scale: ReadonlyArray<TypeStep> = [
     }
 
     .face-display { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.04em; }
-    .face-body { font-family: var(--font-body); font-weight: 600; letter-spacing: -0.03em; }
+    .weights { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; color: var(--heading); font-size: var(--text-2xl); }
+    .w4 { font-weight: 400; }
+    .w5 { font-weight: 500; }
+    .w6 { font-weight: 600; }
+    .w7 { font-weight: 700; }
     .face-mono { font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 500; letter-spacing: -0.02em; }
 
     .faces .muted {

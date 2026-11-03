@@ -1,0 +1,120 @@
+---
+import CloseButton from './CloseButton.astro';
+
+// Stride's Modal: a centred dialog over a dimmed, blurred backdrop, with a title, a body and an optional footer of
+// actions. It is a native <dialog>, so it needs no JavaScript: open it with
+// <button commandfor="id" command="show-modal">, and close it with command="close" (the close button in the header
+// does this). The browser traps focus, closes it on Escape and on a click outside (closedby="any"), and returns
+// focus to the button that opened it.
+interface Props {
+    readonly id: string;
+    readonly title: string;
+    readonly closeLabel?: string;
+    readonly class?: string;
+}
+
+const { id, title, closeLabel = 'Close dialog', class: className }: Props = Astro.props;
+const titleId: string = `${id}-title`;
+---
+<dialog id={id} class:list={['modal', className]} aria-labelledby={titleId} closedby="any">
+    <header class="modal-header">
+        <h2 class="modal-title" id={titleId}>{title}</h2>
+        <CloseButton class="modal-close" label={closeLabel} commandfor={id} command="close" />
+    </header>
+    <div class="modal-body"><slot /></div>
+    {Astro.slots.has('footer') && <footer class="modal-footer"><slot name="footer" /></footer>}
+</dialog>
+
+<style>
+    .modal {
+        width: min(32rem, 100% - 2 * var(--space-4));
+        max-width: none;
+        max-height: 90vh;
+        max-height: 90dvh;
+        /* The reset's margin: 0 would undo the dialog's own centring. */
+        margin: auto;
+        padding: 0;
+        border: none;
+        border-top: var(--border-width) solid var(--edge-light);
+        border-bottom: var(--border-width) solid var(--edge-dark);
+        border-radius: var(--radius-xl);
+        corner-shape: var(--corner-shape);
+        background-color: var(--surface);
+        color: var(--text);
+        box-shadow: var(--shadow-lg);
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity var(--transition), transform var(--transition), overlay var(--transition) allow-discrete, display var(--transition) allow-discrete;
+    }
+
+    .modal[open] {
+        display: flex;
+        flex-direction: column;
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    @starting-style {
+        .modal[open] {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+    }
+
+    .modal::backdrop {
+        background-color: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(0.25rem);
+        opacity: 0;
+        transition: opacity var(--transition), overlay var(--transition) allow-discrete, display var(--transition) allow-discrete;
+    }
+
+    .modal[open]::backdrop {
+        opacity: 1;
+    }
+
+    @starting-style {
+        .modal[open]::backdrop {
+            opacity: 0;
+        }
+    }
+
+    .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+        padding: var(--space-4) var(--space-5);
+    }
+
+    .modal-title {
+        color: var(--heading);
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        font-weight: var(--weight-semibold);
+        letter-spacing: 0;
+        line-height: var(--leading-normal);
+    }
+
+    .modal :global(.modal-close) {
+        font-size: var(--text-lg);
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--space-5);
+    }
+
+    .modal-footer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: var(--space-2);
+        padding: var(--space-4);
+    }
+
+    /* Stride locks the page's scroll while a modal is open. */
+    :global(html:has(dialog.modal:modal)) {
+        overflow: hidden;
+    }
+</style>

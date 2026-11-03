@@ -1,0 +1,63 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import FormField from './FormField.astro';
+
+// A multi-line text input (Stride's TextArea), styled by the shared .input class in base.css; it resizes vertically
+// only. With a `label` it renders inside a FormField with its help text or error wired up; without one it renders the
+// bare <textarea>, and `describedBy` and `invalid` are yours to pass.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly label?: string;
+    readonly value?: string;
+    readonly rows?: number;
+    readonly placeholder?: string;
+    readonly maxLength?: number;
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly readOnly?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly describedBy?: string;
+    readonly invalid?: boolean;
+    readonly class?: string;
+}
+
+const {
+    id,
+    name,
+    label,
+    value = '',
+    rows = 3,
+    placeholder,
+    maxLength,
+    required = false,
+    disabled = false,
+    readOnly = false,
+    help,
+    error,
+    describedBy,
+    invalid = false,
+    class: className = '',
+}: Props = Astro.props;
+
+const isLabelled: boolean = label !== undefined;
+const description: string | undefined = isLabelled ? (error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined) : describedBy;
+const isInvalid: boolean = isLabelled ? error !== undefined : invalid;
+const attributes: HTMLAttributes<'textarea'> = {
+    id,
+    name,
+    rows,
+    placeholder,
+    maxlength: maxLength,
+    required,
+    disabled,
+    readonly: readOnly,
+    'aria-describedby': description,
+    'aria-invalid': isInvalid ? 'true' : undefined,
+};
+---
+{label !== undefined
+    ? <FormField for={id} label={label} help={help} error={error} required={required} class={className}><textarea class="input" {...attributes}>{value}</textarea></FormField>
+    : <textarea class:list={['input', className]} {...attributes}>{value}</textarea>}

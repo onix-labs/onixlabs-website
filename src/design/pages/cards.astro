@@ -1,0 +1,89 @@
+---
+import Button from '../../components/Button.astro';
+import Card from '../../components/ui/Card.astro';
+import Divider from '../../components/ui/Divider.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Header, body and footer" code={'<Card padded>\n    <Fragment slot="header">Project plan</Fragment>\n    <p>Body content sits on the raised surface…</p>\n    <Fragment slot="footer"><Button href="…" size="small">Open</Button></Fragment>\n</Card>'}>
+    <Fragment slot="notes">
+        <p>The Stride card: a raised surface with a lit top edge, a shaded bottom edge, a soft shadow and extra-large squircle corners. The header is semibold; the footer is recessed onto the alternate surface.</p>
+        <p>Header and footer are named slots and render only when filled. A heading placed in the header keeps the header's size, so use whichever level the page outline needs.</p>
+    </Fragment>
+    <div class="sample">
+        <Card padded>
+            <Fragment slot="header">Project plan</Fragment>
+            <p>Body content sits on the raised surface, between the header and the footer.</p>
+            <Fragment slot="footer"><Button href="#header-body-and-footer" size="small">Open</Button></Fragment>
+        </Card>
+    </div>
+</Specimen>
+
+<Specimen title="Body only" code={'<Card padded><p>A plain card with just body content.</p></Card>'}>
+    <Fragment slot="notes"><p>Without a header or footer, a card is a single raised panel.</p></Fragment>
+    <div class="sample">
+        <Card padded><p>A plain card with just body content.</p></Card>
+    </div>
+</Specimen>
+
+<Specimen title="Unpadded body" code={'<Card>\n    <Fragment slot="header"><h3>Activity</h3></Fragment>\n    <ul role="list">…</ul>\n</Card>'}>
+    <Fragment slot="notes"><p>As in Stride, the body has no padding unless <code>padded</code> is set, so lists, tables and media can run edge to edge. Header and footer padding is constant.</p></Fragment>
+    <div class="sample">
+        <Card>
+            <Fragment slot="header"><h3>Activity</h3></Fragment>
+            <ul class="rows" role="list">
+                <li>First item</li>
+                <li>Second item</li>
+                <li>Third item</li>
+            </ul>
+        </Card>
+    </div>
+</Specimen>
+
+<Specimen title="In a grid" code={'<div class="grid grid-3">\n    <Card as="article" padded>…</Card>\n</div>'}>
+    <Fragment slot="notes"><p>The body grows to fill the card, so footers line up across a row of cards with uneven content. Use <code>as="article"</code> for self-contained items.</p></Fragment>
+    <div class="grid grid-3">
+        <Card as="article" padded>
+            <Fragment slot="header"><h3>First</h3></Fragment>
+            <p>A short body.</p>
+            <Fragment slot="footer"><Button href="#in-a-grid" variant="link">Details</Button></Fragment>
+        </Card>
+        <Card as="article" padded>
+            <Fragment slot="header"><h3>Second</h3></Fragment>
+            <p>A longer body that wraps onto several lines, to show that the footers still align along the bottom of the row.</p>
+            <Fragment slot="footer"><Button href="#in-a-grid" variant="link">Details</Button></Fragment>
+        </Card>
+        <Card as="article" padded>
+            <Fragment slot="header"><h3>Third</h3></Fragment>
+            <p>Another short body.</p>
+            <Divider />
+            <p class="muted">With a divider inside.</p>
+            <Fragment slot="footer"><Button href="#in-a-grid" variant="link">Details</Button></Fragment>
+        </Card>
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same card inside a near-black band in light mode: the surface, edges and footer take the dark palette.</p></Fragment>
+    <div class="sample">
+        <Card padded>
+            <Fragment slot="header">Project plan</Fragment>
+            <p>Body content sits on the raised surface, between the header and the footer.</p>
+            <Fragment slot="footer"><Button href="#on-a-dark-band" size="small" variant="primary">Open</Button></Fragment>
+        </Card>
+    </div>
+</Specimen>
+
+<style>
+    .sample {
+        max-width: 24rem;
+    }
+
+    .rows {
+        padding: 0;
+    }
+
+    .rows li {
+        padding: var(--space-3) var(--space-5);
+        border-top: var(--border-width) solid var(--border);
+    }
+</style>

@@ -1,0 +1,133 @@
+---
+import Icon from '../Icon.astro';
+
+// A labelled checkbox (Stride's Checkbox). The real <input type="checkbox"> carries the state and focus, visually
+// hidden; the box after it is drawn from tokens and follows it with sibling selectors, so no script is involved.
+// Help text or an error (which replaces the help, as in FormField) sits below the label and is wired with
+// aria-describedby. Use `value` to set what the form submits when checked ("on" by default).
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly label: string;
+    readonly value?: string;
+    readonly checked?: boolean;
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly class?: string;
+}
+
+const { id, name, label, value, checked = false, required = false, disabled = false, help, error, class: className = '' }: Props = Astro.props;
+const description: string | undefined = error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined;
+---
+<div class:list={['choice', className]}>
+    <label class:list={['checkbox', { 'is-disabled': disabled }]}>
+        <input
+            class="checkbox-input"
+            type="checkbox"
+            id={id}
+            name={name}
+            value={value}
+            checked={checked}
+            required={required}
+            disabled={disabled}
+            aria-describedby={description}
+            aria-invalid={error !== undefined ? 'true' : undefined}
+        />
+        <span class="checkbox-box" aria-hidden="true"><Icon name="check" class="checkbox-tick" /></span>
+        <span class="checkbox-label">{label}{required && <span class="required" aria-hidden="true"> *</span>}</span>
+    </label>
+    {error !== undefined && <p class="field-error choice-description" id={`${id}-error`}>{error}</p>}
+    {error === undefined && help !== undefined && <p class="field-hint choice-description" id={`${id}-help`}>{help}</p>}
+</div>
+
+<style>
+    .choice {
+        display: grid;
+        gap: var(--space-1);
+        justify-items: start;
+    }
+
+    .checkbox {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+    }
+
+    /* The real input drives state but is visually hidden; the box below is the rendered control. */
+    .checkbox-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+        opacity: 0;
+    }
+
+    /* The unchecked border uses --secondary rather than Stride's --field-border, which is too faint to meet the
+       3:1 contrast WCAG asks of a control's boundary. */
+    .checkbox-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: var(--border-width) solid var(--secondary);
+        border-radius: var(--radius-sm);
+        corner-shape: var(--corner-shape);
+        background-color: var(--field);
+        transition: background-color var(--transition), border-color var(--transition);
+    }
+
+    /* The tick is a fixed size, so the box can grow without the tick growing with it. */
+    .checkbox-box :global(.checkbox-tick) {
+        width: 0.75rem;
+        height: 0.75rem;
+        color: var(--primary-contrast);
+        opacity: 0;
+    }
+
+    .checkbox-input:checked + .checkbox-box {
+        border-color: var(--primary);
+        background-color: var(--primary);
+    }
+
+    .checkbox-input:checked + .checkbox-box :global(.checkbox-tick) {
+        opacity: 1;
+    }
+
+    .checkbox-input[aria-invalid='true'] + .checkbox-box {
+        border-color: var(--danger);
+    }
+
+    /* Stride's focus shadow (the translucent --focus-ring) is too faint for a focus indicator; this is the site's
+       2px focus outline instead. */
+    .checkbox-input:focus-visible + .checkbox-box {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+    }
+
+    .checkbox-label {
+        color: var(--text);
+        font-size: var(--text-base);
+    }
+
+    .required {
+        color: var(--text-muted);
+    }
+
+    .is-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* Help and error text line up with the label, not the box. */
+    .choice-description {
+        padding-inline-start: calc(1.25rem + var(--space-2));
+    }
+</style>

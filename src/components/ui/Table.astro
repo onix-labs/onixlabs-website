@@ -1,0 +1,73 @@
+---
+// A styled table (Stride's Table). Write the <caption>, <thead> and <tbody> in the default slot; striping and row
+// hover are opt-in. The wrapper scrolls sideways on narrow screens, so it is a labelled, focusable region that
+// keyboard users can scroll; `label` names it.
+interface Props {
+    readonly label: string;
+    readonly striped?: boolean;
+    readonly hover?: boolean;
+    readonly class?: string;
+}
+
+const { label, striped = false, hover = false, class: className = '' }: Props = Astro.props;
+---
+<div class:list={['table-wrapper', className]} role="region" aria-label={label} tabindex="0">
+    <table class:list={['table', { 'table-striped': striped, 'table-hover': hover }]}>
+        <slot />
+    </table>
+</div>
+
+<style>
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .table-wrapper:focus-visible {
+        outline-offset: -2px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        color: var(--text);
+        font-size: var(--text-sm);
+    }
+
+    .table :global(caption) {
+        padding: var(--space-3) var(--space-4);
+        color: var(--text-muted);
+        text-align: left;
+    }
+
+    .table :global(:is(th, td)) {
+        padding: var(--space-3) var(--space-4);
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .table :global(thead th) {
+        background-color: var(--surface-alt);
+        color: var(--text-muted);
+        font-weight: var(--weight-semibold);
+        text-transform: uppercase;
+    }
+
+    .table :global(tbody th) {
+        color: var(--heading);
+        font-weight: var(--weight-medium);
+    }
+
+    .table-striped :global(tbody tr:nth-child(even)) {
+        background-color: var(--surface-alt);
+    }
+
+    .table-hover :global(tbody tr:hover) {
+        background-color: var(--primary-subtle);
+    }
+
+    /* The subtle fill matches the stripe, so a hovered stripe goes one step deeper. */
+    .table-striped.table-hover :global(tbody tr:hover) {
+        background-color: color-mix(in srgb, var(--primary-subtle), var(--text) 7%);
+    }
+</style>

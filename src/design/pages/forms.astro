@@ -1,48 +1,91 @@
 ---
+import FormField from '../../components/ui/FormField.astro';
+import Select from '../../components/ui/Select.astro';
+import type { SelectOption } from '../../components/ui/select-option';
+import TextArea from '../../components/ui/TextArea.astro';
+import TextInput from '../../components/ui/TextInput.astro';
 import Specimen from '../Specimen.astro';
+
+const topics: ReadonlyArray<SelectOption> = [
+    { value: 'general', label: 'General question' },
+    { value: 'support', label: 'Technical support' },
+    { value: 'feedback', label: 'Feedback' },
+    { value: 'archived', label: 'Archived topic', disabled: true },
+];
 ---
-<Specimen title="Text input" code={'<div class="field">\n  <label for="name">Name</label>\n  <input class="input" id="name" … />\n</div>'}>
+<Specimen title="Text input" code={'<TextInput id="name" name="name" label="Name" autocomplete="name" />\n<TextInput id="email" name="email" type="email" label="Email address" help="…" />'}>
+    <Fragment slot="notes">
+        <p>A single-line field in a recessed well. Give it a <code>label</code> and it renders inside a <code>FormField</code>: the label above, the field, and help text below, linked with <code>aria-describedby</code>.</p>
+        <p><code>type</code> is one of text, email, password, search, tel or url. Set <code>autocomplete</code> whenever the field asks for something about the person.</p>
+    </Fragment>
     <div class="form">
-        <div class="field">
-            <label for="demo-name">Name</label>
-            <input class="input" id="demo-name" type="text" autocomplete="off" />
-        </div>
-        <div class="field">
-            <label for="demo-email">Email address</label>
-            <input class="input" id="demo-email" type="email" autocomplete="off" aria-describedby="demo-email-hint" />
-            <p class="field-hint" id="demo-email-hint">We'll only use this to reply to you.</p>
-        </div>
+        <TextInput id="forms-name" name="name" label="Name" autocomplete="off" />
+        <TextInput id="forms-email" name="email" type="email" label="Email address" autocomplete="off" help="Used only to reply to you." />
+        <TextInput id="forms-search" name="query" type="search" label="Search" placeholder="Search the documentation" />
     </div>
 </Specimen>
 
-<Specimen title="Select and text area" code={'<select class="input">…</select>\n<textarea class="input">…</textarea>'}>
+<Specimen title="Text area" code={'<TextArea id="message" name="message" label="Message" rows={4} help="…" />'}>
+    <Fragment slot="notes"><p>For longer answers. It resizes vertically only, so it can't break the layout sideways. <code>rows</code> sets the starting height (three by default; the shared style keeps it at least 9rem tall).</p></Fragment>
     <div class="form">
-        <div class="field">
-            <label for="demo-reason">Reason</label>
-            <select class="input" id="demo-reason">
-                <option>Aero Platform (General Inquiry)</option>
-                <option>Consulting</option>
-            </select>
-        </div>
-        <div class="field">
-            <label for="demo-message">Message</label>
-            <textarea class="input" id="demo-message" rows="4"></textarea>
-        </div>
+        <TextArea id="forms-message" name="message" label="Message" rows={4} help="A sentence or two is plenty." />
     </div>
 </Specimen>
 
-<Specimen title="States" code={'<input class="input" aria-invalid="true" aria-describedby="…" />\n<p class="field-error" id="…">…</p>\n<input class="input" disabled />'}>
-    <Fragment slot="notes"><p>Focus shows a soft ring; errors are stated in words as well as colour; disabled fields are dimmed.</p></Fragment>
+<Specimen title="Select" code={'<Select id="topic" name="topic" label="Topic" placeholder="Choose a topic" options={[\n  { value: \'general\', label: \'General question\' },\n  …\n]} />'}>
+    <Fragment slot="notes">
+        <p>One choice from a short, known list. The options are data (<code>value</code>, <code>label</code>, optionally <code>disabled</code>); <code>placeholder</code> adds an empty first option so a required select can't be submitted untouched.</p>
+        <p>In browsers that support customizable selects, the open picker is a raised surface with rounded options and the chevron turns as it opens. Other browsers show their native picker.</p>
+    </Fragment>
     <div class="form">
-        <div class="field">
-            <label for="demo-invalid">Email address</label>
-            <input class="input" id="demo-invalid" type="email" value="not-an-email" aria-invalid="true" aria-describedby="demo-invalid-error" />
-            <p class="field-error" id="demo-invalid-error">Enter an email address like name@example.com.</p>
-        </div>
-        <div class="field">
-            <label for="demo-disabled">Disabled</label>
-            <input class="input" id="demo-disabled" type="text" value="Not editable" disabled />
-        </div>
+        <Select id="forms-topic" name="topic" label="Topic" placeholder="Choose a topic" options={topics} />
+        <Select id="forms-topic-chosen" name="topic-chosen" label="Topic (with a value)" options={topics} value="support" />
+    </div>
+</Specimen>
+
+<Specimen title="Composing with FormField" code={'<FormField for="code" label="Reference" help="…">\n  <TextInput id="code" name="code" describedBy="code-help" />\n</FormField>'}>
+    <Fragment slot="notes"><p>Without a <code>label</code>, a control renders bare, ready to be wrapped. <code>FormField</code> gives its help the id <code>&lt;for&gt;-help</code> and its error <code>&lt;for&gt;-error</code>; pass the one that's shown as <code>describedBy</code>, and <code>invalid</code> with an error.</p></Fragment>
+    <div class="form">
+        <FormField for="forms-reference" label="Reference" help="Eight letters or digits.">
+            <TextInput id="forms-reference" name="reference" describedBy="forms-reference-help" autocomplete="off" />
+        </FormField>
+    </div>
+</Specimen>
+
+<Specimen title="Required" code={'<TextInput id="name" name="name" label="Name" required />'}>
+    <Fragment slot="notes"><p>Required fields set the native <code>required</code> attribute, which assistive technology announces, and show an asterisk after the label that is hidden from screen readers so it isn't read twice. Say in the form's introduction what the asterisk means.</p></Fragment>
+    <div class="form">
+        <TextInput id="forms-required-name" name="name" label="Name" required autocomplete="off" />
+        <Select id="forms-required-topic" name="topic" label="Topic" placeholder="Choose a topic" options={topics} required />
+    </div>
+</Specimen>
+
+<Specimen title="Errors" code={'<TextInput id="email" name="email" type="email" label="Email address" value="…"\n  error="Enter an email address like name@example.com." />'}>
+    <Fragment slot="notes"><p>An error replaces the help text, sets <code>aria-invalid</code> and turns the border to the danger colour. Say what's wrong and how to fix it, in words: colour is never the only signal.</p></Fragment>
+    <div class="form">
+        <TextInput id="forms-invalid-email" name="email" type="email" label="Email address" value="not-an-email" autocomplete="off" help="Used only to reply to you." error="Enter an email address like name@example.com." />
+        <TextArea id="forms-invalid-message" name="message" label="Message" rows={3} error="Enter a message." />
+        <Select id="forms-invalid-topic" name="topic" label="Topic" placeholder="Choose a topic" options={topics} error="Choose a topic." />
+    </div>
+</Specimen>
+
+<Specimen title="Disabled and read-only" code={'<TextInput id="…" name="…" label="…" value="…" disabled />\n<TextInput id="…" name="…" label="…" value="…" readOnly />'}>
+    <Fragment slot="notes"><p>Disabled fields drop to the alternate surface with muted text and aren't submitted. Read-only fields look like any other field and are submitted, but can't be changed; use them to show a value that's fixed.</p></Fragment>
+    <div class="form">
+        <TextInput id="forms-disabled-input" name="disabled-input" label="Disabled input" value="Not editable" disabled />
+        <TextArea id="forms-disabled-area" name="disabled-area" label="Disabled text area" value="Not editable" rows={2} disabled />
+        <Select id="forms-disabled-select" name="disabled-select" label="Disabled select" options={topics} value="general" disabled />
+        <TextInput id="forms-readonly" name="readonly" label="Read-only input" value="Fixed value" readOnly />
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same fields inside a near-black band in light mode.</p></Fragment>
+    <div class="form">
+        <TextInput id="forms-dark-name" name="name" label="Name" autocomplete="off" help="As you'd like to be addressed." />
+        <Select id="forms-dark-topic" name="topic" label="Topic" placeholder="Choose a topic" options={topics} />
+        <TextInput id="forms-dark-email" name="email" type="email" label="Email address" value="not-an-email" autocomplete="off" error="Enter an email address like name@example.com." />
+        <TextInput id="forms-dark-disabled" name="disabled" label="Disabled" value="Not editable" disabled />
     </div>
 </Specimen>
 

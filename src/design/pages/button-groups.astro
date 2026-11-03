@@ -1,0 +1,83 @@
+---
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import ButtonGroup from '../../components/ui/ButtonGroup.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Segmented" code={'<ButtonGroup label="Alignment">\n    <button type="button" class="button">Left</button>\n    <button type="button" class="button">Center</button>\n    <button type="button" class="button">Right</button>\n</ButtonGroup>'}>
+    <Fragment slot="notes">
+        <p>Related buttons joined into one control. Only the outer corners are rounded; the segments share the raised edges and one soft shadow, and a hairline separates neighbours.</p>
+        <p>Inside a group, buttons darken on hover instead of lifting, so the segments stay aligned. <code>label</code> names the group for assistive technology.</p>
+    </Fragment>
+    <ButtonGroup label="Alignment">
+        <button type="button" class="button">Left</button>
+        <button type="button" class="button">Center</button>
+        <button type="button" class="button">Right</button>
+    </ButtonGroup>
+</Specimen>
+
+<Specimen title="Current option" code={'<ButtonGroup label="View">\n    <a class="button button-primary" href="…" aria-current="page">List</a>\n    <a class="button" href="…">Grid</a>\n</ButtonGroup>'}>
+    <Fragment slot="notes"><p>For links between views, fill the current one with the primary style and mark it with <code>aria-current</code>, so the state isn't carried by colour alone for screen-reader users.</p></Fragment>
+    <ButtonGroup label="View">
+        <a class="button button-primary" href="#current-option" aria-current="page">List</a>
+        <a class="button" href="#current-option">Grid</a>
+        <a class="button" href="#current-option">Board</a>
+    </ButtonGroup>
+</Specimen>
+
+<Specimen title="Sizes and icons" code={'<ButtonGroup label="History">\n    <button type="button" class="button button-small">…</button>\n</ButtonGroup>'}>
+    <Fragment slot="notes"><p>Every button in a group takes the same size. Icon-only segments need visually hidden text.</p></Fragment>
+    <div class="row">
+        <ButtonGroup label="History">
+            <button type="button" class="button button-small"><Icon name="chevron-right" class="flip" /><span class="visually-hidden">Back</span></button>
+            <button type="button" class="button button-small"><Icon name="chevron-right" /><span class="visually-hidden">Forward</span></button>
+        </ButtonGroup>
+        <ButtonGroup label="Period">
+            <button type="button" class="button button-small">Day</button>
+            <button type="button" class="button button-small">Week</button>
+            <button type="button" class="button button-small">Month</button>
+        </ButtonGroup>
+        <ButtonGroup label="Actions">
+            <Button href="#sizes-and-icons" size="large" icon="code">Code</Button>
+            <Button href="#sizes-and-icons" size="large" icon="book-open">Docs</Button>
+        </ButtonGroup>
+    </div>
+</Specimen>
+
+<Specimen title="Disabled segment">
+    <Fragment slot="notes"><p>A disabled button keeps its place in the group and fades.</p></Fragment>
+    <ButtonGroup label="Edit">
+        <button type="button" class="button">Cut</button>
+        <button type="button" class="button">Copy</button>
+        <button type="button" class="button" disabled>Paste</button>
+    </ButtonGroup>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same groups inside a near-black band in light mode.</p></Fragment>
+    <div class="row">
+        <ButtonGroup label="Alignment on dark">
+            <button type="button" class="button">Left</button>
+            <button type="button" class="button">Center</button>
+            <button type="button" class="button">Right</button>
+        </ButtonGroup>
+        <ButtonGroup label="View on dark">
+            <a class="button button-primary" href="#on-a-dark-band" aria-current="page">List</a>
+            <a class="button" href="#on-a-dark-band">Grid</a>
+            <a class="button" href="#on-a-dark-band">Board</a>
+        </ButtonGroup>
+    </div>
+</Specimen>
+
+<style>
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .row :global(.flip) {
+        transform: scaleX(-1);
+    }
+</style>

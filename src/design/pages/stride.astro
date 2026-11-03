@@ -1,0 +1,169 @@
+---
+import Specimen from '../Specimen.astro';
+import type { TokenMapping } from '../token-mapping';
+
+// How the Stride design system (onixlabs-stride, D26) maps onto the website's tokens and components.
+const tokens: ReadonlyArray<TokenMapping> = [
+    { stride: '--ds-color-bg', website: '--bg', note: 'The mid-grey page that surfaces rise from' },
+    { stride: '--ds-color-surface', website: '--surface', note: 'Raised surface: tiles, cards, buttons' },
+    { stride: '--ds-color-surface-alt', website: '--surface-alt', note: 'Recessed surface: card footers, secondary panels' },
+    { stride: '--ds-color-field / -field-border', website: '--field / --field-border', note: 'Input wells' },
+    { stride: '--ds-edge-light / --ds-edge-dark', website: '--edge-light / --edge-dark', note: 'The signature lit top edge and shaded bottom edge' },
+    { stride: '--ds-color-text / -text-muted', website: '--text / --text-muted', note: 'Muted is deepened for AA (see below)' },
+    { stride: '--ds-color-{intent}[-contrast|-subtle]', website: '--{intent}[-contrast|-subtle]', note: 'primary, secondary, success, warning, danger, info' },
+    { stride: '--ds-font-sans', website: '--font-body / --font-display', note: 'Poppins, for all text' },
+    { stride: '--ds-font-size-xs … 3xl', website: '--text-xs … --text-3xl', note: 'md becomes --text-base; fluid --text-4xl, 5xl and hero added for marketing' },
+    { stride: '--ds-font-weight-*, --ds-line-height-*', website: '--weight-*, --leading-*', note: '' },
+    { stride: '--ds-space-1 … 8', website: '--space-1 … 8', note: 'Fluid --space-section, --gutter and --tile-gap added for page rhythm' },
+    { stride: '--ds-radius-sm / md / lg / xl / pill', website: '--radius-sm / --radius / --radius-lg / --radius-xl / --radius-pill', note: 'Widened for squircles, narrowed without' },
+    { stride: '--ds-corner-shape', website: '--corner-shape', note: 'squircle where supported, round elsewhere' },
+    { stride: '--ds-shadow-sm / md / lg', website: '--shadow-sm / md / lg', note: '' },
+    { stride: '--ds-transition', website: '--transition', note: '200ms ease; collapses under reduced motion' },
+    { stride: '--ds-z-dropdown … toast', website: '--z-dropdown … --z-toast', note: '' },
+];
+
+const adjustments: ReadonlyArray<TokenMapping> = [
+    { stride: '#6c757d', website: '#4f565d', note: 'Muted text: Stride’s value is 3.1:1 on the page, 3.9:1 on a surface' },
+    { stride: '#6c757d', website: '#5c636a', note: 'Secondary fill, so white text on it clears 4.5:1' },
+    { stride: '#34a16e', website: '#1e7a4f', note: 'Success fill: white text was 3.3:1' },
+    { stride: '#f1505f', website: '#a82633', note: 'Danger: white text on it was 3.5:1, and as error text it must clear 4.5:1 on the page' },
+    { stride: '#bcbec1 / #494d52', website: '#6a7178 / #858b92', note: 'Field borders: a control’s edge needs 3:1 against its surroundings' },
+    { stride: '#287fff', website: '#1f62cc', note: 'Info fill: white text was 3.8:1' },
+    { stride: '—', website: '#9c3a24 / #f58a73', note: 'The ONIXLabs coral label, deepened (light) and lifted (dark) for the grey surfaces' },
+];
+
+const components: ReadonlyArray<TokenMapping> = [
+    { stride: 'Button', website: 'Button (.button)', note: 'primary, secondary (Stride outline), danger, plus the spectral brand variant' },
+    { stride: 'Card', website: 'Card, and every tile', note: 'Tiles are Stride cards with marketing content' },
+    { stride: 'Badge, Chip, Avatar, ButtonGroup', website: 'Atoms', note: '' },
+    { stride: 'Alert, Accordion, Tabs, Table, Stat, DescriptionList', website: 'Components', note: 'Accordion uses native <details name>' },
+    { stride: 'Breadcrumb, Pagination', website: 'Components', note: '' },
+    { stride: 'Tooltip, Toast, Modal', website: 'Components → Overlays', note: 'Popover API and <dialog>, no script' },
+    { stride: 'Forms/*', website: 'Forms', note: 'Native controls throughout' },
+    { stride: 'Navbar', website: 'Header', note: 'The site header follows Stride’s navbar surface' },
+    { stride: 'Offcanvas, Sidebar, Carousel, Skeleton, Spinner, ProgressBar, Popover, Dropdown', website: 'Not ported', note: 'Application pieces the website doesn’t use yet' },
+];
+---
+<Specimen title="The idea" surface="none">
+    <div class="intro">
+        <p>
+            The website now wears <strong>Stride</strong>, the ONIXLabs product design system: a soft, tactile language where surfaces sit
+            raised above a mid-grey page, lit by a light top edge and shaded by a dark bottom edge, with squircle corners, soft shadows,
+            a monochrome primary and Poppins for every word.
+        </p>
+        <p>
+            The ONIXLabs brand sits on top for marketing moments: the logo gradient (aurora, gradient text, scroll progress, the spectral
+            button), product colour blocks and glass icons.
+        </p>
+    </div>
+    <div class="edge-demo">
+        <div class="surface edge-sample">
+            <p class="label label-muted">Raised surface</p>
+            <p>Light top edge, dark bottom edge, soft shadow.</p>
+        </div>
+        <div class="surface surface-recessed edge-sample">
+            <p class="label label-muted">Recessed surface</p>
+            <p>Below the page rather than above it.</p>
+        </div>
+    </div>
+</Specimen>
+
+<Specimen title="Tokens" surface="none">
+    <Fragment slot="notes"><p>The website keeps its own token names, so every component reads one vocabulary; each is set to the Stride value.</p></Fragment>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Token mapping">
+        <table>
+            <thead><tr><th scope="col">Stride</th><th scope="col">Website</th><th scope="col">Notes</th></tr></thead>
+            <tbody>
+                {tokens.map((row: TokenMapping) => <tr><td><code>{row.stride}</code></td><td><code>{row.website}</code></td><td>{row.note}</td></tr>)}
+            </tbody>
+        </table>
+    </div>
+</Specimen>
+
+<Specimen title="Accessibility adjustments" surface="none">
+    <Fragment slot="notes"><p>The website must meet WCAG 2.2 AA in both themes. Where Stride’s values fall short on Stride’s own surfaces, the hue is kept and the value deepened.</p></Fragment>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Accessibility adjustments">
+        <table>
+            <thead><tr><th scope="col">Stride</th><th scope="col">Website</th><th scope="col">Why</th></tr></thead>
+            <tbody>
+                {adjustments.map((row: TokenMapping) => <tr><td><code>{row.stride}</code></td><td><code>{row.website}</code></td><td>{row.note}</td></tr>)}
+            </tbody>
+        </table>
+    </div>
+</Specimen>
+
+<Specimen title="Components" surface="none">
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Component mapping">
+        <table>
+            <thead><tr><th scope="col">Stride</th><th scope="col">Website</th><th scope="col">Notes</th></tr></thead>
+            <tbody>
+                {components.map((row: TokenMapping) => <tr><td>{row.stride}</td><td>{row.website}</td><td>{row.note}</td></tr>)}
+            </tbody>
+        </table>
+    </div>
+</Specimen>
+
+<style>
+    .intro {
+        display: grid;
+        gap: 0.9rem;
+        max-width: 46rem;
+    }
+
+    .edge-demo {
+        display: grid;
+        gap: var(--tile-gap);
+        margin-top: 1.5rem;
+    }
+
+    @media (min-width: 48rem) {
+        .edge-demo {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .edge-sample {
+        display: grid;
+        gap: 0.5rem;
+        padding: var(--space-5);
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+        border-top: var(--border-width) solid var(--edge-light);
+        border-bottom: var(--border-width) solid var(--edge-dark);
+        border-radius: var(--radius-lg);
+        corner-shape: var(--corner-shape);
+        background: var(--surface);
+        box-shadow: var(--shadow-sm);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--text-sm);
+    }
+
+    th,
+    td {
+        padding: var(--space-3) var(--space-4);
+        border-bottom: var(--border-width) solid var(--surface-alt);
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th {
+        background: var(--surface-alt);
+        color: var(--heading);
+        font-weight: var(--weight-semibold);
+    }
+
+    tr:last-child td {
+        border-bottom: 0;
+    }
+
+    code {
+        font-size: 0.85em;
+        white-space: nowrap;
+    }
+</style>

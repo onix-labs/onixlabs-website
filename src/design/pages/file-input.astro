@@ -1,0 +1,48 @@
+---
+import FileInput from '../../components/ui/FileInput.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="File input" code={'<FileInput id="attachment" name="attachment" label="Attachment" accept=".pdf,.png,.jpg" help="…" />'}>
+    <Fragment slot="notes">
+        <p>Choosing files to upload. The native file input is kept, with its button styled as a Stride button, so the browser shows what was chosen without any script. The button's wording is the browser's own, in the visitor's language.</p>
+        <p>Use <code>accept</code> to filter the picker, and say in the help text which types and sizes are allowed: <code>accept</code> is a hint, not a check.</p>
+    </Fragment>
+    <div class="form">
+        <FileInput id="file-attachment" name="attachment" label="Attachment" accept=".pdf,.png,.jpg" help="PDF, PNG or JPG, up to 10 MB." />
+        <FileInput id="file-multiple" name="photos" label="Photos" accept="image/*" multiple help="Choose one or more images." />
+    </div>
+</Specimen>
+
+<Specimen title="Variants" code={'<FileInput … />\n<FileInput … variant="secondary" />\n<FileInput … variant="danger" />'}>
+    <Fragment slot="notes"><p>The trigger follows the button variants. <strong>Primary</strong> is the default. <strong>Secondary</strong> is the raised surface button, for a picker that isn't the main action. <strong>Danger</strong> is for the rare picker whose upload replaces or destroys something.</p></Fragment>
+    <div class="form">
+        <FileInput id="file-primary" name="primary" label="Primary" />
+        <FileInput id="file-secondary" name="secondary" label="Secondary" variant="secondary" />
+        <FileInput id="file-danger" name="danger" label="Replace the current file" variant="danger" />
+    </div>
+</Specimen>
+
+<Specimen title="States" code={'<FileInput … required error="…" />\n<FileInput … disabled />'}>
+    <Fragment slot="notes"><p>An error replaces the help text, sets <code>aria-invalid</code> and rings the button in the danger colour. Disabled pickers are dimmed and stay put on hover.</p></Fragment>
+    <div class="form">
+        <FileInput id="file-invalid" name="invalid" label="Document" required error="Choose a document to upload." />
+        <FileInput id="file-disabled" name="disabled" label="Disabled" disabled />
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same pickers inside a near-black band in light mode.</p></Fragment>
+    <div class="form">
+        <FileInput id="file-dark-primary" name="dark-primary" label="Primary" help="Any file type." />
+        <FileInput id="file-dark-secondary" name="dark-secondary" label="Secondary" variant="secondary" />
+        <FileInput id="file-dark-danger" name="dark-danger" label="Danger" variant="danger" />
+    </div>
+</Specimen>
+
+<style>
+    .form {
+        display: grid;
+        gap: 1.5rem;
+        max-width: 32rem;
+    }
+</style>

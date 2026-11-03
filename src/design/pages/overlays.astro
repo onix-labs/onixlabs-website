@@ -1,0 +1,123 @@
+---
+import Modal from '../../components/ui/Modal.astro';
+import Toast from '../../components/ui/Toast.astro';
+import Tooltip from '../../components/ui/Tooltip.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Tooltips" code={'<Tooltip id="save-hint" text="Saves a draft">\n    <button type="button" class="button" aria-describedby="save-hint">Save</button>\n</Tooltip>'}>
+    <Fragment slot="notes">
+        <p>A short label that appears on hover or keyboard focus, in the inverse of the surface: dark in light mode, light in dark. It is pure CSS, and the pointer can move onto the bubble without it closing.</p>
+        <p>The bubble is the target's description, so an interactive target takes <code>aria-describedby</code> with the tooltip's id. A few words only, and never anything the reader needs.</p>
+    </Fragment>
+    <div class="row">
+        <Tooltip id="tooltip-top" text="Above the target">
+            <button type="button" class="button" aria-describedby="tooltip-top">Top</button>
+        </Tooltip>
+        <Tooltip id="tooltip-bottom" text="Below the target" placement="bottom">
+            <button type="button" class="button" aria-describedby="tooltip-bottom">Bottom</button>
+        </Tooltip>
+        <Tooltip id="tooltip-start" text="Before the target" placement="start">
+            <button type="button" class="button" aria-describedby="tooltip-start">Start</button>
+        </Tooltip>
+        <Tooltip id="tooltip-end" text="After the target" placement="end">
+            <button type="button" class="button" aria-describedby="tooltip-end">End</button>
+        </Tooltip>
+    </div>
+</Specimen>
+
+<Specimen title="On a non-interactive target" code={'<Tooltip id="status-hint" text="Online now" focusable>\n    <span class="badge badge-success">Status</span>\n</Tooltip>'}>
+    <Fragment slot="notes"><p>A badge or an icon can't take focus by itself. Set <code>focusable</code> and the target is wrapped in a plain button described by the bubble, so keyboard users can reach it too.</p></Fragment>
+    <div class="row">
+        <Tooltip id="tooltip-badge" text="Online now" focusable>
+            <span class="badge badge-success">Status</span>
+        </Tooltip>
+    </div>
+</Specimen>
+
+<Specimen title="Toasts" code={'<Toast intent="success">Saved successfully.</Toast>\n<Toast intent="danger" dismissible>Something went wrong.</Toast>'}>
+    <Fragment slot="notes">
+        <p>A short notification on a raised surface, its intent shown as a 4px leading edge. Secondary is the default. Toasts carry <code>role="status"</code>, so screen readers announce them politely.</p>
+        <p>A dismissible toast in the page is an open <code>&lt;details&gt;</code> whose <code>&lt;summary&gt;</code> is the close button, so it closes without JavaScript.</p>
+    </Fragment>
+    <div class="toasts">
+        <Toast>A secondary notification.</Toast>
+        <Toast intent="primary">A primary notification.</Toast>
+        <Toast intent="success">Saved successfully.</Toast>
+        <Toast intent="warning">Your session expires soon.</Toast>
+        <Toast intent="danger" dismissible>Something went wrong.</Toast>
+        <Toast intent="info" dismissible>A dismissible notification with a longer message that wraps onto a second line.</Toast>
+    </div>
+</Specimen>
+
+<Specimen title="Showing a toast" code={'<button type="button" class="button" popovertarget="saved-toast">Save</button>\n<Toast id="saved-toast" intent="success" dismissible>Saved successfully.</Toast>'}>
+    <Fragment slot="notes"><p>Give a toast an id and it becomes a popover pinned to the bottom corner of the window, as Stride's toast container places it. A button with <code>popovertarget</code> shows it and its close button hides it, with no script. Keep one on screen at a time: popover toasts don't stack.</p></Fragment>
+    <div class="row">
+        <button type="button" class="button" popovertarget="toast-demo">Show a toast</button>
+        <Toast id="toast-demo" intent="success" dismissible>Saved successfully.</Toast>
+    </div>
+</Specimen>
+
+<Specimen title="Modal" code={'<button type="button" class="button" commandfor="confirm" command="show-modal">Open modal</button>\n<Modal id="confirm" title="Confirm action">\n    <p>…</p>\n    <Fragment slot="footer">\n        <button type="button" class="button" commandfor="confirm" command="close">Cancel</button>\n        <button type="button" class="button button-primary" commandfor="confirm" command="close">Confirm</button>\n    </Fragment>\n</Modal>'}>
+    <Fragment slot="notes">
+        <p>A centred dialog over a dimmed, blurred backdrop, with a title, a body and an optional footer of actions. It is a native <code>&lt;dialog&gt;</code> opened by a button with <code>command="show-modal"</code>, so it needs no JavaScript.</p>
+        <p>The browser keeps focus inside it, closes it on Escape or a click on the backdrop, and returns focus to the button that opened it. The page behind doesn't scroll while it is open.</p>
+    </Fragment>
+    <div class="row">
+        <button type="button" class="button" commandfor="modal-confirm" command="show-modal">Open modal</button>
+        <button type="button" class="button" commandfor="modal-long" command="show-modal">Open a long modal</button>
+    </div>
+    <Modal id="modal-confirm" title="Confirm action">
+        <p>This is a modal dialog. Press Escape, click the backdrop, the close button or an action to dismiss it.</p>
+        <Fragment slot="footer">
+            <button type="button" class="button" commandfor="modal-confirm" command="close">Cancel</button>
+            <button type="button" class="button button-primary" commandfor="modal-confirm" command="close">Confirm</button>
+        </Fragment>
+    </Modal>
+    <Modal id="modal-long" title="A longer dialog">
+        <div class="stack">
+            {Array.from({ length: 12 }, (_: unknown, index: number) => <p>Paragraph {index + 1}. When the content is taller than the window, the body scrolls and the header and footer stay put.</p>)}
+        </div>
+        <Fragment slot="footer">
+            <button type="button" class="button button-primary" commandfor="modal-long" command="close">Done</button>
+        </Fragment>
+    </Modal>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>Tooltips, toasts and a modal opened from inside a dark band take the dark tone in either theme.</p></Fragment>
+    <div class="stack">
+        <div class="row">
+            <Tooltip id="tooltip-dark" text="A hint on a dark band">
+                <button type="button" class="button" aria-describedby="tooltip-dark">Hover me</button>
+            </Tooltip>
+            <button type="button" class="button" commandfor="modal-dark" command="show-modal">Open modal</button>
+        </div>
+        <div class="toasts">
+            <Toast intent="success">Saved successfully.</Toast>
+            <Toast intent="danger" dismissible>Something went wrong.</Toast>
+        </div>
+    </div>
+    <Modal id="modal-dark" title="Dark modal">
+        <p>A modal opened from a dark band.</p>
+        <Fragment slot="footer">
+            <button type="button" class="button button-primary" commandfor="modal-dark" command="close">Close</button>
+        </Fragment>
+    </Modal>
+</Specimen>
+
+<style>
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem 1.5rem;
+        padding-block: 2rem;
+    }
+
+    .toasts {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+</style>

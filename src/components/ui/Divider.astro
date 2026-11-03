@@ -1,0 +1,53 @@
+---
+// A rule that separates content (Stride's Divider): horizontal by default, or vertical inside a flex row. A horizontal
+// divider can carry a short `label` ("or", a date) centred between two rules.
+interface Props {
+    readonly vertical?: boolean;
+    readonly label?: string;
+    readonly class?: string;
+}
+
+const { vertical = false, label, class: className = '' }: Props = Astro.props;
+---
+{vertical
+    ? <div class:list={['divider', 'divider-vertical', className]} role="separator" aria-orientation="vertical"></div>
+    : label === undefined
+        ? <hr class:list={['divider', 'divider-horizontal', className]} />
+        : <div class:list={['divider-labelled', className]}><span>{label}</span></div>}
+
+<style>
+    .divider {
+        border: none;
+        background-color: var(--border);
+    }
+
+    .divider-horizontal {
+        width: 100%;
+        height: var(--border-width);
+        margin-block: var(--space-4);
+    }
+
+    .divider-vertical {
+        width: var(--border-width);
+        align-self: stretch;
+        margin-inline: var(--space-3);
+    }
+
+    /* A labelled divider: the rules are drawn either side of the text, so only the text reaches assistive technology. */
+    .divider-labelled {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        margin-block: var(--space-4);
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .divider-labelled::before,
+    .divider-labelled::after {
+        content: '';
+        flex: 1;
+        height: var(--border-width);
+        background-color: var(--border);
+    }
+</style>

@@ -1,0 +1,35 @@
+---
+import Avatar from './Avatar.astro';
+
+// A row of overlapping avatars (the default slot), each ringed in the colour behind it so the overlaps read cleanly.
+// `more` adds a final "+N" avatar for people not shown. Set `on="surface"` when the group sits on a card or tile.
+interface Props {
+    readonly label: string;
+    readonly more?: number;
+    readonly size?: 'small' | 'default' | 'large' | 'xlarge';
+    readonly on?: 'page' | 'surface';
+    readonly class?: string;
+}
+
+const { label, more = 0, size = 'default', on = 'page', class: className = '' }: Props = Astro.props;
+---
+<div class:list={['avatar-group', `on-${on}`, className]} role="group" aria-label={label}>
+    <slot />
+    {more > 0 && <Avatar initials={`+${more.toString()}`} alt={`and ${more.toString()} more`} size={size} />}
+</div>
+
+<style>
+    .avatar-group {
+        --avatar-ring: 0 0 0 2px var(--bg);
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .avatar-group.on-surface {
+        --avatar-ring: 0 0 0 2px var(--surface);
+    }
+
+    .avatar-group > :global(.avatar + .avatar) {
+        margin-inline-start: calc(var(--space-2) * -1);
+    }
+</style>

@@ -1,0 +1,159 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import FormField from './FormField.astro';
+
+// A slider for choosing a value within a range (Stride's RangeInput), labelled by a FormField. The native
+// <input type="range"> is kept, so dragging, the arrow, Page and Home/End keys and assistive technology all work as
+// usual; its track and thumb are redrawn from tokens. The part of the track before the thumb is filled.
+//
+// Stride fills the track in WebKit and Blink with a gradient driven by an inline --range-percent, which needs script
+// to follow the thumb and an inline style the CSP forbids. Here the thumb paints the fill itself (a border-image that
+// reaches back to the start of the track), so it follows the thumb with no script; Firefox uses ::-moz-range-progress.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly label: string;
+    readonly value?: number;
+    readonly min?: number;
+    readonly max?: number;
+    readonly step?: number | 'any';
+    readonly list?: string;
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly class?: string;
+}
+
+const {
+    id,
+    name,
+    label,
+    min = 0,
+    max = 100,
+    value = min,
+    step = 1,
+    list,
+    required = false,
+    disabled = false,
+    help,
+    error,
+    class: className = '',
+}: Props = Astro.props;
+
+const attributes: HTMLAttributes<'input'> = {
+    id,
+    name,
+    type: 'range',
+    min,
+    max,
+    step,
+    value,
+    list,
+    required,
+    disabled,
+    'aria-describedby': error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined,
+    'aria-invalid': error !== undefined ? 'true' : undefined,
+};
+---
+<FormField for={id} label={label} help={help} error={error} required={required} class={className}>
+    <input class="range" {...attributes} />
+</FormField>
+
+<style>
+    /*
+     * The track is 0.5rem tall, the thumb 1.25rem. The unfilled track is the field colour with a --secondary edge
+     * (Stride's --surface-alt alone is too close to the page to read as a control); the fill and thumb are primary,
+     * the thumb ringed in the surface colour.
+     */
+    .range {
+        --range-track: 0.5rem;
+        --range-thumb: 1.25rem;
+        display: block;
+        width: 100%;
+        height: var(--range-thumb);
+        margin: 0;
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        cursor: pointer;
+        /* Clips the thumb's fill to the track's width. The small radius keeps the focus outline's corners soft. */
+        overflow: hidden;
+        border-radius: 0.25rem;
+    }
+
+    /* ---- WebKit / Blink ---- */
+    .range::-webkit-slider-runnable-track {
+        height: var(--range-track);
+        border: none;
+        border-radius: var(--radius-pill);
+        corner-shape: round;
+        background: var(--field);
+        box-shadow: inset 0 0 0 var(--border-width) var(--secondary);
+    }
+
+    /*
+     * border-image paints only the left edge region: a band the height of the track (the top and bottom widths take
+     * the rest) reaching 100vw back from the thumb, which the input's overflow clips. The surface ring is an inset
+     * shadow, because a border-image replaces the border.
+     */
+    .range::-webkit-slider-thumb {
+        box-sizing: border-box;
+        width: var(--range-thumb);
+        height: var(--range-thumb);
+        margin-top: calc((var(--range-track) - var(--range-thumb)) / 2);
+        appearance: none;
+        -webkit-appearance: none;
+        border: none;
+        border-radius: var(--radius-pill);
+        corner-shape: round;
+        background: var(--primary);
+        box-shadow: inset 0 0 0 3px var(--surface);
+        border-image: linear-gradient(var(--primary), var(--primary)) 0 0 0 1 / calc(50% - var(--range-track) / 2) 0 calc(50% - var(--range-track) / 2) 100vw / 0 0 0 100vw;
+    }
+
+    /* ---- Firefox ---- */
+    .range::-moz-range-track {
+        height: var(--range-track);
+        border: none;
+        border-radius: var(--radius-pill);
+        background: var(--field);
+        box-shadow: inset 0 0 0 var(--border-width) var(--secondary);
+    }
+
+    .range::-moz-range-progress {
+        height: var(--range-track);
+        border-radius: var(--radius-pill);
+        background: var(--primary);
+    }
+
+    .range::-moz-range-thumb {
+        box-sizing: border-box;
+        width: var(--range-thumb);
+        height: var(--range-thumb);
+        border: 3px solid var(--surface);
+        border-radius: var(--radius-pill);
+        background: var(--primary);
+    }
+
+    /* Stride removes the focus outline; the site's 2px outline is kept, drawn round the whole slider. */
+    .range:focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 3px;
+        border-radius: 0.25rem;
+    }
+
+    .range[aria-invalid='true']::-webkit-slider-runnable-track {
+        box-shadow: inset 0 0 0 var(--border-width) var(--danger);
+    }
+
+    .range[aria-invalid='true']::-moz-range-track {
+        box-shadow: inset 0 0 0 var(--border-width) var(--danger);
+    }
+
+    .range:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+</style>

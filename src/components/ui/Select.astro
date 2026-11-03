@@ -1,0 +1,168 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import FormField from './FormField.astro';
+import type { SelectOption } from './select-option';
+
+// A single-choice dropdown (Stride's Select). The closed control is the shared .input; where the browser supports
+// customizable selects (appearance: base-select) the picker is restyled as a raised surface with rounded options and a
+// chevron that turns when it opens, as in Stride, and elsewhere it falls back to the native picker. `placeholder` adds
+// an empty first option, selected until a choice is made, so `required` works. With a `label` it renders inside a
+// FormField; without one it renders the bare <select>, and `describedBy` and `invalid` are yours to pass.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly options: ReadonlyArray<SelectOption>;
+    readonly label?: string;
+    readonly value?: string;
+    readonly placeholder?: string;
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly describedBy?: string;
+    readonly invalid?: boolean;
+    readonly class?: string;
+}
+
+const {
+    id,
+    name,
+    options,
+    label,
+    value,
+    placeholder,
+    required = false,
+    disabled = false,
+    help,
+    error,
+    describedBy,
+    invalid = false,
+    class: className = '',
+}: Props = Astro.props;
+
+const isLabelled: boolean = label !== undefined;
+const description: string | undefined = isLabelled ? (error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined) : describedBy;
+const isInvalid: boolean = isLabelled ? error !== undefined : invalid;
+const attributes: HTMLAttributes<'select'> = {
+    id,
+    name,
+    required,
+    disabled,
+    'aria-describedby': description,
+    'aria-invalid': isInvalid ? 'true' : undefined,
+};
+---
+{label !== undefined
+    ? (
+        <FormField for={id} label={label} help={help} error={error} required={required} class={className}>
+            <select class="input select" {...attributes}>
+                {placeholder !== undefined && <option value="" selected={value === undefined}>{placeholder}</option>}
+                {options.map((option: SelectOption) => <option value={option.value} selected={option.value === value} disabled={option.disabled}>{option.label}</option>)}
+            </select>
+        </FormField>
+    )
+    : (
+        <select class:list={['input', 'select', className]} {...attributes}>
+            {placeholder !== undefined && <option value="" selected={value === undefined}>{placeholder}</option>}
+            {options.map((option: SelectOption) => <option value={option.value} selected={option.value === value} disabled={option.disabled}>{option.label}</option>)}
+        </select>
+    )}
+
+<style>
+    .select {
+        cursor: pointer;
+    }
+
+    .select:disabled {
+        cursor: not-allowed;
+    }
+
+    @supports (appearance: base-select) {
+        .select,
+        .select::picker(select) {
+            appearance: base-select;
+        }
+
+        /* The selected text and the chevron in a row; the chevron is drawn by ::picker-icon, not the base.css image. */
+        .select {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-2);
+            padding-right: var(--space-3);
+            background-image: none;
+        }
+
+        .select::picker(select) {
+            margin-block: var(--space-1);
+            padding: var(--space-1);
+            border: var(--border-width) solid var(--edge-dark);
+            border-radius: var(--radius-sm);
+            corner-shape: var(--corner-shape);
+            background-color: var(--surface);
+            color: var(--text);
+            box-shadow: var(--shadow-md);
+        }
+
+        .select option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-sm);
+            corner-shape: var(--corner-shape);
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .select option:hover,
+        .select option:focus {
+            background-color: var(--surface-alt);
+        }
+
+        /* The background change alone is too faint to mark keyboard focus, so focus also gets the site's outline. */
+        .select option:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: -2px;
+        }
+
+        .select option:checked {
+            background-color: color-mix(in oklch, var(--text) 12%, transparent);
+            font-weight: var(--weight-semibold);
+        }
+
+        .select option:disabled {
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .select option::checkmark {
+            content: '';
+        }
+
+        /* A drawn chevron in place of the default triangle (Stride uses Tabler's chevron-down glyph). */
+        .select::picker-icon {
+            content: '';
+            width: 0.45rem;
+            height: 0.45rem;
+            margin-inline-end: 0.2rem;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            color: var(--text-muted);
+            transform: translateY(-25%) rotate(45deg);
+            transition: rotate var(--transition);
+        }
+    }
+
+    /* :open is kept out of the selector lists above: a browser that doesn't know it would drop the whole rule. */
+    @supports (appearance: base-select) {
+        .select:open {
+            border-color: var(--secondary);
+        }
+
+        .select:open::picker-icon {
+            rotate: 180deg;
+        }
+    }
+</style>

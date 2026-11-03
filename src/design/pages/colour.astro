@@ -15,21 +15,37 @@ const brand: ReadonlyArray<ColourToken> = [
 ];
 
 const neutrals: ReadonlyArray<ColourToken> = [
-    { name: 'Background', token: '--bg', value: 'Page background, the white or near-black band' },
-    { name: 'Background, alt', token: '--bg-alt', value: 'The grey band' },
-    { name: 'Surface', token: '--surface', value: 'Tiles' },
+    { name: 'Page', token: '--bg', value: 'The mid-grey page that surfaces rise from' },
+    { name: 'Surface', token: '--surface', value: 'Raised: tiles, cards, buttons' },
+    { name: 'Surface, recessed', token: '--surface-alt', value: 'Below the page: card footers, secondary panels' },
+    { name: 'Field', token: '--field', value: 'Input wells' },
+    { name: 'Edge, light', token: '--edge-light', value: 'The lit top edge of a raised surface' },
+    { name: 'Edge, dark', token: '--edge-dark', value: 'The shaded bottom edge' },
     { name: 'Heading', token: '--heading', value: 'Headlines and strong text' },
     { name: 'Text', token: '--text', value: 'Body copy' },
-    { name: 'Text, muted', token: '--text-muted', value: 'Standfirsts, captions, second phrase of a two-tone headline' },
-    { name: 'Label', token: '--label', value: 'Coral labels; deepened in light mode for contrast' },
-    { name: 'Border', token: '--border', value: 'Hairlines and outlines' },
+    { name: 'Text, muted', token: '--text-muted', value: 'Standfirsts, captions, the second phrase of a two-tone headline' },
+    { name: 'Label', token: '--label', value: 'Coral labels, tuned per theme for contrast' },
 ];
+
+const intents: ReadonlyArray<string> = ['primary', 'secondary', 'success', 'warning', 'danger', 'info'];
 
 const families: ReadonlyArray<string> = ['aero', 'studio', 'player', 'dotnet', 'kotlin', 'corda'];
 const familyNames: ReadonlyMap<string, string> = new Map<string, string>([
     ['aero', 'Aero'], ['studio', 'ONIXLabs Studio'], ['player', 'ONIXPlayer'], ['dotnet', '.NET libraries'], ['kotlin', 'Kotlin libraries'], ['corda', 'Corda libraries'],
 ]);
 ---
+<Specimen title="Semantic intents" code={'var(--success)  var(--success-contrast)  var(--success-subtle)\n/* primary | secondary | success | warning | danger | info */'}>
+    <Fragment slot="notes"><p>Stride's intents, each as a fill, the text colour that sits on it, and a subtle background. Primary is monochrome: near-black in light, near-white in dark. Fills are deepened from Stride's values where white text on them fell below 4.5:1.</p></Fragment>
+    <div class="intents">
+        {intents.map((intent: string) => (
+            <div class={`intent intent-${intent}`}>
+                <span class="intent-fill">{intent}</span>
+                <span class="intent-subtle">subtle</span>
+            </div>
+        ))}
+    </div>
+</Specimen>
+
 <Specimen title="Brand stops" code={'<Swatches />\nvar(--brand-amber) … var(--brand-green)\nvar(--brand-gradient)'}>
     <Fragment slot="notes">
         <p>The eight stops of the logo orb. They appear as light (aurora, gradient text), as structure (swatches) and as product identity (colour blocks), but never as a flat accent on buttons.</p>
@@ -151,8 +167,8 @@ const familyNames: ReadonlyMap<string, string> = new Map<string, string>([
 
     .neutral-panel {
         padding: 1.5rem;
-        border: 1px solid var(--border);
         border-radius: var(--radius-lg);
+        corner-shape: var(--corner-shape);
         background: var(--bg);
         color: var(--text);
     }
@@ -188,13 +204,48 @@ const familyNames: ReadonlyMap<string, string> = new Map<string, string>([
     }
 
     .swatch--bg { background: var(--bg); }
-    .swatch--bg-alt { background: var(--bg-alt); }
     .swatch--surface { background: var(--surface); }
+    .swatch--surface-alt { background: var(--surface-alt); }
+    .swatch--field { background: var(--field); }
+    .swatch--edge-light { background: var(--edge-light); }
+    .swatch--edge-dark { background: var(--edge-dark); }
     .swatch--heading { background: var(--heading); }
     .swatch--text { background: var(--text); }
     .swatch--text-muted { background: var(--text-muted); }
     .swatch--label { background: var(--label); }
-    .swatch--border { background: var(--border-strong); }
+
+    .intents {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+        gap: var(--tile-gap);
+    }
+
+    .intent {
+        display: grid;
+        overflow: hidden;
+        border-radius: var(--radius);
+        corner-shape: var(--corner-shape);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-medium);
+    }
+
+    .intent span {
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .intent-fill { text-transform: capitalize; }
+    .intent-primary .intent-fill { background: var(--primary); color: var(--primary-contrast); }
+    .intent-primary .intent-subtle { background: var(--primary-subtle); color: var(--text); }
+    .intent-secondary .intent-fill { background: var(--secondary); color: var(--secondary-contrast); }
+    .intent-secondary .intent-subtle { background: var(--secondary-subtle); color: var(--text); }
+    .intent-success .intent-fill { background: var(--success); color: var(--success-contrast); }
+    .intent-success .intent-subtle { background: var(--success-subtle); color: var(--text); }
+    .intent-warning .intent-fill { background: var(--warning); color: var(--warning-contrast); }
+    .intent-warning .intent-subtle { background: var(--warning-subtle); color: var(--text); }
+    .intent-danger .intent-fill { background: var(--danger); color: var(--danger-contrast); }
+    .intent-danger .intent-subtle { background: var(--danger-subtle); color: var(--text); }
+    .intent-info .intent-fill { background: var(--info); color: var(--info-contrast); }
+    .intent-info .intent-subtle { background: var(--info-subtle); color: var(--text); }
 
     .block-sample {
         display: grid;

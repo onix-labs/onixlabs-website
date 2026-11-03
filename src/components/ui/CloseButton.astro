@@ -1,0 +1,68 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import Icon from '../Icon.astro';
+
+// Stride's CloseButton: the standard dismiss control (an "×") for alerts, toasts, modals and the like. It does
+// nothing by itself; pass the native wiring that closes its surface, such as commandfor and command="close" for a
+// dialog, or popovertarget and popovertargetaction="hide" for a popover. As a <summary> (element="summary") it is the
+// toggle of the <details> that Alert and Toast use to dismiss without JavaScript.
+interface Props extends Omit<HTMLAttributes<'button'>, 'type'> {
+    readonly label?: string;
+    readonly element?: 'button' | 'summary';
+}
+
+const { label = 'Close', element = 'button', class: className, ...attributes }: Props = Astro.props;
+---
+{element === 'summary' ? (
+    <summary class:list={['close-button', className]}>
+        <Icon name="xmark" />
+        <span class="visually-hidden">{label}</span>
+    </summary>
+) : (
+    <button type="button" class:list={['close-button', className]} {...attributes}>
+        <Icon name="xmark" />
+        <span class="visually-hidden">{label}</span>
+    </button>
+)}
+
+<style>
+    .close-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0;
+        border: none;
+        border-radius: var(--radius-sm);
+        corner-shape: var(--corner-shape);
+        background: none;
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        line-height: 1;
+        list-style: none;
+        cursor: pointer;
+        transition: color var(--transition), background-color var(--transition);
+    }
+
+    .close-button::-webkit-details-marker {
+        display: none;
+    }
+
+    .close-button::marker {
+        content: '';
+    }
+
+    .close-button:hover {
+        background-color: var(--surface-alt);
+        color: var(--text);
+    }
+
+    /* The site's solid focus outline rather than Stride's translucent ring, which falls below 3:1 on surfaces. */
+    .close-button:focus-visible {
+        border-radius: var(--radius-sm);
+        outline-offset: 1px;
+    }
+</style>

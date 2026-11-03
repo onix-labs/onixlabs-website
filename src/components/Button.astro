@@ -1,12 +1,12 @@
 ---
 import Icon from './Icon.astro';
 
-// A call to action: a solid pill (primary), an outlined pill (secondary), a pill with the turning brand-gradient
-// border (spectral), or a "Learn more ›" text link (link).
+// A call to action (Stride): the monochrome primary, a raised surface button (secondary), danger, a button wearing
+// the turning ONIXLabs brand gradient (spectral), or a "Learn more ›" text link (link).
 interface Props {
     readonly href: string;
-    readonly variant?: 'primary' | 'secondary' | 'spectral' | 'link';
-    readonly size?: 'default' | 'large';
+    readonly variant?: 'primary' | 'secondary' | 'danger' | 'spectral' | 'link';
+    readonly size?: 'small' | 'default' | 'large';
     readonly icon?: string;
     readonly external?: boolean;
     readonly class?: string;
@@ -18,7 +18,7 @@ const isLink: boolean = variant === 'link';
 <a
     class:list={[
         isLink ? 'link-cta' : 'button',
-        { 'button-primary': variant === 'primary', 'button-spectral': variant === 'spectral', 'button-large': size === 'large' && !isLink },
+        { 'button-primary': variant === 'primary', 'button-danger': variant === 'danger', 'button-spectral': variant === 'spectral', 'button-large': size === 'large' && !isLink, 'button-small': size === 'small' && !isLink },
         className,
     ]}
     href={href}

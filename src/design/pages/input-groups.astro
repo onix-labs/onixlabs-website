@@ -1,0 +1,99 @@
+---
+import FloatingLabel from '../../components/ui/FloatingLabel.astro';
+import InputGroup from '../../components/ui/InputGroup.astro';
+import NumberInput from '../../components/ui/NumberInput.astro';
+import TextInput from '../../components/ui/TextInput.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Input group with text" code={'<InputGroup for="site" label="Website" help="…">\n  <span class="input-group-addon" id="site-prefix">https://</span>\n  <TextInput id="site" name="site" describedBy="site-prefix site-help" />\n</InputGroup>'}>
+    <Fragment slot="notes">
+        <p>An input joined to fixed text before or after it, such as a URL scheme, a currency or a unit, so it reads as one control. Only the outer corners stay rounded.</p>
+        <p>The pieces go in the slot as direct children: a bare control (no <code>label</code>) and <code>&lt;span class="input-group-addon"&gt;</code> for the text. Include the addon's id in <code>describedBy</code> when it's part of the value, so screen readers hear it too.</p>
+    </Fragment>
+    <div class="form">
+        <InputGroup for="groups-site" label="Website" help="Your public site, without the scheme.">
+            <span class="input-group-addon" id="groups-site-prefix">https://</span>
+            <TextInput id="groups-site" name="site" describedBy="groups-site-prefix groups-site-help" autocomplete="off" />
+        </InputGroup>
+        <InputGroup for="groups-size" label="Maximum upload size">
+            <NumberInput id="groups-size" name="size" min={1} max={100} value={10} describedBy="groups-size-unit" />
+            <span class="input-group-addon" id="groups-size-unit">MB</span>
+        </InputGroup>
+        <InputGroup for="groups-price" label="Price">
+            <span class="input-group-addon" id="groups-price-currency">$</span>
+            <NumberInput id="groups-price" name="price" min={0} step={1} placeholder="0" describedBy="groups-price-currency groups-price-cents" />
+            <span class="input-group-addon" id="groups-price-cents">.00</span>
+        </InputGroup>
+    </div>
+</Specimen>
+
+<Specimen title="Input group with a button" code={'<InputGroup for="query" label="Search">\n  <TextInput id="query" name="query" type="search" />\n  <button class="button button-primary" type="submit">Search</button>\n</InputGroup>'}>
+    <Fragment slot="notes"><p>An input with the action it feeds. A <code>&lt;button class="button"&gt;</code> joined into the group drops its standalone lift on hover, and keeps its own focus outline above its neighbours.</p></Fragment>
+    <div class="form">
+        <InputGroup for="groups-query" label="Search">
+            <TextInput id="groups-query" name="query" type="search" placeholder="Search the documentation" />
+            <button class="button button-primary" type="button">Search</button>
+        </InputGroup>
+        <InputGroup for="groups-invite" label="Invite by email">
+            <TextInput id="groups-invite" name="invite" type="email" autocomplete="off" />
+            <button class="button" type="button">Send invite</button>
+        </InputGroup>
+    </div>
+</Specimen>
+
+<Specimen title="Input group states" code={'<InputGroup for="handle" label="Username" error="…">\n  <span class="input-group-addon" id="handle-at">@</span>\n  <TextInput id="handle" name="handle" describedBy="handle-at handle-error" invalid />\n</InputGroup>'}>
+    <Fragment slot="notes"><p>The group's error replaces its help text; mark the input <code>invalid</code> and point <code>describedBy</code> at <code>&lt;for&gt;-error</code>. A disabled input in a group uses the shared disabled style.</p></Fragment>
+    <div class="form">
+        <InputGroup for="groups-handle" label="Username" error="That username is taken. Try another.">
+            <span class="input-group-addon" id="groups-handle-at">@</span>
+            <TextInput id="groups-handle" name="handle" value="taken-name" autocomplete="off" describedBy="groups-handle-at groups-handle-error" invalid />
+        </InputGroup>
+        <InputGroup for="groups-locked" label="Disabled">
+            <span class="input-group-addon">https://</span>
+            <TextInput id="groups-locked" name="locked" value="example.com" disabled />
+        </InputGroup>
+    </div>
+</Specimen>
+
+<Specimen title="Floating label" code={'<FloatingLabel id="full-name" name="full-name" label="Full name" autocomplete="name" />'}>
+    <Fragment slot="notes">
+        <p>A compact field whose label sits inside it like a placeholder and floats up, smaller, once the field is focused or filled. It's CSS only, and the label stays a real <code>&lt;label&gt;</code>, so it is never lost the way a placeholder is.</p>
+        <p>Use it where space is tight; the stacked <code>FormField</code> is the default everywhere else.</p>
+    </Fragment>
+    <div class="form">
+        <FloatingLabel id="groups-float-name" name="full-name" label="Full name" autocomplete="off" />
+        <FloatingLabel id="groups-float-email" name="email" type="email" label="Email address" value="name@example.com" autocomplete="off" help="Used only to reply to you." />
+    </div>
+</Specimen>
+
+<Specimen title="Floating label states" code={'<FloatingLabel … required error="…" />\n<FloatingLabel … disabled />'}>
+    <Fragment slot="notes"><p>The shared field states: an error replaces the help text and turns the border to the danger colour; disabled fields drop to the alternate surface.</p></Fragment>
+    <div class="form">
+        <FloatingLabel id="groups-float-invalid" name="phone" type="tel" label="Phone number" value="12" required autocomplete="off" error="Enter a phone number with its area code." />
+        <FloatingLabel id="groups-float-disabled" name="disabled" label="Disabled" value="Not editable" disabled />
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same groups and floating labels inside a near-black band in light mode.</p></Fragment>
+    <div class="form">
+        <InputGroup for="groups-dark-site" label="Website">
+            <span class="input-group-addon" id="groups-dark-prefix">https://</span>
+            <TextInput id="groups-dark-site" name="dark-site" describedBy="groups-dark-prefix" autocomplete="off" />
+        </InputGroup>
+        <InputGroup for="groups-dark-query" label="Search">
+            <TextInput id="groups-dark-query" name="dark-query" type="search" />
+            <button class="button button-primary" type="button">Search</button>
+        </InputGroup>
+        <FloatingLabel id="groups-dark-float" name="dark-float" label="Full name" autocomplete="off" />
+        <FloatingLabel id="groups-dark-filled" name="dark-filled" label="Email address" value="name@example.com" autocomplete="off" />
+    </div>
+</Specimen>
+
+<style>
+    .form {
+        display: grid;
+        gap: 1.5rem;
+        max-width: 32rem;
+    }
+</style>

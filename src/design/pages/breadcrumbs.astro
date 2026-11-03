@@ -1,0 +1,71 @@
+---
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import type { BreadcrumbItem } from '../../components/ui/breadcrumb-item';
+import Pagination from '../../components/ui/Pagination.astro';
+import Specimen from '../Specimen.astro';
+
+const trail: ReadonlyArray<BreadcrumbItem> = [
+    { label: 'Home', href: '#breadcrumb' },
+    { label: 'Section', href: '#breadcrumb' },
+    { label: 'Current page' },
+];
+
+const longTrail: ReadonlyArray<BreadcrumbItem> = [
+    { label: 'Home', href: '#long-trails' },
+    { label: 'Section', href: '#long-trails' },
+    { label: 'Subsection', href: '#long-trails' },
+    { label: 'A category with a longer name', href: '#long-trails' },
+    { label: 'A page whose title runs on' },
+];
+
+function pageHref(page: number): string {
+    return `#page-${page.toString()}`;
+}
+---
+<Specimen title="Breadcrumb" code={'<Breadcrumb items={[\n    { label: \'Home\', href: \'/\' },\n    { label: \'Section\', href: \'…\' },\n    { label: \'Current page\' },\n]} />'}>
+    <Fragment slot="notes">
+        <p>The trail to the current page: earlier crumbs are links in the primary colour, underlined on hover; the last is the current page, in medium weight with <code>aria-current="page"</code>. Chevron separators are decorative.</p>
+        <p>It is a <code>&lt;nav aria-label="Breadcrumb"&gt;</code> around an ordered list, so it is announced as a landmark with a count of steps.</p>
+    </Fragment>
+    <Breadcrumb items={trail} />
+</Specimen>
+
+<Specimen title="Long trails">
+    <Fragment slot="notes"><p>The trail wraps onto further lines rather than truncating crumbs.</p></Fragment>
+    <div class="narrow"><Breadcrumb items={longTrail} label="Breadcrumb, long" /></div>
+</Specimen>
+
+<Specimen title="Pagination" code={'<Pagination pageCount={5} currentPage={2} href={(page) => `/blog/${page}`} />'}>
+    <Fragment slot="notes">
+        <p>Previous and next plus a link per page: small raised squares, with the current page filled in the primary colour and marked <code>aria-current="page"</code>. Each link reads as "Page 3"; the arrows as "Previous page" and "Next page".</p>
+        <p>The site has no client-side routing, so each page is a link built by <code>href</code>. At the first or last page the matching arrow fades and drops out of the tab order.</p>
+    </Fragment>
+    <div class="stack">
+        <Pagination pageCount={5} currentPage={1} href={pageHref} label="Pagination, first page" />
+        <Pagination pageCount={5} currentPage={3} href={pageHref} label="Pagination, middle page" />
+        <Pagination pageCount={5} currentPage={5} href={pageHref} label="Pagination, last page" />
+    </div>
+</Specimen>
+
+<Specimen title="Many pages" code={'<Pagination pageCount={20} currentPage={9} href={…} />'}>
+    <Fragment slot="notes"><p>Stride lists every page. Beyond seven pages, this version keeps the first, the last and the current page's neighbours, and shows each gap as an ellipsis.</p></Fragment>
+    <div class="stack">
+        <Pagination pageCount={20} currentPage={2} href={pageHref} label="Pagination, many pages near the start" />
+        <Pagination pageCount={20} currentPage={9} href={pageHref} label="Pagination, many pages in the middle" />
+        <Pagination pageCount={20} currentPage={20} href={pageHref} label="Pagination, many pages at the end" />
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>Both components in the dark palette.</p></Fragment>
+    <div class="stack">
+        <Breadcrumb items={trail} label="Breadcrumb on dark" />
+        <Pagination pageCount={5} currentPage={2} href={pageHref} label="Pagination on dark" />
+    </div>
+</Specimen>
+
+<style>
+    .narrow {
+        max-width: 22rem;
+    }
+</style>

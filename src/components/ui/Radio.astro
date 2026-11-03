@@ -1,0 +1,98 @@
+---
+// One radio option (Stride's Radio). RadioGroup renders these from its `options`; use Radio directly inside a
+// RadioGroup's slot when an option needs more than a label. Every Radio in a group must share the group's `name`.
+// The real <input type="radio"> is visually hidden; the ring after it is the rendered control.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly value: string;
+    readonly label: string;
+    readonly checked?: boolean;
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly invalid?: boolean;
+    readonly class?: string;
+}
+
+const { id, name, value, label, checked = false, required = false, disabled = false, invalid = false, class: className = '' }: Props = Astro.props;
+---
+<label class:list={['radio', { 'is-disabled': disabled, 'is-invalid': invalid }, className]}>
+    <input class="radio-input" type="radio" id={id} name={name} value={value} checked={checked} required={required} disabled={disabled} />
+    <span class="radio-control" aria-hidden="true"><span class="radio-dot"></span></span>
+    <span class="radio-label">{label}</span>
+</label>
+
+<style>
+    .radio {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+    }
+
+    .radio-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+        opacity: 0;
+    }
+
+    /* A 1.25rem ring with a border 2px thicker than the standard width, as in Stride. Unchecked, it uses --secondary
+       rather than Stride's --field-border, which is too faint for the 3:1 WCAG asks of a control's boundary. */
+    .radio-control {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: calc(var(--border-width) + 2px) solid var(--secondary);
+        border-radius: var(--radius-pill);
+        corner-shape: round;
+        background-color: var(--field);
+        transition: border-color var(--transition);
+    }
+
+    /* The dot is a fixed size, independent of the ring and its border. */
+    .radio-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: var(--radius-pill);
+        corner-shape: round;
+        background-color: var(--primary);
+        transform: scale(0);
+        transition: transform var(--transition);
+    }
+
+    .radio-input:checked + .radio-control {
+        border-color: var(--primary);
+    }
+
+    .radio-input:checked + .radio-control .radio-dot {
+        transform: scale(1);
+    }
+
+    .is-invalid .radio-control {
+        border-color: var(--danger);
+    }
+
+    /* The site's 2px focus outline, in place of Stride's translucent focus shadow. */
+    .radio-input:focus-visible + .radio-control {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+    }
+
+    .radio-label {
+        color: var(--text);
+        font-size: var(--text-base);
+    }
+
+    .is-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+</style>

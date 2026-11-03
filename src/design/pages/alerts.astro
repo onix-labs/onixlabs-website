@@ -1,0 +1,54 @@
+---
+import Alert from '../../components/ui/Alert.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Intents" code={'<Alert intent="success">Your changes have been saved.</Alert>\n<Alert intent="warning">This version is no longer supported.</Alert>'}>
+    <Fragment slot="notes">
+        <p>A contextual message in one of six intents. The fill is the intent's subtle tint, framed by a hairline in the intent itself. Info is the default.</p>
+        <p>Stride sets the text in the intent colour. In light mode those colours are fills rather than inks, so the text is deepened until it clears 4.5:1 on its tint; in dark mode it is the intent as is.</p>
+    </Fragment>
+    <div class="stack">
+        <Alert intent="primary">A primary message.</Alert>
+        <Alert intent="secondary">A secondary message.</Alert>
+        <Alert intent="success">A success message.</Alert>
+        <Alert intent="warning">A warning message.</Alert>
+        <Alert intent="danger">A danger message.</Alert>
+        <Alert intent="info">An informational message.</Alert>
+    </div>
+</Specimen>
+
+<Specimen title="With a title" code={'<Alert intent="info" title="Heads up">An alert with a title above the body.</Alert>'}>
+    <Fragment slot="notes"><p>A short semibold title above the body names the message. Links and emphasis inside take the alert's colour.</p></Fragment>
+    <div class="stack">
+        <Alert intent="info" title="Heads up">An alert with a title above the body, and <a href="#with-a-title">a link</a> in its text.</Alert>
+        <Alert intent="danger" title="Something went wrong">The request could not be completed. Check the details and try again.</Alert>
+    </div>
+</Specimen>
+
+<Specimen title="Dismissible" code={'<Alert intent="warning" dismissible>Dismiss me.</Alert>'}>
+    <Fragment slot="notes">
+        <p>A close button in the top corner. A dismissible alert is an open <code>&lt;details&gt;</code> whose <code>&lt;summary&gt;</code> is the close button, so it dismisses without JavaScript. Reload the page to bring these back.</p>
+    </Fragment>
+    <div class="stack">
+        <Alert intent="warning" dismissible>Dismiss me.</Alert>
+        <Alert intent="success" title="Saved" dismissible dismissLabel="Dismiss message">A dismissible alert with a title.</Alert>
+    </div>
+</Specimen>
+
+<Specimen title="Urgency" code={'<Alert intent="info" role="status">Updated a moment ago.</Alert>'}>
+    <Fragment slot="notes">
+        <p>Alerts carry <code>role="alert"</code>, as in Stride, which interrupts a screen reader when one appears. For a message that can wait its turn, pass <code>role="status"</code>.</p>
+    </Fragment>
+    <Alert intent="info" role="status">A polite status message.</Alert>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>Inside a dark band the alerts take the dark intents and tints in either theme.</p></Fragment>
+    <div class="stack">
+        <Alert intent="primary">A primary message.</Alert>
+        <Alert intent="success" title="Saved">A success message.</Alert>
+        <Alert intent="warning" dismissible>A dismissible warning.</Alert>
+        <Alert intent="danger">A danger message.</Alert>
+        <Alert intent="info">An informational message.</Alert>
+    </div>
+</Specimen>

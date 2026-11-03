@@ -1,0 +1,65 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import FormField from './FormField.astro';
+import type { TextInputType } from './text-input-type';
+
+// A single-line text input (Stride's TextInput), styled by the shared .input class in base.css. With a `label` it
+// renders inside a FormField with its help text or error wired up. Without one it renders the bare <input>, for
+// composing inside a FormField or an InputGroup: pass `describedBy` and `invalid` yourself.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly label?: string;
+    readonly type?: TextInputType;
+    readonly value?: string;
+    readonly placeholder?: string;
+    readonly autocomplete?: HTMLAttributes<'input'>['autocomplete'];
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly readOnly?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly describedBy?: string;
+    readonly invalid?: boolean;
+    readonly class?: string;
+}
+
+const {
+    id,
+    name,
+    label,
+    type = 'text',
+    value,
+    placeholder,
+    autocomplete,
+    required = false,
+    disabled = false,
+    readOnly = false,
+    help,
+    error,
+    describedBy,
+    invalid = false,
+    class: className = '',
+}: Props = Astro.props;
+
+const isLabelled: boolean = label !== undefined;
+const description: string | undefined = isLabelled ? (error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined) : describedBy;
+const isInvalid: boolean = isLabelled ? error !== undefined : invalid;
+const attributes: HTMLAttributes<'input'> = {
+    id,
+    name,
+    type,
+    value,
+    placeholder,
+    autocomplete,
+    required,
+    disabled,
+    readonly: readOnly,
+    'aria-describedby': description,
+    'aria-invalid': isInvalid ? 'true' : undefined,
+};
+---
+{label !== undefined
+    ? <FormField for={id} label={label} help={help} error={error} required={required} class={className}><input class="input" {...attributes} /></FormField>
+    : <input class:list={['input', className]} {...attributes} />}

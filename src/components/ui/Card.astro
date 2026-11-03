@@ -1,0 +1,61 @@
+---
+// A raised surface that groups related content (Stride's Card): an optional header, the body (the default slot) and
+// an optional recessed footer. Headings placed in the header keep the header's size, so the outline stays correct
+// without changing the look.
+interface Props {
+    readonly as?: 'div' | 'article' | 'section' | 'aside';
+    readonly padded?: boolean;
+    readonly class?: string;
+    readonly 'aria-labelledby'?: string;
+}
+
+const { as: Element = 'div', padded = false, class: className = '', 'aria-labelledby': labelledBy }: Props = Astro.props;
+---
+<Element class:list={['card', className]} aria-labelledby={labelledBy}>
+    {Astro.slots.has('header') && <div class="card-header"><slot name="header" /></div>}
+    <div class:list={['card-body', { padded }]}><slot /></div>
+    {Astro.slots.has('footer') && <div class="card-footer"><slot name="footer" /></div>}
+</Element>
+
+<style>
+    .card {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--surface);
+        color: var(--text);
+        border: none;
+        border-top: var(--border-width) solid var(--edge-light);
+        border-bottom: var(--border-width) solid var(--edge-dark);
+        border-radius: var(--radius-xl);
+        corner-shape: var(--corner-shape);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: var(--space-4) var(--space-5);
+        color: var(--heading);
+        font-weight: var(--weight-semibold);
+    }
+
+    .card-header :global(:is(h2, h3, h4, h5, h6)) {
+        font-size: inherit;
+        font-weight: inherit;
+        letter-spacing: inherit;
+        line-height: inherit;
+    }
+
+    .card-body {
+        flex: 1;
+    }
+
+    .card-body.padded {
+        padding: var(--space-5);
+    }
+
+    .card-footer {
+        padding: var(--space-4) var(--space-5);
+        border-top: var(--border-width) solid var(--edge-light);
+        background-color: var(--surface-alt);
+    }
+</style>

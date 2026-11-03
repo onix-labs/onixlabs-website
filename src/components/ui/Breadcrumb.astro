@@ -1,0 +1,71 @@
+---
+import Icon from '../Icon.astro';
+import type { BreadcrumbItem } from './breadcrumb-item';
+
+// The trail to the current page (Stride's Breadcrumb). The last item is the current page and renders as text with
+// aria-current; the others link to their `href`. Chevron separators are decorative and hidden from assistive technology.
+interface Props {
+    readonly items: ReadonlyArray<BreadcrumbItem>;
+    readonly label?: string;
+    readonly class?: string;
+}
+
+const { items, label = 'Breadcrumb', class: className = '' }: Props = Astro.props;
+const lastIndex: number = items.length - 1;
+---
+<nav class:list={['breadcrumb', className]} aria-label={label}>
+    <ol class="breadcrumb-list" role="list">
+        {items.map((item: BreadcrumbItem, index: number) => {
+            const current: boolean = index === lastIndex;
+            return (
+                <li class:list={['breadcrumb-item', { 'breadcrumb-item-current': current }]} aria-current={current ? 'page' : undefined}>
+                    {index > 0 && <Icon name="chevron-right" class="breadcrumb-separator" />}
+                    {current || item.href === undefined
+                        ? <span class="breadcrumb-text">{item.label}</span>
+                        : <a class="breadcrumb-link" href={item.href}>{item.label}</a>}
+                </li>
+            );
+        })}
+    </ol>
+</nav>
+
+<style>
+    .breadcrumb-list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: var(--text-sm);
+    }
+
+    .breadcrumb-item {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        color: var(--text-muted);
+    }
+
+    .breadcrumb-item :global(.breadcrumb-separator) {
+        width: 0.7em;
+        height: 0.7em;
+        color: var(--text-muted);
+    }
+
+    .breadcrumb-link {
+        color: var(--primary);
+        text-decoration: none;
+    }
+
+    .breadcrumb-link:hover {
+        text-decoration: underline;
+        text-decoration-color: currentColor;
+    }
+
+    .breadcrumb-item-current {
+        color: var(--text);
+        font-weight: var(--weight-medium);
+    }
+</style>

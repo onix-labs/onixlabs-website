@@ -1,0 +1,84 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import type { TextInputType } from './text-input-type';
+
+// A text field whose label sits inside it and floats up once it is focused or filled (Stride's FloatingLabel). The
+// field is the shared .input with extra top padding; the float is CSS only, keyed off :placeholder-shown, so the
+// input carries a single-space placeholder and the label is the real <label for>. Help text or an error (which
+// replaces the help) sits below and is wired with aria-describedby.
+interface Props {
+    readonly id: string;
+    readonly name: string;
+    readonly label: string;
+    readonly type?: TextInputType;
+    readonly value?: string;
+    readonly autocomplete?: HTMLAttributes<'input'>['autocomplete'];
+    readonly required?: boolean;
+    readonly disabled?: boolean;
+    readonly help?: string;
+    readonly error?: string;
+    readonly class?: string;
+}
+
+const { id, name, label, type = 'text', value, autocomplete, required = false, disabled = false, help, error, class: className = '' }: Props = Astro.props;
+
+const attributes: HTMLAttributes<'input'> = {
+    id,
+    name,
+    type,
+    value,
+    autocomplete,
+    placeholder: ' ',
+    required,
+    disabled,
+    'aria-describedby': error !== undefined ? `${id}-error` : help !== undefined ? `${id}-help` : undefined,
+    'aria-invalid': error !== undefined ? 'true' : undefined,
+};
+---
+<div class:list={['field', className]}>
+    <div class="floating-label">
+        <input class="input floating-label-input" {...attributes} />
+        <label class="floating-label-text" for={id}>{label}{required && <span aria-hidden="true"> *</span>}</label>
+    </div>
+    {error !== undefined && <p class="field-error" id={`${id}-error`}>{error}</p>}
+    {error === undefined && help !== undefined && <p class="field-hint" id={`${id}-help`}>{help}</p>}
+</div>
+
+<style>
+    .floating-label {
+        position: relative;
+    }
+
+    .floating-label-input {
+        padding: 1.25rem var(--space-3) var(--space-1);
+    }
+
+    /* Overrides the .field label style from base.css: inside the field the label reads as a placeholder. */
+    .floating-label-text {
+        position: absolute;
+        top: 0.95rem;
+        left: var(--space-3);
+        max-width: calc(100% - 2 * var(--space-3));
+        overflow: hidden;
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        font-weight: var(--weight-normal);
+        line-height: 1.4;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        pointer-events: none;
+        transform-origin: left top;
+        transition: transform var(--transition), color var(--transition);
+    }
+
+    .floating-label-input:focus + .floating-label-text,
+    .floating-label-input:not(:placeholder-shown) + .floating-label-text {
+        color: var(--primary);
+        transform: translateY(-0.7rem) scale(0.8);
+    }
+
+    .floating-label-input:disabled + .floating-label-text {
+        color: var(--text-muted);
+    }
+</style>

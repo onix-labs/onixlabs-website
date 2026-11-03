@@ -1,0 +1,107 @@
+---
+import Checkbox from '../../components/ui/Checkbox.astro';
+import Radio from '../../components/ui/Radio.astro';
+import RadioGroup from '../../components/ui/RadioGroup.astro';
+import type { RadioOption } from '../../components/ui/radio-option';
+import Switch from '../../components/ui/Switch.astro';
+import Specimen from '../Specimen.astro';
+
+const frequencies: ReadonlyArray<RadioOption> = [
+    { value: 'daily', label: 'Daily' },
+    { value: 'weekly', label: 'Weekly' },
+    { value: 'monthly', label: 'Monthly' },
+];
+
+const sizes: ReadonlyArray<RadioOption> = [
+    { value: 'small', label: 'Small' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'large', label: 'Large', disabled: true },
+];
+---
+<Specimen title="Checkbox" code={'<Checkbox id="updates" name="updates" label="Send me product updates" />\n<Checkbox id="terms" name="terms" label="…" checked help="…" />'}>
+    <Fragment slot="notes">
+        <p>An independent yes or no. The real checkbox carries the state and keyboard focus (Space toggles it); the box is drawn over it and follows it with CSS alone. Checked, the box fills with the primary colour and shows a tick.</p>
+        <p>The whole label is the hit area. Help text lines up with the label, not the box.</p>
+    </Fragment>
+    <div class="stack-tight">
+        <Checkbox id="choices-updates" name="updates" label="Send me product updates" />
+        <Checkbox id="choices-summary" name="summary" label="Include a weekly summary" checked help="Sent on Monday mornings." />
+    </div>
+</Specimen>
+
+<Specimen title="Checkbox states" code={'<Checkbox … required error="…" />\n<Checkbox … disabled />'}>
+    <Fragment slot="notes"><p>A required checkbox marks its label with an asterisk; an error replaces the help text, sets <code>aria-invalid</code> and edges the box in the danger colour. Disabled checkboxes are dimmed, checked or not.</p></Fragment>
+    <div class="stack-tight">
+        <Checkbox id="choices-agree" name="agree" label="I agree to the terms" required error="Agree to the terms to continue." />
+        <Checkbox id="choices-disabled" name="disabled" label="Disabled" disabled />
+        <Checkbox id="choices-disabled-checked" name="disabled-checked" label="Disabled and checked" checked disabled />
+    </div>
+</Specimen>
+
+<Specimen title="Radio group" code={'<RadioGroup id="frequency" name="frequency" label="Frequency" value="weekly" options={[\n  { value: \'daily\', label: \'Daily\' },\n  …\n]} />'}>
+    <Fragment slot="notes">
+        <p>One choice from a few mutually exclusive options, all visible at once. The group has <code>role="radiogroup"</code> and is named by its visible label; Tab moves into the group and the arrow keys move between options. Prefer a select for more than about six.</p>
+        <p>Pass <code>options</code>, or put <code>Radio</code> components in the slot, sharing the group's <code>name</code>.</p>
+    </Fragment>
+    <div class="grid-demo">
+        <RadioGroup id="choices-frequency" name="frequency" label="Frequency" value="weekly" options={frequencies} help="You can change this at any time." />
+        <RadioGroup id="choices-size" name="size" label="Size (one option disabled)" value="small" options={sizes} />
+        <RadioGroup id="choices-slot" name="slotted" label="Composed from Radio">
+            <Radio id="choices-slot-a" name="slotted" value="a" label="Option A" checked />
+            <Radio id="choices-slot-b" name="slotted" value="b" label="Option B" />
+        </RadioGroup>
+    </div>
+</Specimen>
+
+<Specimen title="Radio group states" code={'<RadioGroup … required error="…" />\n<RadioGroup … disabled />'}>
+    <Fragment slot="notes"><p>An error replaces the help text and edges every ring in the danger colour; <code>aria-invalid</code> and <code>aria-required</code> go on the group. <code>disabled</code> disables every option.</p></Fragment>
+    <div class="grid-demo">
+        <RadioGroup id="choices-plan" name="plan" label="Plan" options={frequencies} required error="Choose how often." />
+        <RadioGroup id="choices-locked" name="locked" label="Disabled group" value="monthly" options={frequencies} disabled />
+    </div>
+</Specimen>
+
+<Specimen title="Switch" code={'<Switch id="notifications" name="notifications" label="Notifications" checked />'}>
+    <Fragment slot="notes">
+        <p>An on/off setting that reads as taking effect at once. It's a real checkbox with <code>role="switch"</code>, so screen readers announce it as on or off. Off is the secondary colour; on, the track fills with the primary colour and the thumb slides across.</p>
+        <p>Use a checkbox instead when the choice only applies after the form is submitted.</p>
+    </Fragment>
+    <div class="stack-tight">
+        <Switch id="choices-notifications" name="notifications" label="Notifications" checked />
+        <Switch id="choices-compact" name="compact" label="Compact layout" help="Shows more rows on each page." />
+        <Switch id="choices-required-switch" name="required-switch" label="Share usage data" required error="Turn this on to continue." />
+        <Switch id="choices-switch-disabled" name="switch-disabled" label="Disabled" disabled />
+        <Switch id="choices-switch-disabled-on" name="switch-disabled-on" label="Disabled and on" checked disabled />
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same controls inside a near-black band in light mode.</p></Fragment>
+    <div class="grid-demo">
+        <div class="stack-tight">
+            <Checkbox id="choices-dark-check" name="dark-check" label="Checked" checked />
+            <Checkbox id="choices-dark-uncheck" name="dark-uncheck" label="Unchecked" />
+            <Checkbox id="choices-dark-error" name="dark-error" label="With an error" error="This is required." />
+        </div>
+        <RadioGroup id="choices-dark-radio" name="dark-radio" label="Frequency" value="daily" options={frequencies} />
+        <div class="stack-tight">
+            <Switch id="choices-dark-on" name="dark-on" label="On" checked />
+            <Switch id="choices-dark-off" name="dark-off" label="Off" />
+        </div>
+    </div>
+</Specimen>
+
+<style>
+    .stack-tight {
+        display: grid;
+        gap: var(--space-4);
+        justify-items: start;
+    }
+
+    .grid-demo {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+        gap: var(--space-6);
+        align-items: start;
+    }
+</style>

@@ -1,8 +1,8 @@
 ---
 import Specimen from '../Specimen.astro';
 ---
-<Specimen title="Corner radii" code={'--radius-sm   /* inputs, small chips */\n--radius      /* code, small tiles */\n--radius-lg   /* tiles */\n--radius-xl   /* capstone tiles, CTA band */\n999px         /* buttons, pills, badges */'}>
-    <Fragment slot="notes"><p>Soft, generous corners. Interactive pills are fully rounded; panels get larger radii as they get larger.</p></Fragment>
+<Specimen title="Corner radii" code={'--radius-sm   /* 0.625rem squircle | 0.5rem round: inputs, badges */\n--radius      /* 1.125rem | 0.875rem: buttons, small panels */\n--radius-lg   /* 1.625rem | 1.25rem: tables, panels */\n--radius-xl   /* 2.25rem | 1.75rem: cards and tiles */\n--radius-pill /* 9999px: chips, pills */'}>
+    <Fragment slot="notes"><p>Stride's scale. Every rounded surface pairs its radius with <code>corner-shape: var(--corner-shape)</code>.</p></Fragment>
     <div class="radii">
         <div class="radius r-sm"><code>sm</code></div>
         <div class="radius r-md"><code>default</code></div>
@@ -12,10 +12,10 @@ import Specimen from '../Specimen.astro';
     </div>
 </Specimen>
 
-<Specimen title="Squircles" code={'@supports (corner-shape: squircle) {\n  * { corner-shape: squircle; }\n  .button, .pill, .badge, .round, … { corner-shape: round; }\n}'}>
+<Specimen title="Squircles" code={'@supports (corner-shape: squircle) { :root { --corner-shape: squircle; /* wider radii */ } }\n@supports not (corner-shape: squircle) { :root { --corner-shape: round; /* narrower radii */ } }'}>
     <Fragment slot="notes">
-        <p>Where the browser supports <code>corner-shape</code>, rounded corners become squircles: continuous superellipse curves, like an app icon, instead of circular arcs. Other browsers keep ordinary rounded corners, so nothing breaks.</p>
-        <p>A squircle looks tighter than a circular corner of the same radius, so the radius tokens grow when squircles are on (sm 1rem, default 1.5rem, lg 2.375rem, xl 3rem; otherwise 0.75, 1.125, 1.75 and 2.25rem). Capsules and circles (buttons, pills, badges, round icon buttons) keep circular ends; add <code>.round</code> to opt any other element out.</p>
+        <p>Where the browser supports <code>corner-shape</code>, corners are squircles: continuous superellipse curves instead of circular arcs. Stride branches the whole radius scale on that one feature query: a squircle hugs tighter than a circular corner, so the scale is wider with squircles and narrower without, and the perceived roundness is the same either way.</p>
+        <p>Capsules and circles (pills, chips, round icon buttons) keep circular ends; add <code>.round</code> to opt anything else out.</p>
     </Fragment>
     <div class="squircle-compare">
         <figure><div class="sq-sample sq-round"></div><figcaption><code>corner-shape: round</code></figcaption></figure>
@@ -23,19 +23,20 @@ import Specimen from '../Specimen.astro';
     </div>
 </Specimen>
 
-<Specimen title="Elevation" surface="alt" code={'box-shadow: var(--shadow-tile);        /* resting tile */\nbox-shadow: var(--shadow-tile-hover);  /* lifted on hover */\nbox-shadow: var(--shadow-product);     /* product shots */'}>
-    <Fragment slot="notes"><p>Depth is quiet. In light mode, tiles rest on soft shadows and lift on hover; in dark mode, a faint top highlight replaces the shadow.</p></Fragment>
+<Specimen title="Edges and elevation" surface="alt" code={'border-top: 1px solid var(--edge-light);\nborder-bottom: 1px solid var(--edge-dark);\nbox-shadow: var(--shadow-sm);   /* or --shadow-md, --shadow-lg */'}>
+    <Fragment slot="notes"><p>Stride's signature: raised surfaces carry a lit top edge and a shaded bottom edge instead of a border on four sides, so they read as matte panels lifted off the page. In dark mode the light edge is a translucent white overlay, so it works on any surface. Shadows stay soft.</p></Fragment>
     <div class="grid grid-3">
-        <div class="tile elev elev-flat"><code>flat</code></div>
-        <div class="tile elev elev-rest"><code>--shadow-tile</code></div>
-        <div class="tile elev elev-hover"><code>--shadow-tile-hover</code></div>
+        <div class="tile elev"><code>edges + --shadow-sm</code></div>
+        <div class="tile elev elev-md"><code>edges + --shadow-md</code></div>
+        <div class="tile elev elev-lg"><code>edges + --shadow-lg</code></div>
     </div>
 </Specimen>
 
-<Specimen title="Borders" code={'border: 1px solid var(--border);         /* hairlines, outlines */\nborder: 1px solid var(--border-strong);  /* secondary buttons, inputs */'}>
+<Specimen title="Recessed surfaces" code={'<div class="surface surface-recessed">…</div>'}>
+    <Fragment slot="notes"><p>The inverse: a panel below the page, with the dark edge on top and the light edge beneath. Used for card footers and secondary panels.</p></Fragment>
     <div class="grid grid-2">
-        <div class="border-sample border-soft"><code>--border</code></div>
-        <div class="border-sample border-strong"><code>--border-strong</code></div>
+        <div class="surface border-sample"><code>.surface</code></div>
+        <div class="surface surface-recessed border-sample"><code>.surface-recessed</code></div>
     </div>
 </Specimen>
 
@@ -57,11 +58,12 @@ import Specimen from '../Specimen.astro';
         font-size: var(--text-xs);
     }
 
+    .radius { corner-shape: var(--corner-shape); }
     .r-sm { border-radius: var(--radius-sm); }
     .r-md { border-radius: var(--radius); }
     .r-lg { border-radius: var(--radius-lg); }
     .r-xl { border-radius: var(--radius-xl); }
-    .r-pill { width: 10rem; height: 3rem; border-radius: 999px; }
+    .r-pill { width: 10rem; height: 3rem; border-radius: var(--radius-pill); corner-shape: round; }
 
     .squircle-compare {
         display: flex;
@@ -84,6 +86,7 @@ import Specimen from '../Specimen.astro';
         width: 10rem;
         height: 10rem;
         border-radius: 2.5rem;
+        corner-shape: squircle;
         background: var(--brand-gradient);
     }
 
@@ -99,8 +102,8 @@ import Specimen from '../Specimen.astro';
         font-size: var(--text-xs);
     }
 
-    .elev-rest { box-shadow: var(--shadow-tile); }
-    .elev-hover { box-shadow: var(--shadow-tile-hover); }
+    .elev-md { box-shadow: var(--shadow-md); }
+    .elev-lg { box-shadow: var(--shadow-lg); }
 
     .border-sample {
         display: grid;
@@ -111,6 +114,5 @@ import Specimen from '../Specimen.astro';
         font-size: var(--text-xs);
     }
 
-    .border-soft { border: 1px solid var(--border); }
-    .border-strong { border: 1px solid var(--border-strong); }
+
 </style>

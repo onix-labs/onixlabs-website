@@ -1,0 +1,52 @@
+---
+import type { DescriptionItem } from './description-item';
+
+// Term–description pairs aligned into two columns (Stride's DescriptionList). Pass `items`, or write your own <dt>/<dd>
+// pairs in the default slot when a description needs markup. `stacked` puts each description under its term, for
+// narrow containers.
+interface Props {
+    readonly items?: ReadonlyArray<DescriptionItem>;
+    readonly stacked?: boolean;
+    readonly class?: string;
+}
+
+const { items, stacked = false, class: className = '' }: Props = Astro.props;
+---
+<dl class:list={['description-list', { stacked }, className]}>
+    {items === undefined
+        ? <slot />
+        : items.map((item: DescriptionItem) => (
+            <>
+                <dt>{item.term}</dt>
+                <dd>{item.description}</dd>
+            </>
+        ))}
+</dl>
+
+<style>
+    .description-list {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: var(--space-2) var(--space-5);
+        margin: 0;
+    }
+
+    .description-list.stacked {
+        grid-template-columns: 1fr;
+        row-gap: 0;
+    }
+
+    .description-list.stacked :global(dd + dt) {
+        margin-top: var(--space-3);
+    }
+
+    .description-list :global(dt) {
+        color: var(--text-muted);
+        font-weight: var(--weight-medium);
+    }
+
+    .description-list :global(dd) {
+        margin: 0;
+        color: var(--text);
+    }
+</style>

@@ -1,0 +1,75 @@
+---
+import Card from '../../components/ui/Card.astro';
+import Chip from '../../components/ui/Chip.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Intents" code={'<Chip intent="primary">Primary</Chip>\n<Chip>Secondary</Chip>\n<Chip intent="success">Success</Chip>\n<Chip intent="warning">Warning</Chip>\n<Chip intent="danger">Danger</Chip>\n<Chip intent="info">Info</Chip>'}>
+    <Fragment slot="notes">
+        <p>A compact tag for a filter, a selection or a category: a subtle fill, a tinted border and small squircle corners. Secondary is the default.</p>
+        <p>Stride sets the label in the intent colour; here it is deepened toward the heading colour so every intent clears WCAG AA on its fill in both themes.</p>
+    </Fragment>
+    <div class="row">
+        <Chip intent="primary">Primary</Chip>
+        <Chip>Secondary</Chip>
+        <Chip intent="success">Success</Chip>
+        <Chip intent="warning">Warning</Chip>
+        <Chip intent="danger">Danger</Chip>
+        <Chip intent="info">Info</Chip>
+    </div>
+</Specimen>
+
+<Specimen title="Removable" code={'<Chip intent="primary" removable removeLabel="Remove Design">Design</Chip>'}>
+    <Fragment slot="notes">
+        <p>A removable chip ends in a close button with a 24px target. Name it after the chip (<code>removeLabel="Remove Design"</code>): the icon has no text of its own.</p>
+        <p>The button does nothing by itself. The site ships no JavaScript for chips, so whichever page uses one wires up the removal.</p>
+    </Fragment>
+    <div class="row">
+        <Chip intent="primary" removable removeLabel="Remove Design">Design</Chip>
+        <Chip intent="primary" removable removeLabel="Remove System">System</Chip>
+        <Chip intent="primary" removable removeLabel="Remove Stride">Stride</Chip>
+        <Chip removable removeLabel="Remove Draft">Draft</Chip>
+        <Chip intent="info" removable removeLabel="Remove Review">Review</Chip>
+    </div>
+</Specimen>
+
+<Specimen title="On a surface">
+    <Fragment slot="notes"><p>Chips bring their own fill, so they read the same on the page and on a raised card.</p></Fragment>
+    <div class="sample">
+        <Card padded>
+            <Fragment slot="header">Filters</Fragment>
+            <div class="row">
+                <Chip intent="primary">Primary</Chip>
+                <Chip>Secondary</Chip>
+                <Chip intent="success">Success</Chip>
+                <Chip intent="warning">Warning</Chip>
+                <Chip intent="danger">Danger</Chip>
+                <Chip intent="info" removable removeLabel="Remove Info">Info</Chip>
+            </div>
+        </Card>
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The dark palette's deep fills with lifted labels.</p></Fragment>
+    <div class="row">
+        <Chip intent="primary">Primary</Chip>
+        <Chip>Secondary</Chip>
+        <Chip intent="success">Success</Chip>
+        <Chip intent="warning">Warning</Chip>
+        <Chip intent="danger">Danger</Chip>
+        <Chip intent="info" removable removeLabel="Remove Info">Info</Chip>
+    </div>
+</Specimen>
+
+<style>
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2);
+    }
+
+    .sample {
+        max-width: 30rem;
+    }
+</style>
