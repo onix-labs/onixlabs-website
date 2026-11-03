@@ -63,7 +63,7 @@ test('unknown URLs get the 404 page, marked noindex', async ({ page }: TestArgum
     const response: Response | null = await page.goto('/Tools/Hash-Generator');
 
     expect(response?.status()).toBe(404);
-    await expect(page.locator('h1')).toHaveText('Yikes!');
+    await expect(page.locator('h1')).toContainText('Yikes!');
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
 });
 

@@ -11,7 +11,7 @@ content is in the HTML.
 | Blazor WebAssembly on .NET 9 | Astro 7, `output: 'static'` |
 | Razor components | Astro components (`src/components/`) |
 | Scoped `.razor.css` and `wwwroot` CSS | Scoped `<style>` blocks and `src/styles/global.css` |
-| Bootstrap, Font Awesome, Poppins and animate.css copied into `wwwroot` (about 2,400 files, 28 MB of Font Awesome) | npm packages; only the 10 icons used are inlined as SVG |
+| Bootstrap, Font Awesome, Poppins and animate.css copied into `wwwroot` (about 2,400 files, 28 MB of Font Awesome) | A small custom design system (`src/styles/`), fonts from npm, and only the Font Awesome icons used, inlined as SVG |
 | Markdown fetched and converted in the browser with Markdig | Markdown rendered at build time (remark/rehype) |
 | Hard-coded copy in `.razor` pages | Typed content collections in `src/content/`, validated by Zod |
 | `peaceiris/actions-gh-pages` pushing to the `gh-pages` branch | `actions/deploy-pages`, after lint, tests and Lighthouse pass |
@@ -54,8 +54,9 @@ checks each one.
 
 ## Changes from the Blazor site
 
-The design matches the Blazor site at desktop and mobile widths. These deliberate changes came out of the SEO and
-accessibility work:
+The site was first ported with the Blazor design intact, then redesigned: dark-first and editorial, with the brand
+gradient used for light, gradient text and borders, and CSS-only motion (see the design system in CLAUDE.md). These
+deliberate changes came out of the SEO and accessibility work:
 
 **SEO**
 - Every page has its own title, meta description, canonical URL, Open Graph and Twitter tags. Before, every URL

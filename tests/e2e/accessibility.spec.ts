@@ -20,7 +20,7 @@ for (const theme of themes) {
             test(`${sitePage.path} has no WCAG 2.2 AA violations`, async ({ page }: TestArguments): Promise<void> => {
                 await page.emulateMedia({ reducedMotion: 'reduce' });
                 await page.goto(sitePage.path);
-                await expect(page.locator('html')).toHaveAttribute('data-bs-theme', theme);
+                await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
 
                 const results: AxeResults = await new AxeBuilder({ page })
                     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])

@@ -5,9 +5,30 @@ product information current, adding articles, updating bios. Read this before ed
 
 ## How the site is built
 
-Astro 7, static output, deployed to GitHub Pages. Every page is rendered to HTML at build time; the only
-client-side JavaScript is the theme switch, the navbar scroll effect, Bootstrap's collapse (mobile menu and docs
-sidebar) and the contact-form prefill. Keep it that way: content must never depend on JavaScript to appear.
+Astro 7, static output, deployed to GitHub Pages. Every page is rendered to HTML at build time. The only
+client-side JavaScript is the theme switch, the header's scrolled state, the pointer-following card spotlight and the
+contact-form prefill. The mobile menu (popover API) and the docs sidebar (`<details>`) work without it. Keep it that
+way: content must never depend on JavaScript to appear.
+
+## Design system
+
+The look is dark-first, editorial and restrained, with the ONIXLabs brand gradient used as light rather than paint.
+Reuse what exists before adding new styles:
+
+- **Tokens** (`src/styles/tokens.css`): brand colours, product-family colours, type scale, spacing, and the
+  light and dark palettes, which switch on `[data-theme]`. Use the variables; don't hard-code colours.
+- **Base** (`src/styles/base.css`): layout (`.container`, `.section`, `.grid-2/3/4`), `.eyebrow`, `.lead`,
+  `.button` and `.button-primary`, `.pill`, `.icon-chip`, and form fields (`.field`, `.input`).
+- **Effects** (`src/styles/effects.css`): `.aurora` (use the `Aurora` component), `.grid-backdrop`,
+  `.gradient-text`, `.gradient-border`, `.orb-ring`, `.card` (spotlight on hover), `.marquee`, and the motion
+  classes `.rise` (page-load entrance) and `.reveal` (scroll reveal). All motion is CSS-only and stops under
+  `prefers-reduced-motion`.
+- **Components** (`src/components/`): `PageHero` opens every inner page with its `<h1>`; `SectionHeader` gives
+  the eyebrow, `<h2>` and lead of each section; `FeatureCard`, `ProductCard`, `ContributorCard`, `CtaBand` and
+  `Button` cover most content.
+- **Typography:** Poppins for headings, Inter for body text, JetBrains Mono for eyebrows and code. Use the
+  gradient (`highlight` prop, `.gradient-text`) on at most one phrase per heading.
+- **Icons** are Font Awesome Free line icons in `src/icons/`, usually inside an `.icon-chip`.
 
 ## Content model
 
@@ -61,7 +82,8 @@ Each product's source of truth is its repository (`repositoryUrl`). When updatin
   then add its URL to `tests/e2e/support/site-pages.ts`.
 - **A contributor:** add a Markdown file in `src/content/contributors/` and a 640×640 photo under
   `public/onixlabs/images/contributors/`, then add the URL to `tests/e2e/support/site-pages.ts`.
-- **An icon:** copy the SVG from Font Awesome Free into `src/icons/` and use `<Icon name="..." />`.
+- **An icon:** copy the SVG from Font Awesome Free into `src/icons/` and use `<Icon name="..." />`. Aero
+  principles reference icons by name.
 - **A bitmap-backed SVG** (an SVG that embeds `data:image`): add it under `public/onixlabs/images/`, run
   `npm run images`, and reference the generated `.webp`.
 
@@ -84,7 +106,7 @@ CI runs the same checks plus Lighthouse. Fix failures; never skip or weaken a te
   tab must say so (`(opens in a new tab)` in visually hidden text), and icon-only links need visually hidden text.
   Keep text contrast at WCAG AA (4.5:1). The axe tests run in both themes.
 - **CSP:** Astro hashes every inline script and style into a `<meta>` Content Security Policy. Don't add inline
-  `style="..."` attributes or event handlers, and don't load third-party scripts without updating the policy in
-  `astro.config.ts`.
+  `style="..."` attributes or event handlers (set CSS variables from scripts with `style.setProperty` instead), and
+  don't load third-party scripts, fonts or images without updating the policy in `astro.config.ts`.
 - **TypeScript:** follow the house style that `eslint.config.js` enforces: explicit types, no `any`, one exported
   type per file, named exports.

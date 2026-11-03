@@ -3,28 +3,24 @@ import type { Locator } from '@playwright/test';
 import type { TestArguments } from './support/test-arguments';
 import { expect, test } from './support/test';
 
-test('the theme switch toggles dark mode and is keyboard operable', async ({ page, isMobile }: TestArguments): Promise<void> => {
+test('the theme switch toggles dark mode and is keyboard operable', async ({ page }: TestArguments): Promise<void> => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('/');
     const html: Locator = page.locator('html');
     const toggle: Locator = page.getByRole('switch', { name: 'Dark mode' });
 
-    if (isMobile) {
-        await page.getByRole('button', { name: 'Toggle navigation' }).click();
-    }
-
-    await expect(html).toHaveAttribute('data-bs-theme', 'light');
+    await expect(html).toHaveAttribute('data-theme', 'light');
     await expect(toggle).toHaveAttribute('aria-checked', 'false');
 
     await toggle.focus();
     await page.keyboard.press('Enter');
 
-    await expect(html).toHaveAttribute('data-bs-theme', 'dark');
+    await expect(html).toHaveAttribute('data-theme', 'dark');
     await expect(toggle).toHaveAttribute('aria-checked', 'true');
 
     await page.goto('/Products');
 
-    await expect(html).toHaveAttribute('data-bs-theme', 'dark');
+    await expect(html).toHaveAttribute('data-theme', 'dark');
 });
 
 test('the skip link moves focus to the main content', async ({ page, isMobile }: TestArguments): Promise<void> => {
@@ -43,13 +39,16 @@ test('the mobile menu opens and closes', async ({ page, isMobile }: TestArgument
     test.skip(!isMobile, 'The menu is only collapsed on small screens.');
     await page.goto('/');
     const toggler: Locator = page.getByRole('button', { name: 'Toggle navigation' });
-    const documentation: Locator = page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Documentation' });
+    const documentation: Locator = page.getByRole('navigation', { name: 'Mobile' }).getByRole('link', { name: 'Documentation' });
 
+    await expect(page.getByRole('navigation', { name: 'Main' })).toBeHidden();
     await expect(documentation).toBeHidden();
     await toggler.click();
 
-    await expect(toggler).toHaveAttribute('aria-expanded', 'true');
     await expect(documentation).toBeVisible();
+    await page.keyboard.press('Escape');
+
+    await expect(documentation).toBeHidden();
 });
 
 test('the current page is marked in the navigation', async ({ page, isMobile }: TestArguments): Promise<void> => {
@@ -62,8 +61,8 @@ test('the current page is marked in the navigation', async ({ page, isMobile }: 
 test('the contact form is prefilled from ?reason=', async ({ page }: TestArguments): Promise<void> => {
     await page.goto('/Contact?reason=aero-demo');
 
-    await expect(page.getByLabel('Reason')).toHaveValue('Aero Platform (Book a Demo)');
-    await expect(page.getByLabel('Message')).toHaveValue("Hello. I'd like to see Aero in action.");
+    await expect(page.getByLabel('Reason', { exact: true })).toHaveValue('Aero Platform (Book a Demo)');
+    await expect(page.getByLabel('Message', { exact: true })).toHaveValue("Hello. I'd like to see Aero in action.");
 });
 
 test('the contact form posts to Formspree', async ({ page }: TestArguments): Promise<void> => {
@@ -77,6 +76,6 @@ test('the documentation sidebar opens the current article\'s category', async ({
     await page.goto('/Documentation/Corda/Flow-Design-Guidelines-2');
     const sidebar: Locator = page.getByRole('navigation', { name: 'Documentation' });
 
-    await expect(sidebar.getByRole('button', { name: 'Corda' })).toHaveAttribute('aria-expanded', 'true');
+    await expect(sidebar.locator('details', { hasText: 'Corda' })).toHaveAttribute('open', '');
     await expect(sidebar.getByRole('link', { name: 'Flow Design Guidelines (Part 2)' })).toHaveAttribute('aria-current', 'page');
 });
