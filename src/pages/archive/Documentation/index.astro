@@ -1,11 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import { loadArticles } from '../../collections/load-articles';
-import Icon from '../../components/Icon.astro';
-import { documentationCategories } from '../../config/documentation-categories';
-import type { DocumentationCategory } from '../../config/documentation-category';
-import DocumentationLayout from '../../layouts/DocumentationLayout.astro';
+import { loadArticles } from '../../../collections/load-articles';
+import Icon from '../../../components/Icon.astro';
+import { documentationCategories } from '../../../config/documentation-categories';
+import type { DocumentationCategory } from '../../../config/documentation-category';
+import DocumentationLayout from '../../../layouts/DocumentationLayout.astro';
 
 const articles: ReadonlyArray<CollectionEntry<'articles'>> = await loadArticles();
 
@@ -16,8 +16,8 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
 <DocumentationLayout
     title="Documentation"
     description="Technical articles, product blogs and API references from ONIXLabs, covering Aero, C#, Corda and number theory for enterprise software engineers."
-    path="/Documentation"
-    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/Documentation' }]}
+    path="/archive/Documentation"
+    breadcrumbs={[{ name: 'Home', path: '/archive' }, { name: 'Documentation', path: '/archive/Documentation' }]}
 >
     <header class="docs-intro">
         <p class="eyebrow-small">Articles · API docs · Blog posts</p>

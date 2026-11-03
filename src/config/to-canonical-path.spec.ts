@@ -4,16 +4,16 @@ import { toCanonicalPath } from './to-canonical-path';
 
 describe('toCanonicalPath', (): void => {
     it('adds a trailing slash to section index pages', (): void => {
-        const path: string = toCanonicalPath('/Products');
+        const path: string = toCanonicalPath('/archive/Products');
 
-        expect(path).toBe('/Products/');
+        expect(path).toBe('/archive/Products/');
     });
 
     it('leaves other pages unchanged', (): void => {
-        const productPath: string = toCanonicalPath('/Products/DotNet/Core');
+        const productPath: string = toCanonicalPath('/archive/Products/DotNet/Core');
         const homePath: string = toCanonicalPath('/');
 
-        expect(productPath).toBe('/Products/DotNet/Core');
+        expect(productPath).toBe('/archive/Products/DotNet/Core');
         expect(homePath).toBe('/');
     });
 });

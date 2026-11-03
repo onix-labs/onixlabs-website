@@ -31,9 +31,9 @@ const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadPr
             <nav class="footer-column" aria-labelledby="footer-products">
                 <h2 id="footer-products">Products</h2>
                 <ul role="list">
-                    <li><a href="/Products/Aero">Aero</a></li>
+                    <li><a href="/archive/Products/Aero">Aero</a></li>
                     {families.map((family: CollectionEntry<'productFamilies'>) => (
-                        <li><a href={`/Products/#${family.id}`}>{family.data.name} libraries</a></li>
+                        <li><a href={`/archive/Products/#${family.id}`}>{family.data.name} libraries</a></li>
                     ))}
                 </ul>
             </nav>
@@ -41,9 +41,9 @@ const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadPr
             <nav class="footer-column" aria-labelledby="footer-company">
                 <h2 id="footer-company">Company</h2>
                 <ul role="list">
-                    <li><a href="/Consulting">Consulting</a></li>
-                    <li><a href="/Documentation/">Documentation</a></li>
-                    <li><a href="/Contact">Contact</a></li>
+                    <li><a href="/archive/Consulting">Consulting</a></li>
+                    <li><a href="/archive/Documentation/">Documentation</a></li>
+                    <li><a href="/archive/Contact">Contact</a></li>
                 </ul>
             </nav>
 

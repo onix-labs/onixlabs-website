@@ -1,10 +1,10 @@
 ---
-import Icon from '../components/Icon.astro';
-import PageHero from '../components/PageHero.astro';
-import { site } from '../config/site';
-import type { SocialLink } from '../config/social-link';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { contactReasons } from '../scripts/contact-reasons';
+import Icon from '../../components/Icon.astro';
+import PageHero from '../../components/PageHero.astro';
+import { site } from '../../config/site';
+import type { SocialLink } from '../../config/social-link';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { contactReasons } from '../../scripts/contact-reasons';
 
 const reasons: ReadonlyArray<string> = [
     'Aero Platform (General Inquiry)',
@@ -26,8 +26,8 @@ for (const prefill of contactReasons.values()) {
 <BaseLayout
     title="Contact"
     description="Contact ONIXLabs about the Aero platform, our .NET, Corda and Kotlin product lines, or consulting. Send a message or book a meeting."
-    path="/Contact"
-    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Contact', path: '/Contact' }]}
+    path="/archive/Contact"
+    breadcrumbs={[{ name: 'Home', path: '/archive' }, { name: 'Contact', path: '/archive/Contact' }]}
     structuredData={[{ '@type': 'ContactPage', name: 'Contact ONIXLabs', url: `${site.url}/Contact`, about: { '@id': `${site.url}/#organization` } }]}
 >
     <PageHero eyebrow="Contact" title="We'd love to" highlight="hear from you.">
@@ -113,7 +113,7 @@ for (const prefill of contactReasons.values()) {
 </BaseLayout>
 
 <script>
-    import '../scripts/contact';
+    import '../../scripts/contact';
 </script>
 
 <style>

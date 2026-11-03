@@ -3,20 +3,20 @@ import { getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import type { GetStaticPathsResult } from 'astro';
 
-import { loadProducts } from '../../../collections/load-products';
-import type { ProductFeature } from '../../../collections/product-feature';
-import type { ProductSection } from '../../../collections/product-section';
-import Button from '../../../components/Button.astro';
-import CtaBand from '../../../components/CtaBand.astro';
-import FeatureCard from '../../../components/FeatureCard.astro';
-import LocalNav from '../../../components/LocalNav.astro';
-import PageHero from '../../../components/PageHero.astro';
-import ProductCard from '../../../components/ProductCard.astro';
-import SectionHeader from '../../../components/SectionHeader.astro';
-import type { LocalNavLink } from '../../../config/local-nav-link';
-import { site } from '../../../config/site';
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { buildSoftwareSourceCode } from '../../../seo/build-software-source-code';
+import { loadProducts } from '../../../../collections/load-products';
+import type { ProductFeature } from '../../../../collections/product-feature';
+import type { ProductSection } from '../../../../collections/product-section';
+import Button from '../../../../components/Button.astro';
+import CtaBand from '../../../../components/CtaBand.astro';
+import FeatureCard from '../../../../components/FeatureCard.astro';
+import LocalNav from '../../../../components/LocalNav.astro';
+import PageHero from '../../../../components/PageHero.astro';
+import ProductCard from '../../../../components/ProductCard.astro';
+import SectionHeader from '../../../../components/SectionHeader.astro';
+import type { LocalNavLink } from '../../../../config/local-nav-link';
+import { site } from '../../../../config/site';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { buildSoftwareSourceCode } from '../../../../seo/build-software-source-code';
 
 interface Props {
     readonly product: CollectionEntry<'products'>;
@@ -27,7 +27,7 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
     const products: ReadonlyArray<CollectionEntry<'products'>> = await loadProducts();
 
     return products.map((product: CollectionEntry<'products'>) => {
-        const [, , family, slug]: ReadonlyArray<string | undefined> = product.data.path.split('/');
+        const [, , , family, slug]: ReadonlyArray<string | undefined> = product.data.path.split('/');
         const siblings: ReadonlyArray<CollectionEntry<'products'>> = products.filter(
             (candidate: CollectionEntry<'products'>): boolean => candidate.data.family.id === product.data.family.id && candidate.id !== product.id,
         );
@@ -53,8 +53,8 @@ function nextFeatureNumber(): number {
     description={product.data.description}
     path={product.data.path}
     breadcrumbs={[
-        { name: 'Home', path: '/' },
-        { name: 'Products', path: '/Products' },
+        { name: 'Home', path: '/archive' },
+        { name: 'Products', path: '/archive/Products' },
         { name: product.data.title, path: product.data.path },
     ]}
     structuredData={[

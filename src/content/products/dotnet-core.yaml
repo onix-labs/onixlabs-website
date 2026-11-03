@@ -1,6 +1,6 @@
 family: dotnet
 order: 1
-path: /Products/DotNet/Core
+path: /archive/Products/DotNet/Core
 title: ".NET Core Library"
 shortTitle: "Core Library"
 pageTitle: "Core Library for .NET"

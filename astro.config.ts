@@ -28,7 +28,8 @@ export default defineConfig({
     },
     integrations: [
         sitemap({
-            filter: (page: string): boolean => !page.endsWith('/404'),
+            // The blank canvas at / is noindex while it's empty, so it stays out of the sitemap too.
+            filter: (page: string): boolean => !page.endsWith('/404') && new URL(page).pathname !== '/',
             serialize: (item: SitemapItem): SitemapItem => ({ ...item, url: new URL(toCanonicalPath(new URL(item.url).pathname), site.url).href }),
         }),
         emitSectionIndexes(),

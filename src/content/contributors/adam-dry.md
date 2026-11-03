@@ -3,7 +3,7 @@ name: "Adam Dry"
 givenName: "Adam"
 familyName: "Dry"
 order: 3
-path: /Contributors/Adam-Dry
+path: /archive/Contributors/Adam-Dry
 jobTitle: "Integration Specialist"
 headline: "Integration Specialist"
 teaser: "Expert in secure, scalable architectures, pipelines, and enterprise platforms."

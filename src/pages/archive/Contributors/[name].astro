@@ -3,14 +3,14 @@ import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import type { GetStaticPathsResult } from 'astro';
 
-import { loadContributors } from '../../collections/load-contributors';
-import Button from '../../components/Button.astro';
-import ContributorCard from '../../components/ContributorCard.astro';
-import SectionHeader from '../../components/SectionHeader.astro';
-import { site } from '../../config/site';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { buildProfilePage } from '../../seo/build-profile-page';
-import { PageType } from '../../seo/page-type';
+import { loadContributors } from '../../../collections/load-contributors';
+import Button from '../../../components/Button.astro';
+import ContributorCard from '../../../components/ContributorCard.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
+import { site } from '../../../config/site';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildProfilePage } from '../../../seo/build-profile-page';
+import { PageType } from '../../../seo/page-type';
 
 interface Props {
     readonly contributor: CollectionEntry<'contributors'>;
@@ -21,7 +21,7 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
     const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
 
     return contributors.map((contributor: CollectionEntry<'contributors'>) => ({
-        params: { name: contributor.data.path.split('/')[2] },
+        params: { name: contributor.data.path.split('/')[3] },
         props: {
             contributor,
             colleagues: contributors.filter((colleague: CollectionEntry<'contributors'>): boolean => colleague.id !== contributor.id),
@@ -40,7 +40,7 @@ const { name, givenName, familyName, jobTitle, description, photo, path, linkedI
     type={PageType.Profile}
     image={photo}
     imageAlt={`Portrait of ${name}`}
-    breadcrumbs={[{ name: 'Home', path: '/' }, { name, path }]}
+    breadcrumbs={[{ name: 'Home', path: '/archive' }, { name, path }]}
     structuredData={[
         buildProfilePage({ name, givenName, familyName, jobTitle, description, path, photo, sameAs: [linkedInUrl, gitHubUrl] }, site),
     ]}

@@ -1,11 +1,11 @@
 ---
-import Button from '../components/Button.astro';
-import CtaBand from '../components/CtaBand.astro';
-import FeatureCard from '../components/FeatureCard.astro';
-import PageHero from '../components/PageHero.astro';
-import SectionHeader from '../components/SectionHeader.astro';
-import type { Principle } from '../config/principle';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import FeatureCard from '../../components/FeatureCard.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import type { Principle } from '../../config/principle';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const services: ReadonlyArray<Principle> = [
     { title: 'Strategy', icon: 'chess-knight', body: 'We help define your product roadmap, identify market fit, and architect scalable solutions aligned with your business goals.' },
@@ -19,14 +19,14 @@ const services: ReadonlyArray<Principle> = [
 <BaseLayout
     title="Software Engineering Consulting"
     description="Engineering-first consulting from ONIXLabs: strategy, development, testing, CI/CD integration, documentation and cloud delivery for startups and enterprises."
-    path="/Consulting"
-    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Consulting', path: '/Consulting' }]}
+    path="/archive/Consulting"
+    breadcrumbs={[{ name: 'Home', path: '/archive' }, { name: 'Consulting', path: '/archive/Consulting' }]}
 >
     <PageHero eyebrow="Consulting" title="Seamless integration with your team, tools, and" highlight="tech stack.">
         We help startups and enterprises build robust, scalable software, faster. Whether you're launching a product, scaling a system, or
         untangling legacy code, our engineering-first consulting cuts through the noise to deliver real solutions.
         <Fragment slot="actions">
-            <Button href="/Contact?reason=consulting" variant="primary" size="large">Send a message</Button>
+            <Button href="/archive/Contact?reason=consulting" variant="primary" size="large">Send a message</Button>
             <Button href="https://calendly.com/matthew-layton/30min" variant="link" external>Book a meeting</Button>
         </Fragment>
     </PageHero>
@@ -44,7 +44,7 @@ const services: ReadonlyArray<Principle> = [
         </div>
     </section>
 
-    <CtaBand tone="dark" title="We're here to help your business thrive." primaryText="Send a message" primaryHref="/Contact?reason=consulting">
+    <CtaBand tone="dark" title="We're here to help your business thrive." primaryText="Send a message" primaryHref="/archive/Contact?reason=consulting">
         Whether you have a question, need a custom solution, or just want to explore what’s possible, we're just a message away. Let's
         start the conversation and see how we can support your goals.
     </CtaBand>

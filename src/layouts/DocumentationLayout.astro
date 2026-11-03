@@ -31,7 +31,7 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
 <BaseLayout {...props}>
     <div class:list={['container docs', { 'has-rail': Astro.slots.has('rail') }]}>
         <nav class="docs-sidebar" aria-label="Documentation">
-            <a class="docs-home" href="/Documentation/" aria-current={props.path === '/Documentation' ? 'page' : undefined}>All documentation</a>
+            <a class="docs-home" href="/archive/Documentation/" aria-current={props.path === '/archive/Documentation' ? 'page' : undefined}>All documentation</a>
             {documentationCategories.map((category: DocumentationCategory) => (
                 <details class="docs-category" open={category.id === props.currentCategory || props.currentCategory === undefined}>
                     <summary>{category.name}</summary>

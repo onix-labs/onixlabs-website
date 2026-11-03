@@ -3,7 +3,7 @@ name: "Laura Pérez Crespo"
 givenName: "Laura"
 familyName: "Pérez Crespo"
 order: 2
-path: /Contributors/Laura-Perez-Crespo
+path: /archive/Contributors/Laura-Perez-Crespo
 jobTitle: "Software Engineer"
 headline: "Software Engineer"
 teaser: "Specialist in enterprise application development with TypeScript, Kotlin, and Corda."

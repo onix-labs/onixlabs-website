@@ -4,16 +4,16 @@ import type { CollectionEntry } from 'astro:content';
 import type { MarkdownHeading } from 'astro';
 import type { GetStaticPathsResult } from 'astro';
 
-import { estimateReadingMinutes } from '../../../collections/estimate-reading-minutes';
-import { loadArticles } from '../../../collections/load-articles';
-import Icon from '../../../components/Icon.astro';
-import { documentationCategories } from '../../../config/documentation-categories';
-import type { DocumentationCategory } from '../../../config/documentation-category';
-import { site } from '../../../config/site';
-import DocumentationLayout from '../../../layouts/DocumentationLayout.astro';
-import { buildTechArticle } from '../../../seo/build-tech-article';
-import type { JsonLdObject } from '../../../seo/json-ld-object';
-import { PageType } from '../../../seo/page-type';
+import { estimateReadingMinutes } from '../../../../collections/estimate-reading-minutes';
+import { loadArticles } from '../../../../collections/load-articles';
+import Icon from '../../../../components/Icon.astro';
+import { documentationCategories } from '../../../../config/documentation-categories';
+import type { DocumentationCategory } from '../../../../config/documentation-category';
+import { site } from '../../../../config/site';
+import DocumentationLayout from '../../../../layouts/DocumentationLayout.astro';
+import { buildTechArticle } from '../../../../seo/build-tech-article';
+import type { JsonLdObject } from '../../../../seo/json-ld-object';
+import { PageType } from '../../../../seo/page-type';
 
 interface Props {
     readonly article: CollectionEntry<'articles'>;
@@ -25,7 +25,7 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
     const articles: ReadonlyArray<CollectionEntry<'articles'>> = await loadArticles();
 
     return articles.map((article: CollectionEntry<'articles'>, index: number) => {
-        const [, , category, slug]: ReadonlyArray<string | undefined> = article.data.path.split('/');
+        const [, , , category, slug]: ReadonlyArray<string | undefined> = article.data.path.split('/');
         return { params: { category, article: slug }, props: { article, previous: articles[index - 1], next: articles[index + 1] } };
     });
 }
@@ -58,8 +58,8 @@ const structuredData: ReadonlyArray<JsonLdObject> = [
     type={PageType.Article}
     currentCategory={article.data.category}
     breadcrumbs={[
-        { name: 'Home', path: '/' },
-        { name: 'Documentation', path: '/Documentation' },
+        { name: 'Home', path: '/archive' },
+        { name: 'Documentation', path: '/archive/Documentation' },
         { name: article.data.title, path: article.data.path },
     ]}
     structuredData={structuredData}

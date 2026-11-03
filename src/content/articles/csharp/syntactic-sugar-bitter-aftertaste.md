@@ -4,7 +4,7 @@ navigationTitle: "Syntactic Sugar, Bitter Aftertaste"
 description: "A deep dive into the C# var keyword: its intended use cases, the pitfalls of overusing it, and why explicit types improve clarity and maintainability."
 category: csharp
 order: 1
-path: /Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste
+path: /archive/Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste
 ---
 
 This article takes a deep dive into the `var` keyword in C#, examining its intended use cases, the common pitfalls that can arise from overusing it, and the reasons why I personally favor explicit types that speak for themselves, especially when clarity, readability, and maintainability are priorities in a codebase.

@@ -3,7 +3,7 @@ name: "Ryan Gledhill"
 givenName: "Ryan"
 familyName: "Gledhill"
 order: 4
-path: /Contributors/Ryan-Gledhill
+path: /archive/Contributors/Ryan-Gledhill
 jobTitle: "Strategic Advisor"
 headline: "Strategic Advisor"
 teaser: "A seasoned leader with enterprise experience, guiding high-performing teams and solutions."

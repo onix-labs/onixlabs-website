@@ -1,16 +1,16 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import { loadProductFamilies } from '../../collections/load-product-families';
-import { loadProducts } from '../../collections/load-products';
-import AeroShowcase from '../../components/AeroShowcase.astro';
-import Button from '../../components/Button.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import Icon from '../../components/Icon.astro';
-import PageHero from '../../components/PageHero.astro';
-import ProductCard from '../../components/ProductCard.astro';
-import SectionHeader from '../../components/SectionHeader.astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import { loadProductFamilies } from '../../../collections/load-product-families';
+import { loadProducts } from '../../../collections/load-products';
+import AeroShowcase from '../../../components/AeroShowcase.astro';
+import Button from '../../../components/Button.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import Icon from '../../../components/Icon.astro';
+import PageHero from '../../../components/PageHero.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
 
 const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
 const products: ReadonlyArray<CollectionEntry<'products'>> = await loadProducts();
@@ -26,13 +26,13 @@ function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<C
 <BaseLayout
     title="Products"
     description="Platforms, libraries and frameworks from ONIXLabs: the Aero .NET suite plus open-source libraries for .NET, Corda and Kotlin."
-    path="/Products"
-    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Products', path: '/Products' }]}
+    path="/archive/Products"
+    breadcrumbs={[{ name: 'Home', path: '/archive' }, { name: 'Products', path: '/archive/Products' }]}
 >
     <nav class="chapter-nav" aria-label="All products">
         <ul class="chapter-list" role="list">
             <li>
-                <a href="/Products/Aero">
+                <a href="/archive/Products/Aero">
                     <span class="emblem family-aero" aria-hidden="true"><Icon name="rocket" /></span>
                     <span class="chapter-name">Aero</span>
                     <span class="chapter-family">.NET platform</span>
@@ -69,8 +69,8 @@ function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<C
                 It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
             </p>
             <div class="cluster is-centered">
-                <Button href="/Products/Aero" variant="link">Find out more</Button>
-                <Button href="/Contact?reason=aero-demo" variant="link">Request a demo</Button>
+                <Button href="/archive/Products/Aero" variant="link">Find out more</Button>
+                <Button href="/archive/Contact?reason=aero-demo" variant="link">Request a demo</Button>
             </div>
         </div>
         <div class="container-wide aero-shot settle">

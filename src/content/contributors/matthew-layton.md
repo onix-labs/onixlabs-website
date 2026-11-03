@@ -3,7 +3,7 @@ name: "Matthew Layton"
 givenName: "Matthew"
 familyName: "Layton"
 order: 1
-path: /Contributors/Matthew-Layton
+path: /archive/Contributors/Matthew-Layton
 jobTitle: "Founder & Architect"
 headline: "Founder & Architect"
 teaser: "Founder and architect, passionate about code quality, and enterprise solutions that scale."

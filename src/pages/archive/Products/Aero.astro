@@ -2,17 +2,17 @@
 import { getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
-import { splitParagraphs } from '../../collections/split-paragraphs';
-import AeroShowcase from '../../components/AeroShowcase.astro';
-import Button from '../../components/Button.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import FeatureCard from '../../components/FeatureCard.astro';
-import LocalNav from '../../components/LocalNav.astro';
-import PageHero from '../../components/PageHero.astro';
-import SectionHeader from '../../components/SectionHeader.astro';
-import type { LocalNavLink } from '../../config/local-nav-link';
-import { site } from '../../config/site';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import { splitParagraphs } from '../../../collections/split-paragraphs';
+import AeroShowcase from '../../../components/AeroShowcase.astro';
+import Button from '../../../components/Button.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import FeatureCard from '../../../components/FeatureCard.astro';
+import LocalNav from '../../../components/LocalNav.astro';
+import PageHero from '../../../components/PageHero.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
+import type { LocalNavLink } from '../../../config/local-nav-link';
+import { site } from '../../../config/site';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
 
 type AeroData = CollectionEntry<'aero'>['data'];
 
@@ -31,11 +31,11 @@ const localLinks: ReadonlyArray<LocalNavLink> = [
 <BaseLayout
     title="Aero: The Modular .NET Suite for Enterprise Engineering"
     description="Aero is a modular suite of .NET APIs for fast, scalable enterprise engineering: logging, configuration, data access, secrets, signing and ledgers."
-    path="/Products/Aero"
+    path="/archive/Products/Aero"
     breadcrumbs={[
-        { name: 'Home', path: '/' },
-        { name: 'Products', path: '/Products' },
-        { name: 'Aero', path: '/Products/Aero' },
+        { name: 'Home', path: '/archive' },
+        { name: 'Products', path: '/archive/Products' },
+        { name: 'Aero', path: '/archive/Products/Aero' },
     ]}
     structuredData={[
         {
@@ -50,14 +50,14 @@ const localLinks: ReadonlyArray<LocalNavLink> = [
         },
     ]}
 >
-    <LocalNav title="Aero" label="Aero" links={localLinks} actionText="Request a demo" actionHref="/Contact?reason=aero-demo" tone="dark" />
+    <LocalNav title="Aero" label="Aero" links={localLinks} actionText="Request a demo" actionHref="/archive/Contact?reason=aero-demo" tone="dark" />
 
     <PageHero title="The modular .NET suite for" highlight="enterprise engineering." tone="dark" class="aero-hero">
         <img slot="before" class="aero-wordmark" src="/onixlabs/images/logo/aero-light.webp" alt="" width={1280} height={640} loading="eager" />
         <strong>Aero is a modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
         It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
         <Fragment slot="actions">
-            <Button href="/Contact?reason=aero-demo" variant="primary" size="large">Request a demo</Button>
+            <Button href="/archive/Contact?reason=aero-demo" variant="primary" size="large">Request a demo</Button>
             <Button href="#aero-architecture" variant="link">Explore the architecture</Button>
         </Fragment>
     </PageHero>
@@ -117,7 +117,7 @@ const localLinks: ReadonlyArray<LocalNavLink> = [
         </p>
     </section>
 
-    <CtaBand title="See Aero in action." primaryText="Request a demo" primaryHref="/Contact?reason=aero-demo">
+    <CtaBand title="See Aero in action." primaryText="Request a demo" primaryHref="/archive/Contact?reason=aero-demo">
         Whether you're evaluating it for your next project or just want a deeper look under the hood, book a product or technical demo
         for a guided tour, real-world use cases, and answers tailored to your team’s needs.
     </CtaBand>

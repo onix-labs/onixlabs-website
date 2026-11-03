@@ -80,7 +80,8 @@ test('every internal link points at a page that exists', async ({ page }: TestAr
         }
     }
 
-    const knownPaths: Set<string> = new Set<string>(sitePages.map((sitePage: SitePage): string => sitePage.path));
+    // The blank canvas at / is a real page too, though it isn't one of the archived pages.
+    const knownPaths: Set<string> = new Set<string>(['/', ...sitePages.map((sitePage: SitePage): string => sitePage.path)]);
     const unknown: string[] = [...paths].filter((linkPath: string): boolean => !knownPaths.has(linkPath));
     expect(unknown).toEqual([]);
 });
