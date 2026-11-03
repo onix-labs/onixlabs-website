@@ -18,12 +18,12 @@ type AeroData = CollectionEntry<'aero'>['data'];
 const entry: CollectionEntry<'aero'> | undefined = await getEntry('aero', 'aero');
 const aero: AeroData | undefined = entry?.data;
 const glassFor: ReadonlyMap<string, string> = new Map<string, string>([
-    ['rocket', 'rocket'], ['layer-group', 'stack'], ['building', 'buildings'], ['code-compare', 'lambda'], ['shield-halved', 'shield-alt'], ['chart-line', 'telemetry'],
+    ['rocket-launch', 'rocket'], ['stack', 'stack'], ['building-office', 'buildings'], ['git-diff', 'lambda'], ['shield-check', 'shield-alt'], ['chart-line', 'telemetry'],
 ]);
 const statements: ReadonlyArray<StageStatement> = [
-    { icon: 'rocket', text: 'Blazing fast.' },
-    { icon: 'layer-group', text: 'Infinitely scalable.' },
-    { icon: 'building', text: 'Built for enterprise.' },
+    { icon: 'rocket-launch', text: 'Blazing fast.' },
+    { icon: 'stack', text: 'Infinitely scalable.' },
+    { icon: 'building-office', text: 'Built for enterprise.' },
 ];
 ---
 <BaseLayout title="Example: Product · Design language" description="An example capstone product page assembled from the ONIXLabs design language components." path="/design/examples/product" noindex>

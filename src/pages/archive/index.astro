@@ -18,14 +18,14 @@ import { site } from '../../config/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const principles: ReadonlyArray<Principle> = [
-    { title: 'Craftsmanship', icon: 'pen-ruler', body: 'We treat code as a craft, writing software with precision, care, and pride in every detail.' },
-    { title: 'Integrity', icon: 'shield-halved', body: 'We uphold transparency, honesty, and reliability in every decision, from code to client collaboration.' },
-    { title: 'Performance', icon: 'gauge-high', body: 'We engineer solutions that are not only functional but fast, efficient, and built to scale.' },
-    { title: 'Enterprise', icon: 'building', body: 'Our platforms are designed for the complexity and demands of modern enterprises. Secure, scalable, and future-ready.' },
-    { title: 'Community', icon: 'users', body: 'We thrive on collaboration, contributing to open-source and growing together with the global developer community.' },
+    { title: 'Craftsmanship', icon: 'pencil-ruler', body: 'We treat code as a craft, writing software with precision, care, and pride in every detail.' },
+    { title: 'Integrity', icon: 'shield-check', body: 'We uphold transparency, honesty, and reliability in every decision, from code to client collaboration.' },
+    { title: 'Performance', icon: 'gauge', body: 'We engineer solutions that are not only functional but fast, efficient, and built to scale.' },
+    { title: 'Enterprise', icon: 'building-office', body: 'Our platforms are designed for the complexity and demands of modern enterprises. Secure, scalable, and future-ready.' },
+    { title: 'Community', icon: 'users-three', body: 'We thrive on collaboration, contributing to open-source and growing together with the global developer community.' },
     { title: 'Simplicity', icon: 'leaf', body: 'We believe the best solutions are intuitive, removing complexity to let clarity and function shine.' },
     { title: 'Education', icon: 'graduation-cap', body: 'We foster a culture of continuous learning, sharing knowledge, mentoring talent, and staying ahead of the curve.' },
-    { title: 'Support', icon: 'life-ring', body: 'We stand by our software and our users, delivering responsive, reliable support that builds long-term trust.' },
+    { title: 'Support', icon: 'lifebuoy', body: 'We stand by our software and our users, delivering responsive, reliable support that builds long-term trust.' },
 ];
 
 const technologies: ReadonlyArray<CollectionEntry<'technologies'>> = (await getCollection('technologies')).toSorted(
@@ -45,7 +45,7 @@ function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<C
             <a class="hero-news rise" href="/archive/Products/Aero">
                 <span class="hero-news-tag">New</span>
                 <span>Introducing Aero<span class="hero-news-detail">, the modular .NET suite</span></span>
-                <Icon name="chevron-right" />
+                <Icon name="caret-right" />
             </a>
             <h1 class="hero-title rise rise-2">
                 Code that connects.
@@ -89,9 +89,9 @@ function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<C
             </div>
         </div>
         <ul class="container aero-points" role="list">
-            <li class="highlight"><Icon name="rocket" /> Blazing fast.</li>
-            <li class="highlight"><Icon name="layer-group" /> Infinitely scalable.</li>
-            <li class="highlight"><Icon name="building" /> Built for enterprise.</li>
+            <li class="highlight"><Icon name="rocket-launch" /> Blazing fast.</li>
+            <li class="highlight"><Icon name="stack" /> Infinitely scalable.</li>
+            <li class="highlight"><Icon name="building-office" /> Built for enterprise.</li>
         </ul>
     </section>
 
@@ -125,7 +125,7 @@ function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<C
                         <ul class="family-products" role="list">
                             {productsIn(family).map((product: CollectionEntry<'products'>) => <li>{product.data.shortTitle}</li>)}
                         </ul>
-                        <span class="link-cta family-link">View {family.data.name} libraries <Icon name="chevron-right" /></span>
+                        <span class="link-cta family-link">View {family.data.name} libraries <Icon name="caret-right" /></span>
                     </a>
                 ))}
             </div>

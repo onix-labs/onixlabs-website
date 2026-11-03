@@ -34,9 +34,9 @@ const principles: ReadonlyArray<Principle> = [
     { title: 'Support', icon: 'support', body: 'We stand by our software and our users, delivering responsive, reliable support that builds long-term trust.' },
 ];
 const statements: ReadonlyArray<StageStatement> = [
-    { icon: 'rocket', text: 'Blazing fast.' },
-    { icon: 'layer-group', text: 'Infinitely scalable.' },
-    { icon: 'building', text: 'Built for enterprise.' },
+    { icon: 'rocket-launch', text: 'Blazing fast.' },
+    { icon: 'stack', text: 'Infinitely scalable.' },
+    { icon: 'building-office', text: 'Built for enterprise.' },
 ];
 const technologies: ReadonlyArray<CollectionEntry<'technologies'>> = (await getCollection('technologies')).toSorted(
     (left: CollectionEntry<'technologies'>, right: CollectionEntry<'technologies'>): number => left.id.localeCompare(right.id),
@@ -55,7 +55,7 @@ function categoryName(id: string): string {
     <Hero label="ONIXLabs" title="Code that connects." highlight="Software that scales." align="center">
         Capstone products and open-source libraries for enterprise engineering in .NET, Kotlin and the JVM.
         <Fragment slot="actions">
-            <a class="pill" href="#products"><span class="badge badge-pill badge-brand">New</span> Introducing Aero, the modular .NET suite <Icon name="chevron-right" /></a>
+            <a class="pill" href="#products"><span class="badge badge-pill badge-brand">New</span> Introducing Aero, the modular .NET suite <Icon name="caret-right" /></a>
         </Fragment>
     </Hero>
 

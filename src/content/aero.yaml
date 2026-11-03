@@ -2,21 +2,21 @@
 aero:
   principles:
     - title: Built for Acceleration
-      icon: rocket
+      icon: rocket-launch
       body: Get up and running in minutes, not months. Aero provides essential infrastructure, right out of the box.
     - title: Modular by Design
-      icon: layer-group
+      icon: stack
       body: Pick and choose the features you need. Everything is built around dependency injection for seamless, flexible
         integration.
     - title: Enterprise-Grade Foundations
-      icon: building
+      icon: building-office
       body: Scalable, performant, and production-ready. Aero handles the heavy lifting so you can focus on your core domain.
     - title: Modern and Legacy Friendly
-      icon: code-compare
+      icon: git-diff
       body: Support for synchronous and asynchronous APIs means Aero plays nicely with both cutting-edge and established
         systems.
     - title: Security, Sorted
-      icon: shield-halved
+      icon: shield-check
       body: Built-in support for data privacy, integrity, secrets management, and digital signing using Hashicorp Vault.
     - title: Observability First
       icon: chart-line

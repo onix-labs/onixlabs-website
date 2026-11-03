@@ -16,12 +16,12 @@ const { label = 'Close', element = 'button', class: className, ...attributes }: 
 ---
 {element === 'summary' ? (
     <summary class:list={['close-button', className]}>
-        <Icon name="xmark" />
+        <Icon name="x" />
         <span class="visually-hidden">{label}</span>
     </summary>
 ) : (
     <button type="button" class:list={['close-button', className]} {...attributes}>
-        <Icon name="xmark" />
+        <Icon name="x" />
         <span class="visually-hidden">{label}</span>
     </button>
 )}

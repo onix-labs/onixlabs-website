@@ -36,7 +36,8 @@ what exists before adding new styles:
 - **Typography:** the system font stack (San Francisco on Apple platforms, the self-hosted Inter elsewhere) for
   everything, JetBrains Mono for code. Headlines are semibold with negative tracking; the second phrase of a headline
   can go grey with the `highlight` prop.
-- **Icons** are Font Awesome Free line icons in `src/icons/`, usually inside an `.icon-chip`.
+- **Icons** are [Phosphor](https://phosphoricons.com) icons (regular weight, MIT) in `src/icons/`, named as Phosphor
+  names them and rendered with `<Icon name="…" />`, usually inside an `.icon-chip`.
 
 ## Content model
 
@@ -90,8 +91,8 @@ Each product's source of truth is its repository (`repositoryUrl`). When updatin
   then add its URL to `tests/e2e/support/site-pages.ts`.
 - **A contributor:** add a Markdown file in `src/content/contributors/` and a 640×640 photo under
   `public/onixlabs/images/contributors/`, then add the URL to `tests/e2e/support/site-pages.ts`.
-- **An icon:** copy the SVG from Font Awesome Free into `src/icons/` and use `<Icon name="..." />`. Aero
-  principles reference icons by name.
+- **An icon:** copy its SVG from `node_modules/@phosphor-icons/core/assets/regular/` into `src/icons/` and use
+  `<Icon name="..." />` with the Phosphor name. Aero principles reference icons by name.
 - **A bitmap-backed SVG** (an SVG that embeds `data:image`): add it under `public/onixlabs/images/`, run
   `npm run images`, and reference the generated `.webp`.
 

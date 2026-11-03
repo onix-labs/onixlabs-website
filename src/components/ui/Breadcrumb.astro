@@ -19,7 +19,7 @@ const lastIndex: number = items.length - 1;
             const current: boolean = index === lastIndex;
             return (
                 <li class:list={['breadcrumb-item', { 'breadcrumb-item-current': current }]} aria-current={current ? 'page' : undefined}>
-                    {index > 0 && <Icon name="chevron-right" class="breadcrumb-separator" />}
+                    {index > 0 && <Icon name="caret-right" class="breadcrumb-separator" />}
                     {current || item.href === undefined
                         ? <span class="breadcrumb-text">{item.label}</span>
                         : <a class="breadcrumb-link" href={item.href}>{item.label}</a>}

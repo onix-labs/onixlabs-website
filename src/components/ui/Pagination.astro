@@ -52,8 +52,8 @@ const hasNext: boolean = current < count;
     <ul class="pagination-list" role="list">
         <li>
             {hasPrevious
-                ? <a class="page page-step" href={href(current - 1)}><Icon name="chevron-right" class="page-previous" /><span class="visually-hidden">Previous page</span></a>
-                : <span class="page page-step page-disabled" aria-hidden="true"><Icon name="chevron-right" class="page-previous" /><span class="visually-hidden">Previous page</span></span>}
+                ? <a class="page page-step" href={href(current - 1)}><Icon name="caret-right" class="page-previous" /><span class="visually-hidden">Previous page</span></a>
+                : <span class="page page-step page-disabled" aria-hidden="true"><Icon name="caret-right" class="page-previous" /><span class="visually-hidden">Previous page</span></span>}
         </li>
         {pages.map((page: number | 'gap') => (
             <li>
@@ -64,8 +64,8 @@ const hasNext: boolean = current < count;
         ))}
         <li>
             {hasNext
-                ? <a class="page page-step" href={href(current + 1)}><Icon name="chevron-right" /><span class="visually-hidden">Next page</span></a>
-                : <span class="page page-step page-disabled" aria-hidden="true"><Icon name="chevron-right" /><span class="visually-hidden">Next page</span></span>}
+                ? <a class="page page-step" href={href(current + 1)}><Icon name="caret-right" /><span class="visually-hidden">Next page</span></a>
+                : <span class="page page-step page-disabled" aria-hidden="true"><Icon name="caret-right" /><span class="visually-hidden">Next page</span></span>}
         </li>
     </ul>
 </nav>

@@ -18,7 +18,7 @@ const { product, showOverview = false }: Props = Astro.props;
     <h3>{product.data.shortTitle}<span class="visually-hidden"> ({product.data.title})</span></h3>
     <p class="product-hook">{product.data.hook}</p>
     {showOverview && <p class="product-overview">{product.data.overview ?? product.data.summary}</p>}
-    <span class="link-cta product-link">Learn more <Icon name="chevron-right" /></span>
+    <span class="link-cta product-link">Learn more <Icon name="caret-right" /></span>
 </a>
 
 <style>

@@ -24,10 +24,10 @@ const { name, jobTitle, photo, href, teaser, gitHubUrl, linkedInUrl }: Props = A
         {teaser !== undefined && <p class="team-teaser">{teaser}</p>}
         <ul class="team-social" role="list">
             {gitHubUrl !== undefined && (
-                <li><a href={gitHubUrl} target="_blank" rel="noopener noreferrer"><Icon name="github" /><span class="visually-hidden">{name} on GitHub (opens in a new tab)</span></a></li>
+                <li><a href={gitHubUrl} target="_blank" rel="noopener noreferrer"><Icon name="github-logo" /><span class="visually-hidden">{name} on GitHub (opens in a new tab)</span></a></li>
             )}
             {linkedInUrl !== undefined && (
-                <li><a href={linkedInUrl} target="_blank" rel="noopener noreferrer"><Icon name="linkedin" /><span class="visually-hidden">{name} on LinkedIn (opens in a new tab)</span></a></li>
+                <li><a href={linkedInUrl} target="_blank" rel="noopener noreferrer"><Icon name="linkedin-logo" /><span class="visually-hidden">{name} on LinkedIn (opens in a new tab)</span></a></li>
             )}
         </ul>
     </div>
