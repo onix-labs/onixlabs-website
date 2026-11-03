@@ -88,7 +88,8 @@
 }
 
 @keyframes progress {
-    from { clip-path: inset(0 100% 0 0); }
+    from { clip-path: inset(0 100% 0 0); opacity: 0; }
+    1% { opacity: 1; }
     to { clip-path: inset(0 0 0 0); }
 }
 
