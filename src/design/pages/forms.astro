@@ -1,0 +1,55 @@
+---
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Text input" code={'<div class="field">\n  <label for="name">Name</label>\n  <input class="input" id="name" … />\n</div>'}>
+    <div class="form">
+        <div class="field">
+            <label for="demo-name">Name</label>
+            <input class="input" id="demo-name" type="text" autocomplete="off" />
+        </div>
+        <div class="field">
+            <label for="demo-email">Email address</label>
+            <input class="input" id="demo-email" type="email" autocomplete="off" aria-describedby="demo-email-hint" />
+            <p class="field-hint" id="demo-email-hint">We'll only use this to reply to you.</p>
+        </div>
+    </div>
+</Specimen>
+
+<Specimen title="Select and text area" code={'<select class="input">…</select>\n<textarea class="input">…</textarea>'}>
+    <div class="form">
+        <div class="field">
+            <label for="demo-reason">Reason</label>
+            <select class="input" id="demo-reason">
+                <option>Aero Platform (General Inquiry)</option>
+                <option>Consulting</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="demo-message">Message</label>
+            <textarea class="input" id="demo-message" rows="4"></textarea>
+        </div>
+    </div>
+</Specimen>
+
+<Specimen title="States" code={'<input class="input" aria-invalid="true" aria-describedby="…" />\n<p class="field-error" id="…">…</p>\n<input class="input" disabled />'}>
+    <Fragment slot="notes"><p>Focus shows a soft ring; errors are stated in words as well as colour; disabled fields are dimmed.</p></Fragment>
+    <div class="form">
+        <div class="field">
+            <label for="demo-invalid">Email address</label>
+            <input class="input" id="demo-invalid" type="email" value="not-an-email" aria-invalid="true" aria-describedby="demo-invalid-error" />
+            <p class="field-error" id="demo-invalid-error">Enter an email address like name@example.com.</p>
+        </div>
+        <div class="field">
+            <label for="demo-disabled">Disabled</label>
+            <input class="input" id="demo-disabled" type="text" value="Not editable" disabled />
+        </div>
+    </div>
+</Specimen>
+
+<style>
+    .form {
+        display: grid;
+        gap: 1.25rem;
+        max-width: 32rem;
+    }
+</style>

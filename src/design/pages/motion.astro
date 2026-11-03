@@ -1,0 +1,130 @@
+---
+import Aurora from '../../components/Aurora.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Principles" surface="none">
+    <div class="principles">
+        <p><strong>CSS only.</strong> Every effect is declarative CSS; nothing depends on JavaScript to appear.</p>
+        <p><strong>Subtle.</strong> Motion explains structure or adds atmosphere. It never blocks reading.</p>
+        <p><strong>Optional.</strong> Under <code>prefers-reduced-motion</code>, everything is static and fully visible.</p>
+        <p><strong>Progressive.</strong> Scroll-driven effects run where the browser supports them; elsewhere the content is simply there.</p>
+    </div>
+</Specimen>
+
+<Specimen title="Headline slide-up" code={'<h1><span class="mask-line"><span>Line one</span></span>…</h1>'}>
+    <Fragment slot="notes"><p>On page load, each line rises out of its own mask, staggered by 120ms. Reload the page to replay it.</p></Fragment>
+    <p class="demo-headline" role="presentation">
+        <span class="mask-line"><span>Each line rises</span></span>
+        <span class="mask-line"><span class="gradient-text">out of its mask.</span></span>
+    </p>
+</Specimen>
+
+<Specimen title="Entrance" code={'<p class="rise rise-2">…</p>  /* rise-2, rise-3, rise-4 add a stagger */'}>
+    <Fragment slot="notes"><p>Supporting copy and buttons fade up on load, a beat after the headline.</p></Fragment>
+    <div class="cluster">
+        <span class="chip-demo rise">rise</span>
+        <span class="chip-demo rise rise-2">rise-2</span>
+        <span class="chip-demo rise rise-3">rise-3</span>
+        <span class="chip-demo rise rise-4">rise-4</span>
+    </div>
+</Specimen>
+
+<Specimen title="Scroll reveals" code={'<div class="reveal">…</div>        /* slides up as it enters the viewport */\n<div class="reveal-scale">…</div>  /* tiles grow into place */\n<img class="settle" … />           /* product shots settle into frame */'}>
+    <Fragment slot="notes"><p>Driven by the scroll position, not timers. Text moves but never fades, so it keeps full contrast throughout.</p></Fragment>
+    <div class="grid grid-3">
+        <div class="tile demo-tile reveal">reveal</div>
+        <div class="tile demo-tile reveal-scale">reveal-scale</div>
+        <div class="tile demo-tile settle">settle</div>
+    </div>
+</Specimen>
+
+<Specimen title="Aurora" padding="none" code={'<Aurora palette="brand" />  /* brand | aero | studio | player */'}>
+    <Fragment slot="notes"><p>Brand light drifting slowly behind a hero, in both themes. Each capstone product has its own palette.</p></Fragment>
+    <div class="aurora-demo">
+        <Aurora />
+        <p class="label">Aurora · brand</p>
+    </div>
+    <div class="aurora-row">
+        <div class="aurora-demo small"><Aurora palette="aero" /><p class="label">aero</p></div>
+        <div class="aurora-demo small"><Aurora palette="studio" /><p class="label">studio</p></div>
+        <div class="aurora-demo small"><Aurora palette="player" /><p class="label">player</p></div>
+    </div>
+</Specimen>
+
+<Specimen title="Gradient shimmer" code={'<span class="gradient-text">…</span>'}>
+    <Fragment slot="notes"><p>Gradient phrases drift slowly through the spectrum.</p></Fragment>
+    <p class="demo-headline"><span class="gradient-text">A slow shimmer.</span></p>
+</Specimen>
+
+<Specimen title="Scroll progress" code={'<Swatches class="header-progress scroll-progress" />'}>
+    <Fragment slot="notes"><p>The brand swatches along the bottom of the header fill from left to right as the page scrolls. Scroll this page to see it.</p></Fragment>
+    <p class="muted">Look at the bottom edge of the site header.</p>
+</Specimen>
+
+<style>
+    .principles {
+        display: grid;
+        gap: 0.75rem;
+        max-width: 44rem;
+    }
+
+    .demo-headline {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-size: var(--text-5xl);
+        font-weight: 600;
+        letter-spacing: -0.04em;
+        line-height: 1.04;
+    }
+
+    .chip-demo {
+        padding: 0.6rem 1rem;
+        border-radius: 999px;
+        background: var(--bg-alt);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+    }
+
+    .demo-tile {
+        display: grid;
+        place-items: center;
+        height: 10rem;
+        box-shadow: var(--shadow-tile);
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+    }
+
+    .aurora-demo {
+        position: relative;
+        display: grid;
+        place-items: end start;
+        height: 18rem;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--bg);
+        isolation: isolate;
+        overflow: hidden;
+    }
+
+    .aurora-demo :global(.aurora) {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .aurora-row {
+        display: grid;
+        gap: var(--tile-gap);
+        margin-top: var(--tile-gap);
+    }
+
+    @media (min-width: 48rem) {
+        .aurora-row {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .aurora-demo.small {
+        height: 12rem;
+    }
+</style>

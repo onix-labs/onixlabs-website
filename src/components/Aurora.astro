@@ -1,0 +1,15 @@
+---
+import type { AuroraPalette } from './aurora-palette';
+
+// Brand-coloured light drifting behind a hero, in the brand palette or a capstone product's colours.
+interface Props {
+    readonly palette?: AuroraPalette;
+}
+
+const { palette = 'brand' }: Props = Astro.props;
+---
+<div class={`aurora aurora-${palette}`} aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>

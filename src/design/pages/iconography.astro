@@ -1,0 +1,89 @@
+---
+import GlassIcon from '../../components/GlassIcon.astro';
+import Icon from '../../components/Icon.astro';
+import Specimen from '../Specimen.astro';
+
+const glass: ReadonlyArray<string> = [
+    'rocket', 'stack', 'buildings', 'shield-alt', 'gauge', 'telemetry', 'code', 'design', 'documents', 'support', 'user-group', 'leaf',
+    'cloud-upload', 'git-merge', 'vials', 'scroll', 'dice', 'lambda', 'envelope',
+];
+const line: ReadonlyArray<string> = ['arrow-right', 'chevron-right', 'arrow-up-right-from-square', 'github', 'linkedin', 'x-twitter', 'hashnode', 'box-open', 'calendar', 'paper-plane', 'clock', 'sun', 'moon', 'bars'];
+const emblems: ReadonlyArray<string> = ['dotnet/dotnet-core-outline', 'dotnet/dotnet-numerics-outline', 'dotnet/dotnet-security-outline', 'kotlin/kotlin-core-outline', 'corda/corda-bnms-outline'];
+---
+<Specimen title="Glass icons" code={'<GlassIcon name="rocket" size={72} />'}>
+    <Fragment slot="notes"><p>3D glass icons give principles, services and capstone features character. Each has a light and a dark variant that swaps with the theme. Use one per tile, at 56 to 96px.</p></Fragment>
+    <div class="glass-grid">
+        {glass.map((name: string) => (
+            <figure>
+                <GlassIcon name={name} size={72} />
+                <figcaption><code>{name}</code></figcaption>
+            </figure>
+        ))}
+    </div>
+</Specimen>
+
+<Specimen title="Line icons" code={'<Icon name="github" />'}>
+    <Fragment slot="notes"><p>Font Awesome Free icons inlined as SVG, sized to the text around them. For controls, links and small inline cues, never as illustration.</p></Fragment>
+    <div class="line-grid">
+        {line.map((name: string) => (
+            <figure>
+                <Icon name={name} />
+                <figcaption><code>{name}</code></figcaption>
+            </figure>
+        ))}
+    </div>
+</Specimen>
+
+<Specimen title="Product emblems" code={'<div class="emblem family-dotnet"><img src="…" alt="" /></div>  /* --emblem-size */'}>
+    <Fragment slot="notes"><p>A product's outline mark on its family gradient, in a rounded square. Capstone products will each need a mark in the same style.</p></Fragment>
+    <div class="emblem-row">
+        {emblems.map((path: string) => (
+            <span class={`emblem family-${path.split('/')[0]}`}>
+                <img src={`/onixlabs/images/icons/${path}.svg`} alt="" width={64} height={64} />
+            </span>
+        ))}
+    </div>
+</Specimen>
+
+<style>
+    .glass-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+        gap: 1.5rem 1rem;
+    }
+
+    .glass-grid figure,
+    .line-grid figure {
+        display: grid;
+        justify-items: center;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .glass-grid :global(.glass-icon) {
+        width: 4.5rem;
+    }
+
+    figcaption code {
+        color: var(--text-muted);
+        font-size: var(--text-xs);
+    }
+
+    .line-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+        gap: 1.5rem 1rem;
+        font-size: 1.4rem;
+        color: var(--heading);
+    }
+
+    .emblem-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+    }
+
+    .emblem-row .emblem {
+        --emblem-size: 5rem;
+    }
+</style>

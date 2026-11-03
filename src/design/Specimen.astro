@@ -1,0 +1,81 @@
+---
+// One entry on a design-language page: a heading, notes, a live preview and an optional usage snippet.
+interface Props {
+    readonly title: string;
+    readonly id?: string;
+    readonly code?: string;
+    readonly surface?: 'default' | 'alt' | 'dark' | 'none';
+    readonly padding?: 'default' | 'none';
+}
+
+const { title, id, code, surface = 'default', padding = 'default' }: Props = Astro.props;
+const anchor: string = id ?? title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+---
+<section class="specimen" aria-labelledby={anchor}>
+    <h2 id={anchor}>{title}</h2>
+    {Astro.slots.has('notes') && <div class="specimen-notes"><slot name="notes" /></div>}
+    <div class:list={['specimen-preview', `surface-${surface}`, { 'tone-dark': surface === 'dark', 'tone-alt': surface === 'alt', 'no-padding': padding === 'none' }]}>
+        <slot />
+    </div>
+    {code !== undefined && <pre class="specimen-code" tabindex="0"><code>{code}</code></pre>}
+</section>
+
+<style>
+    .specimen {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 4.5rem;
+    }
+
+    .specimen h2 {
+        font-size: var(--text-2xl);
+        letter-spacing: -0.03em;
+    }
+
+    .specimen-notes {
+        max-width: 44rem;
+        color: var(--text-muted);
+    }
+
+    .specimen-notes :global(p + p) {
+        margin-top: 0.75rem;
+    }
+
+    .specimen-preview {
+        position: relative;
+        padding: clamp(1.25rem, 1rem + 2vw, 2.5rem);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--bg);
+        color: var(--text);
+        isolation: isolate;
+        overflow: hidden;
+    }
+
+    .specimen-preview.surface-alt {
+        background: var(--bg-alt);
+    }
+
+    .specimen-preview.surface-none {
+        padding: 0;
+        border: 0;
+        background: none;
+        overflow: visible;
+    }
+
+    .specimen-preview.no-padding {
+        padding: 0;
+    }
+
+    .specimen-code {
+        padding: 1rem 1.25rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--code-bg);
+        color: var(--text);
+        font-size: var(--text-sm);
+        line-height: 1.6;
+        overflow-x: auto;
+        white-space: pre;
+    }
+</style>

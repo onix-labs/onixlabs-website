@@ -1,0 +1,112 @@
+---
+import { getEntry, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+
+import { estimateReadingMinutes } from '../../../collections/estimate-reading-minutes';
+import { loadArticles } from '../../../collections/load-articles';
+import ArticleTile from '../../../components/ArticleTile.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import Hero from '../../../components/Hero.astro';
+import Icon from '../../../components/Icon.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ExampleFrame from '../../ExampleFrame.astro';
+
+// Example article: a simple hero, a comfortable reading column with an outline beside it, and related reading.
+const article: CollectionEntry<'articles'> | undefined = await getEntry('articles', 'csharp/syntactic-sugar-bitter-aftertaste');
+
+if (article === undefined) {
+    throw new Error('The example article is missing.');
+}
+
+const { Content, headings } = await render(article);
+const outline: ReadonlyArray<MarkdownHeading> = headings.filter((heading: MarkdownHeading): boolean => heading.depth === 2);
+const related: ReadonlyArray<CollectionEntry<'articles'>> = (await loadArticles()).filter(
+    (candidate: CollectionEntry<'articles'>): boolean => candidate.id !== article.id,
+).slice(0, 3);
+---
+<BaseLayout title="Example: Article · Design language" description="An example article assembled from the ONIXLabs design language components." path="/design/examples/article" noindex>
+    <Hero variant="simple" label="C# · Article" title={article.data.title}>
+        {article.data.description}
+        <Fragment slot="actions">
+            <span class="meta"><Icon name="clock" /> {estimateReadingMinutes(article.body ?? '')} min read</span>
+        </Fragment>
+    </Hero>
+
+    <div class="container-wide reading">
+        <article class="prose">
+            <Content />
+        </article>
+        {outline.length > 1 && (
+            <nav class="outline" aria-labelledby="outline-title">
+                <p id="outline-title" class="label label-muted">On this page</p>
+                <ul role="list">
+                    {outline.map((heading: MarkdownHeading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+                </ul>
+            </nav>
+        )}
+    </div>
+
+    <section class="section tone-alt" aria-labelledby="related">
+        <div class="container-wide">
+            <SectionHeader eyebrow="Keep reading" title="More from" highlight="the workshop." id="related" />
+            <div class="grid grid-3 shelf-mobile">
+                {related.map((item: CollectionEntry<'articles'>) => (
+                    <ArticleTile href="#related" category={item.data.category} title={item.data.title} summary={item.data.description} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <CtaBand />
+    <ExampleFrame />
+</BaseLayout>
+
+<style>
+    .meta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .reading {
+        display: grid;
+        gap: 3rem;
+        padding-block: 3.5rem var(--space-section);
+    }
+
+    @media (min-width: 72rem) {
+        .reading {
+            grid-template-columns: minmax(0, 44rem) 14rem;
+            justify-content: center;
+            gap: 5rem;
+        }
+
+        .outline {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            align-self: start;
+        }
+    }
+
+    .outline ul {
+        display: grid;
+        gap: 0.55rem;
+        margin-top: 0.85rem;
+        padding-left: 0.9rem;
+        border-left: 1px solid var(--border);
+        font-size: var(--text-sm);
+    }
+
+    .outline a {
+        color: var(--text-muted);
+        text-decoration: none;
+    }
+
+    .outline a:hover {
+        color: var(--heading);
+    }
+</style>

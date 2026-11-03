@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import TechnologyMarquee from '../../components/TechnologyMarquee.astro';
+import Specimen from '../Specimen.astro';
+
+const technologies: ReadonlyArray<CollectionEntry<'technologies'>> = (await getCollection('technologies')).toSorted(
+    (left: CollectionEntry<'technologies'>, right: CollectionEntry<'technologies'>): number => left.id.localeCompare(right.id),
+);
+---
+<Specimen title="Technology marquee" padding="none" code={'<TechnologyMarquee technologies={technologies} />'}>
+    <Fragment slot="notes"><p>The technologies we work with, scrolling slowly in greyscale and coming into colour on hover. It pauses on hover and focus; under reduced motion it becomes a static, wrapped list.</p></Fragment>
+    <div class="marquee-frame">
+        <TechnologyMarquee technologies={technologies} />
+    </div>
+</Specimen>
+
+<style>
+    .marquee-frame {
+        padding-block: 3rem;
+    }
+</style>

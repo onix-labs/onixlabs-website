@@ -1,0 +1,82 @@
+---
+import Aurora from '../components/Aurora.astro';
+import Swatches from '../components/Swatches.astro';
+import DesignShell from './DesignShell.astro';
+import { designNavigation } from './design-navigation';
+import type { DesignGroup } from './design-group';
+import type { DesignPage } from './design-page';
+---
+<DesignShell page={undefined}>
+    <header class="overview-hero">
+        <Aurora />
+        <p class="label">Design language · v0.2</p>
+        <h1 class="display">
+            <span class="mask-line"><span>Every building block,</span></span>
+            <span class="mask-line"><span class="gradient-text">before the content.</span></span>
+        </h1>
+        <p class="lead">
+            The ONIXLabs design system, organised as foundations, atoms and components, with example pages built only
+            from those parts. Use the theme switch in the header to review light and dark.
+        </p>
+        <Swatches class="overview-swatches" />
+    </header>
+
+    {designNavigation.map((group: DesignGroup) => (
+        <section class="overview-group" aria-labelledby={`group-${group.title.toLowerCase()}`}>
+            <h2 id={`group-${group.title.toLowerCase()}`}>{group.title}</h2>
+            <div class="grid grid-3">
+                {group.pages.map((page: DesignPage) => (
+                    <a class="tile overview-tile" href={`/design/${page.slug}`}>
+                        <h3>{page.title}</h3>
+                        <p>{page.summary}</p>
+                    </a>
+                ))}
+            </div>
+        </section>
+    ))}
+</DesignShell>
+
+<style>
+    .overview-hero {
+        position: relative;
+        display: grid;
+        gap: 1.5rem;
+        padding: 3rem 0 4rem;
+        isolation: isolate;
+    }
+
+    .overview-hero .lead {
+        max-width: 40rem;
+    }
+
+    .overview-hero :global(.overview-swatches) {
+        --swatch-height: 0.5rem;
+        max-width: 24rem;
+    }
+
+    .overview-group + .overview-group {
+        margin-top: 3.5rem;
+    }
+
+    .overview-group h2 {
+        margin-bottom: 1.25rem;
+        font-size: var(--text-3xl);
+    }
+
+    .overview-tile {
+        display: grid;
+        align-content: start;
+        gap: 0.5rem;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-tile);
+    }
+
+    .overview-tile h3 {
+        font-size: var(--text-xl);
+    }
+
+    .overview-tile p {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+</style>

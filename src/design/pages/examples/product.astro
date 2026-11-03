@@ -1,0 +1,92 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import Button from '../../../components/Button.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import FeatureTile from '../../../components/FeatureTile.astro';
+import Hero from '../../../components/Hero.astro';
+import ProductStage from '../../../components/ProductStage.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
+import type { StageStatement } from '../../../components/stage-statement';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ExampleFrame from '../../ExampleFrame.astro';
+
+// Example capstone product page, using Aero's real content and only design-language components.
+type AeroData = CollectionEntry<'aero'>['data'];
+
+const entry: CollectionEntry<'aero'> | undefined = await getEntry('aero', 'aero');
+const aero: AeroData | undefined = entry?.data;
+const glassFor: ReadonlyMap<string, string> = new Map<string, string>([
+    ['rocket', 'rocket'], ['layer-group', 'stack'], ['building', 'buildings'], ['code-compare', 'lambda'], ['shield-halved', 'shield-alt'], ['chart-line', 'telemetry'],
+]);
+const statements: ReadonlyArray<StageStatement> = [
+    { icon: 'rocket', text: 'Blazing fast.' },
+    { icon: 'layer-group', text: 'Infinitely scalable.' },
+    { icon: 'building', text: 'Built for enterprise.' },
+];
+---
+<BaseLayout title="Example: Product · Design language" description="An example capstone product page assembled from the ONIXLabs design language components." path="/design/examples/product" noindex>
+    <Hero label="Aero platform" title="The modular .NET suite for" highlight="enterprise engineering." palette="aero">
+        <strong>A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
+        It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
+        <Fragment slot="actions">
+            <Button href="#cta-title" variant="primary" size="large">Request a demo</Button>
+            <Button href="#architecture" size="large">Explore the architecture</Button>
+        </Fragment>
+        <img slot="media" class="shot shot-light" src="/onixlabs/images/marketing/macbook-pro.webp" alt="The Aero platform on a laptop" width={1400} height={834} />
+        <img slot="media" class="shot shot-dark" src="/onixlabs/images/marketing/macbook-pro-dark.webp" alt="The Aero platform on a laptop" width={1400} height={834} />
+    </Hero>
+
+    <section class="section tone-alt" aria-labelledby="principles">
+        <div class="container-wide">
+            <SectionHeader eyebrow="Founding principles" title="Why build .NET applications" highlight="with Aero." id="principles">
+                Aero provides a rock-solid foundation for building modern .NET applications, helping teams move faster, adopt best practices by default, and build applications that are ready for growth.
+            </SectionHeader>
+            <div class="grid grid-3">
+                {aero?.principles.map((principle: AeroData['principles'][number]) => (
+                    <FeatureTile title={principle.title} glass={glassFor.get(principle.icon) ?? 'rocket'} body={principle.body} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="section tone-dark" aria-labelledby="stage-title">
+        <div class="container">
+            <SectionHeader eyebrow="In action" title="Modern enterprise development," highlight="without the drag." highlightStyle="gradient" id="stage-title" centered />
+        </div>
+        <ProductStage statements={statements}>
+            <img class="shot" src="/onixlabs/images/marketing/macbook-pro-dark.webp" alt="" width={1400} height={834} />
+        </ProductStage>
+    </section>
+
+    <section class="section" id="architecture" aria-labelledby="architecture-title">
+        <div class="container-wide">
+            <SectionHeader eyebrow="Aero architecture" title="The building blocks for" highlight="enterprise-grade .NET." id="architecture-title">
+                Aero isn’t just another framework—it's your project's backbone. Each module is crafted to solve real-world engineering challenges.
+            </SectionHeader>
+            <div class="grid grid-2">
+                {aero?.architecture.map((module: AeroData['architecture'][number], index: number) => (
+                    <FeatureTile title={module.title} body={module.body} index={index + 1} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <CtaBand title="See Aero in action." primaryText="Request a demo" primaryHref="#cta-title" tone="alt">
+        Book a product or technical demo for a guided tour, real-world use cases, and answers tailored to your team’s needs.
+    </CtaBand>
+    <ExampleFrame />
+</BaseLayout>
+
+<style>
+    .shot {
+        width: 100%;
+        filter: drop-shadow(var(--shadow-product));
+    }
+
+    :global([data-theme='light']) .shot-dark,
+    :global([data-theme='dark']) .shot-light {
+        display: none;
+    }
+</style>

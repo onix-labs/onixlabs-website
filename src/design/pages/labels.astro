@@ -1,0 +1,38 @@
+---
+import Icon from '../../components/Icon.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Label" code={'<p class="label">Aero platform</p>\n<p class="label label-muted">Library</p>'}>
+    <Fragment slot="notes"><p>Names what follows: a section, a product, a category. Monospace capitals in brand coral; muted where coral would be too loud.</p></Fragment>
+    <div class="row">
+        <p class="label">Aero platform</p>
+        <p class="label">01 · Principles</p>
+        <p class="label label-muted">Library</p>
+    </div>
+</Specimen>
+
+<Specimen title="Badges" code={'<span class="badge">Open source</span>\n<span class="badge badge-outline">v1.0</span>\n<span class="badge badge-brand">New</span>\n<span class="badge badge-family family-studio">Studio</span>'}>
+    <Fragment slot="notes"><p>Short markers for status, version or product. Brand and family badges use the deepened gradient so white text stays legible.</p></Fragment>
+    <div class="row">
+        <span class="badge">Open source</span>
+        <span class="badge badge-outline">v1.0</span>
+        <span class="badge badge-brand">New</span>
+        <span class="badge badge-family family-aero">Aero</span>
+        <span class="badge badge-family family-studio">Studio</span>
+        <span class="badge badge-family family-player">ONIXPlayer</span>
+    </div>
+</Specimen>
+
+<Specimen title="Announcement pill" code={'<a class="pill" href="…"><span class="badge badge-brand">New</span> Introducing Aero <Icon name="chevron-right" /></a>'}>
+    <Fragment slot="notes"><p>One per page at most, above the hero headline, for a launch or a headline product.</p></Fragment>
+    <a class="pill" href="#announcement-pill"><span class="badge badge-brand">New</span> Introducing Aero, the modular .NET suite <Icon name="chevron-right" /></a>
+</Specimen>
+
+<style>
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem 1.5rem;
+    }
+</style>

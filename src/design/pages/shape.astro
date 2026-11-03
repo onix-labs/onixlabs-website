@@ -1,0 +1,77 @@
+---
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Corner radii" code={'--radius-sm: 0.75rem   /* inputs, small chips */\n--radius: 1.125rem     /* code, small tiles */\n--radius-lg: 1.75rem   /* tiles */\n--radius-xl: 2.25rem   /* capstone tiles, CTA band */\n999px                  /* buttons, pills, badges */'}>
+    <Fragment slot="notes"><p>Soft, generous corners. Interactive pills are fully rounded; panels get larger radii as they get larger.</p></Fragment>
+    <div class="radii">
+        <div class="radius r-sm"><code>sm</code></div>
+        <div class="radius r-md"><code>default</code></div>
+        <div class="radius r-lg"><code>lg</code></div>
+        <div class="radius r-xl"><code>xl</code></div>
+        <div class="radius r-pill"><code>pill</code></div>
+    </div>
+</Specimen>
+
+<Specimen title="Elevation" surface="alt" code={'box-shadow: var(--shadow-tile);        /* resting tile */\nbox-shadow: var(--shadow-tile-hover);  /* lifted on hover */\nbox-shadow: var(--shadow-product);     /* product shots */'}>
+    <Fragment slot="notes"><p>Depth is quiet. In light mode, tiles rest on soft shadows and lift on hover; in dark mode, a faint top highlight replaces the shadow.</p></Fragment>
+    <div class="grid grid-3">
+        <div class="tile elev elev-flat"><code>flat</code></div>
+        <div class="tile elev elev-rest"><code>--shadow-tile</code></div>
+        <div class="tile elev elev-hover"><code>--shadow-tile-hover</code></div>
+    </div>
+</Specimen>
+
+<Specimen title="Borders" code={'border: 1px solid var(--border);         /* hairlines, outlines */\nborder: 1px solid var(--border-strong);  /* secondary buttons, inputs */'}>
+    <div class="grid grid-2">
+        <div class="border-sample border-soft"><code>--border</code></div>
+        <div class="border-sample border-strong"><code>--border-strong</code></div>
+    </div>
+</Specimen>
+
+<style>
+    .radii {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+    }
+
+    .radius {
+        display: grid;
+        place-items: center;
+        width: 7rem;
+        height: 7rem;
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: var(--text-xs);
+    }
+
+    .r-sm { border-radius: var(--radius-sm); }
+    .r-md { border-radius: var(--radius); }
+    .r-lg { border-radius: var(--radius-lg); }
+    .r-xl { border-radius: var(--radius-xl); }
+    .r-pill { width: 10rem; height: 3rem; border-radius: 999px; }
+
+    .elev {
+        display: grid;
+        place-items: center;
+        height: 9rem;
+        color: var(--text-muted);
+        font-size: var(--text-xs);
+    }
+
+    .elev-rest { box-shadow: var(--shadow-tile); }
+    .elev-hover { box-shadow: var(--shadow-tile-hover); }
+
+    .border-sample {
+        display: grid;
+        place-items: center;
+        height: 6rem;
+        border-radius: var(--radius);
+        color: var(--text-muted);
+        font-size: var(--text-xs);
+    }
+
+    .border-soft { border: 1px solid var(--border); }
+    .border-strong { border: 1px solid var(--border-strong); }
+</style>

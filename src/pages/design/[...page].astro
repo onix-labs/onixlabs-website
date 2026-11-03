@@ -1,0 +1,44 @@
+---
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import type { GetStaticPathsResult } from 'astro';
+
+import DesignShell from '../../design/DesignShell.astro';
+import { designNavigation } from '../../design/design-navigation';
+import type { DesignGroup } from '../../design/design-group';
+import type { DesignPage } from '../../design/design-page';
+import DesignOverview from '../../design/DesignOverview.astro';
+
+// The design language. Dev server only (`npm run dev`): production builds generate no pages for this route.
+interface Props {
+    readonly page: DesignPage | undefined;
+}
+
+interface PageModule {
+    readonly default: AstroComponentFactory;
+}
+
+export function getStaticPaths(): GetStaticPathsResult {
+    if (!import.meta.env.DEV) {
+        return [];
+    }
+
+    const pages: ReadonlyArray<DesignPage> = designNavigation.flatMap((group: DesignGroup): ReadonlyArray<DesignPage> => group.pages);
+    return [
+        { params: { page: undefined }, props: { page: undefined } },
+        ...pages.map((page: DesignPage) => ({ params: { page: page.slug }, props: { page } })),
+    ];
+}
+
+const modules: Record<string, PageModule> = import.meta.glob<PageModule>('../../design/pages/**/*.astro', { eager: true });
+const { page }: Props = Astro.props;
+const module: PageModule | undefined = page === undefined ? undefined : modules[`../../design/pages/${page.slug}.astro`];
+const Content: AstroComponentFactory | undefined = module?.default;
+const isExample: boolean = page?.slug.startsWith('examples/') ?? false;
+---
+{page === undefined && <DesignOverview />}
+{page !== undefined && isExample && Content !== undefined && <Content />}
+{page !== undefined && !isExample && (
+    <DesignShell page={page}>
+        {Content === undefined ? <p class="lead">This page hasn't been designed yet.</p> : <Content />}
+    </DesignShell>
+)}

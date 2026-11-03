@@ -54,13 +54,262 @@
     to { background-position: 200% center; }
 }
 
-/* Brand-gradient text, used only on near-black (where every stop has enough contrast). */
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotate-angle {
+    to { --angle: 360deg; }
+}
+
+@keyframes drift-a {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(8%, 6%, 0) scale(1.12); }
+}
+
+@keyframes drift-b {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+    50% { transform: translate3d(-10%, 4%, 0) scale(0.92); }
+}
+
+@keyframes drift-c {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(0.95); }
+    50% { transform: translate3d(4%, -8%, 0) scale(1.1); }
+}
+
+@keyframes mask-rise {
+    from { transform: translateY(105%); }
+}
+
+@keyframes marquee {
+    to { transform: translateX(calc(-100% - var(--marquee-gap))); }
+}
+
+@keyframes progress {
+    from { transform: scaleX(0); }
+}
+
+/*
+ * Brand-gradient text for one phrase per headline. On dark the full spectrum has contrast to spare; on light the
+ * amber, coral, teal and green stops are too pale for text, so the light version runs rose, violet, blue and cyan.
+ */
 .gradient-text {
-    background: linear-gradient(90deg, var(--brand-amber), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-teal));
+    --text-gradient: linear-gradient(90deg, var(--brand-amber), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-teal), var(--brand-green), var(--brand-amber));
+    background: var(--text-gradient);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+}
+
+[data-theme='light'] .gradient-text:not(.tone-dark .gradient-text) {
+    --text-gradient: linear-gradient(90deg, var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-cyan), var(--brand-violet), var(--brand-rose));
+}
+
+/* The eight brand swatches: the logo gradient broken into its stops, used to mark structure. */
+.swatches {
+    display: flex;
+    height: var(--swatch-height, 4px);
+    overflow: hidden;
+    border-radius: 999px;
+}
+
+.swatches span {
+    flex: 1;
+}
+
+.swatches span:nth-child(1) { background: var(--brand-amber); }
+.swatches span:nth-child(2) { background: var(--brand-coral); }
+.swatches span:nth-child(3) { background: var(--brand-rose); }
+.swatches span:nth-child(4) { background: var(--brand-violet); }
+.swatches span:nth-child(5) { background: var(--brand-blue); }
+.swatches span:nth-child(6) { background: var(--brand-cyan); }
+.swatches span:nth-child(7) { background: var(--brand-teal); }
+.swatches span:nth-child(8) { background: var(--brand-green); }
+
+/*
+ * Family colour block: a product family's gradient as a solid, confident block. The colours are deepened by a
+ * quarter so white text on them clears 4.5:1.
+ */
+.family-block {
+    --block-from: color-mix(in srgb, var(--family-from, var(--brand-violet)) 72%, #000);
+    --block-to: color-mix(in srgb, var(--family-to, var(--brand-blue)) 72%, #000);
+    position: relative;
+    background: linear-gradient(135deg, var(--block-from), var(--block-to));
+    color: #ffffff;
+    isolation: isolate;
+    overflow: hidden;
+    --heading: #ffffff;
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.82);
+    --label: #ffffff;
+    --link: #ffffff;
+    --link-decoration: rgba(255, 255, 255, 0.5);
+}
+
+/* A soft light in the block's top corner keeps it from looking flat. */
+.family-block::after {
+    content: '';
+    position: absolute;
+    inset: -40% -20% auto auto;
+    z-index: -1;
+    width: 70%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 65%);
+}
+
+/*
+ * Mesh panel: overlapping radial lights in the brand colours, rich rather than pastel. Used as artwork behind a
+ * product shot or a hero, never behind body text.
+ */
+.mesh {
+    background:
+        radial-gradient(60% 80% at 10% 15%, color-mix(in srgb, var(--brand-amber) 85%, transparent), transparent 60%),
+        radial-gradient(55% 70% at 85% 10%, color-mix(in srgb, var(--brand-rose) 85%, transparent), transparent 60%),
+        radial-gradient(60% 80% at 75% 90%, color-mix(in srgb, var(--brand-blue) 85%, transparent), transparent 60%),
+        radial-gradient(50% 70% at 15% 95%, color-mix(in srgb, var(--brand-teal) 80%, transparent), transparent 60%),
+        var(--brand-violet);
+}
+
+/* Aurora: brand-coloured light drifting behind a hero, in both themes. Decorative only. */
+.aurora {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
+    mask-image: linear-gradient(to bottom, #000 35%, transparent);
+}
+
+.aurora span {
+    position: absolute;
+    width: 46vmax;
+    height: 46vmax;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: var(--glow);
+}
+
+.aurora span:nth-child(1) {
+    top: -24vmax;
+    left: -6vmax;
+    background: radial-gradient(circle, var(--aurora-a, var(--brand-violet)), transparent 65%);
+}
+
+.aurora span:nth-child(2) {
+    top: -28vmax;
+    right: -12vmax;
+    background: radial-gradient(circle, var(--aurora-b, var(--brand-blue)), transparent 65%);
+}
+
+.aurora span:nth-child(3) {
+    top: -14vmax;
+    left: 32%;
+    width: 34vmax;
+    height: 34vmax;
+    background: radial-gradient(circle, var(--aurora-c, var(--brand-rose)), transparent 65%);
+    opacity: calc(var(--glow) * 0.75);
+}
+
+.aurora-aero { --aurora-a: var(--brand-amber); --aurora-b: var(--brand-rose); --aurora-c: var(--brand-violet); }
+.aurora-studio { --aurora-a: var(--brand-violet); --aurora-b: var(--brand-blue); --aurora-c: var(--brand-cyan); }
+.aurora-player { --aurora-a: var(--brand-cyan); --aurora-b: var(--brand-teal); --aurora-c: var(--brand-blue); }
+
+/* Spectral border: a 1px border drawn with the turning brand gradient, for one featured element at a time. */
+.spectral {
+    position: relative;
+    isolation: isolate;
+}
+
+.spectral::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    padding: 1px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--angle), var(--brand-conic-stops));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+}
+
+/* Spotlight: a soft light that follows the pointer across a tile (src/scripts/initialise-spotlight.ts). */
+.spotlight {
+    --pointer-x: 50%;
+    --pointer-y: -30%;
+}
+
+.spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(26rem circle at var(--pointer-x) var(--pointer-y), color-mix(in srgb, var(--spot-color, var(--brand-violet)) calc(var(--glow) * 45%), transparent), transparent 60%);
+    opacity: 0;
+    transition: opacity 400ms;
+    pointer-events: none;
+}
+
+.spotlight:hover::after {
+    opacity: 1;
+}
+
+/* Headline slide-up: each line rises out of its own mask on load. Wrap lines in .mask-line > span. */
+.mask-line {
+    display: block;
+    overflow: clip;
+    overflow-clip-margin: 0.2em;
+    padding-bottom: 0.06em;
+}
+
+.mask-line > span {
+    display: block;
+}
+
+/* Logo marquee. The list is duplicated (the copy is aria-hidden) so the loop is seamless. */
+.marquee {
+    --marquee-gap: 3.5rem;
+    display: flex;
+    gap: var(--marquee-gap);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.marquee-track {
+    display: flex;
+    flex: none;
+    gap: var(--marquee-gap);
+    min-width: max-content;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .marquee-track {
+        flex: 1 1 auto;
+        flex-wrap: wrap;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    .marquee-track[aria-hidden='true'] {
+        display: none;
+    }
 }
 
 /* A hairline in the brand gradient: the one place the full spectrum shows on most pages. */
@@ -83,6 +332,28 @@
     .rise-3 { --delay: 200ms; }
     .rise-4 { --delay: 300ms; }
 
+    .mask-line > span {
+        animation: mask-rise 1.1s var(--ease-out) both;
+        animation-delay: var(--delay, 0ms);
+    }
+
+    .mask-line:nth-child(2) > span { --delay: 120ms; }
+    .mask-line:nth-child(3) > span { --delay: 240ms; }
+
+    .aurora span:nth-child(1) { animation: drift-a 22s var(--ease-in-out) infinite; }
+    .aurora span:nth-child(2) { animation: drift-b 26s var(--ease-in-out) infinite; }
+    .aurora span:nth-child(3) { animation: drift-c 30s var(--ease-in-out) infinite; }
+
+    .spectral::before,
+    .button-spectral,
+    .pill {
+        animation: rotate-angle 8s linear infinite;
+    }
+
+    .marquee-track {
+        animation: marquee 45s linear infinite;
+    }
+
     .gradient-text {
         animation: shimmer 10s linear infinite;
     }
@@ -94,9 +365,16 @@
     :root {
         --timeline-view: view();
         --timeline-zoom: --zoom-stage;
+        --timeline-page: scroll(root);
     }
 
     @supports (animation-timeline: view()) {
+        /* The brand-colour bar along the bottom of the header fills as the page scrolls. */
+        .scroll-progress {
+            animation: progress linear both;
+            animation-timeline: var(--timeline-page);
+        }
+
         /* Content slides up and fades in as it enters the viewport. */
         .reveal {
             animation: reveal linear both;

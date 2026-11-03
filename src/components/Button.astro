@@ -1,10 +1,11 @@
 ---
 import Icon from './Icon.astro';
 
-// A call to action: a filled pill (primary), an outlined pill (secondary), or a "Learn more ›" text link (link).
+// A call to action: a solid pill (primary), an outlined pill (secondary), a pill with the turning brand-gradient
+// border (spectral), or a "Learn more ›" text link (link).
 interface Props {
     readonly href: string;
-    readonly variant?: 'primary' | 'secondary' | 'link';
+    readonly variant?: 'primary' | 'secondary' | 'spectral' | 'link';
     readonly size?: 'default' | 'large';
     readonly icon?: string;
     readonly external?: boolean;
@@ -17,7 +18,7 @@ const isLink: boolean = variant === 'link';
 <a
     class:list={[
         isLink ? 'link-cta' : 'button',
-        { 'button-primary': variant === 'primary', 'button-large': size === 'large' && !isLink },
+        { 'button-primary': variant === 'primary', 'button-spectral': variant === 'spectral', 'button-large': size === 'large' && !isLink },
         className,
     ]}
     href={href}

@@ -1,0 +1,33 @@
+---
+// One of the 3D glass icons in public/onixlabs/images/icons/glass, in the variant that matches the theme.
+// Decorative by default: the heading beside it names the idea.
+interface Props {
+    readonly name: string;
+    readonly size?: number;
+    readonly alt?: string;
+    readonly class?: string;
+}
+
+const { name, size = 96, alt = '', class: className = '' }: Props = Astro.props;
+---
+<span class:list={['glass-icon', className]}>
+    <img class="glass-light" src={`/onixlabs/images/icons/glass/${name}.webp`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
+    <img class="glass-dark" src={`/onixlabs/images/icons/glass/${name}-dark.webp`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
+</span>
+
+<style>
+    .glass-icon {
+        display: inline-grid;
+    }
+
+    .glass-icon img {
+        grid-area: 1 / 1;
+        width: 100%;
+        height: auto;
+    }
+
+    :global([data-theme='light']) .glass-dark,
+    :global([data-theme='dark']) .glass-light {
+        display: none;
+    }
+</style>

@@ -1,0 +1,79 @@
+---
+import ArticleTile from '../../components/ArticleTile.astro';
+import Button from '../../components/Button.astro';
+import CapstoneTile from '../../components/CapstoneTile.astro';
+import FeatureTile from '../../components/FeatureTile.astro';
+import ProductTile from '../../components/ProductTile.astro';
+import TeamTile from '../../components/TeamTile.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Feature tile" surface="alt" code={'<FeatureTile title="Craftsmanship" glass="design" body="…" />\n<FeatureTile … index={1} />   /* numbered, for capabilities */\n<FeatureTile … spotlight />   <FeatureTile … spectral />'}>
+    <Fragment slot="notes"><p>One idea per tile, with a glass icon for principles and services or a coral index for numbered capabilities. Spotlight and spectral are optional accents for a single featured tile.</p></Fragment>
+    <div class="grid grid-3">
+        <FeatureTile title="Craftsmanship" glass="design" body="We treat code as a craft, writing software with precision, care, and pride in every detail." />
+        <FeatureTile title="Spotlight" glass="gauge" body="Move the pointer across this tile: a soft brand light follows it." spotlight />
+        <FeatureTile title="Spectral" glass="shield-alt" body="The turning brand-gradient border marks one featured tile." spectral />
+    </div>
+    <div class="grid grid-2 spaced">
+        <FeatureTile title="API-First Design" index={1} body="Every module defines a clean, public-facing contract that exposes only what developers need." />
+        <FeatureTile title="Error Handling" index={2} body="Aero standardizes error handling through the use of rich result types like Result and Optional." />
+    </div>
+</Specimen>
+
+<Specimen title="Capstone tile" surface="none" code={'<CapstoneTile label="Aero platform" title="Introducing" highlight="Aero." palette="aero">…</CapstoneTile>'}>
+    <Fragment slot="notes"><p>A capstone product on near-black with its aurora, in both themes. Split for a home page; stacked when it stands alone.</p></Fragment>
+    <CapstoneTile label="Aero platform" title="Introducing" highlight="Aero." palette="aero" headingLevel="h3">
+        A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.
+        <Fragment slot="actions">
+            <Button href="#capstone-tile" variant="primary">Discover Aero</Button>
+            <Button href="#capstone-tile" variant="link">Request a demo</Button>
+        </Fragment>
+        <img slot="media" class="shot" src="/onixlabs/images/marketing/macbook-pro-dark.webp" alt="" width={1400} height={834} />
+    </CapstoneTile>
+    <div class="grid grid-2 spaced">
+        <CapstoneTile label="Capstone · placeholder" title="ONIXLabs" highlight="Studio." palette="studio" layout="stacked" headingLevel="h3">
+            Placeholder description.
+            <Fragment slot="actions"><Button href="#capstone-tile" variant="link">Learn more</Button></Fragment>
+        </CapstoneTile>
+        <CapstoneTile label="Capstone · placeholder" title="ONIX" highlight="Player." palette="player" layout="stacked" headingLevel="h3">
+            Placeholder description.
+            <Fragment slot="actions"><Button href="#capstone-tile" variant="link">Learn more</Button></Fragment>
+        </CapstoneTile>
+    </div>
+</Specimen>
+
+<Specimen title="Product tile" surface="alt" code={'<ProductTile href="…" name="Numerics" pitch="…" icon="…" family="dotnet" label=".NET" />'}>
+    <Fragment slot="notes"><p>Libraries and smaller products: compact, emblem-led, the whole tile is the link.</p></Fragment>
+    <div class="grid grid-3">
+        <ProductTile href="#product-tile" label=".NET" name="Core" pitch="Essential abstractions and utilities for clean, consistent applications." icon="/onixlabs/images/icons/dotnet/dotnet-core-outline.svg" family="dotnet" />
+        <ProductTile href="#product-tile" label=".NET" name="Numerics" pitch="Precision, formatting, and numeric analysis on top of generic math." icon="/onixlabs/images/icons/dotnet/dotnet-numerics-outline.svg" family="dotnet" />
+        <ProductTile href="#product-tile" label="Kotlin" name="Core" pitch="Essential building blocks for modern Kotlin development." icon="/onixlabs/images/icons/kotlin/kotlin-core-outline.svg" family="kotlin" />
+    </div>
+</Specimen>
+
+<Specimen title="Article tile" surface="alt" code={'<ArticleTile href="…" category="C#" title="…" summary="…" minutes={6} />'}>
+    <div class="grid grid-3">
+        <ArticleTile href="#article-tile" category="C#" title="Syntactic Sugar, Bitter Aftertaste" summary="A deep dive into the C# var keyword and why explicit types improve clarity." minutes={6} />
+        <ArticleTile href="#article-tile" category="Number theory" title="The Problem with Decimals" summary="Why decimal precision and scale are lost between Java and JavaScript." minutes={10} />
+        <ArticleTile href="#article-tile" category="Aero" title="Introduction to Aero" summary="The suite of .NET APIs that removes boilerplate from enterprise software." minutes={5} />
+    </div>
+</Specimen>
+
+<Specimen title="Team tile" surface="alt" code={'<TeamTile name="…" jobTitle="…" photo="…" href="…" teaser="…" gitHubUrl="…" linkedInUrl="…" />'}>
+    <Fragment slot="notes"><p>For the About page. The portrait turns from greyscale to colour on hover.</p></Fragment>
+    <div class="grid grid-4">
+        <TeamTile name="Matthew Layton" jobTitle="Founder & Architect" photo="/onixlabs/images/contributors/matt.jpeg" href="#team-tile" teaser="Founder and architect, passionate about code quality." gitHubUrl="https://github.com/MrMatthewLayton" linkedInUrl="https://www.linkedin.com/in/mrmatthewlayton/" />
+        <TeamTile name="Laura Pérez Crespo" jobTitle="Software Engineer" photo="/onixlabs/images/contributors/laura.jpeg" href="#team-tile" teaser="Enterprise application development with TypeScript, Kotlin, and Corda." />
+    </div>
+</Specimen>
+
+<style>
+    .spaced {
+        margin-top: var(--tile-gap);
+    }
+
+    .shot {
+        width: 100%;
+        filter: drop-shadow(var(--shadow-product));
+    }
+</style>

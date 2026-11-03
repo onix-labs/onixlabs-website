@@ -1,0 +1,58 @@
+---
+import Button from '../../components/Button.astro';
+import Hero from '../../components/Hero.astro';
+import Icon from '../../components/Icon.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Capstone hero" padding="none" code={'<Hero label="…" title="…" highlight="…" palette="aero">\n  Standfirst\n  <Fragment slot="actions">…</Fragment>\n  <img slot="media" … />\n</Hero>'}>
+    <Fragment slot="notes"><p>Leads with a capstone product. Aurora light in the product's palette, a display headline that slides up, a standfirst, two actions and the product shot.</p></Fragment>
+    <Hero label="Aero platform" title="The modular .NET suite for" highlight="enterprise engineering." palette="aero" headingLevel="p">
+        A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.
+        <Fragment slot="actions">
+            <Button href="#capstone-hero" variant="primary" size="large">Request a demo</Button>
+            <Button href="#capstone-hero" size="large">Explore Aero</Button>
+        </Fragment>
+        <img slot="media" class="shot shot-light" src="/onixlabs/images/marketing/macbook-pro.webp" alt="" width={1400} height={834} />
+        <img slot="media" class="shot shot-dark" src="/onixlabs/images/marketing/macbook-pro-dark.webp" alt="" width={1400} height={834} />
+    </Hero>
+</Specimen>
+
+<Specimen title="Centred capstone hero" padding="none" code={'<Hero align="center" … />'}>
+    <Fragment slot="notes"><p>For the home page: a centred statement, with an announcement pill above it.</p></Fragment>
+    <Hero label="Software engineering" title="Code that connects." highlight="Software that scales." align="center" headingLevel="p">
+        Capstone products and open-source libraries for .NET, Kotlin and the JVM.
+        <Fragment slot="actions">
+            <a class="pill" href="#centred-capstone-hero"><span class="badge badge-brand">New</span> Introducing Aero <Icon name="chevron-right" /></a>
+        </Fragment>
+    </Hero>
+</Specimen>
+
+<Specimen title="Family hero" padding="none" code={'<Hero variant="family" family="studio" … />'}>
+    <Fragment slot="notes"><p>A product page's opening on its colour block. ONIXLabs Studio is shown here as a placeholder.</p></Fragment>
+    <Hero variant="family" family="studio" label="Capstone · placeholder" title="ONIXLabs Studio" highlight="Placeholder tagline." highlightStyle="muted" headingLevel="p">
+        A short description of the product will go here once its positioning is confirmed.
+        <Fragment slot="actions">
+            <Button href="#family-hero" variant="primary">Download</Button>
+            <Button href="#family-hero">Request a demo</Button>
+        </Fragment>
+    </Hero>
+</Specimen>
+
+<Specimen title="Simple hero" padding="none" code={'<Hero variant="simple" … />'}>
+    <Fragment slot="notes"><p>For utility pages such as Contact, the documentation index or About.</p></Fragment>
+    <Hero variant="simple" label="Contact" title="We'd love to" highlight="hear from you." headingLevel="p">
+        Drop us a message about our products or consulting. We're always happy to connect.
+    </Hero>
+</Specimen>
+
+<style>
+    .shot {
+        width: 100%;
+        filter: drop-shadow(var(--shadow-product));
+    }
+
+    :global([data-theme='light']) .shot-dark,
+    :global([data-theme='dark']) .shot-light {
+        display: none;
+    }
+</style>

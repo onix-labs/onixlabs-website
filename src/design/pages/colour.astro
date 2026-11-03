@@ -1,0 +1,218 @@
+---
+import Swatches from '../../components/Swatches.astro';
+import Specimen from '../Specimen.astro';
+import type { ColourToken } from '../colour-token';
+
+const brand: ReadonlyArray<ColourToken> = [
+    { name: 'Amber', token: '--brand-amber', value: '#F79533' },
+    { name: 'Coral', token: '--brand-coral', value: '#F37055' },
+    { name: 'Rose', token: '--brand-rose', value: '#EF4E7B' },
+    { name: 'Violet', token: '--brand-violet', value: '#A166AB' },
+    { name: 'Blue', token: '--brand-blue', value: '#5073B8' },
+    { name: 'Cyan', token: '--brand-cyan', value: '#1098AD' },
+    { name: 'Teal', token: '--brand-teal', value: '#07B39B' },
+    { name: 'Green', token: '--brand-green', value: '#6FBA82' },
+];
+
+const neutrals: ReadonlyArray<ColourToken> = [
+    { name: 'Background', token: '--bg', value: 'Page background, the white or near-black band' },
+    { name: 'Background, alt', token: '--bg-alt', value: 'The grey band' },
+    { name: 'Surface', token: '--surface', value: 'Tiles' },
+    { name: 'Heading', token: '--heading', value: 'Headlines and strong text' },
+    { name: 'Text', token: '--text', value: 'Body copy' },
+    { name: 'Text, muted', token: '--text-muted', value: 'Standfirsts, captions, second phrase of a two-tone headline' },
+    { name: 'Label', token: '--label', value: 'Coral labels; deepened in light mode for contrast' },
+    { name: 'Border', token: '--border', value: 'Hairlines and outlines' },
+];
+
+const families: ReadonlyArray<string> = ['aero', 'studio', 'player', 'dotnet', 'kotlin', 'corda'];
+const familyNames: ReadonlyMap<string, string> = new Map<string, string>([
+    ['aero', 'Aero'], ['studio', 'ONIXLabs Studio'], ['player', 'ONIXPlayer'], ['dotnet', '.NET libraries'], ['kotlin', 'Kotlin libraries'], ['corda', 'Corda libraries'],
+]);
+---
+<Specimen title="Brand stops" code={'<Swatches />\nvar(--brand-amber) … var(--brand-green)\nvar(--brand-gradient)'}>
+    <Fragment slot="notes">
+        <p>The eight stops of the logo orb. They appear as light (aurora, gradient text), as structure (swatches) and as product identity (colour blocks), but never as a flat accent on buttons.</p>
+    </Fragment>
+    <div class="brand-grid">
+        {brand.map((stop: ColourToken) => (
+            <div class={`chip chip-${stop.name.toLowerCase()}`}>
+                <span class="chip-colour"></span>
+                <span class="chip-name">{stop.name}</span>
+                <code>{stop.value}</code>
+            </div>
+        ))}
+    </div>
+</Specimen>
+
+<Specimen title="Swatches and gradient" code={'<Swatches class="…" />  /* --swatch-height */\nbackground: var(--brand-gradient);'}>
+    <Fragment slot="notes"><p>The stops side by side (swatches) mark structure: the header's scroll progress, section dividers, the footer. The blended gradient is reserved for light and text.</p></Fragment>
+    <div class="stack">
+        <Swatches class="swatches-tall" />
+        <div class="gradient-bar"></div>
+    </div>
+</Specimen>
+
+<Specimen title="Neutrals" surface="none">
+    <Fragment slot="notes"><p>Quiet tokens that switch with the theme. Each pair below shows the light value next to the dark one.</p></Fragment>
+    <div class="neutral-pair">
+        {['light', 'dark'].map((theme: string) => (
+            <div class="neutral-panel" data-theme={theme}>
+                <p class="label label-muted">{theme}</p>
+                <ul role="list">
+                    {neutrals.map((token: ColourToken) => (
+                        <li>
+                            <span class={`neutral-swatch swatch${token.token}`}></span>
+                            <span><strong>{token.name}</strong><code>{token.token}</code><span class="neutral-use">{token.value}</span></span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        ))}
+    </div>
+</Specimen>
+
+<Specimen title="Product colour blocks" code={'<div class="tile family-block family-aero">…</div>\n/* family-aero | family-studio | family-player | family-dotnet | family-kotlin | family-corda */'}>
+    <Fragment slot="notes"><p>Each product owns a gradient pair. As a block, the pair is deepened so white text on it clears 4.5:1. Capstone products (Aero, ONIXLabs Studio, ONIXPlayer) lead; the library families are smaller and quieter.</p></Fragment>
+    <div class="grid grid-3">
+        {families.map((family: string) => (
+            <div class={`tile family-block family-${family} block-sample`}>
+                <p class="label">{family === 'aero' || family === 'studio' || family === 'player' ? 'Capstone' : 'Library family'}</p>
+                <p class="block-name">{familyNames.get(family)}</p>
+            </div>
+        ))}
+    </div>
+</Specimen>
+
+<Specimen title="Mesh" padding="none" code={'<div class="mesh">…</div>'}>
+    <Fragment slot="notes"><p>Overlapping brand lights, rich rather than pastel. Artwork behind a product shot or a capstone tile; never behind body text.</p></Fragment>
+    <div class="mesh mesh-sample"></div>
+</Specimen>
+
+<style>
+    .brand-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+        gap: 1rem;
+    }
+
+    .chip {
+        display: grid;
+        gap: 0.3rem;
+        font-size: var(--text-sm);
+    }
+
+    .chip-colour {
+        height: 5rem;
+        border-radius: var(--radius);
+        margin-bottom: 0.4rem;
+    }
+
+    .chip-amber .chip-colour { background: var(--brand-amber); }
+    .chip-coral .chip-colour { background: var(--brand-coral); }
+    .chip-rose .chip-colour { background: var(--brand-rose); }
+    .chip-violet .chip-colour { background: var(--brand-violet); }
+    .chip-blue .chip-colour { background: var(--brand-blue); }
+    .chip-cyan .chip-colour { background: var(--brand-cyan); }
+    .chip-teal .chip-colour { background: var(--brand-teal); }
+    .chip-green .chip-colour { background: var(--brand-green); }
+
+    .chip-name {
+        color: var(--heading);
+        font-weight: 600;
+    }
+
+    .chip code,
+    .neutral-pair code {
+        color: var(--text-muted);
+        font-size: var(--text-xs);
+    }
+
+    .stack :global(.swatches-tall) {
+        --swatch-height: 1rem;
+    }
+
+    .gradient-bar {
+        height: 3rem;
+        border-radius: var(--radius);
+        background: var(--brand-gradient);
+    }
+
+    .neutral-pair {
+        display: grid;
+        gap: var(--tile-gap);
+    }
+
+    @media (min-width: 48rem) {
+        .neutral-pair {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .neutral-panel {
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--bg);
+        color: var(--text);
+    }
+
+    .neutral-panel ul {
+        display: grid;
+        gap: 0.9rem;
+        margin-top: 1rem;
+    }
+
+    .neutral-panel li {
+        display: flex;
+        gap: 0.9rem;
+        align-items: center;
+        font-size: var(--text-sm);
+    }
+
+    .neutral-panel li > span:last-child {
+        display: grid;
+    }
+
+    .neutral-use {
+        color: var(--text-muted);
+        font-size: var(--text-xs);
+    }
+
+    .neutral-swatch {
+        width: 2.5rem;
+        height: 2.5rem;
+        flex: none;
+        border: 1px solid var(--border-strong);
+        border-radius: 0.6rem;
+    }
+
+    .swatch--bg { background: var(--bg); }
+    .swatch--bg-alt { background: var(--bg-alt); }
+    .swatch--surface { background: var(--surface); }
+    .swatch--heading { background: var(--heading); }
+    .swatch--text { background: var(--text); }
+    .swatch--text-muted { background: var(--text-muted); }
+    .swatch--label { background: var(--label); }
+    .swatch--border { background: var(--border-strong); }
+
+    .block-sample {
+        display: grid;
+        align-content: end;
+        gap: 0.4rem;
+        min-height: 11rem;
+        padding: 1.5rem;
+    }
+
+    .block-name {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+    }
+
+    .mesh-sample {
+        height: 16rem;
+        border-radius: var(--radius-lg);
+    }
+</style>

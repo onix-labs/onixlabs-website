@@ -1,0 +1,93 @@
+---
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Containers" code={'<div class="container">…</div>          /* 64rem: most content */\n<div class="container-wide">…</div>     /* 80rem: tile grids and product shots */\n<div class="container-narrow">…</div>   /* 43rem: reading width */'}>
+    <Fragment slot="notes"><p>Three widths. Text sits in the narrow or default container; tile grids and product imagery use the wide one.</p></Fragment>
+    <div class="containers">
+        <div class="box box-wide">container-wide · 80rem</div>
+        <div class="box box-default">container · 64rem</div>
+        <div class="box box-narrow">container-narrow · 43rem</div>
+    </div>
+</Specimen>
+
+<Specimen title="Grid" code={'<div class="grid grid-2">…</div>  <div class="grid grid-3">…</div>  <div class="grid grid-4">…</div>\n<div class="grid grid-3 shelf-mobile">…</div>  /* a sideways shelf on phones */'}>
+    <Fragment slot="notes"><p>One column on phones, two on tablets, then two, three or four. On phones, long rows of tiles can become a sideways-scrolling shelf with <code>shelf-mobile</code>.</p></Fragment>
+    <div class="grid grid-4">
+        {[1, 2, 3, 4].map((n: number) => <div class="cell">{n}</div>)}
+    </div>
+    <div class="grid grid-3 grid-gap">
+        {[1, 2, 3].map((n: number) => <div class="cell">{n}</div>)}
+    </div>
+    <div class="grid grid-2 grid-gap">
+        {[1, 2].map((n: number) => <div class="cell">{n}</div>)}
+    </div>
+</Specimen>
+
+<Specimen title="Spacing" surface="none" code={'--space-section  /* between bands: 5rem → 10rem */\n--tile-gap       /* between tiles: 0.75rem → 1.25rem */\n--gutter         /* page edge: 1.25rem → 2.75rem */'}>
+    <Fragment slot="notes"><p>Three fluid spacing tokens do almost all the work. Inside components, spacing follows a 0.25rem step.</p></Fragment>
+    <ul class="spacing" role="list">
+        <li><span class="bar bar-section"></span><code>--space-section</code><span class="muted">Vertical padding of every band</span></li>
+        <li><span class="bar bar-gutter"></span><code>--gutter</code><span class="muted">Distance from the page edge</span></li>
+        <li><span class="bar bar-tile"></span><code>--tile-gap</code><span class="muted">Gap between tiles</span></li>
+    </ul>
+</Specimen>
+
+<style>
+    .containers {
+        display: grid;
+        gap: 0.75rem;
+        justify-items: center;
+    }
+
+    .box {
+        padding: 0.9rem;
+        border: 1px dashed var(--border-strong);
+        border-radius: var(--radius-sm);
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        text-align: center;
+    }
+
+    .box-wide { width: 100%; }
+    .box-default { width: 80%; }
+    .box-narrow { width: 54%; }
+
+    .cell {
+        display: grid;
+        place-items: center;
+        height: 5rem;
+        border-radius: var(--radius);
+        background: var(--bg-alt);
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+    }
+
+    .grid-gap {
+        margin-top: var(--tile-gap);
+    }
+
+    .spacing {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .spacing li {
+        display: grid;
+        grid-template-columns: minmax(0, 12rem) 9rem 1fr;
+        gap: 1rem;
+        align-items: center;
+        font-size: var(--text-sm);
+    }
+
+    .bar {
+        height: 1rem;
+        border-radius: 999px;
+        background: var(--brand-gradient);
+    }
+
+    .bar-section { width: var(--space-section); }
+    .bar-gutter { width: var(--gutter); }
+    .bar-tile { width: var(--tile-gap); }
+</style>

@@ -1,0 +1,51 @@
+---
+import Button from '../../components/Button.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Variants" code={'<Button href="…" variant="primary">Primary</Button>\n<Button href="…">Secondary</Button>\n<Button href="…" variant="spectral">Spectral</Button>'}>
+    <Fragment slot="notes">
+        <p><strong>Primary</strong> is the one action that matters most in a section: a solid pill, near-black in light mode and white in dark, that picks up a brand-gradient glow on hover.</p>
+        <p><strong>Secondary</strong> is an outlined pill for the alternative. <strong>Spectral</strong> wears the turning brand gradient as its border; use it at most once per page.</p>
+    </Fragment>
+    <div class="cluster">
+        <Button href="#variants" variant="primary">Primary</Button>
+        <Button href="#variants">Secondary</Button>
+        <Button href="#variants" variant="spectral">Spectral</Button>
+    </div>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <Fragment slot="notes"><p>The same buttons inside a near-black band in light mode.</p></Fragment>
+    <div class="cluster">
+        <Button href="#on-a-dark-band" variant="primary">Primary</Button>
+        <Button href="#on-a-dark-band">Secondary</Button>
+        <Button href="#on-a-dark-band" variant="spectral">Spectral</Button>
+    </div>
+</Specimen>
+
+<Specimen title="Sizes" code={'<Button href="…" variant="primary" size="large">Large</Button>'}>
+    <Fragment slot="notes"><p>Large buttons belong in heroes and the closing call to action; default size everywhere else.</p></Fragment>
+    <div class="cluster">
+        <Button href="#sizes" variant="primary" size="large">Large primary</Button>
+        <Button href="#sizes" size="large">Large secondary</Button>
+        <Button href="#sizes" variant="primary">Default</Button>
+    </div>
+</Specimen>
+
+<Specimen title="With icons" code={'<Button href="…" icon="github" external>View on GitHub</Button>'}>
+    <Fragment slot="notes"><p>A leading icon names the destination. External links open in a new tab and say so to screen readers.</p></Fragment>
+    <div class="cluster">
+        <Button href="#with-icons" variant="primary" icon="paper-plane">Send a message</Button>
+        <Button href="https://github.com/onix-labs" icon="github" external>View on GitHub</Button>
+        <Button href="#with-icons" icon="calendar">Book a meeting</Button>
+    </div>
+</Specimen>
+
+<Specimen title="Pairing">
+    <Fragment slot="notes"><p>At most one primary and one secondary side by side. A link-style call to action can follow them.</p></Fragment>
+    <div class="cluster">
+        <Button href="#pairing" variant="primary" size="large">Explore products</Button>
+        <Button href="#pairing" size="large">Work with us</Button>
+        <Button href="#pairing" variant="link">Read the docs</Button>
+    </div>
+</Specimen>

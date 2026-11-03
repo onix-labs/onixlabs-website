@@ -6,3 +6,4 @@ test-results/
 playwright-report/
 .lighthouseci/
 .studio/*.user.json
+.tools/

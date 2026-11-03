@@ -11,7 +11,7 @@ import tseslint from 'typescript-eslint';
 // from the named-exports rule.
 export default defineConfig(
     {
-        ignores: ['dist/', '.astro/', 'node_modules/', 'test-results/', 'playwright-report/', '.lighthouseci/'],
+        ignores: ['dist/', '.astro/', '.claude/', '.tools/', 'node_modules/', 'test-results/', 'playwright-report/', '.lighthouseci/'],
     },
     js.configs.recommended,
     ...astro.configs['flat/recommended'],
@@ -20,6 +20,8 @@ export default defineConfig(
         rules: {
             // Safari drops list semantics from lists styled with list-style: none, so unstyled lists say role="list".
             'astro/jsx-a11y/no-redundant-roles': ['error', { ul: ['list'], ol: ['list'] }],
+            // Code blocks that scroll horizontally must be focusable so keyboard users can scroll them.
+            'astro/jsx-a11y/no-noninteractive-tabindex': ['error', { tags: ['pre'], roles: ['tabpanel'] }],
         },
     },
     {

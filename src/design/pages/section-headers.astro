@@ -1,0 +1,30 @@
+---
+import SectionHeader from '../../components/SectionHeader.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="Two-tone" code={'<SectionHeader eyebrow="Principles" title="Craft in every line." highlight="Built to last." />'}>
+    <Fragment slot="notes"><p>The default: a coral label, a headline whose continuation is grey, and a standfirst.</p></Fragment>
+    <SectionHeader eyebrow="Powering possibility" title="Craft in every line." highlight="Built to last.">
+        We enhance the software development journey through a relentless focus on quality, crafting robust and scalable enterprise solutions.
+    </SectionHeader>
+</Specimen>
+
+<Specimen title="Gradient phrase" code={'<SectionHeader … highlight="you build on." highlightStyle="gradient" />'}>
+    <Fragment slot="notes"><p>For the one section on a page that deserves the spotlight.</p></Fragment>
+    <SectionHeader eyebrow="Open source" title="Libraries for the platforms" highlight="you build on." highlightStyle="gradient">
+        Focused, well-engineered libraries that extend .NET, Kotlin and Corda, developed in the open on GitHub.
+    </SectionHeader>
+</Specimen>
+
+<Specimen title="Centred" code={'<SectionHeader … centered />'}>
+    <Fragment slot="notes"><p>For sections whose content is centred too, such as the marquee.</p></Fragment>
+    <SectionHeader eyebrow="Purpose over preference" title="Tools that fit," highlight="built to last." centered>
+        We choose the right tools for the job, not just the ones we know.
+    </SectionHeader>
+</Specimen>
+
+<Specimen title="On a dark band" surface="dark">
+    <SectionHeader eyebrow="Aero platform" title="The modular .NET suite for" highlight="enterprise engineering." highlightStyle="gradient">
+        Blazing fast. Infinitely scalable. Built for enterprise.
+    </SectionHeader>
+</Specimen>

@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import { loadContributors } from '../collections/load-contributors';
 import { loadProductFamilies } from '../collections/load-product-families';
 import { site } from '../config/site';
 import type { SocialLink } from '../config/social-link';
@@ -9,7 +8,6 @@ import Icon from './Icon.astro';
 
 const currentYear: number = new Date().getFullYear();
 const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
-const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
 ---
 <footer class="site-footer tone-alt">
     <div class="container">
@@ -49,14 +47,6 @@ const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadC
                 </ul>
             </nav>
 
-            <nav class="footer-column" aria-labelledby="footer-people">
-                <h2 id="footer-people">People</h2>
-                <ul role="list">
-                    {contributors.map((contributor: CollectionEntry<'contributors'>) => (
-                        <li><a href={contributor.data.path}>{contributor.data.name}</a></li>
-                    ))}
-                </ul>
-            </nav>
         </div>
 
         <div class="footer-bottom">
@@ -97,7 +87,7 @@ const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadC
 
     @media (min-width: 56rem) {
         .footer-grid {
-            grid-template-columns: 2fr repeat(3, 1fr);
+            grid-template-columns: 2fr repeat(2, 1fr);
         }
 
         .footer-brand {

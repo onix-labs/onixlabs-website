@@ -1,7 +1,9 @@
 ---
+import Aurora from './Aurora.astro';
 import Button from './Button.astro';
 
-// The closing call to action on most pages: the logo orb, one headline and two actions, centred on a quiet band.
+// The closing call to action on most pages: a panel inside the turning brand-gradient border, with a glow, one
+// headline, a standfirst and two actions.
 interface Props {
     readonly title?: string;
     readonly primaryText?: string;
@@ -13,45 +15,62 @@ const {
     title = 'Let’s build something that lasts.',
     primaryText = 'Send a message',
     primaryHref = '/Contact',
-    tone = 'alt',
+    tone = 'default',
 }: Props = Astro.props;
 const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
 ---
-<section class:list={['section cta', `tone-${tone}`]} aria-labelledby="cta-title">
-    <div class="container cta-inner reveal">
-        <img class="cta-orb" src="/onixlabs/images/logo/logo-orb.svg" alt="" width={56} height={56} loading="lazy" decoding="async" />
-        <h2 id="cta-title">{title}</h2>
-        <p class="lead"><slot>Whether you have a question, need a custom solution, or just want to explore what’s possible, we’re just a message away.</slot></p>
-        <div class="cluster is-centered cta-actions">
-            <Button href={primaryHref} variant="primary" size="large">{primaryText}</Button>
-            <Button href={calendlyUrl} variant="link" external>Book a meeting</Button>
+<section class:list={['section section-tight', { 'tone-alt': tone === 'alt', 'tone-dark': tone === 'dark' }]} aria-labelledby="cta-title">
+    <div class="container-wide">
+        <div class="cta spectral reveal-scale">
+            <Aurora />
+            <div class="cta-copy">
+                <h2 id="cta-title">{title}</h2>
+                <p class="lead"><slot>Whether you have a question, need a custom solution, or just want to explore what’s possible, we’re just a message away.</slot></p>
+            </div>
+            <div class="cluster cta-actions">
+                <Button href={primaryHref} variant="primary" size="large">{primaryText}</Button>
+                <Button href={calendlyUrl} size="large" icon="calendar" external>Book a meeting</Button>
+            </div>
         </div>
     </div>
 </section>
 
 <style>
-    .cta-inner {
+    .cta {
+        position: relative;
         display: grid;
-        justify-items: center;
-        gap: 1.25rem;
-        text-align: center;
+        gap: 2rem;
+        align-items: center;
+        padding: clamp(2rem, 1.5rem + 3.5vw, 5rem);
+        border-radius: var(--radius-xl);
+        background: var(--surface);
+        isolation: isolate;
+        overflow: hidden;
     }
 
-    .cta-orb {
-        width: 3.5rem;
-        height: 3.5rem;
-        margin-bottom: 0.5rem;
+    .cta :global(.aurora) {
+        inset: auto -10% -60% 30%;
+        -webkit-mask-image: none;
+        mask-image: none;
     }
 
-    .cta h2 {
-        font-size: var(--text-5xl);
+    @media (min-width: 60rem) {
+        .cta {
+            grid-template-columns: 1fr auto;
+        }
     }
 
-    .cta .lead {
+    .cta-copy {
+        display: grid;
+        gap: 1rem;
         max-width: 40rem;
     }
 
-    .cta-actions {
-        margin-top: 1rem;
+    .cta h2 {
+        font-size: var(--text-4xl);
+    }
+
+    .cta .lead {
+        font-size: var(--text-lg);
     }
 </style>

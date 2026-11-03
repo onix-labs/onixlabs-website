@@ -1,11 +1,14 @@
 /*
- * Design tokens. A quiet neutral system (white, soft grey and near-black) with one accent blue taken from the
- * logo, so the ONIXLabs gradient and the product-family colours can be used sparingly, where they mean something.
- * Light and dark palettes switch on [data-theme]; .tone-dark forces the dark palette on a full-bleed section.
+ * Design tokens for the ONIXLabs design language (see /design/language in the dev server).
+ *
+ * The canvas is quiet (white, soft grey and near-black bands) so the brand can glow where it means something:
+ * the logo gradient lights heroes and one phrase per headline, the eight brand swatches mark structure, and each
+ * product family owns a colour block. Light and dark get equal care; the visitor's OS setting picks one and the
+ * header switch overrides it. .tone-dark forces the dark palette on a full-bleed band in either theme.
  */
 
 :root {
-    /* Brand */
+    /* Brand: the eight stops of the logo orb. */
     --brand-amber: #F79533;
     --brand-coral: #F37055;
     --brand-rose: #EF4E7B;
@@ -15,24 +18,28 @@
     --brand-teal: #07B39B;
     --brand-green: #6FBA82;
     --brand-gradient: linear-gradient(90deg, var(--brand-amber), var(--brand-coral), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-cyan), var(--brand-teal), var(--brand-green));
+    /* Stops for conic gradients; use as conic-gradient(from var(--angle), var(--brand-conic-stops)) on the element
+       itself, so the animated --angle is read there rather than frozen at :root. */
+    --brand-conic-stops: var(--brand-amber), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-cyan), var(--brand-teal), var(--brand-green), var(--brand-amber);
 
-    /* Product families */
+    /* Product families. Capstone products get their own pair; libraries share the older family pairs. */
+    --family-aero-from: var(--brand-amber);
+    --family-aero-to: var(--brand-rose);
+    --family-studio-from: var(--brand-violet);
+    --family-studio-to: var(--brand-blue);
+    --family-player-from: var(--brand-cyan);
+    --family-player-to: var(--brand-teal);
     --family-dotnet-from: var(--brand-violet);
     --family-dotnet-to: var(--brand-blue);
     --family-corda-from: var(--brand-coral);
     --family-corda-to: var(--brand-rose);
     --family-kotlin-from: var(--brand-cyan);
     --family-kotlin-to: var(--brand-blue);
-    --family-aero-from: var(--brand-amber);
-    --family-aero-to: var(--brand-rose);
 
-    /*
-     * Type. San Francisco where the platform has it (it's a system font, so nothing is downloaded), and the
-     * self-hosted Inter everywhere else. SF Pro itself isn't licensed for web embedding.
-     */
-    --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter Variable', system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    --font-display: var(--font-sans);
-    --font-body: var(--font-sans);
+    /* Type: Poppins for display, Inter for reading, JetBrains Mono for small technical labels and code. */
+    --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-sans: var(--font-body);
     --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
     --text-xs: 0.75rem;
@@ -44,11 +51,11 @@
     --text-3xl: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
     --text-4xl: clamp(2.25rem, 1.55rem + 3vw, 3.5rem);
     --text-5xl: clamp(2.75rem, 1.6rem + 4.8vw, 5rem);
-    --text-hero: clamp(3rem, 1.4rem + 6.6vw, 6.5rem);
+    --text-hero: clamp(3.25rem, 1.4rem + 7.4vw, 7.5rem);
 
     /* Space and shape */
     --space-section: clamp(5rem, 3.5rem + 6vw, 10rem);
-    --container: 61.25rem;
+    --container: 64rem;
     --container-wide: 80rem;
     --container-narrow: 43rem;
     --gutter: clamp(1.25rem, 0.8rem + 2vw, 2.75rem);
@@ -57,7 +64,7 @@
     --radius: 1.125rem;
     --radius-lg: 1.75rem;
     --radius-xl: 2.25rem;
-    --header-height: 2.75rem;
+    --header-height: 3.25rem;
     --local-nav-height: 3.25rem;
 
     /* Motion */
@@ -66,29 +73,35 @@
     --duration: 240ms;
 }
 
-/* Dark, and any full-bleed .tone-dark section in either theme. */
+/* Dark, and any full-bleed .tone-dark band in either theme. */
 :root,
 [data-theme='dark'],
 [data-theme] .tone-dark {
     color-scheme: dark;
     --bg: #000000;
-    --bg-alt: #101012;
-    --surface: #1c1c1e;
-    --surface-raised: #1c1c1e;
-    --border: rgba(255, 255, 255, 0.12);
-    --border-strong: rgba(255, 255, 255, 0.24);
+    --bg-alt: #0e0e10;
+    --surface: #161618;
+    --surface-raised: #1c1c1f;
+    --border: rgba(255, 255, 255, 0.1);
+    --border-strong: rgba(255, 255, 255, 0.22);
     --text: #f5f5f7;
     --text-muted: #a1a1a6;
     --heading: #f5f5f7;
-    --link: #7fa3e8;
-    --focus: #7fa3e8;
-    --accent: #4d70b5;
-    --accent-hover: #5d80c4;
-    --on-accent: #ffffff;
-    --header-bg: rgba(22, 22, 23, 0.78);
+    --label: var(--brand-coral);
+    --link: #f5f5f7;
+    --link-decoration: rgba(245, 245, 247, 0.4);
+    --focus: #8fb4ff;
+    --error: #ff8a80;
+    --accent: #f5f5f7;
+    --accent-hover: #ffffff;
+    --on-accent: #000000;
+    --header-bg: rgba(10, 10, 12, 0.72);
     --header-text: #f5f5f7;
-    --code-bg: #111113;
-    --selection: rgba(80, 115, 184, 0.45);
+    --code-bg: #0e0e10;
+    --selection: rgba(161, 102, 171, 0.45);
+    --glow: 0.5;
+    --shadow-tile: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+    --shadow-tile-hover: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 30px 60px -30px rgba(0, 0, 0, 0.9);
     --shadow-product: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
 }
 
@@ -99,20 +112,27 @@
     --bg-alt: #f5f5f7;
     --surface: #f5f5f7;
     --surface-raised: #ffffff;
-    --border: rgba(0, 0, 0, 0.1);
-    --border-strong: rgba(0, 0, 0, 0.2);
+    --border: rgba(0, 0, 0, 0.08);
+    --border-strong: rgba(0, 0, 0, 0.18);
     --text: #1d1d1f;
     --text-muted: #6e6e73;
     --heading: #1d1d1f;
-    --link: #3c60a6;
+    /* Brand coral, deepened until small text clears 4.5:1 on white and on the grey band. */
+    --label: #b8452c;
+    --link: #1d1d1f;
+    --link-decoration: rgba(29, 29, 31, 0.35);
     --focus: #3c60a6;
-    --accent: #3c60a6;
-    --accent-hover: #314f8a;
+    --error: #c0392b;
+    --accent: #1d1d1f;
+    --accent-hover: #000000;
     --on-accent: #ffffff;
-    --header-bg: rgba(255, 255, 255, 0.78);
+    --header-bg: rgba(255, 255, 255, 0.72);
     --header-text: #1d1d1f;
     --code-bg: #f5f5f7;
-    --selection: rgba(80, 115, 184, 0.22);
+    --selection: rgba(161, 102, 171, 0.22);
+    --glow: 0.35;
+    --shadow-tile: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -12px rgba(0, 0, 0, 0.1);
+    --shadow-tile-hover: 0 1px 2px rgba(0, 0, 0, 0.05), 0 28px 50px -24px rgba(0, 0, 0, 0.22);
     --shadow-product: 0 40px 70px -40px rgba(0, 0, 0, 0.35);
 }
 

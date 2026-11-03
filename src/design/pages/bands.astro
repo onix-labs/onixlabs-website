@@ -1,0 +1,74 @@
+---
+import Button from '../../components/Button.astro';
+import Specimen from '../Specimen.astro';
+---
+<Specimen title="White, grey and near-black" surface="none" padding="none" code={'<section class="section">…</section>\n<section class="section tone-alt">…</section>\n<section class="section tone-dark">…</section>'}>
+    <Fragment slot="notes"><p>Pages are built from full-width bands. Alternating white and grey separates sections without lines; a near-black band marks a capstone moment and stays dark in light mode.</p></Fragment>
+    <div class="bands">
+        <div class="band"><p class="label">section</p><p class="band-title">The default band.</p><Button href="#white-grey-and-near-black" variant="link">Learn more</Button></div>
+        <div class="band tone-alt"><p class="label">section tone-alt</p><p class="band-title">The grey band.</p><Button href="#white-grey-and-near-black" variant="link">Learn more</Button></div>
+        <div class="band tone-dark"><p class="label">section tone-dark</p><p class="band-title">The near-black band. <span class="gradient-text">Always dark.</span></p><Button href="#white-grey-and-near-black" variant="link">Learn more</Button></div>
+    </div>
+</Specimen>
+
+<Specimen title="Rhythm" surface="none">
+    <Fragment slot="notes"><p>A typical page: hero, white, grey, near-black for the capstone product, grey, then the closing call to action on white. Never two near-black bands in a row.</p></Fragment>
+    <ol class="rhythm" role="list">
+        <li class="r-hero">Hero</li>
+        <li class="r-white">White</li>
+        <li class="r-grey">Grey</li>
+        <li class="r-dark">Near-black</li>
+        <li class="r-grey">Grey</li>
+        <li class="r-white">CTA</li>
+    </ol>
+</Specimen>
+
+<style>
+    .bands {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+
+    .band {
+        display: grid;
+        gap: 0.75rem;
+        justify-items: start;
+        padding: 3rem clamp(1.5rem, 1rem + 3vw, 3rem);
+        background: var(--bg);
+        color: var(--text);
+    }
+
+    .band.tone-alt {
+        background: var(--bg-alt);
+    }
+
+    .band-title {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-size: var(--text-3xl);
+        font-weight: 600;
+        letter-spacing: -0.035em;
+    }
+
+    .rhythm {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.5rem;
+    }
+
+    .rhythm li {
+        display: grid;
+        place-items: center;
+        height: 5rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+    }
+
+    .r-hero { background: var(--brand-gradient); color: #fff; border: 0; }
+    .r-white { background: var(--bg); }
+    .r-grey { background: var(--bg-alt); }
+    .r-dark { background: #000; color: #f5f5f7; }
+</style>

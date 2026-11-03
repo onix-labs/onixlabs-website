@@ -1,0 +1,67 @@
+---
+import { splitParagraphs } from '../collections/split-paragraphs';
+import GlassIcon from './GlassIcon.astro';
+
+// One idea per tile: a glass icon or a numbered index, a heading and a short description.
+interface Props {
+    readonly title: string;
+    readonly body: string;
+    readonly glass?: string;
+    readonly index?: number;
+    readonly headingLevel?: 'h3' | 'h4';
+    readonly spotlight?: boolean;
+    readonly spectral?: boolean;
+}
+
+const { title, body, glass, index, headingLevel = 'h3', spotlight = false, spectral = false }: Props = Astro.props;
+const Heading: 'h3' | 'h4' = headingLevel;
+---
+<article class:list={['tile feature-tile reveal-scale', { spotlight, spectral }]}>
+    {glass !== undefined && <GlassIcon name={glass} size={96} class="feature-glass" />}
+    {index !== undefined && <span class="feature-index" aria-hidden="true">{String(index).padStart(2, '0')}</span>}
+    <Heading class="feature-title">{title}</Heading>
+    {splitParagraphs(body).map((paragraph: string) => <p>{paragraph}</p>)}
+</article>
+
+<style>
+    .feature-tile {
+        display: grid;
+        align-content: start;
+        gap: 0.75rem;
+        padding: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+        box-shadow: var(--shadow-tile);
+        transition: box-shadow 500ms var(--ease-out), transform 500ms var(--ease-out);
+    }
+
+    .feature-tile:hover {
+        box-shadow: var(--shadow-tile-hover);
+    }
+
+    .feature-tile :global(.feature-glass) {
+        width: 4.75rem;
+        margin: -0.4rem 0 0.4rem -0.4rem;
+        transition: transform 600ms var(--ease-out);
+    }
+
+    .feature-tile:hover :global(.feature-glass) {
+        transform: translateY(-4px) rotate(-4deg);
+    }
+
+    .feature-index {
+        color: var(--label);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+    }
+
+    .feature-title {
+        font-size: var(--text-xl);
+    }
+
+    .feature-tile p {
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        line-height: 1.55;
+    }
+</style>
