@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "runConfigurations": [
+    {
+      "id": "website",
+      "name": "Website (dev server)",
+      "providerKind": "node",
+      "program": "npm",
+      "args": [
+        "run",
+        "dev"
+      ],
+      "mode": "run"
+    },
+    {
+      "id": "website-preview",
+      "name": "Website (production build + preview)",
+      "providerKind": "node",
+      "program": "sh",
+      "args": [
+        "-c",
+        "npm run build && npm run preview"
+      ],
+      "mode": "run"
+    },
+    {
+      "id": "unit-tests",
+      "name": "Unit tests",
+      "providerKind": "node",
+      "program": "npm",
+      "args": [
+        "test"
+      ],
+      "mode": "run"
+    },
+    {
+      "id": "e2e-tests",
+      "name": "End-to-end & accessibility tests",
+      "providerKind": "node",
+      "program": "sh",
+      "args": [
+        "-c",
+        "npm run build && npm run test:e2e"
+      ],
+      "mode": "run"
+    }
+  ]
+}
