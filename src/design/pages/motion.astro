@@ -56,8 +56,8 @@ import Specimen from '../Specimen.astro';
     <p class="demo-headline"><span class="gradient-text">A slow shimmer.</span></p>
 </Specimen>
 
-<Specimen title="Scroll progress" code={'<Swatches class="header-progress scroll-progress" />'}>
-    <Fragment slot="notes"><p>The brand swatches along the bottom of the header fill from left to right as the page scrolls. Scroll this page to see it.</p></Fragment>
+<Specimen title="Scroll progress" code={'<div class="header-progress scroll-progress" aria-hidden="true"></div>'}>
+    <Fragment slot="notes"><p>The continuous brand spectrum along the bottom of the header, painted at full width and revealed from left to right as the page scrolls, so more colour appears rather than the bar stretching. Scroll this page to see it.</p></Fragment>
     <p class="muted">Look at the bottom edge of the site header.</p>
 </Specimen>
 

@@ -1,7 +1,7 @@
 ---
 import Specimen from '../Specimen.astro';
 ---
-<Specimen title="Corner radii" code={'--radius-sm: 0.75rem   /* inputs, small chips */\n--radius: 1.125rem     /* code, small tiles */\n--radius-lg: 1.75rem   /* tiles */\n--radius-xl: 2.25rem   /* capstone tiles, CTA band */\n999px                  /* buttons, pills, badges */'}>
+<Specimen title="Corner radii" code={'--radius-sm   /* inputs, small chips */\n--radius      /* code, small tiles */\n--radius-lg   /* tiles */\n--radius-xl   /* capstone tiles, CTA band */\n999px         /* buttons, pills, badges */'}>
     <Fragment slot="notes"><p>Soft, generous corners. Interactive pills are fully rounded; panels get larger radii as they get larger.</p></Fragment>
     <div class="radii">
         <div class="radius r-sm"><code>sm</code></div>
@@ -9,6 +9,17 @@ import Specimen from '../Specimen.astro';
         <div class="radius r-lg"><code>lg</code></div>
         <div class="radius r-xl"><code>xl</code></div>
         <div class="radius r-pill"><code>pill</code></div>
+    </div>
+</Specimen>
+
+<Specimen title="Squircles" code={'@supports (corner-shape: squircle) {\n  * { corner-shape: squircle; }\n  .button, .pill, .badge, .round, … { corner-shape: round; }\n}'}>
+    <Fragment slot="notes">
+        <p>Where the browser supports <code>corner-shape</code>, rounded corners become squircles: continuous superellipse curves, like an app icon, instead of circular arcs. Other browsers keep ordinary rounded corners, so nothing breaks.</p>
+        <p>A squircle looks tighter than a circular corner of the same radius, so the radius tokens grow when squircles are on (sm 1rem, default 1.5rem, lg 2.375rem, xl 3rem; otherwise 0.75, 1.125, 1.75 and 2.25rem). Capsules and circles (buttons, pills, badges, round icon buttons) keep circular ends; add <code>.round</code> to opt any other element out.</p>
+    </Fragment>
+    <div class="squircle-compare">
+        <figure><div class="sq-sample sq-round"></div><figcaption><code>corner-shape: round</code></figcaption></figure>
+        <figure><div class="sq-sample"></div><figcaption><code>corner-shape: squircle</code> (where supported)</figcaption></figure>
     </div>
 </Specimen>
 
@@ -51,6 +62,34 @@ import Specimen from '../Specimen.astro';
     .r-lg { border-radius: var(--radius-lg); }
     .r-xl { border-radius: var(--radius-xl); }
     .r-pill { width: 10rem; height: 3rem; border-radius: 999px; }
+
+    .squircle-compare {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    .squircle-compare figure {
+        display: grid;
+        gap: 0.75rem;
+        justify-items: center;
+    }
+
+    .squircle-compare figcaption {
+        color: var(--text-muted);
+        font-size: var(--text-xs);
+    }
+
+    .sq-sample {
+        width: 10rem;
+        height: 10rem;
+        border-radius: 2.5rem;
+        background: var(--brand-gradient);
+    }
+
+    .sq-round {
+        corner-shape: round;
+    }
 
     .elev {
         display: grid;

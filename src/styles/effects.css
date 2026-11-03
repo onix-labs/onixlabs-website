@@ -88,7 +88,8 @@
 }
 
 @keyframes progress {
-    from { transform: scaleX(0); }
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
 }
 
 /*
@@ -369,7 +370,7 @@
     }
 
     @supports (animation-timeline: view()) {
-        /* The brand-colour bar along the bottom of the header fills as the page scrolls. */
+        /* The brand spectrum along the bottom of the header is revealed, left to right, as the page scrolls. */
         .scroll-progress {
             animation: progress linear both;
             animation-timeline: var(--timeline-page);

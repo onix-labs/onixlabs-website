@@ -4,7 +4,6 @@ import { navigation } from '../config/navigation';
 import type { NavigationItem } from '../config/navigation-item';
 import { toCanonicalPath } from '../config/to-canonical-path';
 import Icon from './Icon.astro';
-import Swatches from './Swatches.astro';
 
 const currentPath: string = Astro.url.pathname;
 ---
@@ -36,7 +35,7 @@ const currentPath: string = Astro.url.pathname;
         </div>
     </div>
 
-    <Swatches class="header-progress scroll-progress" />
+    <div class="header-progress scroll-progress" aria-hidden="true"></div>
 
     <div id="mobile-menu" class="mobile-menu" popover>
         <nav aria-label="Mobile">
@@ -52,16 +51,18 @@ const currentPath: string = Astro.url.pathname;
 </header>
 
 <style>
-    /* A thin, translucent bar that stays at the top while the page scrolls beneath it. */
-    /* The brand swatches along the bottom of the header fill from left to right as the page scrolls. */
-    .site-header :global(.header-progress) {
-        --swatch-height: 2px;
+    /*
+     * The brand spectrum along the bottom of the header. It's painted at full width and uncovered from left to
+     * right as the page scrolls, so each colour stays put and more of the spectrum appears.
+     */
+    .header-progress {
         position: absolute;
         inset: auto 0 -1px;
-        border-radius: 0;
-        transform-origin: left;
+        height: 2px;
+        background: var(--brand-gradient);
     }
 
+    /* A thin, translucent bar that stays at the top while the page scrolls beneath it. */
     .site-header {
         position: sticky;
         top: 0;

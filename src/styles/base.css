@@ -703,3 +703,41 @@ textarea.input {
     opacity: 0.55;
     cursor: not-allowed;
 }
+
+/*
+ * Squircles. Where the browser supports corner-shape, rounded corners become continuous superellipse curves
+ * (squircles) instead of circular arcs; other browsers keep ordinary rounded corners. A squircle reads tighter
+ * than a circular arc of the same radius, so the radius tokens grow to keep the same softness. Elements that must
+ * stay perfectly circular set corner-shape: round.
+ */
+@supports (corner-shape: squircle) {
+    :root {
+        --radius-sm: 1rem;
+        --radius: 1.5rem;
+        --radius-lg: 2.375rem;
+        --radius-xl: 3rem;
+    }
+
+    *,
+    *::before,
+    *::after {
+        corner-shape: squircle;
+    }
+
+    /* Capsules and circles keep circular ends: a squircle at a full radius turns a pill into a boxy rectangle. */
+    .button,
+    .button::before,
+    .pill,
+    .badge,
+    .skip-link,
+    .round,
+    .icon-chip,
+    .header-icon,
+    .social a,
+    .team-social a,
+    .contributor-social a,
+    .aurora span,
+    .orb-ring {
+        corner-shape: round;
+    }
+}
