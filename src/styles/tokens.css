@@ -86,7 +86,7 @@
     --container: 72rem;
     --container-wide: 80rem;
     --container-narrow: 43rem;
-    --header-height: 3.5rem;
+    --header-height: 4.5rem;            /* includes 0.5rem of vertical padding above and below the bar's content */
     --local-nav-height: 3.25rem;
 
     /* Radius (Stride). The scale is set in the @supports blocks at the end: wider for squircle corners, narrower for
