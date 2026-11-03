@@ -6,28 +6,36 @@ product information current, adding articles, updating bios. Read this before ed
 ## How the site is built
 
 Astro 7, static output, deployed to GitHub Pages. Every page is rendered to HTML at build time. The only
-client-side JavaScript is the theme switch, the header's scrolled state, the pointer-following card spotlight and the
-contact-form prefill. The mobile menu (popover API) and the docs sidebar (`<details>`) work without it. Keep it that
+client-side JavaScript is the theme switch and the contact-form prefill. The mobile menu (popover API) and the docs sidebar (`<details>`) work without it. Keep it that
 way: content must never depend on JavaScript to appear.
 
 ## Design system
 
-The look is dark-first, editorial and restrained, with the ONIXLabs brand gradient used as light rather than paint.
-Reuse what exists before adding new styles:
+The look is quiet and product-led: big, tightly tracked headlines, generous whitespace, full-bleed bands that
+alternate between white, soft grey and near-black, and large rounded tiles with one headline and a link or two.
+Colour is rare on purpose: one accent blue for actions, the product-family gradients on product emblems, and the full
+ONIXLabs gradient in a handful of places (the Aero headline on near-black, the 404, a hairline in the footer). Reuse
+what exists before adding new styles:
 
 - **Tokens** (`src/styles/tokens.css`): brand colours, product-family colours, type scale, spacing, and the
-  light and dark palettes, which switch on `[data-theme]`. Use the variables; don't hard-code colours.
-- **Base** (`src/styles/base.css`): layout (`.container`, `.section`, `.grid-2/3/4`), `.eyebrow`, `.lead`,
-  `.button` and `.button-primary`, `.pill`, `.icon-chip`, and form fields (`.field`, `.input`).
-- **Effects** (`src/styles/effects.css`): `.aurora` (use the `Aurora` component), `.grid-backdrop`,
-  `.gradient-text`, `.gradient-border`, `.orb-ring`, `.card` (spotlight on hover), `.marquee`, and the motion
-  classes `.rise` (page-load entrance) and `.reveal` (scroll reveal). All motion is CSS-only and stops under
-  `prefers-reduced-motion`.
-- **Components** (`src/components/`): `PageHero` opens every inner page with its `<h1>`; `SectionHeader` gives
-  the eyebrow, `<h2>` and lead of each section; `FeatureCard`, `ProductCard`, `ContributorCard`, `CtaBand` and
-  `Button` cover most content.
-- **Typography:** Poppins for headings, Inter for body text, JetBrains Mono for eyebrows and code. Use the
-  gradient (`highlight` prop, `.gradient-text`) on at most one phrase per heading.
+  light and dark palettes, which switch on `[data-theme]`. `.tone-dark` forces the dark palette on a band in
+  either theme; `.tone-alt` is the grey band. Use the variables; don't hard-code colours.
+- **Base** (`src/styles/base.css`): layout (`.container`, `.container-wide`, `.section`, `.grid-2/3/4`), the
+  two-tone headline (`.headline-muted`), `.eyebrow`, `.lead`, `.tile`, `.button`/`.button-primary`, the
+  `.link-cta` ("Learn more ›"), the product `.emblem` (with `.family-<id>`), `.icon-chip`, and form fields.
+- **Effects** (`src/styles/effects.css`): `.gradient-text` (near-black backgrounds only, where every stop has the
+  contrast), `.brand-rule`, and the motion classes: `.rise` (page-load entrance), `.reveal`, `.reveal-scale` and
+  `.settle` (scroll-driven entrances), `.recede` (hero copy fading as it scrolls away), `.highlight` (statements that
+  brighten in turn) and the sticky zoom sequence (`.zoom-stage` > `.zoom-sticky` > `.zoom-target`). All motion is
+  CSS-only, runs only where `animation-timeline` is supported and `prefers-reduced-motion` isn't set, and leaves
+  content fully visible everywhere else.
+- **Components** (`src/components/`): `PageHero` opens every inner page with its `<h1>`; `LocalNav` is the sticky
+  product bar on product pages; `SectionHeader` gives the eyebrow, `<h2>` and lead of each section; `FeatureCard`,
+  `ProductCard`, `ContributorCard`, `TechnologyGrid`, `CtaBand` and `Button` (`primary`, `secondary` or `link`)
+  cover most content.
+- **Typography:** the system font stack (San Francisco on Apple platforms, the self-hosted Inter elsewhere) for
+  everything, JetBrains Mono for code. Headlines are semibold with negative tracking; the second phrase of a headline
+  can go grey with the `highlight` prop.
 - **Icons** are Font Awesome Free line icons in `src/icons/`, usually inside an `.icon-chip`.
 
 ## Content model

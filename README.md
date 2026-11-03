@@ -35,7 +35,7 @@ src/
   layouts/            BaseLayout (head, header, footer) and DocumentationLayout
   components/         Shared Astro components
   seo/                Canonical URLs, titles and JSON-LD builders
-  scripts/            The little client-side JavaScript the site uses (theme switch, header, card spotlight, contact prefill)
+  scripts/            The little client-side JavaScript the site uses (theme switch, contact prefill)
   styles/             The design system: tokens, base styles, effects and prose
 public/               Files served as-is, including images at their existing /onixlabs/images/... URLs
 tests/e2e/            Playwright tests

@@ -54,8 +54,9 @@ checks each one.
 
 ## Changes from the Blazor site
 
-The site was first ported with the Blazor design intact, then redesigned: dark-first and editorial, with the brand
-gradient used for light, gradient text and borders, and CSS-only motion (see the design system in CLAUDE.md). These
+The site was first ported with the Blazor design intact, then redesigned: quiet and product-led, with alternating
+light and near-black bands, rounded tiles, the brand gradient used sparingly, and CSS-only scroll-driven motion (see
+the design system in CLAUDE.md). These
 deliberate changes came out of the SEO and accessibility work:
 
 **SEO**
