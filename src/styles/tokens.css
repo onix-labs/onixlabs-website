@@ -119,7 +119,7 @@
     color-scheme: light;
 
     /* Surfaces: a mid-grey page, so surfaces read as raised. */
-    --bg: #ced4da;
+    --bg: #d8dde2;                      /* a touch lighter than Stride's #ced4da; surfaces still stand off it */
     --bg-alt: #dee2e6;                 /* the alternate band: Stride's recessed grey */
     --surface: #e9ecef;
     --surface-raised: #e9ecef;
