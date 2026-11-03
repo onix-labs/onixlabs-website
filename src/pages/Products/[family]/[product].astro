@@ -9,10 +9,11 @@ import type { ProductSection } from '../../../collections/product-section';
 import Button from '../../../components/Button.astro';
 import CtaBand from '../../../components/CtaBand.astro';
 import FeatureCard from '../../../components/FeatureCard.astro';
+import LocalNav from '../../../components/LocalNav.astro';
 import PageHero from '../../../components/PageHero.astro';
-import type { AuroraPalette } from '../../../components/aurora-palette';
 import ProductCard from '../../../components/ProductCard.astro';
 import SectionHeader from '../../../components/SectionHeader.astro';
+import type { LocalNavLink } from '../../../config/local-nav-link';
 import { site } from '../../../config/site';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { buildSoftwareSourceCode } from '../../../seo/build-software-source-code';
@@ -36,8 +37,10 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
 
 const { product, siblings }: Props = Astro.props;
 const family: CollectionEntry<'productFamilies'> = await getEntry(product.data.family);
-const palettes: ReadonlyMap<string, AuroraPalette> = new Map<string, AuroraPalette>([['dotnet', 'dotnet'], ['corda', 'corda'], ['kotlin', 'kotlin']]);
-const palette: AuroraPalette = palettes.get(family.id) ?? 'brand';
+const localLinks: ReadonlyArray<LocalNavLink> = [
+    { label: "What's inside", href: '#capabilities' },
+    ...(siblings.length > 0 ? [{ label: `More for ${family.data.name}`, href: '#other-products' }] : []),
+];
 let featureNumber: number = 0;
 
 function nextFeatureNumber(): number {
@@ -65,38 +68,46 @@ function nextFeatureNumber(): number {
         }, site),
     ]}
 >
+    <LocalNav
+        title={product.data.title}
+        label={product.data.shortTitle}
+        links={localLinks}
+        actionText="View on GitHub"
+        actionHref={product.data.repositoryUrl}
+        external
+    />
+
     <div class={`family-${family.id}`}>
-        <PageHero eyebrow={`${family.data.name} · Open source`} title={product.data.title} palette={palette}>
+        <PageHero eyebrow={`${family.data.name} · Open source`} title={product.data.title} class="product-hero">
+            <span slot="before" class="emblem hero-emblem">
+                <img src={product.data.icon} alt={product.data.iconAlt} width={400} height={400} loading="eager" fetchpriority="high" decoding="async" />
+            </span>
             <p class="callout">{product.data.callout}</p>
             <p>{product.data.summary}</p>
             <Fragment slot="actions">
-                <Button href={product.data.repositoryUrl} variant="primary" icon="github" external>View on GitHub</Button>
-                <Button href={product.data.packagesUrl} icon="box-open" external>{product.data.packagesLabel.replace(/^View /, '')}</Button>
+                <Button href={product.data.repositoryUrl} variant="primary" size="large" external>View on GitHub</Button>
+                <Button href={product.data.packagesUrl} variant="link" external>{product.data.packagesLabel.replace(/^View /, '')}</Button>
             </Fragment>
-            <div slot="media" class="product-emblem">
-                <div class="orb-ring emblem-ring" aria-hidden="true"></div>
-                <div class="emblem-tile">
-                    <img src={product.data.icon} alt={product.data.iconAlt} width={400} height={400} loading="eager" fetchpriority="high" decoding="async" />
-                </div>
-            </div>
         </PageHero>
 
-        <section class="section" aria-labelledby="capabilities">
-            <div class="container">
-                <SectionHeader eyebrow="APIs at a glance" title="What's inside" id="capabilities">
+        <section class="section tone-alt" aria-labelledby="capabilities">
+            <div class="container-wide">
+                <SectionHeader eyebrow="APIs at a glance" title="What's inside." id="capabilities" centered>
                     {family.data.capabilitiesCallout}.
                 </SectionHeader>
 
                 {product.data.sections.map((section: ProductSection) => (
                     <div class="product-section">
                         {section.heading !== undefined && (
-                            <div class="section-intro reveal">
-                                <h3>{section.heading}</h3>
-                                {section.paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
-                                {section.bullets.length > 0 && (
-                                    <ul class="checklist" role="list">{section.bullets.map((bullet: string) => <li>{bullet}</li>)}</ul>
-                                )}
-                                {section.closingParagraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+                            <div class="section-intro">
+                                <h3 class="reveal">{section.heading}</h3>
+                                <div class="section-intro-body reveal">
+                                    {section.paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+                                    {section.bullets.length > 0 && (
+                                        <ul class="checklist" role="list">{section.bullets.map((bullet: string) => <li>{bullet}</li>)}</ul>
+                                    )}
+                                    {section.closingParagraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+                                </div>
                             </div>
                         )}
                         <div class="grid grid-2">
@@ -110,93 +121,90 @@ function nextFeatureNumber(): number {
         </section>
 
         {siblings.length > 0 && (
-            <section class="section-tight" aria-labelledby="other-products">
-                <div class="container">
-                    <SectionHeader eyebrow={`More for ${family.data.name}`} title={family.data.otherProductsHeadline} id="other-products" />
-                    <div class="grid grid-2">
+            <section class="section" aria-labelledby="other-products">
+                <div class="container-wide">
+                    <SectionHeader eyebrow={`More for ${family.data.name}`} title={family.data.otherProductsHeadline} id="other-products" centered />
+                    <div class="grid grid-2 siblings">
                         {siblings.map((sibling: CollectionEntry<'products'>) => <ProductCard product={sibling} showOverview />)}
                     </div>
                 </div>
             </section>
         )}
 
-        <CtaBand title={`Building with ${family.data.name}?`} primaryText="Talk to the team">
+        <CtaBand tone="dark" title={`Building with ${family.data.name}?`} primaryText="Talk to the team">
             If you need help adopting these libraries, extending them, or building on top of them, we'd love to hear from you.
         </CtaBand>
     </div>
 </BaseLayout>
 
 <style>
-    .family-dotnet { --family-from: var(--family-dotnet-from); --family-to: var(--family-dotnet-to); }
-    .family-corda { --family-from: var(--family-corda-from); --family-to: var(--family-corda-to); }
-    .family-kotlin { --family-from: var(--family-kotlin-from); --family-to: var(--family-kotlin-to); }
+    .product-hero :global(h1) {
+        max-width: 16ch;
+    }
+
+    .hero-emblem {
+        --emblem-size: clamp(6.5rem, 5rem + 5vw, 9.5rem);
+        --emblem-stroke: 1.25px;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 40px 80px -30px color-mix(in srgb, var(--family-to) 85%, transparent);
+    }
 
     .callout {
         color: var(--heading);
-        font-family: var(--font-display);
-        font-size: var(--text-2xl);
-        font-weight: 500;
-        letter-spacing: -0.02em;
-        line-height: 1.3;
+        font-size: var(--text-3xl);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.2;
+        text-wrap: balance;
     }
 
     .callout + p {
-        margin-top: 1rem;
-        font-size: var(--text-lg);
-    }
-
-    .product-emblem {
-        position: relative;
-        display: grid;
-        place-items: center;
-        width: min(100%, 24rem);
-        aspect-ratio: 1;
-    }
-
-    .emblem-ring {
-        inset: 0;
-        width: 100%;
-    }
-
-    .emblem-tile {
-        display: grid;
-        place-items: center;
-        width: 62%;
-        aspect-ratio: 1;
-        border-radius: 28%;
-        background: linear-gradient(135deg, var(--family-from), var(--family-to));
-        box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.12) inset,
-            0 40px 80px -30px color-mix(in srgb, var(--family-from) 80%, transparent);
-        transform: rotate(-6deg);
-    }
-
-    .emblem-tile img {
-        width: 62%;
-        transform: rotate(6deg);
+        margin-top: 1.25rem;
     }
 
     .product-section + .product-section {
-        margin-top: clamp(3rem, 2.5rem + 3vw, 5rem);
+        margin-top: clamp(4rem, 3rem + 4vw, 7rem);
     }
 
     .section-intro {
         display: grid;
-        gap: 1rem;
-        max-width: 48rem;
-        margin-bottom: 2rem;
-        color: var(--text-muted);
+        gap: 1.5rem 4rem;
+        max-width: 64rem;
+        margin: 0 auto clamp(2.5rem, 2rem + 2vw, 4rem);
+    }
+
+    @media (min-width: 56rem) {
+        .section-intro {
+            grid-template-columns: 1fr 1.4fr;
+        }
+    }
+
+    @media (min-width: 56rem) {
+        .section-intro h3 {
+            position: sticky;
+            top: calc(var(--local-nav-height) + 2rem);
+            align-self: start;
+        }
     }
 
     .section-intro h3 {
-        font-size: var(--text-3xl);
-        letter-spacing: -0.035em;
+        font-size: var(--text-4xl);
+        letter-spacing: -0.03em;
+        line-height: 1.08;
+    }
+
+    .section-intro-body {
+        display: grid;
+        gap: 1rem;
+        color: var(--text-muted);
+        font-size: var(--text-lg);
+        line-height: 1.5;
     }
 
     .checklist {
         display: grid;
         gap: 0.6rem;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+        margin-block: 0.5rem;
     }
 
     .checklist li {
@@ -209,10 +217,15 @@ function nextFeatureNumber(): number {
         content: '';
         position: absolute;
         left: 0;
-        top: 0.55em;
-        width: 0.7rem;
-        height: 0.7rem;
+        top: 0.45em;
+        width: 0.65rem;
+        height: 0.65rem;
         border-radius: 50%;
         background: linear-gradient(135deg, var(--family-from), var(--family-to));
+    }
+
+    .siblings {
+        max-width: 64rem;
+        margin-inline: auto;
     }
 </style>

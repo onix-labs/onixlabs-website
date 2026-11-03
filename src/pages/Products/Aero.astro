@@ -2,12 +2,15 @@
 import { getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
+import { splitParagraphs } from '../../collections/split-paragraphs';
 import AeroShowcase from '../../components/AeroShowcase.astro';
 import Button from '../../components/Button.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import FeatureCard from '../../components/FeatureCard.astro';
+import LocalNav from '../../components/LocalNav.astro';
 import PageHero from '../../components/PageHero.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
+import type { LocalNavLink } from '../../config/local-nav-link';
 import { site } from '../../config/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
@@ -20,6 +23,10 @@ if (entry === undefined) {
 }
 
 const aero: AeroData = entry.data;
+const localLinks: ReadonlyArray<LocalNavLink> = [
+    { label: 'Why Aero', href: '#founding-principles' },
+    { label: 'Architecture', href: '#aero-architecture' },
+];
 ---
 <BaseLayout
     title="Aero: The Modular .NET Suite for Enterprise Engineering"
@@ -43,23 +50,31 @@ const aero: AeroData = entry.data;
         },
     ]}
 >
-    <PageHero eyebrow="Aero platform" title="The modular .NET suite for" highlight="enterprise engineering." palette="aero">
+    <LocalNav title="Aero" label="Aero" links={localLinks} actionText="Request a demo" actionHref="/Contact?reason=aero-demo" tone="dark" />
+
+    <PageHero title="The modular .NET suite for" highlight="enterprise engineering." tone="dark" class="aero-hero">
+        <img slot="before" class="aero-wordmark" src="/onixlabs/images/logo/aero-light.webp" alt="" width={1280} height={640} loading="eager" />
         <strong>Aero is a modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
         It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
         <Fragment slot="actions">
-            <Button href="/Contact?reason=aero-demo" variant="primary" size="large" arrow>Request a demo</Button>
-            <Button href="#aero-architecture" size="large">Explore the architecture</Button>
+            <Button href="/Contact?reason=aero-demo" variant="primary" size="large">Request a demo</Button>
+            <Button href="#aero-architecture" variant="link">Explore the architecture</Button>
         </Fragment>
-        <div slot="media" class="aero-media">
-            <img class="aero-wordmark aero-wordmark-light" src="/onixlabs/images/logo/aero-dark.webp" alt="" width={1280} height={640} loading="eager" />
-            <img class="aero-wordmark aero-wordmark-dark" src="/onixlabs/images/logo/aero-light.webp" alt="" width={1280} height={640} loading="eager" />
-            <AeroShowcase eager />
-        </div>
     </PageHero>
 
-    <section class="section" aria-labelledby="founding-principles">
-        <div class="container">
-            <SectionHeader eyebrow="Founding principles" title="Why build .NET applications" highlight="with Aero." id="founding-principles">
+    <div class="tone-dark aero-stage">
+        <div class="zoom-stage">
+            <div class="zoom-sticky">
+                <div class="container-wide aero-shot settle">
+                    <AeroShowcase tone="dark" eager class="zoom-target" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section tone-alt" aria-labelledby="founding-principles">
+        <div class="container-wide">
+            <SectionHeader eyebrow="Founding principles" title="Why build .NET applications" highlight="with Aero." id="founding-principles" centered>
                 Aero provides a rock-solid foundation for building modern .NET applications. Designed with flexibility and scalability in
                 mind, it helps teams move faster, adopt best practices by default, and build applications that are robust, maintainable,
                 and ready for growth.
@@ -73,22 +88,33 @@ const aero: AeroData = entry.data;
     </section>
 
     <section class="section architecture" id="aero-architecture" aria-labelledby="aero-architecture-title">
-        <div class="container">
-            <SectionHeader eyebrow="Aero architecture" title="The building blocks for enterprise-grade" highlight=".NET applications." id="aero-architecture-title">
-                Aero isn’t just another framework—it's your project's backbone. From APIs to infrastructure, each module is crafted to
-                solve real-world engineering challenges with clarity, performance, and security in mind.
-            </SectionHeader>
-            <div class="grid grid-2">
-                {aero.architecture.map((module: AeroData['architecture'][number], index: number) => (
-                    <FeatureCard title={module.title} body={module.body} index={index + 1} />
-                ))}
+        <div class="container-wide architecture-grid">
+            <div class="architecture-header">
+                <SectionHeader eyebrow="Aero architecture" title="The building blocks for enterprise-grade" highlight=".NET applications." id="aero-architecture-title">
+                    Aero isn’t just another framework—it's your project's backbone. From APIs to infrastructure, each module is crafted to
+                    solve real-world engineering challenges with clarity, performance, and security in mind.
+                </SectionHeader>
             </div>
-            <p class="lead closing reveal">
-                Aero gives you more than just utilities—it gives you architecture. With thoughtfully designed APIs, production-ready
-                integrations, and deep flexibility across every layer of the stack, Aero equips .NET teams to deliver faster, scale
-                confidently, and stay maintainable from day one. <strong>This is modern enterprise development, without the drag.</strong>
-            </p>
+            <ol class="modules" role="list">
+                {aero.architecture.map((module: AeroData['architecture'][number], index: number) => (
+                    <li class="module reveal">
+                        <span class="module-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                        <h3>{module.title}</h3>
+                        <div class="module-body">
+                            {splitParagraphs(module.body).map((paragraph: string) => <p>{paragraph}</p>)}
+                        </div>
+                    </li>
+                ))}
+            </ol>
         </div>
+    </section>
+
+    <section class="section tone-dark closing" aria-label="In summary">
+        <p class="container closing-text reveal">
+            Aero gives you more than just utilities—it gives you architecture. With thoughtfully designed APIs, production-ready
+            integrations, and deep flexibility across every layer of the stack, Aero equips .NET teams to deliver faster, scale
+            confidently, and stay maintainable from day one. <strong class="gradient-text">This is modern enterprise development, without the drag.</strong>
+        </p>
     </section>
 
     <CtaBand title="See Aero in action." primaryText="Request a demo" primaryHref="/Contact?reason=aero-demo">
@@ -98,31 +124,99 @@ const aero: AeroData = entry.data;
 </BaseLayout>
 
 <style>
-    .aero-media {
-        display: grid;
-        gap: 1.5rem;
-        justify-items: center;
-        width: 100%;
+    .aero-hero {
+        padding-bottom: 0;
     }
 
     .aero-wordmark {
-        width: min(60%, 18rem);
+        width: min(55vw, 15rem);
         height: auto;
+        margin-bottom: 0.5rem;
     }
 
-    :global([data-theme='light']) .aero-wordmark-dark,
-    :global([data-theme='dark']) .aero-wordmark-light {
-        display: none;
+    .aero-stage {
+        padding-bottom: clamp(4rem, 3rem + 4vw, 7rem);
+        overflow: clip;
     }
 
-    .architecture {
+    .aero-shot {
+        max-width: 68rem;
+        padding-top: clamp(3rem, 2rem + 3vw, 5rem);
+    }
+
+    .architecture-grid {
+        display: grid;
+        gap: 1rem 5rem;
+        max-width: 72rem;
+    }
+
+    @media (min-width: 60rem) {
+        .architecture-grid {
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+
+        .architecture-header {
+            position: sticky;
+            top: calc(var(--local-nav-height) + 3rem);
+            align-self: start;
+        }
+    }
+
+    .architecture-header :global(h2) {
+        font-size: var(--text-4xl);
+    }
+
+    .modules {
+        display: grid;
+    }
+
+    .module {
+        display: grid;
+        gap: 0.75rem;
+        padding-block: 2.25rem;
         border-top: 1px solid var(--border);
-        background: var(--bg-elevated);
     }
 
-    .closing {
-        max-width: 52rem;
-        margin: clamp(3rem, 2.5rem + 2vw, 4.5rem) auto 0;
+    .module:first-child {
+        padding-top: 0;
+        border-top: 0;
+    }
+
+    .module-index {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .module h3 {
+        font-size: var(--text-3xl);
+        letter-spacing: -0.026em;
+    }
+
+    .module-body {
+        display: grid;
+        gap: 1rem;
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        line-height: 1.6;
+    }
+
+    .closing-text {
+        max-width: 56rem;
+        color: var(--text-muted);
+        font-size: var(--text-3xl);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.25;
         text-align: center;
+        text-wrap: balance;
+    }
+
+    .closing-text strong {
+        display: block;
+        margin-top: 1.5rem;
+        font-size: var(--text-4xl);
+        line-height: 1.1;
     }
 </style>

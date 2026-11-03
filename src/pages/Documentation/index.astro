@@ -20,7 +20,7 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/Documentation' }]}
 >
     <header class="docs-intro">
-        <p class="eyebrow">Articles · API docs · Blog posts</p>
+        <p class="eyebrow-small">Articles · API docs · Blog posts</p>
         <h1>Documentation</h1>
         <p class="lead">
             Explore our official documentation. From technical articles and product blogs to in-depth API references, everything's
@@ -33,10 +33,10 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
             <h2 id={`category-${category.id}`}>{category.name}</h2>
             <div class="grid grid-2">
                 {articlesIn(category).map((article: CollectionEntry<'articles'>) => (
-                    <a class="card article-card reveal" href={article.data.path}>
+                    <a class="tile article-card reveal-scale" href={article.data.path}>
                         <h3>{article.data.title}</h3>
                         <p>{article.data.description}</p>
-                        <span class="article-link">Read article <Icon name="arrow-right" /></span>
+                        <span class="link-cta article-link">Read article <Icon name="chevron-right" /></span>
                     </a>
                 ))}
             </div>
@@ -49,55 +49,45 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
         display: grid;
         gap: 1rem;
         max-width: 44rem;
-        margin-bottom: 3.5rem;
+        margin-bottom: clamp(3rem, 2.5rem + 2vw, 4.5rem);
     }
 
     .docs-intro h1 {
-        font-size: var(--text-5xl);
+        font-size: var(--text-hero);
+        letter-spacing: -0.038em;
+        line-height: 1;
     }
 
     .docs-group + .docs-group {
-        margin-top: 3rem;
+        margin-top: clamp(3rem, 2.5rem + 2vw, 4.5rem);
     }
 
     .docs-group h2 {
         margin-bottom: 1.25rem;
-        font-size: var(--text-2xl);
+        font-size: var(--text-3xl);
     }
 
     .article-card {
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
-        padding: 1.5rem;
-        color: inherit;
-        text-decoration: none;
+        height: 100%;
+        padding: clamp(1.5rem, 1.25rem + 1vw, 2rem);
     }
 
     .article-card h3 {
-        font-size: var(--text-lg);
+        font-size: var(--text-xl);
     }
 
     .article-card p {
         color: var(--text-muted);
         font-size: var(--text-sm);
+        line-height: 1.55;
     }
 
     .article-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
         margin-top: auto;
-        color: var(--heading);
-        font-size: var(--text-sm);
-        font-weight: 600;
-    }
-
-    .article-link :global(.icon) {
-        transition: transform var(--duration) var(--ease-out);
-    }
-
-    .article-card:hover .article-link :global(.icon) {
-        transform: translateX(4px);
+        padding-top: 0.5rem;
+        font-size: var(--text-base);
     }
 </style>

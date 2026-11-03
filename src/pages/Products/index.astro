@@ -6,6 +6,7 @@ import { loadProducts } from '../../collections/load-products';
 import AeroShowcase from '../../components/AeroShowcase.astro';
 import Button from '../../components/Button.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
 import PageHero from '../../components/PageHero.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
@@ -13,6 +14,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
 const products: ReadonlyArray<CollectionEntry<'products'>> = await loadProducts();
+
+function familyName(product: CollectionEntry<'products'>): string {
+    return families.find((family: CollectionEntry<'productFamilies'>): boolean => family.id === product.data.family.id)?.data.name ?? '';
+}
 
 function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<CollectionEntry<'products'>> {
     return products.filter((product: CollectionEntry<'products'>): boolean => product.data.family.id === family.id);
@@ -24,72 +29,158 @@ function productsIn(family: CollectionEntry<'productFamilies'>): ReadonlyArray<C
     path="/Products"
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Products', path: '/Products' }]}
 >
-    <PageHero eyebrow="Products" title="Software," highlight="supercharged." centered>
+    <nav class="chapter-nav" aria-label="All products">
+        <ul class="chapter-list" role="list">
+            <li>
+                <a href="/Products/Aero">
+                    <span class="emblem family-aero" aria-hidden="true"><Icon name="rocket" /></span>
+                    <span class="chapter-name">Aero</span>
+                    <span class="chapter-family">.NET platform</span>
+                </a>
+            </li>
+            {products.map((product: CollectionEntry<'products'>) => (
+                <li>
+                    <a href={product.data.path} class={`family-${product.data.family.id}`}>
+                        <span class="emblem" aria-hidden="true"><img src={product.data.icon} alt="" width={40} height={40} decoding="async" /></span>
+                        <span class="chapter-name">{product.data.shortTitle}</span>
+                        <span class="chapter-family">{familyName(product)}</span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </nav>
+
+    <PageHero eyebrow="Products" title="Software," highlight="supercharged.">
         We build powerful platforms, libraries, and frameworks that accelerate development and elevate engineering workflows.
         Whether you're prototyping quickly, building complex systems, or scaling cleanly, our tools help you write better code with
         confidence.
         <Fragment slot="actions">
-            <Button href="#aero" variant="primary" arrow>Aero platform</Button>
-            <Button href="#dotnet">Open-source libraries</Button>
+            <Button href="#aero" variant="primary" size="large">Aero platform</Button>
+            <Button href="#dotnet" variant="link">Open-source libraries</Button>
         </Fragment>
     </PageHero>
 
-    <section class="section-tight" id="aero" aria-labelledby="aero-title">
-        <div class="container">
-            <div class="aero-feature gradient-border reveal">
-                <div class="aero-feature-copy">
-                    <p class="eyebrow">Platform</p>
-                    <h2 id="aero-title">Introducing <span class="gradient-text">Aero</span></h2>
-                    <p class="lead">
-                        <strong>A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
-                        It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
-                    </p>
-                    <div class="cluster">
-                        <Button href="/Products/Aero" variant="primary" arrow>Find out more</Button>
-                        <Button href="/Contact?reason=aero-demo">Request a demo</Button>
-                    </div>
-                </div>
-                <AeroShowcase eager />
+    <section class="section tone-dark aero" id="aero" aria-labelledby="aero-title">
+        <div class="container aero-copy reveal">
+            <p class="eyebrow">Platform</p>
+            <h2 id="aero-title">Introducing <span class="gradient-text">Aero</span></h2>
+            <p class="lead">
+                <strong>A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
+                It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
+            </p>
+            <div class="cluster is-centered">
+                <Button href="/Products/Aero" variant="link">Find out more</Button>
+                <Button href="/Contact?reason=aero-demo" variant="link">Request a demo</Button>
             </div>
+        </div>
+        <div class="container-wide aero-shot settle">
+            <AeroShowcase tone="dark" />
         </div>
     </section>
 
-    {families.map((family: CollectionEntry<'productFamilies'>) => (
-        <section class="section-tight family" id={family.id} aria-labelledby={`family-${family.id}`}>
-            <div class="container">
-                <SectionHeader eyebrow={`Products for ${family.data.name}`} title={family.data.callout} id={`family-${family.id}`}>
+    {families.map((family: CollectionEntry<'productFamilies'>, index: number) => (
+        <section class:list={['section family', { 'tone-alt': index % 2 === 0 }]} id={family.id} aria-labelledby={`family-${family.id}`}>
+            <div class="container-wide">
+                <SectionHeader eyebrow={`Products for ${family.data.name}`} title={family.data.callout} id={`family-${family.id}`} centered>
                     {family.data.introduction}
                 </SectionHeader>
-                <div class="grid grid-3">
+                <div class="grid grid-3 shelf-mobile">
                     {productsIn(family).map((product: CollectionEntry<'products'>) => <ProductCard product={product} showOverview />)}
                 </div>
             </div>
         </section>
     ))}
 
-    <CtaBand title="Not sure which product fits?" primaryText="Ask us">
+    <CtaBand tone="dark" title="Not sure which product fits?" primaryText="Ask us">
         Tell us what you're building and we'll point you to the right platform or library, or help you build it.
     </CtaBand>
 </BaseLayout>
 
 <style>
-    .aero-feature {
-        display: grid;
-        gap: clamp(2rem, 1.5rem + 3vw, 4rem);
-        align-items: center;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
-        padding: clamp(1.75rem, 1.25rem + 3vw, 4rem);
-        border-radius: var(--radius-xl);
-        background:
-            radial-gradient(ellipse 70% 90% at 90% 40%, color-mix(in srgb, var(--brand-rose) calc(var(--glow-strength) * 22%), transparent), transparent),
-            var(--surface);
-        overflow: hidden;
+    /* A shelf of product emblems under the header. Scrolls sideways on narrow screens. */
+    .chapter-nav {
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+        overflow-x: auto;
+        scrollbar-width: none;
     }
 
-    .aero-feature-copy {
+    .chapter-list {
+        display: flex;
+        justify-content: center;
+        gap: clamp(0.25rem, 0.1rem + 0.8vw, 1.25rem);
+        width: max-content;
+        min-width: 100%;
+        margin-inline: auto;
+        padding: 1.25rem var(--gutter) 1rem;
+    }
+
+    .chapter-list a {
         display: grid;
-        gap: 1.4rem;
-        justify-items: start;
+        justify-items: center;
+        gap: 0.15rem;
+        width: 6.25rem;
+        padding: 0.25rem;
+        border-radius: var(--radius-sm);
+        color: var(--heading);
+        font-size: var(--text-xs);
+        text-align: center;
+    }
+
+    .chapter-list a:hover {
+        text-decoration: none;
+    }
+
+    .chapter-list a:hover .chapter-name {
+        color: var(--link);
+    }
+
+    .chapter-list .emblem {
+        --emblem-size: 3rem;
+        margin-bottom: 0.45rem;
+        color: #fff;
+        font-size: 1.2rem;
+        box-shadow: none;
+        transition: transform 400ms var(--ease-out);
+    }
+
+    .chapter-list a:hover .emblem {
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .chapter-name {
+        line-height: 1.25;
+    }
+
+    .chapter-family {
+        color: var(--text-muted);
+        font-size: 0.6875rem;
+    }
+
+    .aero {
+        overflow: clip;
+    }
+
+    .aero-copy {
+        display: grid;
+        justify-items: center;
+        gap: 1.25rem;
+        text-align: center;
+    }
+
+    .aero-copy h2 {
+        font-size: var(--text-hero);
+        letter-spacing: -0.038em;
+        line-height: 1;
+    }
+
+    .aero-copy .lead {
+        max-width: 44rem;
+    }
+
+    .aero-shot {
+        max-width: 64rem;
+        margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
     }
 
     .family {

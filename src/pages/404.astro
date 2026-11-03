@@ -1,21 +1,19 @@
 ---
-import Aurora from '../components/Aurora.astro';
 import Button from '../components/Button.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Page Not Found" description="The page you were looking for doesn't exist on the ONIXLabs website. Head back to the home page to keep exploring." path="/404" noindex>
     <section class="not-found">
-        <Aurora />
         <div class="container not-found-inner">
-            <p class="code gradient-text rise" aria-hidden="true">404</p>
+            <p class="code rise" aria-hidden="true">404</p>
             <h1 class="rise rise-2">Yikes! Pretend you didn't see this.</h1>
             <p class="lead rise rise-3">
                 You’ve reached a page that doesn’t exist. It’s kind of like Narnia, but with fewer talking animals and more disappointment.
                 Unless of course, you were looking for a whole lot of nothing, in which case… jackpot!
             </p>
-            <div class="cluster rise rise-4">
-                <Button href="/" variant="primary" size="large" arrow>Begin a new adventure</Button>
-                <Button href="/Documentation/" size="large">Browse the docs</Button>
+            <div class="cluster is-centered rise rise-4">
+                <Button href="/" variant="primary" size="large">Begin a new adventure</Button>
+                <Button href="/Documentation/" variant="link">Browse the docs</Button>
             </div>
         </div>
     </section>
@@ -23,13 +21,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <style>
     .not-found {
-        position: relative;
-        isolation: isolate;
         display: grid;
         align-items: center;
-        min-height: 85svh;
-        padding-block: calc(var(--header-height) + 3rem) 5rem;
-        overflow: hidden;
+        min-height: 80svh;
+        padding-block: 5rem;
         text-align: center;
     }
 
@@ -39,25 +34,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         gap: 1.5rem;
     }
 
+    /* The one splash of the full brand gradient on this page. Decorative; the heading carries the message. */
     .code {
-        font-family: var(--font-display);
-        font-size: clamp(7rem, 4rem + 14vw, 14rem);
-        font-weight: 600;
-        letter-spacing: -0.07em;
-        line-height: 0.9;
+        background: linear-gradient(100deg, var(--brand-amber), var(--brand-rose) 30%, var(--brand-violet) 55%, var(--brand-blue) 75%, var(--brand-teal));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: clamp(8rem, 4rem + 18vw, 17rem);
+        font-weight: 700;
+        letter-spacing: -0.06em;
+        line-height: 0.85;
     }
 
     h1 {
-        max-width: 18ch;
-        font-size: var(--text-4xl);
+        max-width: 16ch;
+        font-size: var(--text-5xl);
     }
 
     .lead {
-        max-width: 40rem;
+        max-width: 38rem;
     }
 
     .cluster {
-        justify-content: center;
-        margin-top: 0.5rem;
+        margin-top: 0.75rem;
     }
 </style>

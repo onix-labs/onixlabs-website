@@ -26,14 +26,14 @@ const services: ReadonlyArray<Principle> = [
         We help startups and enterprises build robust, scalable software, faster. Whether you're launching a product, scaling a system, or
         untangling legacy code, our engineering-first consulting cuts through the noise to deliver real solutions.
         <Fragment slot="actions">
-            <Button href="/Contact?reason=consulting" variant="primary" size="large" icon="paper-plane">Send a message</Button>
-            <Button href="https://calendly.com/matthew-layton/30min" size="large" icon="calendar" external>Book a meeting</Button>
+            <Button href="/Contact?reason=consulting" variant="primary" size="large">Send a message</Button>
+            <Button href="https://calendly.com/matthew-layton/30min" variant="link" external>Book a meeting</Button>
         </Fragment>
     </PageHero>
 
-    <section class="section" aria-labelledby="services">
-        <div class="container">
-            <SectionHeader eyebrow="What we do" title="From architecture" highlight="to implementation." id="services">
+    <section class="section tone-alt" aria-labelledby="services">
+        <div class="container-wide">
+            <SectionHeader eyebrow="What we do" title="From architecture" highlight="to implementation." id="services" centered>
                 We partner with your team across the whole lifecycle to ship software that works.
             </SectionHeader>
             <ol class="grid grid-3 services" role="list">
@@ -44,7 +44,7 @@ const services: ReadonlyArray<Principle> = [
         </div>
     </section>
 
-    <CtaBand title="We're here to help your business thrive." primaryText="Send a message" primaryHref="/Contact?reason=consulting">
+    <CtaBand tone="dark" title="We're here to help your business thrive." primaryText="Send a message" primaryHref="/Contact?reason=consulting">
         Whether you have a question, need a custom solution, or just want to explore what’s possible, we're just a message away. Let's
         start the conversation and see how we can support your goals.
     </CtaBand>
@@ -53,5 +53,11 @@ const services: ReadonlyArray<Principle> = [
 <style>
     .services > li {
         display: grid;
+    }
+
+    .services :global(.icon-chip) {
+        width: 3.25rem;
+        height: 3.25rem;
+        font-size: 1.3rem;
     }
 </style>
