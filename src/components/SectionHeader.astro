@@ -1,6 +1,6 @@
 ---
-// Eyebrow, heading and lead for a section. The page's hero uses level 1; everything else is level 2.
-// `highlight` is appended to the title in brand-gradient text.
+// Eyebrow, headline and lead for a section. `highlight` is appended to the title in grey, giving the two-tone
+// headline used across the site. The page's hero uses level 1; everything else is level 2.
 interface Props {
     readonly eyebrow?: string;
     readonly title: string;
@@ -16,6 +16,6 @@ const Heading: 'h1' | 'h2' = level === 1 ? 'h1' : 'h2';
 ---
 <header class:list={['section-header', { 'is-centered': centered, reveal: level === 2 }, className]}>
     {eyebrow !== undefined && <p class="eyebrow">{eyebrow}</p>}
-    <Heading id={id}>{title}{highlight !== undefined && <Fragment> <span class="gradient-text">{highlight}</span></Fragment>}</Heading>
+    <Heading id={id}>{title}{highlight !== undefined && <Fragment> <span class="headline-muted">{highlight}</span></Fragment>}</Heading>
     {Astro.slots.has('default') && <div class="lead"><slot /></div>}
 </header>

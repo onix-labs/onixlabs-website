@@ -10,7 +10,7 @@ interface Props {
 const { contributor }: Props = Astro.props;
 const { name, jobTitle, teaser, photo, path, gitHubUrl, linkedInUrl }: CollectionEntry<'contributors'>['data'] = contributor.data;
 ---
-<article class="card contributor reveal">
+<article class="tile contributor reveal-scale">
     <div class="contributor-photo">
         <img src={photo} alt={`Portrait of ${name}`} width={640} height={640} loading="lazy" decoding="async" />
     </div>
@@ -39,50 +39,49 @@ const { name, jobTitle, teaser, photo, path, gitHubUrl, linkedInUrl }: Collectio
     .contributor {
         display: flex;
         flex-direction: column;
+        height: 100%;
+        transition: transform 500ms var(--ease-out);
+    }
+
+    .contributor:hover {
+        transform: scale(1.012);
     }
 
     .contributor-photo {
-        position: relative;
         aspect-ratio: 1;
         overflow: hidden;
-    }
-
-    .contributor-photo::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to top, var(--surface) 0%, transparent 45%);
     }
 
     .contributor-photo img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: grayscale(1) contrast(1.05);
-        transform: scale(1.02);
-        transition: filter 600ms var(--ease-out), transform 800ms var(--ease-out);
+        transition: transform 900ms var(--ease-out);
     }
 
-    .contributor:hover .contributor-photo img,
-    .contributor:focus-within .contributor-photo img {
-        filter: grayscale(0);
-        transform: scale(1.06);
+    .contributor:hover .contributor-photo img {
+        transform: scale(1.04);
     }
 
     .contributor-body {
         display: grid;
-        gap: 0.35rem;
-        padding: 0 1.5rem 1.5rem;
-        margin-top: -1rem;
-        position: relative;
+        gap: 0.3rem;
+        padding: 1.5rem 1.5rem 1.6rem;
+    }
+
+    .contributor-body h3 {
+        font-size: var(--text-xl);
     }
 
     .contributor-link {
         color: var(--heading);
+    }
+
+    .contributor-link:hover {
         text-decoration: none;
     }
 
-    /* The whole card is the link target; the social links sit above it. */
+    /* The whole tile is the link target; the social links sit above it. */
     .contributor-link::after {
         content: '';
         position: absolute;
@@ -100,30 +99,25 @@ const { name, jobTitle, teaser, photo, path, gitHubUrl, linkedInUrl }: Collectio
     }
 
     .contributor-role {
-        background: var(--brand-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-family: var(--font-mono);
-        font-size: var(--text-xs);
+        color: var(--text-muted);
+        font-size: var(--text-sm);
         font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        justify-self: start;
     }
 
     .contributor-teaser {
-        margin-top: 0.4rem;
+        margin-top: 0.5rem;
         color: var(--text-muted);
         font-size: var(--text-sm);
+        line-height: 1.55;
     }
 
     .contributor-social {
         position: relative;
         z-index: 2;
         display: flex;
-        gap: 0.4rem;
+        gap: 0.25rem;
         margin-top: 0.75rem;
+        margin-left: -0.5rem;
     }
 
     .contributor-social a {
@@ -131,14 +125,13 @@ const { name, jobTitle, teaser, photo, path, gitHubUrl, linkedInUrl }: Collectio
         place-items: center;
         width: 2.25rem;
         height: 2.25rem;
-        border: 1px solid var(--border);
-        border-radius: 999px;
+        border-radius: 50%;
         color: var(--text-muted);
-        transition: color var(--duration), border-color var(--duration);
+        transition: color var(--duration), background-color var(--duration);
     }
 
     .contributor-social a:hover {
-        border-color: var(--border-strong);
+        background: color-mix(in srgb, var(--heading) 8%, transparent);
         color: var(--heading);
     }
 </style>

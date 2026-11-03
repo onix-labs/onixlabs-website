@@ -2,7 +2,7 @@
 import { splitParagraphs } from '../collections/split-paragraphs';
 import Icon from './Icon.astro';
 
-// A card with an icon chip or a numbered index, a title and one or more paragraphs.
+// A feature tile: an icon or a number, a title and one or more paragraphs.
 interface Props {
     readonly title: string;
     readonly body: string;
@@ -14,47 +14,61 @@ interface Props {
 const { title, body, icon, index, headingLevel = 'h3' }: Props = Astro.props;
 const Heading: 'h3' | 'h4' = headingLevel;
 ---
-<article class="card feature-card reveal">
+<article class="tile feature-card reveal-scale">
     {icon !== undefined && <span class="icon-chip"><Icon name={icon} /></span>}
     {index !== undefined && <span class="feature-index" aria-hidden="true">{String(index).padStart(2, '0')}</span>}
     <Heading class="feature-title">{title}</Heading>
-    {splitParagraphs(body).map((paragraph: string) => <p>{paragraph}</p>)}
+    <div class="feature-body">
+        {splitParagraphs(body).map((paragraph: string) => <p>{paragraph}</p>)}
+    </div>
 </article>
 
 <style>
     .feature-card {
         display: grid;
         align-content: start;
-        gap: 0.85rem;
-        padding: clamp(1.4rem, 1.1rem + 1vw, 1.9rem);
-    }
-
-    .feature-card p {
-        color: var(--text-muted);
-        font-size: var(--text-sm);
-        line-height: 1.7;
+        gap: 0.9rem;
+        height: 100%;
+        padding: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
     }
 
     .feature-title {
-        margin-top: 0.35rem;
-        font-size: var(--text-lg);
+        margin-top: 0.5rem;
+        font-size: var(--text-2xl);
+        letter-spacing: -0.022em;
+    }
+
+    .feature-body {
+        display: grid;
+        gap: 0.85rem;
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        line-height: 1.55;
+    }
+
+    /* On phones, icon tiles tighten up: the icon sits beside the title. */
+    @media (max-width: 39.99rem) {
+        .feature-card:has(.icon-chip) {
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            column-gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .feature-card:has(.icon-chip) .feature-title {
+            margin-top: 0;
+            font-size: var(--text-xl);
+        }
+
+        .feature-card:has(.icon-chip) .feature-body {
+            grid-column: 1 / -1;
+        }
     }
 
     .feature-index {
-        font-family: var(--font-mono);
-        font-size: var(--text-xs);
+        color: var(--text-muted);
+        font-size: var(--text-sm);
         font-weight: 600;
-        letter-spacing: 0.1em;
-        color: var(--text-subtle);
-    }
-
-    .feature-index::after {
-        content: '';
-        display: inline-block;
-        width: 1.5rem;
-        height: 1px;
-        margin-left: 0.6rem;
-        vertical-align: middle;
-        background: var(--brand-gradient);
+        font-variant-numeric: tabular-nums;
     }
 </style>

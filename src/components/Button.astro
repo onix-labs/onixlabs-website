@@ -1,26 +1,31 @@
 ---
 import Icon from './Icon.astro';
 
+// A call to action: a filled pill (primary), an outlined pill (secondary), or a "Learn more ›" text link (link).
 interface Props {
     readonly href: string;
-    readonly variant?: 'primary' | 'secondary';
+    readonly variant?: 'primary' | 'secondary' | 'link';
     readonly size?: 'default' | 'large';
     readonly icon?: string;
-    readonly arrow?: boolean;
     readonly external?: boolean;
     readonly class?: string;
 }
 
-const { href, variant = 'secondary', size = 'default', icon, arrow = false, external = false, class: className = '' }: Props = Astro.props;
+const { href, variant = 'secondary', size = 'default', icon, external = false, class: className = '' }: Props = Astro.props;
+const isLink: boolean = variant === 'link';
 ---
 <a
-    class:list={['button', { 'button-primary': variant === 'primary', 'button-large': size === 'large' }, className]}
+    class:list={[
+        isLink ? 'link-cta' : 'button',
+        { 'button-primary': variant === 'primary', 'button-large': size === 'large' && !isLink },
+        className,
+    ]}
     href={href}
     target={external ? '_blank' : undefined}
     rel={external ? 'noopener noreferrer' : undefined}
 >
     {icon !== undefined && <Icon name={icon} />}
     <span><slot /></span>
-    {arrow && <Icon name="arrow-right" class="icon-arrow" />}
+    {isLink && <Icon name={external ? 'arrow-up-right-from-square' : 'chevron-right'} />}
     {external && <span class="visually-hidden"> (opens in a new tab)</span>}
 </a>

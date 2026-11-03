@@ -1,0 +1,115 @@
+---
+import type { LocalNavLink } from '../config/local-nav-link';
+
+// A product's own navigation bar: its name, a few in-page links and one action. It sticks to the top of the
+// window once the global header has scrolled away. The name isn't a heading; the page's <h1> follows it.
+interface Props {
+    readonly title: string;
+    readonly label: string;
+    readonly links?: ReadonlyArray<LocalNavLink>;
+    readonly actionText: string;
+    readonly actionHref: string;
+    readonly external?: boolean;
+    readonly tone?: 'default' | 'dark';
+}
+
+const { title, label, links = [], actionText, actionHref, external = false, tone = 'default' }: Props = Astro.props;
+---
+<nav class:list={['local-nav', { 'tone-dark': tone === 'dark' }]} aria-label={label}>
+    <div class="local-nav-inner">
+        <a class="local-nav-title" href="#main-content">{title}</a>
+        <ul class="local-nav-links" role="list">
+            {links.map((link: LocalNavLink) => <li><a href={link.href}>{link.label}</a></li>)}
+        </ul>
+        <a
+            class="local-nav-action"
+            href={actionHref}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener noreferrer' : undefined}
+        >
+            {actionText}
+            {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+        </a>
+    </div>
+</nav>
+
+<style>
+    .local-nav {
+        position: sticky;
+        top: 0;
+        z-index: 90;
+        border-bottom: 1px solid var(--border);
+        background: var(--header-bg);
+        color: var(--text);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    .local-nav-inner {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        width: min(100% - 2 * var(--gutter), 64rem);
+        height: var(--local-nav-height);
+        margin-inline: auto;
+    }
+
+    .local-nav-title {
+        margin-right: auto;
+        color: var(--heading);
+        font-size: 1.3125rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .local-nav-title:hover {
+        text-decoration: none;
+    }
+
+    .local-nav-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .local-nav-links a {
+        color: var(--text);
+        font-size: var(--text-xs);
+        opacity: 0.85;
+    }
+
+    .local-nav-links a:hover {
+        color: var(--link);
+        opacity: 1;
+        text-decoration: none;
+    }
+
+    .local-nav-action {
+        flex: none;
+        padding: 0.3rem 0.85rem;
+        border-radius: 999px;
+        background: var(--accent);
+        color: var(--on-accent);
+        font-size: var(--text-xs);
+        line-height: 1.5;
+        white-space: nowrap;
+        transition: background-color var(--duration);
+    }
+
+    .local-nav-action:hover {
+        background: var(--accent-hover);
+        text-decoration: none;
+    }
+
+    @media (max-width: 48rem) {
+        .local-nav-links {
+            display: none;
+        }
+
+        .local-nav-title {
+            font-size: var(--text-lg);
+        }
+    }
+</style>

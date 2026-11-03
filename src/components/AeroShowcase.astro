@@ -1,27 +1,33 @@
 ---
-// The Aero product shot, lit by the turning logo ring.
+// The Aero product shot. On a near-black band (tone="dark") only the dark rendering is used; otherwise the image
+// follows the site theme.
 interface Props {
     readonly eager?: boolean;
+    readonly tone?: 'auto' | 'dark';
+    readonly class?: string;
 }
 
-const { eager = false }: Props = Astro.props;
+const { eager = false, tone = 'auto', class: className = '' }: Props = Astro.props;
+const alt: string = 'The Aero platform running on a laptop (for illustration purposes only)';
 ---
-<div class="showcase">
-    <div class="orb-ring showcase-ring" aria-hidden="true"></div>
+<div class:list={['showcase', className]}>
+    <div class="showcase-glow" aria-hidden="true"></div>
+    {tone === 'auto' && (
+        <img
+            class="showcase-image showcase-light"
+            src="/onixlabs/images/marketing/macbook-pro.webp"
+            alt={alt}
+            width={1400}
+            height={834}
+            loading={eager ? 'eager' : 'lazy'}
+            fetchpriority={eager ? 'high' : 'auto'}
+            decoding="async"
+        />
+    )}
     <img
-        class="showcase-image showcase-light"
-        src="/onixlabs/images/marketing/macbook-pro.webp"
-        alt="The Aero platform running on a laptop (for illustration purposes only)"
-        width={1400}
-        height={834}
-        loading={eager ? 'eager' : 'lazy'}
-        fetchpriority={eager ? 'high' : 'auto'}
-        decoding="async"
-    />
-    <img
-        class="showcase-image showcase-dark"
+        class:list={['showcase-image', { 'showcase-dark': tone === 'auto' }]}
         src="/onixlabs/images/marketing/macbook-pro-dark.webp"
-        alt="The Aero platform running on a laptop (for illustration purposes only)"
+        alt={alt}
         width={1400}
         height={834}
         loading={eager ? 'eager' : 'lazy'}
@@ -39,15 +45,21 @@ const { eager = false }: Props = Astro.props;
         isolation: isolate;
     }
 
-    .showcase-ring {
+    /* A faint wash of the Aero colours beneath the laptop, like light spilling from the screen. */
+    .showcase-glow {
+        position: absolute;
+        inset: 18% 12% 4%;
         z-index: -1;
-        width: 78%;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, color-mix(in srgb, var(--brand-rose) 45%, transparent), color-mix(in srgb, var(--brand-violet) 25%, transparent) 55%, transparent);
+        filter: blur(50px);
+        opacity: 0.55;
     }
 
     .showcase-image {
         position: relative;
         width: 100%;
-        filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.45));
+        filter: drop-shadow(var(--shadow-product));
     }
 
     :global([data-theme='light']) .showcase-dark,

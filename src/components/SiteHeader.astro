@@ -8,7 +8,7 @@ import Icon from './Icon.astro';
 const currentPath: string = Astro.url.pathname;
 ---
 <header class="site-header">
-    <div class="container header-inner">
+    <div class="header-inner">
         <a class="brand" href="/">
             <img class="brand-logo brand-logo-light" src="/onixlabs/images/logo/logo-full-light.webp" alt="ONIXLabs home" width={153} height={29} />
             <img class="brand-logo brand-logo-dark" src="/onixlabs/images/logo/logo-full-dark.webp" alt="ONIXLabs home" width={153} height={29} />
@@ -16,24 +16,20 @@ const currentPath: string = Astro.url.pathname;
 
         <nav class="primary-nav" aria-label="Main">
             <ul role="list">
-                {navigation.map((item: NavigationItem) => {
-                    const isCurrent: boolean = isCurrentPath(item, currentPath);
-                    return (
-                        <li>
-                            <a class="nav-link" href={toCanonicalPath(item.path)} aria-current={isCurrent ? 'page' : undefined}>{item.label}</a>
-                        </li>
-                    );
-                })}
+                {navigation.map((item: NavigationItem) => (
+                    <li>
+                        <a class="nav-link" href={toCanonicalPath(item.path)} aria-current={isCurrentPath(item, currentPath) ? 'page' : undefined}>{item.label}</a>
+                    </li>
+                ))}
             </ul>
         </nav>
 
         <div class="header-actions">
-            <button id="theme-toggle" class="theme-toggle" type="button" role="switch" aria-checked="true" aria-label="Dark mode">
+            <button id="theme-toggle" class="header-icon theme-toggle" type="button" role="switch" aria-checked="true" aria-label="Dark mode">
                 <Icon name="sun" class="theme-icon-sun" />
                 <Icon name="moon" class="theme-icon-moon" />
             </button>
-            <a class="button button-primary header-cta" href="/Contact">Get in touch</a>
-            <button class="menu-button" type="button" popovertarget="mobile-menu" aria-label="Toggle navigation">
+            <button class="header-icon menu-button" type="button" popovertarget="mobile-menu" aria-label="Toggle navigation">
                 <Icon name="bars" />
             </button>
         </div>
@@ -44,10 +40,7 @@ const currentPath: string = Astro.url.pathname;
             <ul role="list">
                 {navigation.map((item: NavigationItem) => (
                     <li>
-                        <a href={toCanonicalPath(item.path)} aria-current={isCurrentPath(item, currentPath) ? 'page' : undefined}>
-                            {item.label}
-                            <Icon name="arrow-right" />
-                        </a>
+                        <a href={toCanonicalPath(item.path)} aria-current={isCurrentPath(item, currentPath) ? 'page' : undefined}>{item.label}</a>
                     </li>
                 ))}
             </ul>
@@ -56,37 +49,47 @@ const currentPath: string = Astro.url.pathname;
 </header>
 
 <style>
+    /* A thin, translucent bar that stays at the top while the page scrolls beneath it. */
     .site-header {
-        position: fixed;
-        inset: 0 0 auto;
+        position: sticky;
+        top: 0;
         z-index: 100;
-        border-bottom: 1px solid transparent;
-        transition: background-color 300ms, border-color 300ms, backdrop-filter 300ms;
+        background: var(--header-bg);
+        color: var(--header-text);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);
     }
 
-    .site-header:global(.is-scrolled) {
-        border-bottom-color: var(--border);
-        background: var(--header-bg);
-        -webkit-backdrop-filter: saturate(160%) blur(16px);
-        backdrop-filter: saturate(160%) blur(16px);
+    /* Pages with a local navigation bar let the global bar scroll away, as the local one takes over. */
+    :global(html:has(.local-nav)) .site-header {
+        position: relative;
     }
 
     .header-inner {
         display: flex;
         align-items: center;
-        gap: 2rem;
+        justify-content: space-between;
+        gap: 1.5rem;
+        width: min(100% - 2 * var(--gutter), 64rem);
         height: var(--header-height);
+        margin-inline: auto;
     }
 
     .brand {
         display: flex;
         flex: none;
-        border-radius: 6px;
+        border-radius: 4px;
+        opacity: 0.92;
+        transition: opacity var(--duration);
+    }
+
+    .brand:hover {
+        opacity: 1;
     }
 
     .brand-logo {
         width: auto;
-        height: 1.8rem;
+        height: 1.05rem;
     }
 
     :global([data-theme='light']) .brand-logo-dark,
@@ -95,71 +98,58 @@ const currentPath: string = Astro.url.pathname;
     }
 
     .primary-nav {
-        margin-left: auto;
+        flex: 1;
+        max-width: 36rem;
     }
 
     .primary-nav ul {
         display: flex;
-        gap: 0.25rem;
+        justify-content: space-between;
     }
 
     .nav-link {
-        position: relative;
         display: block;
-        padding: 0.5rem 0.85rem;
-        border-radius: 999px;
-        color: var(--text-muted);
-        font-size: var(--text-sm);
-        font-weight: 500;
-        text-decoration: none;
-        transition: color var(--duration), background-color var(--duration);
+        padding: 0.35rem 0.5rem;
+        color: var(--header-text);
+        font-size: var(--text-xs);
+        letter-spacing: -0.005em;
+        opacity: 0.8;
+        transition: opacity var(--duration);
     }
 
-    .nav-link:hover {
-        color: var(--heading);
-        background: color-mix(in srgb, var(--text) 6%, transparent);
+    .nav-link:hover,
+    .nav-link[aria-current='page'] {
+        opacity: 1;
+        text-decoration: none;
     }
 
     .nav-link[aria-current='page'] {
-        color: var(--heading);
-    }
-
-    .nav-link[aria-current='page']::after {
-        content: '';
-        position: absolute;
-        inset: auto 0.85rem 0.15rem;
-        height: 2px;
-        border-radius: 2px;
-        background: var(--brand-gradient);
+        font-weight: 600;
     }
 
     .header-actions {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
+        gap: 0.25rem;
     }
 
-    .theme-toggle,
-    .menu-button {
+    .header-icon {
         display: grid;
         place-items: center;
-        width: 2.5rem;
-        height: 2.5rem;
-        border: 1px solid var(--border);
-        border-radius: 999px;
+        width: 2.25rem;
+        height: 2.25rem;
+        border: 0;
+        border-radius: 50%;
         background: transparent;
-        color: var(--text-muted);
-        transition: color var(--duration), border-color var(--duration), transform 500ms var(--ease-out);
+        color: var(--header-text);
+        font-size: 0.875rem;
+        opacity: 0.8;
+        transition: opacity var(--duration), background-color var(--duration);
     }
 
-    .theme-toggle:hover,
-    .menu-button:hover {
-        border-color: var(--border-strong);
-        color: var(--heading);
-    }
-
-    .theme-toggle:active {
-        transform: rotate(45deg);
+    .header-icon:hover {
+        opacity: 1;
+        background: color-mix(in srgb, var(--header-text) 8%, transparent);
     }
 
     .theme-toggle :global(.icon) {
@@ -173,11 +163,6 @@ const currentPath: string = Astro.url.pathname;
         transform: rotate(-90deg) scale(0.5);
     }
 
-    .header-cta {
-        min-height: 2.5rem;
-        padding: 0.55rem 1.05rem;
-    }
-
     .menu-button {
         display: none;
     }
@@ -186,54 +171,55 @@ const currentPath: string = Astro.url.pathname;
         inset: var(--header-height) 0 auto;
         width: 100%;
         max-width: none;
+        min-height: calc(100dvh - var(--header-height));
         margin: 0;
-        padding: 0.75rem var(--gutter) 1.5rem;
+        padding: 1.5rem var(--gutter) 3rem;
         border: 0;
-        border-bottom: 1px solid var(--border);
         background: var(--bg);
         color: var(--text);
-        box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
     }
 
     .mobile-menu::backdrop {
-        background: rgba(0, 0, 0, 0.35);
-        -webkit-backdrop-filter: blur(4px);
-        backdrop-filter: blur(4px);
+        background: transparent;
+    }
+
+    .mobile-menu ul {
+        display: grid;
+        gap: 0.25rem;
     }
 
     .mobile-menu a {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.95rem 0.25rem;
-        border-bottom: 1px solid var(--border);
+        display: block;
+        padding: 0.4rem 0.5rem;
         color: var(--heading);
-        font-family: var(--font-display);
-        font-size: var(--text-xl);
-        font-weight: 500;
-        letter-spacing: -0.02em;
+        font-size: 1.75rem;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+    }
+
+    .mobile-menu a:hover {
         text-decoration: none;
+        color: var(--text-muted);
     }
 
     .mobile-menu a[aria-current='page'] {
-        background: var(--brand-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        color: var(--text-muted);
     }
 
-    .mobile-menu a :global(.icon) {
-        color: var(--text-subtle);
-    }
-
-    @media (max-width: 52rem) {
-        .primary-nav,
-        .header-cta {
-            display: none;
+    @media (prefers-reduced-motion: no-preference) {
+        .mobile-menu:popover-open li {
+            animation: rise 500ms var(--ease-out) both;
         }
 
-        .header-actions {
-            margin-left: auto;
+        .mobile-menu:popover-open li:nth-child(2) { animation-delay: 30ms; }
+        .mobile-menu:popover-open li:nth-child(3) { animation-delay: 60ms; }
+        .mobile-menu:popover-open li:nth-child(4) { animation-delay: 90ms; }
+        .mobile-menu:popover-open li:nth-child(5) { animation-delay: 120ms; }
+    }
+
+    @media (max-width: 48rem) {
+        .primary-nav {
+            display: none;
         }
 
         .menu-button {
