@@ -2,8 +2,8 @@
 
 .prose {
     color: var(--text);
-    font-size: var(--text-lg);
-    line-height: 1.8;
+    font-size: var(--text-base);
+    line-height: 1.7;
 }
 
 .prose > * + * {
@@ -11,9 +11,9 @@
 }
 
 .prose h2 {
-    margin-top: 2.4em;
-    font-size: var(--text-2xl);
-    letter-spacing: -0.03em;
+    margin-top: 2.2em;
+    font-size: var(--text-3xl);
+    letter-spacing: -0.025em;
 }
 
 .prose h3 {
@@ -35,6 +35,7 @@
     color: var(--link);
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--link) 45%, transparent);
+    text-underline-offset: 0.18em;
     transition: text-decoration-color var(--duration);
 }
 
@@ -52,55 +53,32 @@
 }
 
 .prose li::marker {
-    color: var(--text-subtle);
+    color: var(--text-muted);
 }
 
 .prose blockquote {
-    position: relative;
-    padding: 1.1rem 1.4rem;
-    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
     border-radius: var(--radius);
     background: var(--surface);
     color: var(--text-muted);
     font-style: normal;
 }
 
-.prose blockquote::before {
-    content: '';
-    position: absolute;
-    inset: 0.9rem auto 0.9rem 0;
-    width: 3px;
-    border-radius: 0 3px 3px 0;
-    background: var(--brand-gradient);
-}
-
 .prose :not(pre) > code {
     padding: 0.15em 0.4em;
-    border: 1px solid var(--border);
     border-radius: 0.35rem;
-    background: var(--surface-2);
+    background: var(--surface);
     color: var(--heading);
     font-size: 0.85em;
 }
 
 .prose pre {
-    position: relative;
-    padding: 1.25rem 1.4rem;
-    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
     border-radius: var(--radius);
     background: var(--code-bg);
     font-size: 0.82em;
     line-height: 1.7;
     overflow-x: auto;
-}
-
-.prose pre::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto;
-    height: 1px;
-    background: var(--brand-gradient);
-    opacity: 0.5;
 }
 
 .prose pre code {
@@ -128,7 +106,7 @@
 }
 
 .prose th {
-    background: var(--surface-2);
+    background: var(--surface);
     color: var(--heading);
     font-weight: 600;
 }
