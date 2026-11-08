@@ -1,0 +1,219 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import { splitParagraphs } from '../../collections/split-paragraphs';
+import AeroShowcase from '../../components/AeroShowcase.astro';
+import Button from '../../components/Button.astro';
+import FeatureCard from '../../components/FeatureCard.astro';
+import LocalNav from '../../components/LocalNav.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import TalkToUsSection from '../../components/TalkToUsSection.astro';
+import type { LocalNavLink } from '../../config/local-nav-link';
+import { site } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type AeroData = CollectionEntry<'aero'>['data'];
+
+const entry: CollectionEntry<'aero'> | undefined = await getEntry('aero', 'aero');
+
+if (entry === undefined) {
+    throw new Error('src/content/aero.yaml must define an `aero` entry.');
+}
+
+const aero: AeroData = entry.data;
+const localLinks: ReadonlyArray<LocalNavLink> = [
+    { label: 'Why Aero', href: '#founding-principles' },
+    { label: 'Architecture', href: '#aero-architecture' },
+];
+---
+<BaseLayout
+    title="Aero: The Modular .NET Suite for Enterprise Engineering"
+    description="Aero is a modular suite of .NET APIs for fast, scalable enterprise engineering: logging, configuration, data access, secrets, signing and ledgers."
+    path="/Products/Aero"
+    breadcrumbs={[
+        { name: 'Home', path: '/' },
+        { name: 'Products', path: '/Products' },
+        { name: 'Aero', path: '/Products/Aero' },
+    ]}
+    structuredData={[
+        {
+            '@type': 'SoftwareApplication',
+            '@id': `${site.url}/Products/Aero#software`,
+            name: 'Aero',
+            applicationCategory: 'DeveloperApplication',
+            operatingSystem: '.NET',
+            description: 'A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.',
+            url: `${site.url}/Products/Aero`,
+            publisher: { '@id': `${site.url}/#organization` },
+        },
+    ]}
+>
+    <LocalNav title="Aero" label="Aero" links={localLinks} actionText="Request a demo" actionHref="/Contact?reason=aero-demo" tone="dark" />
+
+    <PageHero title="The modular .NET suite for" highlight="enterprise engineering" tone="dark" class="aero-hero">
+        <img slot="before" class="aero-wordmark" src="/onixlabs/images/logo/aero-light.webp" alt="" width={1280} height={640} loading="eager" />
+        <strong>Aero is a modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
+        It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
+        <Fragment slot="actions">
+            <Button href="/Contact?reason=aero-demo" variant="primary" size="large">Request a demo</Button>
+            <Button href="#aero-architecture" variant="link">Explore the architecture</Button>
+        </Fragment>
+    </PageHero>
+
+    <div class="tone-dark aero-stage">
+        <div class="zoom-stage">
+            <div class="zoom-sticky">
+                <div class="container-wide aero-shot settle">
+                    <AeroShowcase tone="dark" eager class="zoom-target" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section tone-alt" aria-labelledby="founding-principles">
+        <div class="container-wide">
+            <SectionHeader eyebrow="Founding principles" title="Why build .NET applications" highlight="with Aero" id="founding-principles" centered>
+                Aero provides a rock-solid foundation for building modern .NET applications. Designed with flexibility and scalability in
+                mind, it helps teams move faster, adopt best practices by default, and build applications that are robust, maintainable,
+                and ready for growth.
+            </SectionHeader>
+            <div class="grid grid-3">
+                {aero.principles.map((principle: AeroData['principles'][number]) => (
+                    <FeatureCard title={principle.title} icon={principle.icon} body={principle.body} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="section architecture" id="aero-architecture" aria-labelledby="aero-architecture-title">
+        <div class="container-wide architecture-grid">
+            <div class="architecture-header">
+                <SectionHeader eyebrow="Aero architecture" title="The building blocks for enterprise-grade" highlight=".NET applications" id="aero-architecture-title">
+                    Aero isn’t just another framework—it's your project's backbone. From APIs to infrastructure, each module is crafted to
+                    solve real-world engineering challenges with clarity, performance, and security in mind.
+                </SectionHeader>
+            </div>
+            <ol class="modules" role="list">
+                {aero.architecture.map((module: AeroData['architecture'][number], index: number) => (
+                    <li class="module reveal">
+                        <span class="module-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                        <h3>{module.title}</h3>
+                        <div class="module-body">
+                            {splitParagraphs(module.body).map((paragraph: string) => <p>{paragraph}</p>)}
+                        </div>
+                    </li>
+                ))}
+            </ol>
+        </div>
+    </section>
+
+    <section class="section tone-dark closing" aria-label="In summary">
+        <p class="container closing-text reveal">
+            Aero gives you more than just utilities—it gives you architecture. With thoughtfully designed APIs, production-ready
+            integrations, and deep flexibility across every layer of the stack, Aero equips .NET teams to deliver faster, scale
+            confidently, and stay maintainable from day one. <strong class="gradient-text">This is modern enterprise development, without the drag.</strong>
+        </p>
+    </section>
+
+    <TalkToUsSection contactHref="/Contact?reason=aero-demo" />
+</BaseLayout>
+
+<style>
+    .aero-hero {
+        padding-bottom: 0;
+    }
+
+    .aero-wordmark {
+        width: min(55vw, 15rem);
+        height: auto;
+        margin-bottom: 0.5rem;
+    }
+
+    .aero-stage {
+        padding-bottom: clamp(4rem, 3rem + 4vw, 7rem);
+        overflow: clip;
+    }
+
+    .aero-shot {
+        max-width: 68rem;
+        padding-top: clamp(3rem, 2rem + 3vw, 5rem);
+    }
+
+    .architecture-grid {
+        display: grid;
+        gap: 1rem 5rem;
+        max-width: 72rem;
+    }
+
+    @media (min-width: 60rem) {
+        .architecture-grid {
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+
+        .architecture-header {
+            position: sticky;
+            top: calc(var(--local-nav-height) + 3rem);
+            align-self: start;
+        }
+    }
+
+    .architecture-header :global(h2) {
+        font-size: var(--text-4xl);
+    }
+
+    .modules {
+        display: grid;
+    }
+
+    .module {
+        display: grid;
+        gap: 0.75rem;
+        padding-block: 2.25rem;
+        border-top: 1px solid var(--border);
+    }
+
+    .module:first-child {
+        padding-top: 0;
+        border-top: 0;
+    }
+
+    .module-index {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .module h3 {
+        font-size: var(--text-3xl);
+        letter-spacing: -0.026em;
+    }
+
+    .module-body {
+        display: grid;
+        gap: 1rem;
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        line-height: 1.6;
+    }
+
+    .closing-text {
+        max-width: 56rem;
+        color: var(--text-muted);
+        font-size: var(--text-3xl);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.25;
+        text-align: center;
+        text-wrap: balance;
+    }
+
+    .closing-text strong {
+        display: block;
+        margin-top: calc(1.5rem - var(--text-bleed));
+        font-size: var(--text-4xl);
+        line-height: 1.1;
+    }
+</style>

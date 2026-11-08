@@ -1,0 +1,95 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { estimateReadingMinutes } from '../collections/estimate-reading-minutes';
+import { formatArticleDate } from '../collections/format-article-date';
+import Icon from './Icon.astro';
+
+// Articles as a list rather than tiles: each row is a link, with its title, what it covers, and when it was published and
+// how long it takes to read. `headingLevel` follows the heading the list sits under.
+interface Props {
+    readonly articles: ReadonlyArray<CollectionEntry<'articles'>>;
+    readonly headingLevel?: 'h3' | 'h4';
+    readonly class?: string;
+}
+
+const { articles, headingLevel = 'h3', class: className = '' }: Props = Astro.props;
+const Heading: 'h3' | 'h4' = headingLevel;
+---
+<ul class:list={['article-list', className]} role="list">
+    {articles.map((article: CollectionEntry<'articles'>) => (
+        <li class="reveal">
+            <a class="article-row" href={article.data.path}>
+                <Heading class="article-row-title">{article.data.title}</Heading>
+                <p class="article-row-summary">{article.data.description}</p>
+                <p class="article-row-meta">
+                    {article.data.published !== undefined && (
+                        <time datetime={article.data.published.toISOString().slice(0, 10)}>{formatArticleDate(article.data.published)}</time>
+                    )}
+                    <span>{estimateReadingMinutes(article.body ?? '')} min read</span>
+                    <span class="article-row-arrow" aria-hidden="true"><Icon name="arrow-right-bold" /></span>
+                </p>
+            </a>
+        </li>
+    ))}
+</ul>
+
+<style>
+    .article-list {
+        display: grid;
+    }
+
+    .article-list li + li {
+        border-top: 1px solid var(--border);
+    }
+
+    .article-row {
+        display: grid;
+        gap: 0.5rem;
+        padding-block: 1.75rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .article-list li:first-child .article-row {
+        padding-top: 0;
+    }
+
+    .article-row:hover {
+        text-decoration: none;
+    }
+
+    .article-row-title {
+        color: var(--heading);
+        font-size: var(--text-2xl);
+        letter-spacing: -0.022em;
+        line-height: 1.2;
+    }
+
+    .article-row-summary {
+        color: var(--text-muted);
+        line-height: 1.55;
+    }
+
+    .article-row-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem 1.25rem;
+        margin-top: 0.25rem;
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .article-row-arrow {
+        display: inline-flex;
+        margin-left: auto;
+        color: var(--heading);
+        font-size: 1.25em;
+        transition: transform var(--duration) var(--ease-out);
+    }
+
+    .article-row:hover .article-row-arrow {
+        transform: translateX(4px);
+    }
+</style>

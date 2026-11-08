@@ -5,6 +5,7 @@ familyName: "Dry"
 order: 3
 path: /archive/Contributors/Adam-Dry
 jobTitle: "Integration Specialist"
+accent: "coral"
 headline: "Integration Specialist"
 teaser: "Expert in secure, scalable architectures, pipelines, and enterprise platforms."
 description: "Adam Dry is an integration specialist at ONIXLabs, behind the infrastructure, CI/CD pipelines and release management of its open-source ecosystem."

@@ -1,0 +1,145 @@
+---
+import { getEntry, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+
+import { estimateReadingMinutes } from '../../../collections/estimate-reading-minutes';
+import { formatArticleDate } from '../../../collections/format-article-date';
+import { loadArticles } from '../../../collections/load-articles';
+import ArticleList from '../../../components/ArticleList.astro';
+import Button from '../../../components/Button.astro';
+import ReadingLayout from '../../../components/ReadingLayout.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
+import { documentationCategories } from '../../../config/documentation-categories';
+import type { DocumentationCategory } from '../../../config/documentation-category';
+import { site } from '../../../config/site';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildTechArticle } from '../../../seo/build-tech-article';
+import type { JsonLdObject } from '../../../seo/json-ld-object';
+import { PageType } from '../../../seo/page-type';
+
+// An article, laid out for reading: a calm header with its category, date, reading time and author, the text in a
+// comfortable column with an outline held beside it, then more to read. The rest of its category comes first, starting
+// with whatever follows it, so a series reads on in order; other articles fill in if its category is short.
+interface Props {
+    readonly article: CollectionEntry<'articles'>;
+    readonly related: ReadonlyArray<CollectionEntry<'articles'>>;
+}
+
+// getStaticPaths is lifted out of the page, so it can only see what it declares itself.
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+    const relatedCount: number = 3;
+    const articles: ReadonlyArray<CollectionEntry<'articles'>> = await loadArticles();
+
+    return articles.map((article: CollectionEntry<'articles'>) => {
+        const [, , category, slug]: ReadonlyArray<string | undefined> = article.data.path.split('/');
+        const siblings: ReadonlyArray<CollectionEntry<'articles'>> = articles.filter(
+            (candidate: CollectionEntry<'articles'>): boolean => candidate.data.category === article.data.category,
+        );
+        const position: number = siblings.indexOf(article);
+        const inCategory: ReadonlyArray<CollectionEntry<'articles'>> = [...siblings.slice(position + 1), ...siblings.slice(0, position)];
+        const elsewhere: ReadonlyArray<CollectionEntry<'articles'>> = articles.filter(
+            (candidate: CollectionEntry<'articles'>): boolean => candidate.data.category !== article.data.category,
+        );
+
+        return { params: { category, article: slug }, props: { article, related: [...inCategory, ...elsewhere].slice(0, relatedCount) } };
+    });
+}
+
+const { article, related }: Props = Astro.props;
+const { Content, headings } = await render(article);
+const category: DocumentationCategory | undefined = documentationCategories.find(
+    (candidate: DocumentationCategory): boolean => candidate.id === article.data.category,
+);
+const author: CollectionEntry<'contributors'> | undefined = article.data.author === undefined ? undefined : await getEntry(article.data.author);
+const readingMinutes: number = estimateReadingMinutes(article.body ?? '');
+const structuredData: ReadonlyArray<JsonLdObject> = [
+    buildTechArticle({
+        title: article.data.title,
+        description: article.data.description,
+        path: article.data.path,
+        section: category?.name ?? 'Documentation',
+        authorName: author?.data.name,
+        authorPath: author?.data.path,
+        published: article.data.published,
+        updated: article.data.updated,
+    }, site),
+];
+---
+<BaseLayout
+    title={article.data.title}
+    description={article.data.description}
+    path={article.data.path}
+    type={PageType.Article}
+    breadcrumbs={[
+        { name: 'Home', path: '/' },
+        { name: 'Documentation', path: '/Documentation' },
+        { name: article.data.title, path: article.data.path },
+    ]}
+    structuredData={structuredData}
+>
+    <ReadingLayout
+        label={category?.name}
+        labelHref={category === undefined ? undefined : `/Documentation/#${category.id}`}
+        title={article.data.title}
+        summary={article.data.description}
+        headings={headings}
+    >
+        <Fragment slot="meta">
+            {author !== undefined && <span>By <a href={author.data.path}>{author.data.name}</a></span>}
+            {article.data.published !== undefined && (
+                <time datetime={article.data.published.toISOString().slice(0, 10)}>{formatArticleDate(article.data.published)}</time>
+            )}
+            <span>{readingMinutes} min read</span>
+        </Fragment>
+        <Content />
+    </ReadingLayout>
+
+    {related.length > 0 && (
+        <section class="section tone-alt" aria-labelledby="keep-reading">
+            <div class="container-wide more-layout">
+                <div class="more-header">
+                    <SectionHeader eyebrow="Keep reading" title="More from" highlight={category?.name ?? 'our documentation'} id="keep-reading" />
+                    <Button href="/Documentation/" variant="ghost" trailingIcon="arrow-right-bold">All documentation</Button>
+                </div>
+                <ArticleList articles={related} />
+            </div>
+        </section>
+    )}
+</BaseLayout>
+
+<style>
+    .more-layout {
+        display: grid;
+        gap: 2.5rem 5rem;
+    }
+
+    @media (min-width: 60rem) {
+        .more-layout {
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            align-items: start;
+        }
+    }
+
+    .more-header {
+        display: grid;
+        gap: 1.5rem;
+        justify-items: start;
+    }
+
+    .more-header :global(.section-header) {
+        margin-bottom: 0;
+    }
+
+    .more-header :global(.section-header h2) {
+        font-size: var(--text-4xl);
+    }
+
+    .more-header :global(.headline-muted) {
+        display: block;
+    }
+
+    .more-header :global(.button-ghost) {
+        padding-inline: 0;
+    }
+</style>

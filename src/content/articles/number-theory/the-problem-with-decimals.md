@@ -2,9 +2,9 @@
 title: "The Problem with Decimals"
 navigationTitle: "The Problem With Decimals"
 description: "Why decimal precision and scale are lost between Java's BigDecimal and JavaScript numbers, and how to preserve them across front-end and back-end systems."
-category: number-theory
-order: 1
-path: /archive/Documentation/Number-Theory/The-Problem-With-Decimals
+category: dotnet
+order: 5
+path: /Documentation/Number-Theory/The-Problem-With-Decimals
 ---
 
 Throughout the course of my career, it has become apparent that there is a recurring challenge faced by developers bridging JavaScript front-end systems with Java back-end systems, particularly concerning the **precision**, and/or **scale** of decimal numbers; for example, a figure precisely defined as `50.00` using Java’s `BigDecimal` data type will be truncated to `50` when represented using JavaScript’s `Number` data type.

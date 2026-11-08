@@ -23,6 +23,12 @@
     --brand-cyan: #1098AD;
     --brand-teal: #07B39B;
     --brand-green: #6FBA82;
+
+    /* ONIXLabs Studio's own semantic colours, which are Bootstrap's, for the Studio page. */
+    --bs-primary: #0d6efd;
+    --bs-success: #198754;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
     --brand-gradient: linear-gradient(90deg, var(--brand-amber), var(--brand-coral), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-cyan), var(--brand-teal), var(--brand-green));
     /* Stops for conic gradients; use as conic-gradient(from var(--angle), var(--brand-conic-stops)) on the element
        itself, so the animated --angle is read there rather than frozen at :root. */
@@ -39,8 +45,8 @@
     --family-dotnet-to: var(--brand-blue);
     --family-corda-from: var(--brand-coral);
     --family-corda-to: var(--brand-rose);
-    --family-kotlin-from: var(--brand-cyan);
-    --family-kotlin-to: var(--brand-blue);
+    --family-kotlin-from: var(--brand-blue);
+    --family-kotlin-to: var(--brand-cyan);
 
     /* Type (Stride): Poppins for all text; a monospace for code and technical labels. */
     --font-display: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -86,6 +92,7 @@
     --container: 72rem;
     --container-wide: 80rem;
     --container-narrow: 43rem;
+    --lead-width: 56rem;                /* Every standfirst: wide enough to breathe, short of an unreadable line. */
     --header-height: 4.5rem;            /* includes 0.5rem of vertical padding above and below the bar's content */
     --local-nav-height: 3.25rem;
 
@@ -130,13 +137,43 @@
     /* The signature raised treatment: a light top edge and a dark bottom edge. */
     --edge-light: #ffffff;
     --edge-dark: #adb5bd;
+    --edge-button: #adb5bd;
 
     /* Text */
     --text: #343a40;
     --heading: #212529;
+    --text-on-bloom: #000000;           /* AA: --heading falls to 4.3:1 on the hero bloom */
     --text-muted: #4f565d;              /* AA: Stride uses #6c757d (3.1:1 on the page) */
     --label: #9c3a24;                   /* AA: brand coral, deepened for the grey page */
     --border: #c3c9cf;
+    --footer-bg: var(--border);
+    --footer-text-muted: #484f56;       /* AA: --text-muted falls to 4.46:1 on the footer */
+    /* Colours as text (Studio's feature labels and headlines): each named colour deepened only as far as it must be to
+       clear 4.5:1 (--ink-*) or 3:1 for large headlines (--ink-*-large) on both bands, with a little headroom for the browser's rounding. AA. */
+    --ink-amber: color-mix(in srgb, var(--brand-amber), #000 44%);
+    --ink-amber-large: color-mix(in srgb, var(--brand-amber), #000 29%);
+    --ink-coral: color-mix(in srgb, var(--brand-coral), #000 37%);
+    --ink-coral-large: color-mix(in srgb, var(--brand-coral), #000 20%);
+    --ink-rose: color-mix(in srgb, var(--brand-rose), #000 30%);
+    --ink-rose-large: color-mix(in srgb, var(--brand-rose), #000 11%);
+    --ink-violet: color-mix(in srgb, var(--brand-violet), #000 23%);
+    --ink-violet-large: color-mix(in srgb, var(--brand-violet), #000 1%);
+    --ink-blue: color-mix(in srgb, var(--brand-blue), #000 17%);
+    --ink-blue-large: var(--brand-blue);
+    --ink-cyan: color-mix(in srgb, var(--brand-cyan), #000 31%);
+    --ink-cyan-large: color-mix(in srgb, var(--brand-cyan), #000 11%);
+    --ink-teal: color-mix(in srgb, var(--brand-teal), #000 40%);
+    --ink-teal-large: color-mix(in srgb, var(--brand-teal), #000 23%);
+    --ink-green: color-mix(in srgb, var(--brand-green), #000 44%);
+    --ink-green-large: color-mix(in srgb, var(--brand-green), #000 28%);
+    --ink-bs-primary: color-mix(in srgb, var(--bs-primary), #000 19%);
+    --ink-bs-primary-large: var(--bs-primary);
+    --ink-bs-success: color-mix(in srgb, var(--bs-success), #000 19%);
+    --ink-bs-success-large: var(--bs-success);
+    --ink-bs-warning: color-mix(in srgb, var(--bs-warning), #000 53%);
+    --ink-bs-warning-large: color-mix(in srgb, var(--bs-warning), #000 40%);
+    --ink-bs-danger: color-mix(in srgb, var(--bs-danger), #000 19%);
+    --ink-bs-danger-large: var(--bs-danger);
     --border-strong: #a7aeb5;
     --link: #212529;
     --link-decoration: rgba(33, 37, 41, 0.4);
@@ -173,6 +210,15 @@
     --header-bg: var(--bg);             /* solid, in the page colour */
     --header-text: #212529;
     --code-bg: #dee2e6;
+    /* Syntax colours, from the brand palette, each deepened only as far as 4.5:1 on --code-bg needs. AA. */
+    --code-keyword: #44629c;            /* blue */
+    --code-string: #ac3859;             /* rose */
+    --code-number: #0b6c7b;             /* cyan */
+    --code-type: #046f60;               /* teal */
+    --code-function: #8d551d;           /* amber */
+    --code-comment: #406c4b;            /* green */
+    --code-operator: var(--text);
+    --code-attribute: #815289;          /* violet */
     --selection: rgba(161, 102, 171, 0.25);
     --glow: 0.3;
     --shadow-tile: var(--shadow-sm);
@@ -195,12 +241,41 @@
 
     --edge-light: rgba(255, 255, 255, 0.08);
     --edge-dark: #000000;
+    --edge-button: #14171a;             /* softer than the surfaces' black edge at a button's size */
 
     --text: #e9ecef;
     --heading: #f8f9fa;
+    --text-on-bloom: #ffffff;           /* AA: --heading falls to 4.3:1 on the hero bloom */
     --text-muted: #b4bbc2;
     --label: #f58a73;                   /* AA: brand coral, lifted for the dark surfaces */
     --border: rgba(0, 0, 0, 0.6);
+    --footer-bg: var(--border);         /* over the page grey, it settles to #0d0f10 */
+    --footer-text-muted: var(--text-muted);
+    /* Colours as text, lifted only as far as they must be to clear 4.5:1, or 3:1 for large headlines, on both bands. AA. */
+    --ink-amber: var(--brand-amber);
+    --ink-amber-large: var(--brand-amber);
+    --ink-coral: var(--brand-coral);
+    --ink-coral-large: var(--brand-coral);
+    --ink-rose: color-mix(in srgb, var(--brand-rose), #fff 4%);
+    --ink-rose-large: var(--brand-rose);
+    --ink-violet: color-mix(in srgb, var(--brand-violet), #fff 14%);
+    --ink-violet-large: var(--brand-violet);
+    --ink-blue: color-mix(in srgb, var(--brand-blue), #fff 19%);
+    --ink-blue-large: var(--brand-blue);
+    --ink-cyan: color-mix(in srgb, var(--brand-cyan), #fff 2%);
+    --ink-cyan-large: var(--brand-cyan);
+    --ink-teal: var(--brand-teal);
+    --ink-teal-large: var(--brand-teal);
+    --ink-green: var(--brand-green);
+    --ink-green-large: var(--brand-green);
+    --ink-bs-primary: color-mix(in srgb, var(--bs-primary), #fff 20%);
+    --ink-bs-primary-large: var(--bs-primary);
+    --ink-bs-success: color-mix(in srgb, var(--bs-success), #fff 18%);
+    --ink-bs-success-large: var(--bs-success);
+    --ink-bs-warning: var(--bs-warning);
+    --ink-bs-warning-large: var(--bs-warning);
+    --ink-bs-danger: color-mix(in srgb, var(--bs-danger), #fff 23%);
+    --ink-bs-danger-large: var(--bs-danger);
     --border-strong: #5c636a;
     --link: #f8f9fa;
     --link-decoration: rgba(248, 249, 250, 0.4);
@@ -234,6 +309,14 @@
     --header-bg: var(--bg);
     --header-text: #f8f9fa;
     --code-bg: #1b1f23;
+    --code-keyword: #6a88c3;            /* blue, lifted. AA */
+    --code-string: var(--brand-rose);
+    --code-number: var(--brand-cyan);
+    --code-type: var(--brand-teal);
+    --code-function: var(--brand-amber);
+    --code-comment: var(--brand-green);
+    --code-operator: var(--text);
+    --code-attribute: #a974b3;          /* violet, lifted. AA */
     --selection: rgba(161, 102, 171, 0.45);
     --glow: 0.45;
     --shadow-tile: var(--shadow-sm);

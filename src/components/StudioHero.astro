@@ -1,119 +1,78 @@
 ---
 import Button from './Button.astro';
-import Icon from './Icon.astro';
+import PlatformDownload from './PlatformDownload.astro';
 import { loadStudioRelease } from '../collections/load-studio-release';
 import type { StudioRelease } from '../collections/studio-release';
+import { studioScreens } from '../config/studio-screens';
 import type { StudioScreen } from './studio-screen';
 
-// The ONIXLabs Studio hero, after the Blazor site's Aero hero: grey at the top, melting into the header, blooming
-// into the full brand spectrum at the bottom. The headline sharpens into place; below it Studio's screens turn in a
-// cover-flow carousel, the current screen in front and its neighbours receding into depth on either side; the
-// actions sit beneath. All CSS: under reduced motion (or without animation support) the carousel holds its first
-// arrangement.
+// The ONIXLabs Studio hero. On load the front window of a showcase drops into place while the headline and standfirst
+// sharpen and rise out from behind it, then the windows waiting behind it fly out to either side. The showcase has one
+// screen front and centre, with two waiting behind it on each side. On each beat the showcase scales up, blurs and
+// fades away while the next screen takes its place, from the left and then from the right, and those behind move up.
+// All CSS, apart from hold-first-showcase-turn.ts: under reduced motion (or without animation support) it holds its first arrangement. The background is grey
+// at the top, melting into the header, and blooms into the full brand spectrum at the bottom.
 //
-// The carousel's order and count are mirrored in the generated CSS (.shot-N, the coverflow keyframes); regenerate
-// both together. Every screenshot is lazy, so the other theme's variant never downloads; the front screen is fetched
-// at high priority and the rest at low.
-//
-// The download button links to the latest release's page; initialise-studio-download.ts swaps in the installer for
-// the visitor's platform from the data-download-* attributes, which are looked up from GitHub at build time.
-const screens: ReadonlyArray<StudioScreen> = [
-    { id: 'mission-control', label: 'Mission Control', icon: 'rocket-launch', alt: 'Mission Control: two agents side by side, one waiting for permission to run a command' },
-    { id: 'agent', label: 'Agents', icon: 'sparkle', alt: 'An agent tab answering a question, with its reasoning shown' },
-    { id: 'workspace-split', label: 'Workbench', icon: 'layout', alt: 'The workbench split into panels: a project explorer, code side by side, and an agent' },
-    { id: 'code', label: 'Code editor', icon: 'code', alt: 'The code editor with a terminal beneath it and an agent alongside' },
-    { id: 'terminal', label: 'Terminals', icon: 'terminal-window', alt: 'A terminal session with an agent working in the same window' },
-    { id: 'version-control', label: 'Source control', icon: 'git-branch', alt: 'Source control: branches, a commit graph and pending changes' },
-    { id: 'history', label: 'History', icon: 'clock-counter-clockwise', alt: 'A file’s history with a side-by-side diff' },
-    { id: 'docker', label: 'Containers', icon: 'shipping-container', alt: 'The container panel listing running containers and images' },
-    { id: 'dbexplorer', label: 'Databases', icon: 'database', alt: 'The database explorer running a query against a table' },
-    { id: 'binedit', label: 'Binary editor', icon: 'binary', alt: 'The binary editor showing a file byte by byte' },
-    { id: 'markdown', label: 'Markdown', icon: 'markdown-logo', alt: 'The Markdown editor previewing a README' },
-    { id: 'workspace', label: 'Workspace', icon: 'squares-four', alt: 'A workspace with the project explorer, editors and an agent' },
-];
+// Every screenshot is lazy, so the other theme's variant never downloads; the first is fetched at high priority and the
+// rest at low.
 const releasesUrl: string = 'https://github.com/onix-labs/onixlabs-studio/releases';
 const release: StudioRelease | undefined = await loadStudioRelease();
-const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
 ---
-<section class="studio-hero" aria-labelledby="studio-title">
+<section class="hero-bloom studio-hero" aria-labelledby="studio-title">
     <div class="studio-copy">
         <h1 id="studio-title" class="display studio-title blur-in">
-            Every tool you need
-            <span class="gradient-text">In one studio</span>
+            Every tool you need{' '}
+            <span class="gradient-text">In one window</span>
         </h1>
-        <p class="lead blur-in blur-in-2">
+        <p class="lead blur-in">
             An agentic development environment, where you and your AI agents work in the same project, the same terminals and
             the same editor. One window replaces an editor, a terminal, a git client and a handful of separate AI chats.
         </p>
     </div>
 
-    <div class="carousel" aria-label="ONIXLabs Studio screens" role="group">
-        <div class="carousel-track">
-            {screens.map((screen: StudioScreen, index: number) => (
-                <figure class={`shot shot-${String(index)}`}>
-                    <img
-                        class="shot-light"
-                        src={`/onixlabs/images/studio/${screen.id}-light-1600.webp`}
-                        srcset={`/onixlabs/images/studio/${screen.id}-light-960.webp 960w, /onixlabs/images/studio/${screen.id}-light-1600.webp 1600w`}
-                        sizes="(min-width: 80rem) 52rem, 70vw"
-                        alt={screen.alt}
-                        width={1600}
-                        height={1039}
-                        loading="lazy"
-                        fetchpriority={index === 0 ? 'high' : 'low'}
-                        decoding="async"
-                    />
-                    <img
-                        class="shot-dark"
-                        src={`/onixlabs/images/studio/${screen.id}-dark-1600.webp`}
-                        srcset={`/onixlabs/images/studio/${screen.id}-dark-960.webp 960w, /onixlabs/images/studio/${screen.id}-dark-1600.webp 1600w`}
-                        sizes="(min-width: 80rem) 52rem, 70vw"
-                        alt={screen.alt}
-                        width={1600}
-                        height={1039}
-                        loading="lazy"
-                        fetchpriority={index === 0 ? 'high' : 'low'}
-                        decoding="async"
-                    />
-                </figure>
-            ))}
-        </div>
+    <div class="showcase" role="group" aria-label="ONIXLabs Studio screens">
+        {studioScreens.map((screen: StudioScreen, index: number) => (
+            <figure class={`shot shot-${String(index)}`}>
+                <img
+                    class="shot-light"
+                    src={`/onixlabs/images/studio/${screen.id}-l.webp`}
+                    alt={screen.alt}
+                    width={1712}
+                    height={1112}
+                    loading="lazy"
+                    fetchpriority={index === 0 ? 'high' : 'low'}
+                    decoding="async"
+                />
+                <img
+                    class="shot-dark"
+                    src={`/onixlabs/images/studio/${screen.id}-d.webp`}
+                    alt={screen.alt}
+                    width={1712}
+                    height={1112}
+                    loading="lazy"
+                    fetchpriority={index === 0 ? 'high' : 'low'}
+                    decoding="async"
+                />
+            </figure>
+        ))}
     </div>
 
-    <div class="cluster is-centered studio-actions">
-        <a
-            class="button button-primary button-large"
-            href={release?.pageUrl ?? releasesUrl}
-            data-studio-download
-            data-download-macos={release?.macOSAppleSilicon}
-            data-download-windows={release?.windows}
-            data-download-linux={release?.linux}
-        >
-            <Icon name="download-simple" />
-            <span data-download-label>Download the beta</span>
-        </a>
-        <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
+    <div class="button-pair studio-actions">
+        <PlatformDownload release={release} releasesUrl={releasesUrl} />
+        <Button href="/Products/Studio" variant="ghost" size="large" trailingIcon="arrow-right-bold">Find out more</Button>
     </div>
 </section>
 
 <style>
-    /*
-     * The bloom: the page grey holds solid behind the headline, then gives way to the full brand spectrum, which is
-     * at full strength along the bottom edge. The spectrum covers only the lower two-thirds, and the fade overlaps
-     * its top edge, so no spectrum sits under the hero's top edge to bleed through where it meets the header.
-     */
     .studio-hero {
-        position: relative;
-        isolation: isolate;
-        overflow: hidden;
         padding-block: clamp(3.5rem, 2.5rem + 5vw, 7rem) clamp(3rem, 2rem + 4vw, 5.5rem);
-        background:
-            linear-gradient(to bottom, var(--bg) 0%, var(--bg) 3%, color-mix(in srgb, var(--bg) 0%, transparent) 100%) bottom / 100% 68% no-repeat,
-            var(--brand-gradient) bottom / 100% 66% no-repeat,
-            var(--bg);
+        overflow: clip;
     }
 
+    /* Above the showcase, so a screen scaling away passes behind the text. */
     .studio-copy {
+        position: relative;
+        z-index: 1;
         display: grid;
         gap: 1.4rem;
         justify-items: center;
@@ -123,6 +82,8 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
     }
 
     .studio-title {
+        --blur-delay: 250ms;
+        --blur-rise: 9rem;
         color: var(--heading);
         font-family: var(--font-display);
         font-weight: 600;
@@ -130,36 +91,37 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
 
     .studio-title .gradient-text {
         display: block;
-        padding-bottom: 0.06em;
     }
 
+    /* The full text colour rather than the muted one: the bloom reaches up behind this. */
     .studio-copy .lead {
-        max-width: 54rem;
+        --blur-delay: 500ms;
+        --blur-rise: 7.5rem;
+        max-width: var(--lead-width);
+        color: var(--text);
     }
 
-    /* The carousel: a 3D stage; each screen moves through the same sequence of positions, offset in time. */
-    .carousel {
-        position: relative;
-        margin: clamp(2.5rem, 2rem + 3vw, 4.5rem) auto 0;
-        width: min(100%, 84rem);
-        perspective: 1800px;
-        perspective-origin: 50% 100%;
-    }
-
-    .carousel-track {
+    .showcase {
         display: grid;
         justify-items: center;
-        align-items: end;
-        transform-style: preserve-3d;
+        align-items: center;
+        margin-top: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+        perspective: 2000px;
+        perspective-origin: 50% 50%;
     }
 
+    /* --side is the side it waits on: -1 left, 1 right. */
     .shot {
+        --side: 1;
         grid-area: 1 / 1;
-        width: min(68%, 54rem);
+        width: min(66%, 56rem);
         margin: 0;
-        transform-origin: 50% 100%;
-        transform-style: preserve-3d;
-        will-change: transform, opacity, filter;
+        transform-origin: 50% 50%;
+        opacity: 0;
+    }
+
+    .shot:nth-child(even) {
+        --side: -1;
     }
 
     .shot img {
@@ -173,65 +135,111 @@ const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
     }
 
     /* The first arrangement, which is also the static fallback. */
-    .shot-0 { transform: translateX(0%) translateZ(0px) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
-    .shot-1 { transform: translateX(44%) translateZ(-280px) rotateY(-20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
-    .shot-2 { transform: translateX(74%) translateZ(-560px) rotateY(-28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
-    .shot-3 { transform: translateX(96%) translateZ(-820px) rotateY(-32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
-    .shot-4 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-    .shot-5 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-    .shot-6 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-    .shot-7 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-    .shot-8 { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-    .shot-9 { transform: translateX(-96%) translateZ(-820px) rotateY(32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
-    .shot-10 { transform: translateX(-74%) translateZ(-560px) rotateY(28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
-    .shot-11 { transform: translateX(-44%) translateZ(-280px) rotateY(20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
-
-    @media (prefers-reduced-motion: no-preference) {
-        .shot {
-            animation: coverflow 48s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
-        }
-
-        .carousel:hover .shot {
-            animation-play-state: paused;
-        }
-
-        .shot-0 { animation-delay: -24s; }
-        .shot-1 { animation-delay: -20s; }
-        .shot-2 { animation-delay: -16s; }
-        .shot-3 { animation-delay: -12s; }
-        .shot-4 { animation-delay: -8s; }
-        .shot-5 { animation-delay: -4s; }
-        .shot-6 { animation-delay: 0s; }
-        .shot-7 { animation-delay: -44s; }
-        .shot-8 { animation-delay: -40s; }
-        .shot-9 { animation-delay: -36s; }
-        .shot-10 { animation-delay: -32s; }
-        .shot-11 { animation-delay: -28s; }
-    }
+    .shot-0 { z-index: 4; transform: translate(0%, 0%) scale(1) rotateY(0deg); opacity: 1; }
+    .shot-1, .shot-2 { z-index: 2; transform: translate(calc(var(--side) * 38%), 0%) scale(0.76) rotateY(calc(var(--side) * -14deg)); opacity: 1; filter: brightness(0.92); }
+    .shot-3, .shot-4 { z-index: 1; transform: translate(calc(var(--side) * 55%), 0%) scale(0.62) rotateY(calc(var(--side) * -14deg)); opacity: 0.8; filter: brightness(0.8); }
 
     .studio-actions {
-        margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+        position: relative;
+        z-index: 1;
+        margin: clamp(2rem, 1.5rem + 2vw, 3rem) auto 0;
+    }
+
+    /* Bare text on the strongest part of the bloom. */
+    .studio-actions :global(.button-ghost) {
+        --button-text: var(--text-on-bloom);
     }
 
     @media (max-width: 40rem) {
         .shot {
-            width: 84%;
+            width: 78%;
         }
     }
 
-    @keyframes coverflow {
-        0.000%, 6.000% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        8.333%, 14.333% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        16.667%, 22.667% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        25.000%, 31.000% { transform: translateX(96%) translateZ(-820px) rotateY(-32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
-        33.333%, 39.333% { transform: translateX(74%) translateZ(-560px) rotateY(-28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
-        41.667%, 47.667% { transform: translateX(44%) translateZ(-280px) rotateY(-20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
-        50.000%, 56.000% { transform: translateX(0%) translateZ(0px) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
-        58.333%, 64.333% { transform: translateX(-44%) translateZ(-280px) rotateY(20deg); opacity: 0.9; filter: blur(0.4px) brightness(0.92); }
-        66.667%, 72.667% { transform: translateX(-74%) translateZ(-560px) rotateY(28deg); opacity: 0.55; filter: blur(1.5px) brightness(0.85); }
-        75.000%, 81.000% { transform: translateX(-96%) translateZ(-820px) rotateY(32deg); opacity: 0; filter: blur(3px) brightness(0.8); }
-        83.333%, 89.333% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        91.667%, 97.667% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
-        100% { transform: translateX(0%) translateZ(-1100px) rotateY(0deg); opacity: 0; filter: blur(4px) brightness(0.8); }
+    /* Three equal buttons need more room than two. */
+    @media (max-width: 68rem) {
+        .studio-actions:has(:global(.platform-download-alternate:not([hidden]))) {
+            grid-auto-flow: row;
+        }
+    }
+
+    /*
+     * Each of the ten screens runs the same fifty-second sequence of ten five-second beats, offset by its place in the
+     * queue: waiting at the back for two beats, at the front for two, showcased for one, then gone for five. Because
+     * screens alternate sides, a side only moves up every other beat. The z-index rises through the showcase beat so
+     * the leaving screen stays above the one arriving.
+     */
+    /*
+     * The entrance: the showcase fades in and pops down into place, then the copy rises out from behind it. The copy
+     * only sits behind the showcase for the entrance, and moves back above it once it has landed. Filled backwards only,
+     * so nothing stays in effect at rest to soften the text.
+     */
+    @media (prefers-reduced-motion: no-preference) {
+        .studio-hero {
+            --entrance-ease: cubic-bezier(0.85, 0, 0.15, 1);        /* A crawl, a rush, then a crawl. */
+        }
+
+        .studio-copy {
+            --blur-duration: 1s;
+            --blur-easing: var(--entrance-ease);
+            animation: copy-behind 1.5s step-end backwards;
+        }
+
+        .showcase {
+            animation: showcase-arrive 1s 250ms var(--entrance-ease) backwards;
+        }
+
+        .studio-actions {
+            animation: actions-arrive 700ms 750ms var(--entrance-ease) backwards;
+        }
+
+        /* The waiting windows fly out from behind the front one once it has landed; `translate` leaves their turn's
+           `transform` alone, and starting at their distance from the middle puts them directly behind it. */
+        .shot {
+            animation: showcase 50s cubic-bezier(0.65, 0, 0.35, 1) infinite both, shot-fly 1.6s var(--entrance-ease) backwards;
+            animation-delay: var(--turn-delay), 1250ms;
+        }
+
+        .shot-0,
+        .shot:nth-child(n + 6) { animation-name: showcase, none; }
+        .shot-1, .shot-2 { --fly-from: -38%; }
+        .shot-3, .shot-4 { --fly-from: -55%; }
+
+        .shot-0 { --turn-delay: -25s; }
+        .shot-1 { --turn-delay: -20s; }
+        .shot-2 { --turn-delay: -15s; }
+        .shot-3 { --turn-delay: -10s; }
+        .shot-4 { --turn-delay: -5s; }
+        .shot-5 { --turn-delay: 0s; }
+        .shot-6 { --turn-delay: -45s; }
+        .shot-7 { --turn-delay: -40s; }
+        .shot-8 { --turn-delay: -35s; }
+        .shot-9 { --turn-delay: -30s; }
+    }
+
+    @keyframes copy-behind {
+        from { z-index: -1; }
+    }
+
+    @keyframes showcase-arrive {
+        from { opacity: 0; transform: translateY(-6rem) scale(1.03); }
+    }
+
+    @keyframes shot-fly {
+        from { translate: calc(var(--side) * var(--fly-from)) 0; visibility: hidden; }
+    }
+
+    @keyframes actions-arrive {
+        from { opacity: 0; }
+    }
+
+    @keyframes showcase {
+        0%, 7.2% { z-index: 1; transform: translate(calc(var(--side) * 64%), 0%) scale(0.5) rotateY(calc(var(--side) * -14deg)); opacity: 0; filter: blur(0px) brightness(0.8); }
+        10%, 27.2% { z-index: 1; transform: translate(calc(var(--side) * 55%), 0%) scale(0.62) rotateY(calc(var(--side) * -14deg)); opacity: 0.8; filter: blur(0px) brightness(0.8); }
+        30%, 47.2% { z-index: 2; transform: translate(calc(var(--side) * 38%), 0%) scale(0.76) rotateY(calc(var(--side) * -14deg)); opacity: 1; filter: blur(0px) brightness(0.92); }
+        50% { z-index: 4; transform: translate(0%, 0%) scale(1) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
+        57.2% { z-index: 6; transform: translate(0%, 0%) scale(1) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
+        60% { z-index: 6; transform: translate(0%, 0%) scale(1.24) rotateY(0deg); opacity: 0; filter: blur(18px) brightness(1); }
+        60.1%, 100% { z-index: 1; transform: translate(calc(var(--side) * 64%), 0%) scale(0.5) rotateY(calc(var(--side) * -14deg)); opacity: 0; filter: blur(0px) brightness(0.8); }
     }
 </style>

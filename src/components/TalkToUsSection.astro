@@ -1,0 +1,63 @@
+---
+import Button from './Button.astro';
+import GlassIcon from './GlassIcon.astro';
+import SectionHeader from './SectionHeader.astro';
+
+// The closing section of most pages, flat in its band: the invitation on the left, the envelope on the right. On phones they
+// stack. `contactHref` points "Send a message" at a prefilled contact form.
+interface Props {
+    readonly alternate?: boolean;
+    readonly contactHref?: string;
+}
+
+const { alternate = false, contactHref = '/Contact' }: Props = Astro.props;
+const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
+---
+<section class:list={['section talk', { 'tone-alt': alternate }]} aria-labelledby="talk-to-us">
+    <div class="container-wide talk-layout">
+        <div class="talk-content">
+            <SectionHeader title="Talk to us" id="talk-to-us">
+                Whether you have a question, need a custom solution, or just want to explore what's possible, we're just a message away.
+            </SectionHeader>
+            <div class="button-pair">
+                <Button href={contactHref} variant="primary" size="large" icon="paper-plane-tilt">Send a message</Button>
+                <Button href={calendlyUrl} size="large" icon="calendar-blank" external>Book a meeting</Button>
+            </div>
+        </div>
+        <GlassIcon name="envelope" size={420} class="talk-icon" />
+    </div>
+</section>
+
+<style>
+    .talk-layout {
+        display: grid;
+        gap: 2.5rem;
+        align-items: center;
+    }
+
+    .talk-content {
+        display: grid;
+        gap: 2rem;
+    }
+
+    .talk-content :global(.section-header) {
+        max-width: none;
+        margin-bottom: 0;
+    }
+
+    .talk-layout :global(.talk-icon) {
+        justify-self: center;
+        width: min(100%, 16rem);
+    }
+
+    @media (min-width: 60rem) {
+        .talk-layout {
+            grid-template-columns: 3fr 2fr;
+            gap: 4rem;
+        }
+
+        .talk-layout :global(.talk-icon) {
+            width: min(100%, 22rem);
+        }
+    }
+</style>

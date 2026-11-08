@@ -1,22 +1,24 @@
 ---
-// The top of every inner page: an eyebrow, the page's <h1> (with an optional second phrase in grey), a lead, actions,
-// and optional media shown large beneath the copy, the way a product is the hero of the page.
+// The top of every inner page: an eyebrow, the page's <h1> (with an optional second phrase in grey or the gradient, on
+// its own line when it's the gradient), a lead, actions, and optional media shown large beneath the copy, the way a
+// product is the hero of the page.
 interface Props {
     readonly eyebrow?: string;
     readonly title: string;
     readonly highlight?: string;
+    readonly highlightStyle?: 'muted' | 'gradient';
     readonly tone?: 'default' | 'alt' | 'dark';
     readonly align?: 'center' | 'start';
     readonly class?: string;
 }
 
-const { eyebrow, title, highlight, tone = 'default', align = 'center', class: className = '' }: Props = Astro.props;
+const { eyebrow, title, highlight, highlightStyle = 'muted', tone = 'default', align = 'center', class: className = '' }: Props = Astro.props;
 ---
 <section class:list={['page-hero', `align-${align}`, { 'tone-alt': tone === 'alt', 'tone-dark': tone === 'dark', 'has-media': Astro.slots.has('media') }, className]}>
     <div class="container page-hero-copy recede">
         {Astro.slots.has('before') && <div class="rise"><slot name="before" /></div>}
         {eyebrow !== undefined && <p class="eyebrow rise">{eyebrow}</p>}
-        <h1 class="rise">{title}{highlight !== undefined && <Fragment> <span class="headline-muted">{highlight}</span></Fragment>}</h1>
+        <h1 class="rise">{title}{highlight !== undefined && <Fragment> <span class={highlightStyle === 'gradient' ? 'gradient-text' : 'headline-muted'}>{highlight}</span></Fragment>}</h1>
         {Astro.slots.has('default') && <div class="lead page-hero-lead rise rise-2"><slot /></div>}
         {Astro.slots.has('actions') && <div class="cluster page-hero-actions rise rise-3"><slot name="actions" /></div>}
     </div>
@@ -35,7 +37,10 @@ const { eyebrow, title, highlight, tone = 'default', align = 'center', class: cl
         background: var(--bg-alt);
     }
 
+    /* Above the media, so anything spilling from it passes behind the actions. */
     .page-hero-copy {
+        position: relative;
+        z-index: 1;
         display: grid;
         gap: 1.25rem;
     }
@@ -52,8 +57,16 @@ const { eyebrow, title, highlight, tone = 'default', align = 'center', class: cl
         line-height: 1.02;
     }
 
+    .page-hero h1 :global(.gradient-text) {
+        display: block;
+    }
+
+    .page-hero h1:has(:global(.gradient-text)) {
+        max-width: none;
+    }
+
     .page-hero-lead {
-        max-width: 42rem;
+        max-width: var(--lead-width);
         margin-top: 0.5rem;
     }
 

@@ -85,6 +85,71 @@
     color: var(--text);
 }
 
+/* Syntax highlighting: Prism's token classes, in the --code-* colours. */
+.prose .token.comment,
+.prose .token.prolog,
+.prose .token.doctype,
+.prose .token.cdata {
+    color: var(--code-comment);
+    font-style: italic;
+}
+
+.prose .token.keyword,
+.prose .token.boolean,
+.prose .token.null,
+.prose .token.important,
+.prose .token.atrule {
+    color: var(--code-keyword);
+}
+
+.prose .token.string,
+.prose .token.char,
+.prose .token.template-string,
+.prose .token.regex,
+.prose .token.interpolation-punctuation {
+    color: var(--code-string);
+}
+
+.prose .token.number,
+.prose .token.constant,
+.prose .token.symbol {
+    color: var(--code-number);
+}
+
+.prose .token.class-name,
+.prose .token.builtin,
+.prose .token.type-expression,
+.prose .token.namespace {
+    color: var(--code-type);
+}
+
+.prose .token.function,
+.prose .token.method {
+    color: var(--code-function);
+}
+
+.prose .token.operator,
+.prose .token.entity {
+    color: var(--code-operator);
+}
+
+.prose .token.attribute,
+.prose .token.attr-name,
+.prose .token.annotation,
+.prose .token.property,
+.prose .token.tag {
+    color: var(--code-attribute);
+}
+
+.prose .token.punctuation {
+    color: var(--text-muted);
+}
+
+/* The namespace in a using directive reads as plain text. */
+.prose .token.namespace .token.punctuation {
+    color: inherit;
+}
+
 .prose .table-responsive {
     border: 1px solid var(--border);
     border-radius: var(--radius);

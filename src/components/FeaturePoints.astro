@@ -1,0 +1,46 @@
+---
+// The list of points that explain a feature: a heading and a short description for each.
+interface Point {
+    readonly title: string;
+    readonly body: string;
+}
+
+interface Props {
+    readonly points: ReadonlyArray<Point>;
+    readonly class?: string;
+}
+
+const { points, class: className = '' }: Props = Astro.props;
+---
+<ul class:list={['feature-point-list', className]} role="list">
+    {points.map((point: Point) => (
+        <li class="feature-point">
+            <h3>{point.title}</h3>
+            <p>{point.body}</p>
+        </li>
+    ))}
+</ul>
+
+<style>
+    .feature-point-list {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .feature-point {
+        display: grid;
+        align-content: start;
+        gap: 0.25rem;
+    }
+
+    .feature-point h3 {
+        font-size: var(--text-lg);
+        line-height: 1.75rem;
+    }
+
+    .feature-point p {
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        line-height: 1.55;
+    }
+</style>

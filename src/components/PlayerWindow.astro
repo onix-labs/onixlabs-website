@@ -1,0 +1,352 @@
+---
+import Icon from './Icon.astro';
+
+// A replica of ONIXPlayer's main window built in HTML and CSS rather than a screenshot, in a glass macOS window,
+// playing real visualization footage. It follows the app's layout (src/angular/components/layout in the onixlabs-media-
+// player repository), with its playlist closed, and uses the same Font Awesome icons, as fa-*.svg in src/icons.
+// Everything inside is scaled in em from the window's font size, which follows the width of the container, and nothing
+// is interactive, so it's one image to assistive technology. The glass is plain translucency over light that's already
+// blurred: a backdrop-filter here halves the frame rate.
+---
+<div class="player-window" role="img" aria-label="The ONIXPlayer window playing a track, with a real-time visualization filling the screen">
+    <div class="player-header" aria-hidden="true">
+        <span class="round traffic-light close"></span>
+        <span class="round traffic-light minimize"></span>
+        <span class="round traffic-light zoom"></span>
+    </div>
+
+    <div class="player-outlet" aria-hidden="true">
+        <div class="player-container">
+            <div class="player-media">
+                <img src="/onixlabs/images/marketing/onixplayer-visualization.webp" alt="" width={960} height={540} decoding="async" />
+                <video width={960} height={540} autoplay muted loop playsinline>
+                    <source src="/onixlabs/video/onixplayer-visualizations.mp4" type="video/mp4" media="(prefers-reduced-motion: no-preference)" />
+                </video>
+            </div>
+            <div class="media-bar">
+                <span class="media-select">Plasma <Icon name="caret-up-down-fill" /></span>
+                <span class="media-select">Flat <Icon name="caret-up-down-fill" /></span>
+                <span class="media-toggle"><Icon name="fa-list" /></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="player-controls" aria-hidden="true">
+        <div class="seek-bar">
+            <span class="time time-current">0:57</span>
+            <span class="round seek-track"><span class="round seek-value"></span></span>
+            <span class="time">1:55</span>
+        </div>
+        <div class="control-groups">
+            <div class="control-group"></div>
+            <div class="control-group control-center">
+                <div class="button-group group-small">
+                    <span class="control"><Icon name="fa-eject" /></span>
+                    <span class="control"><Icon name="fa-link" /></span>
+                    <span class="control"><Icon name="fa-shuffle" /></span>
+                    <span class="control active"><Icon name="fa-repeat" /></span>
+                </div>
+                <div class="button-group group-large">
+                    <span class="control"><Icon name="fa-backward-step" /></span>
+                    <span class="control"><Icon name="fa-pause" /></span>
+                    <span class="control"><Icon name="fa-forward-step" /></span>
+                </div>
+                <div class="button-group group-small">
+                    <span class="control"><Icon name="fa-volume-high" /></span>
+                    <span class="control volume"><span class="round volume-track"><span class="round volume-value"></span><span class="round volume-thumb"></span></span></span>
+                </div>
+            </div>
+            <div class="control-group control-right">
+                <div class="button-group group-small">
+                    <span class="control"><Icon name="fa-tv" /></span>
+                    <span class="control"><Icon name="fa-picture-in-picture" /></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .player-window {
+        --window-text: rgba(255, 255, 255, 0.75);
+        --window-text-muted: rgba(255, 255, 255, 0.6);
+        --window-edge: rgba(255, 255, 255, 0.15);
+        --glass-button: linear-gradient(to bottom, rgba(242, 246, 248, 0.25) 0%, rgba(216, 225, 231, 0.25) 50%, rgba(181, 198, 208, 0.25) 51%, rgba(224, 239, 249, 0.25) 100%);
+        --player-blue: linear-gradient(to bottom, #6db3f2 0%, #1e69de 100%);
+        --player-green: #4ade80;
+        position: relative;
+        display: grid;
+        grid-template-rows: auto auto auto;
+        width: 100%;
+        border-radius: 1.1em;
+        background: color-mix(in srgb, var(--surface) 42%, transparent);
+        box-shadow:
+            0 0 0 1px rgba(0, 0, 0, 0.35),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+            0 0.75em 1.5em rgba(0, 0, 0, 0.3),
+            0 2em 4em -0.5em rgba(0, 0, 0, 0.5),
+            0 4.5em 8em -1em rgba(0, 0, 0, 0.55);
+        color: var(--window-text);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', var(--font-sans);
+        font-size: clamp(0.5rem, 2.08cqw, 0.95rem);
+        line-height: 1.25;
+        overflow: hidden;
+        user-select: none;
+    }
+
+    :global([data-theme='light']) .player-window {
+        --window-text: rgba(0, 0, 0, 0.75);
+        --window-text-muted: rgba(0, 0, 0, 0.6);
+        --window-edge: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Font Awesome's fixed-width box. */
+    .player-window :global(.icon) {
+        width: 1.25em;
+        height: 1em;
+    }
+
+    .player-header {
+        display: flex;
+        gap: 0.5em;
+        align-items: center;
+        height: 2.375em;
+        padding-inline: 0.8em;
+    }
+
+    .traffic-light {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.18);
+    }
+
+    .close { background: #ff5f57; }
+    .minimize { background: #febc2e; }
+    .zoom { background: #28c840; }
+
+    .player-outlet {
+        display: flex;
+        min-height: 0;
+        padding: 1px 0.5em;
+    }
+
+    .player-container {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-width: 0;
+        border: 1px solid #000;
+        border-radius: 3px;
+        outline: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(0, 0, 0, 0.9);
+        overflow: hidden;
+    }
+
+    .player-media {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        background: #000;
+    }
+
+    .player-media img,
+    .player-media video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .media-bar {
+        display: flex;
+        gap: 0.25em;
+        align-items: center;
+        padding: 0.25em;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .media-select {
+        display: inline-flex;
+        gap: 0.4em;
+        align-items: center;
+        padding: 0.3em 0.6em;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.75em;
+    }
+
+    .media-toggle {
+        display: flex;
+        margin-left: auto;
+        padding: 0.25em;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .player-controls {
+        display: grid;
+        gap: 1em;
+        padding: 0.5em 0.5em 1em;
+    }
+
+    .seek-bar {
+        display: flex;
+        gap: 0.75em;
+        align-items: center;
+    }
+
+    .time {
+        min-width: 3.3em;
+        color: var(--window-text-muted);
+        font-size: 0.75em;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .time-current {
+        text-align: right;
+    }
+
+    .seek-track {
+        display: flex;
+        flex: 1;
+        height: 0.5em;
+        border: 1px solid rgba(0, 0, 0, 0.75);
+        border-radius: 999px;
+        outline: 1px solid var(--window-edge);
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .seek-value {
+        width: 50%;
+        border-radius: 999px;
+        background: var(--player-blue);
+        box-shadow: 0 0 8px 1px #1e69de;
+    }
+
+    .control-groups {
+        display: flex;
+        padding-inline: 0.75em;
+    }
+
+    .control-group {
+        display: flex;
+        flex: 1;
+        align-items: center;
+    }
+
+    .control-center {
+        flex: none;
+        gap: 1.5em;
+    }
+
+    .control-right {
+        justify-content: right;
+    }
+
+    .button-group {
+        display: flex;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 0.75em;
+        outline: 1px solid var(--window-edge);
+        overflow: hidden;
+    }
+
+    .control {
+        display: grid;
+        place-items: center;
+        border-right: 1px solid rgba(0, 0, 0, 0.3);
+        border-left: 1px solid var(--window-edge);
+        background: var(--glass-button);
+        color: var(--window-text);
+    }
+
+    .control:first-child {
+        border-left: 0;
+    }
+
+    .control:last-child {
+        border-right: 0;
+    }
+
+    .control.active {
+        background: linear-gradient(to bottom, rgba(109, 179, 242, 0.75) 0%, rgba(84, 163, 238, 0.75) 50%, rgba(54, 144, 240, 0.75) 51%, rgba(30, 105, 222, 0.75) 100%);
+        color: #fff;
+    }
+
+    .group-small .control {
+        width: 2em;
+        height: 2em;
+    }
+
+    .group-small .control :global(.icon) {
+        font-size: 0.8em;
+    }
+
+    .group-large .control {
+        width: 3.5em;
+        height: 3.5em;
+    }
+
+    /* Sized so this group matches the width of the four buttons on the other side, keeping the transport centred. */
+    .group-small .volume {
+        width: 6em;
+        border: 0;
+    }
+
+    .control:has(+ .volume) {
+        border-right: 0;
+    }
+
+    .volume-track {
+        position: relative;
+        display: flex;
+        width: 4em;
+        height: 0.5em;
+        border: 1px solid rgba(0, 0, 0, 0.75);
+        border-radius: 999px;
+        outline: 1px solid var(--window-edge);
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .volume-value {
+        width: 70%;
+        border-radius: 999px;
+        background: var(--player-blue);
+    }
+
+    .volume-thumb {
+        position: absolute;
+        top: 50%;
+        left: 70%;
+        box-sizing: content-box;
+        width: 0.6em;
+        height: 0.6em;
+        border: 1px solid #6db3f2;
+        border-radius: 50%;
+        outline: 1px solid rgba(0, 0, 0, 0.75);
+        background: var(--player-blue);
+        transform: translate(-50%, -50%);
+    }
+
+    /* Too small for every control: the transport stays. */
+    @media (max-width: 40rem) {
+        .control-group:not(.control-center),
+        .group-small {
+            display: none;
+        }
+
+        .control-center {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .player-media video {
+            display: none;
+        }
+    }
+</style>

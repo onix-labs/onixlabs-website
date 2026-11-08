@@ -5,8 +5,14 @@ interface Props {
     readonly technologies: ReadonlyArray<CollectionEntry<'technologies'>>;
 }
 
+// The logos magnify and take on their colour as they pass the middle, like the macOS Dock, then do the opposite on the
+// way out. Transforms don't register with view timelines, so instead every logo gets an equal slot and the loop is
+// anchored on the middle: each logo's arrival there is then a fixed fraction of the loop, which its own animation is
+// delayed to match. The real list is the middle of three copies, so the row always reaches both edges. The CSS mirrors
+// the number of technologies (--count, the --i rules): change them together.
+//
 const { technologies }: Props = Astro.props;
-const copies: ReadonlyArray<boolean> = [false, true];
+const copies: ReadonlyArray<boolean> = [true, false, true];
 ---
 <div class="marquee" role="region" aria-label="Technologies we work with">
     {copies.map((isCopy: boolean) => (
@@ -14,7 +20,10 @@ const copies: ReadonlyArray<boolean> = [false, true];
             {technologies.map((technology: CollectionEntry<'technologies'>) => (
                 <li>
                     <a class="technology" href={technology.data.url} target="_blank" rel="noopener noreferrer" tabindex={isCopy ? -1 : undefined}>
-                        <img src={technology.data.image} alt="" width={40} height={40} loading="lazy" decoding="async" />
+                        <span class="technology-icon">
+                            <img class="technology-aura" src={technology.data.image} alt="" width={40} height={40} loading="lazy" decoding="async" />
+                            <img class="technology-logo" src={technology.data.image} alt="" width={40} height={40} loading="lazy" decoding="async" />
+                        </span>
                         <span>{technology.data.title}</span>
                         <span class="visually-hidden"> (opens in a new tab)</span>
                     </a>
@@ -25,27 +34,59 @@ const copies: ReadonlyArray<boolean> = [false, true];
 </div>
 
 <style>
+    .marquee {
+        --marquee-gap: 0rem;
+        --slot: 9rem;
+        --count: 18;
+        --marquee-loop: 60s;
+    }
+
+    li {
+        flex: none;
+        width: var(--slot);
+    }
+
     .technology {
         display: flex;
+        flex-direction: column;
         align-items: center;
         gap: 0.75rem;
         color: var(--text-muted);
         font-family: var(--font-display);
-        font-size: var(--text-lg);
+        font-size: var(--text-sm);
         font-weight: 500;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.01em;
         text-decoration: none;
         white-space: nowrap;
-        transition: color var(--duration);
+        transition: color var(--transition);
     }
 
-    .technology img {
-        width: 2.25rem;
-        height: 2.25rem;
-        border-radius: 0.55rem;
-        filter: grayscale(1);
-        opacity: 0.7;
-        transition: filter 400ms, opacity 400ms, transform 400ms var(--ease-out);
+    .technology-icon {
+        position: relative;
+        display: grid;
+    }
+
+    .technology-icon img {
+        grid-area: 1 / 1;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 0.6rem;
+        transform-origin: 50% 100%;
+    }
+
+    .technology-logo {
+        position: relative;
+    }
+
+    /* A blurred, saturated copy of the logo that only shows while the logo is magnified. */
+    .technology-aura {
+        opacity: 0;
+        filter: blur(1rem) saturate(1.8);
+        pointer-events: none;
+    }
+
+    :global([data-theme='dark']) .technology-aura {
+        filter: blur(1rem) saturate(1.5);
     }
 
     .technology:hover,
@@ -53,10 +94,135 @@ const copies: ReadonlyArray<boolean> = [false, true];
         color: var(--heading);
     }
 
-    .technology:hover img,
-    .technology:focus-visible img {
-        filter: none;
-        opacity: 1;
-        transform: scale(1.1) rotate(-4deg);
+    @media (max-width: 40rem) {
+        .marquee {
+            --slot: 7rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        /* The padding is room for the magnified logos and their glow; the margins keep it out of the layout. */
+        .marquee {
+            padding-block: 10rem 4rem;
+            margin-block: -6rem -4rem;
+        }
+
+        .marquee-track {
+            animation-duration: var(--marquee-loop);
+        }
+
+        .marquee-track:first-child {
+            margin-left: calc(50% - var(--count) * var(--slot));
+        }
+
+        .technology-icon img {
+            animation: dock var(--marquee-loop) ease-in-out infinite;
+            animation-delay: calc(((var(--i) + 0.5) / var(--count) - 1.5) * var(--marquee-loop));
+        }
+
+        .technology-icon .technology-aura {
+            animation-name: dock-aura;
+        }
+
+        .marquee:hover .technology img,
+        .marquee:focus-within .technology img {
+            animation-play-state: paused;
+        }
+
+        .technology:hover .technology-logo,
+        .technology:focus-visible .technology-logo {
+            opacity: 1 !important;
+            filter: none !important;
+        }
+
+        li:nth-child(1) { --i: 0; }
+        li:nth-child(2) { --i: 1; }
+        li:nth-child(3) { --i: 2; }
+        li:nth-child(4) { --i: 3; }
+        li:nth-child(5) { --i: 4; }
+        li:nth-child(6) { --i: 5; }
+        li:nth-child(7) { --i: 6; }
+        li:nth-child(8) { --i: 7; }
+        li:nth-child(9) { --i: 8; }
+        li:nth-child(10) { --i: 9; }
+        li:nth-child(11) { --i: 10; }
+        li:nth-child(12) { --i: 11; }
+        li:nth-child(13) { --i: 12; }
+        li:nth-child(14) { --i: 13; }
+        li:nth-child(15) { --i: 14; }
+        li:nth-child(16) { --i: 15; }
+        li:nth-child(17) { --i: 16; }
+        li:nth-child(18) { --i: 17; }
+    }
+
+    /* Without motion the logos wrap into rows, in colour. */
+    @media (prefers-reduced-motion: reduce) {
+        .marquee-track {
+            row-gap: 2rem;
+        }
+    }
+
+    /* A phone's width is less than the full approach, so the logos there change over a shorter stretch. */
+    @media (prefers-reduced-motion: no-preference) and (max-width: 40rem) {
+        .technology-icon .technology-logo {
+            animation-name: dock-narrow;
+        }
+
+        .technology-icon .technology-aura {
+            animation-name: dock-aura-narrow;
+        }
+    }
+
+    /* Out at the edges for most of the loop; the middle third is the approach, the peak and the way out. */
+    @keyframes dock {
+        0%, 33.3%, 66.7%, 100% {
+            opacity: 0.65;
+            filter: grayscale(1);
+            scale: 1;
+        }
+
+        50% {
+            opacity: 1;
+            filter: grayscale(0);
+            scale: 2.2;
+        }
+    }
+
+    @keyframes dock-aura {
+        0%, 33.3%, 66.7%, 100% {
+            opacity: 0;
+            scale: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+            scale: 2.6;
+        }
+    }
+
+    @keyframes dock-aura-narrow {
+        0%, 41.7%, 58.3%, 100% {
+            opacity: 0;
+            scale: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+            scale: 2.6;
+        }
+    }
+
+    @keyframes dock-narrow {
+        0%, 41.7%, 58.3%, 100% {
+            opacity: 0.65;
+            filter: grayscale(1);
+            scale: 1;
+        }
+
+        50% {
+            opacity: 1;
+            filter: grayscale(0);
+            scale: 2.2;
+        }
     }
 </style>

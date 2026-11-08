@@ -1,0 +1,39 @@
+---
+import PlatformDownload from './PlatformDownload.astro';
+import PlayerWindow from './PlayerWindow.astro';
+import SectionHeader from './SectionHeader.astro';
+import { loadPlayerRelease } from '../collections/load-player-release';
+import type { PlayerRelease } from '../collections/player-release';
+
+// The ONIXPlayer hero: its pitch, a replica of its window, and the download for the visitor's platform.
+const releasesUrl: string = 'https://github.com/onix-labs/onixlabs-media-player/releases';
+const release: PlayerRelease | undefined = await loadPlayerRelease();
+---
+<section class="section player-hero" aria-labelledby="onixplayer">
+    <div class="container-wide product-split">
+        <div class="product-split-content">
+            <SectionHeader title="ONIXPlayer" highlight="Entertainment everywhere" highlightStyle="gradient" id="onixplayer">
+                A beautiful, feature-rich media player for macOS, Windows and Linux, with 17 real-time visualizations.
+            </SectionHeader>
+            <div class="button-pair">
+                <PlatformDownload release={release} releasesUrl={releasesUrl} />
+            </div>
+        </div>
+        <div class="player-stage">
+            <div class="window-light" aria-hidden="true"></div>
+            <PlayerWindow />
+        </div>
+    </div>
+</section>
+
+<style>
+    .player-hero {
+        isolation: isolate;
+        overflow: hidden;
+    }
+
+    .player-stage {
+        position: relative;
+        container-type: inline-size;
+    }
+</style>

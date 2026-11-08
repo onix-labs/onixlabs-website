@@ -5,6 +5,7 @@ familyName: "Pérez Crespo"
 order: 2
 path: /archive/Contributors/Laura-Perez-Crespo
 jobTitle: "Software Engineer"
+accent: "rose"
 headline: "Software Engineer"
 teaser: "Specialist in enterprise application development with TypeScript, Kotlin, and Corda."
 description: "Laura Pérez Crespo is a software engineer at ONIXLabs, specializing in enterprise application development with Kotlin, Corda and TypeScript."

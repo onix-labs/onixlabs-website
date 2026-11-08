@@ -1,0 +1,39 @@
+---
+import Icon from './Icon.astro';
+import type { PlayerRelease } from '../collections/player-release';
+import type { StudioRelease } from '../collections/studio-release';
+
+// A download button for a desktop app. It links to the release page; initialise-platform-download.ts swaps in the installer
+// for the visitor's platform and processor from the data-download-* attributes, which are looked up from GitHub at build
+// time. The second button stays hidden unless a Mac's processor is unknown and both builds need offering. Put it in a
+// .button-pair.
+interface Props {
+    readonly release: StudioRelease | PlayerRelease | undefined;
+    readonly releasesUrl: string;
+}
+
+const { release, releasesUrl }: Props = Astro.props;
+const href: string = release?.pageUrl ?? releasesUrl;
+---
+<a
+    class="button button-primary button-large"
+    href={href}
+    data-platform-download
+    data-download-macos-arm={release?.macOSAppleSilicon}
+    data-download-macos-intel={release?.macOSIntel}
+    data-download-windows={release?.windows}
+    data-download-linux={release?.linux}
+>
+    <Icon name="download-simple" />
+    <span data-download-label>Download</span>
+</a>
+<a class="button button-primary button-large platform-download-alternate" href={href} data-platform-download-alternate hidden>
+    <Icon name="download-simple" />
+    <span data-download-label>Download</span>
+</a>
+
+<style>
+    .platform-download-alternate[hidden] {
+        display: none;
+    }
+</style>

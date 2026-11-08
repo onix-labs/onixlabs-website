@@ -1,0 +1,24 @@
+---
+import AeroProductSection from '../../components/AeroProductSection.astro';
+import LibrariesSection from '../../components/LibrariesSection.astro';
+import PlayerHero from '../../components/PlayerHero.astro';
+import StudioProductHero from '../../components/StudioProductHero.astro';
+import TalkToUsSection from '../../components/TalkToUsSection.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+    title="Products"
+    description="ONIXLabs Studio, ONIXPlayer and the Aero .NET suite, plus open-source libraries for .NET, Corda and Kotlin."
+    path="/Products"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Products', path: '/Products' }]}
+>
+    <StudioProductHero />
+
+    <AeroProductSection />
+
+    <PlayerHero />
+
+    <LibrariesSection />
+
+    <TalkToUsSection />
+</BaseLayout>

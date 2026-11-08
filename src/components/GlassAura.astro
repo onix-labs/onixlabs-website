@@ -1,0 +1,56 @@
+---
+import GlassIcon from './GlassIcon.astro';
+
+// A glass icon spilling its own colour across whatever it sits on: a second copy behind it, scaled up, blurred and
+// saturated. That's markup rather than a ::before because the Content Security Policy rules out passing each image to
+// CSS inline. The grain over the blurred colour gives it texture and breaks up its bands, as on .window-light. The
+// stacking context it sits in must clip it (a .tile does); size it with width on the class.
+interface Props {
+    readonly name: string;
+    readonly size?: number;
+    readonly class?: string;
+}
+
+const { name, size = 320, class: className = '' }: Props = Astro.props;
+---
+<span class:list={['glass-aura', className]}>
+    <GlassIcon name={name} size={size} class="aura-glow" />
+    <GlassIcon name={name} size={size} />
+</span>
+
+<style>
+    .glass-aura {
+        position: relative;
+        display: grid;
+    }
+
+    /* Fades out with the glow, so it doesn't show on the plain page around it. */
+    .glass-aura::after {
+        content: '';
+        position: absolute;
+        inset: calc((var(--aura-scale, 2.1) - 1) * -50% - var(--aura-blur, 2.5rem) * 1.5);
+        z-index: -1;
+        background: url('/onixlabs/images/noise-aura.png');
+        -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent);
+        mask-image: radial-gradient(closest-side, #000 45%, transparent);
+        pointer-events: none;
+    }
+
+    .glass-aura :global(.glass-icon) {
+        grid-area: 1 / 1;
+        width: 100%;
+    }
+
+    .glass-aura :global(.aura-glow) {
+        z-index: -1;
+        opacity: 0.95;
+        filter: blur(var(--aura-blur, 2.5rem)) saturate(3.2) brightness(1.05);
+        transform: scale(var(--aura-scale, 2.1));
+        pointer-events: none;
+    }
+
+    :global([data-theme='dark']) .glass-aura :global(.aura-glow),
+    :global(.tone-dark) .glass-aura :global(.aura-glow) {
+        filter: blur(var(--aura-blur, 2.5rem)) saturate(2.6) brightness(1.15);
+    }
+</style>

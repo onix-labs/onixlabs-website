@@ -51,6 +51,7 @@ export const designNavigation: ReadonlyArray<DesignGroup> = [
             { slug: 'section-headers', title: 'Section headers', summary: 'Label, headline and standfirst at the top of a section.' },
             { slug: 'heroes', title: 'Heroes', summary: 'The opening of a page: capstone, family and simple heroes.' },
             { slug: 'tiles', title: 'Tiles', summary: 'Feature, product, capstone, article and team tiles.' },
+            { slug: 'studio-feature', title: 'Studio features', summary: 'The staggered feature bands: a screenshot beside the points that explain it.' },
             { slug: 'bands', title: 'Bands', summary: 'Full-width sections in the page, alt and dark tones.' },
             { slug: 'marquee', title: 'Marquee', summary: 'The scrolling technology strip.' },
             { slug: 'calls-to-action', title: 'Calls to action', summary: 'The closing call-to-action band.' },

@@ -1,0 +1,70 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import AiCircuitSection from '../components/AiCircuitSection.astro';
+import Button from '../components/Button.astro';
+import FeatureTile from '../components/FeatureTile.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import StudioFeature from '../components/StudioFeature.astro';
+import TalkToUsSection from '../components/TalkToUsSection.astro';
+import type { Principle } from '../config/principle';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+type Feature = CollectionEntry<'studio'>['data']['features'][number];
+
+// `icon` names a glass icon in public/onixlabs/images/icons/glass.
+const areas: ReadonlyArray<Principle> = [
+    { title: 'Engineering', icon: 'code', body: 'We build with AI in the loop, from design through to delivery, and hold the result to the same standard as any other code: clean, efficient and ready to scale with your team.' },
+    { title: 'Consulting', icon: 'dice', body: 'We help you decide where AI belongs in your product and your process, and how to adopt it in a way that serves your business goals.' },
+    { title: 'Integration', icon: 'git-merge', body: 'We bring AI into the systems you already run, working with your team, your tools and your tech stack rather than around them.' },
+];
+
+const studio: CollectionEntry<'studio'> | undefined = await getEntry('studio', 'studio');
+const agents: Feature | undefined = studio?.data.features.find((feature: Feature): boolean => feature.id === 'agents');
+
+if (agents === undefined) {
+    throw new Error('src/content/studio.yaml must define an `agents` feature.');
+}
+---
+<BaseLayout
+    title="Engineering with AI"
+    description="How ONIXLabs uses AI across engineering, consulting and integration work, and ONIXLabs Studio, where you and your AI agents work side by side."
+    path="/Engineering-With-AI"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Engineering with AI', path: '/Engineering-With-AI' }]}
+>
+    <AiCircuitSection level={1}>
+        <Fragment slot="lead">
+            We've embraced AI across our engineering, consulting and integration work, because it changes how much a good team can get
+            done. It doesn't change what good software is, so we pair it with the engineering discipline we've always worked to.
+        </Fragment>
+        <Fragment slot="actions">
+            <Button href="/Contact?reason=consulting" variant="primary" size="large" icon="chat-circle-dots">Talk to us about AI</Button>
+            <Button href="/Products/Studio" variant="ghost" size="large" trailingIcon="arrow-right-bold">Explore ONIXLabs Studio</Button>
+        </Fragment>
+    </AiCircuitSection>
+
+    <section class="section tone-alt" aria-labelledby="where-ai-fits">
+        <div class="container-wide">
+            <SectionHeader title="Where AI" highlight="earns its place" id="where-ai-fits" centered>
+                AI runs through the way we work, not alongside it.
+            </SectionHeader>
+            <div class="grid areas">
+                {areas.map((area: Principle) => <FeatureTile title={area.title} glass={area.icon} body={area.body} />)}
+            </div>
+        </div>
+    </section>
+
+    <StudioFeature feature={{ ...agents, label: 'ONIXLabs Studio' }} />
+
+    <TalkToUsSection alternate contactHref="/Contact?reason=consulting" />
+</BaseLayout>
+
+<style>
+    /* Three in a row or a single column: a two-column grid would strand the third. */
+    @media (min-width: 56rem) {
+        .areas {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>

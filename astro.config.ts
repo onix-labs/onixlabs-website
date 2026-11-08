@@ -28,16 +28,15 @@ export default defineConfig({
     },
     integrations: [
         sitemap({
-            // The blank canvas at / is noindex while it's empty, so it stays out of the sitemap too.
-            filter: (page: string): boolean => !page.endsWith('/404') && new URL(page).pathname !== '/',
+            filter: (page: string): boolean => !page.endsWith('/404'),
             serialize: (item: SitemapItem): SitemapItem => ({ ...item, url: new URL(toCanonicalPath(new URL(item.url).pathname), site.url).href }),
         }),
         emitSectionIndexes(),
     ],
     markdown: {
-        // Shiki emits inline styles, which the hash-based CSP below would block. The Blazor site had no
-        // highlighting either, so code blocks render as plain <pre><code>.
-        syntaxHighlight: false,
+        // Prism rather than Shiki: Shiki colours tokens with inline styles, which the hash-based CSP below blocks, while
+        // Prism marks them with classes, coloured by the --code-* tokens in prose.css.
+        syntaxHighlight: 'prism',
         processor: unified({
             rehypePlugins: [
                 rehypeBootstrapTables,

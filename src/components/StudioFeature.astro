@@ -1,0 +1,113 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import FeaturePoints from './FeaturePoints.astro';
+import SectionHeader from './SectionHeader.astro';
+import StudioWindow from './StudioWindow.astro';
+
+// One Studio feature in its own band: the copy and its points beside a screenshot, which holds still while they scroll
+// past, in the feature's own colours. `reversed` puts the screenshot on the left. Below 72rem it stacks as headline,
+// window, points.
+type Feature = CollectionEntry<'studio'>['data']['features'][number];
+
+interface Props {
+    readonly feature: Feature;
+    readonly alternate?: boolean;
+    readonly reversed?: boolean;
+}
+
+const { feature, alternate = false, reversed = false }: Props = Astro.props;
+const [highlightFrom, highlightTo]: readonly [string, string] = feature.colours.highlight;
+---
+<section
+    id={feature.id}
+    class:list={['section studio-feature', `label-${feature.colours.label}`, { 'tone-alt': alternate, 'is-reversed': reversed }]}
+    aria-labelledby={`${feature.id}-title`}
+>
+    <div class="container-wide feature-layout">
+        <div class="product-split-content feature-copy">
+            <SectionHeader
+                eyebrow={feature.label}
+                title={feature.title}
+                highlight={feature.highlight}
+                highlightStyle="gradient"
+                highlightClass={`text-pair from-${highlightFrom} to-${highlightTo}`}
+                id={`${feature.id}-title`}
+                class="feature-header"
+            >
+                {feature.lead}
+            </SectionHeader>
+            <FeaturePoints points={feature.points} class="feature-points" />
+        </div>
+        <div class="feature-stage">
+            <div class="settle">
+                <StudioWindow screen={feature.screen} glow={feature.colours.glow} />
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .studio-feature {
+        overflow: clip;
+        scroll-margin-top: -1.5rem;             /* Cancels the page's scroll padding, so the band meets the header. */
+    }
+
+    .feature-layout {
+        display: grid;
+        gap: 2.5rem;
+    }
+
+    /* Stacked, the headline, window and points are siblings, so the window can come between the other two. */
+    .feature-copy {
+        display: contents;
+    }
+
+    .feature-copy :global(.feature-header) {
+        margin-bottom: 0;
+    }
+
+    .feature-copy :global(.feature-header) { order: 1; }
+    .feature-stage { order: 2; }
+    .feature-copy :global(.feature-points) { order: 3; }
+
+    @media (min-width: 40rem) and (max-width: 71.99rem) {
+        .feature-copy :global(.feature-points) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 72rem) {
+        .feature-layout {
+            grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .is-reversed .feature-layout {
+            grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
+        }
+
+        .feature-copy {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .feature-copy :global(.feature-header h2) {
+            font-size: 2.5rem;
+        }
+
+        .feature-copy :global(.feature-header .lead) {
+            font-size: var(--text-lg);
+        }
+
+        .is-reversed .feature-stage {
+            order: -1;
+        }
+
+        .feature-stage {
+            position: sticky;
+            top: calc(var(--header-height) + 1.5rem);
+        }
+    }
+</style>

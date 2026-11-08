@@ -1,0 +1,167 @@
+---
+import GlassAura from './GlassAura.astro';
+import type { Principle } from '../config/principle';
+import { principles } from '../config/principles';
+
+// The principles as a bento grid: two lead on larger tiles and the rest sit around them, each taking its colour from
+// its icon.
+const leading: ReadonlyArray<string> = ['Craftsmanship', 'Performance'];
+const ordered: ReadonlyArray<Principle> = [
+    ...leading.flatMap((title: string): ReadonlyArray<Principle> => principles.filter((principle: Principle): boolean => principle.title === title)),
+    ...principles.filter((principle: Principle): boolean => !leading.includes(principle.title)),
+];
+
+function bentoSize(index: number): string {
+    if (index === 0) {
+        return 'bento-large';
+    }
+
+    return index === 1 ? 'bento-wide' : 'bento-small';
+}
+---
+<div class="bento-grid">
+    {ordered.map((principle: Principle, index: number) => (
+        <article class:list={['tile bento reveal-scale', bentoSize(index)]}>
+            <GlassAura name={principle.icon} class="bento-icon" />
+            <div class="bento-text">
+                <h3>{principle.title}</h3>
+                <p>{principle.body}</p>
+            </div>
+        </article>
+    ))}
+</div>
+
+<style>
+    h3 {
+        font-size: var(--text-xl);
+    }
+
+    /* The full text colour rather than the muted one: this sits over the colour spilling from the icon. */
+    p {
+        color: var(--text);
+        line-height: 1.55;
+    }
+
+    .bento-grid {
+        display: grid;
+        gap: var(--tile-gap);
+    }
+
+    .bento {
+        display: grid;
+        align-content: start;
+        gap: 1rem;
+        padding: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+        box-shadow: var(--shadow-tile);
+        transition: box-shadow 500ms var(--ease-out);
+    }
+
+    .bento:hover {
+        box-shadow: var(--shadow-tile-hover);
+    }
+
+    .bento-text {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .bento :global(.bento-icon) {
+        width: 5.5rem;
+        transition: transform 600ms var(--ease-out);
+    }
+
+    .bento:hover :global(.bento-icon) {
+        transform: scale(1.12);
+    }
+
+    .bento-large h3,
+    .bento-wide h3 {
+        font-size: var(--text-3xl);
+        letter-spacing: -0.03em;
+    }
+
+    .bento-large p,
+    .bento-wide p {
+        font-size: var(--text-lg);
+    }
+
+    .bento-large {
+        align-content: space-between;
+    }
+
+    .bento-large :global(.bento-icon) {
+        justify-self: center;
+        width: min(100%, 13rem);
+    }
+
+    @media (min-width: 40rem) {
+        .bento-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* On tablets every tile matches: the large centred icon, the larger text, and all of it centred. */
+    @media (min-width: 40rem) and (max-width: 71.99rem) {
+        .bento {
+            align-content: start;
+            text-align: center;
+        }
+
+        .bento :global(.bento-icon) {
+            justify-self: center;
+            width: min(100%, 13rem);
+        }
+
+        .bento h3 {
+            font-size: var(--text-3xl);
+            letter-spacing: -0.03em;
+        }
+
+        .bento p {
+            font-size: var(--text-lg);
+        }
+    }
+
+    /* "Craftsmanship" doesn't fit a half-width tile at the larger size until here. */
+    @media (min-width: 40rem) and (max-width: 44.99rem) {
+        .bento h3 {
+            font-size: var(--text-2xl);
+        }
+    }
+
+    @media (min-width: 72rem) {
+        .bento-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .bento-large,
+        .bento-wide {
+            grid-column: span 2;
+        }
+
+        .bento-large {
+            grid-row: span 2;
+        }
+
+        .bento-large :global(.bento-icon) {
+            width: min(100%, 16rem);
+        }
+
+        .bento-wide {
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            align-content: center;
+        }
+
+        .bento-wide :global(.bento-icon) {
+            grid-column: 2;
+            grid-row: 1;
+            width: 9rem;
+        }
+
+        .bento-wide .bento-text {
+            grid-column: 1;
+            grid-row: 1;
+        }
+    }
+</style>

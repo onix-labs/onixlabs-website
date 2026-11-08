@@ -1,0 +1,142 @@
+# The root page for each family of libraries, at its `path`, which its tile on /Products links to. Every claim comes from
+# the family's repository and wiki: for .NET, github.com/onix-labs/onixlabs-dotnet at v16.1.0 and its wiki, and
+# github.com/onix-labs/onixlabs-dotnet-element-framework at 2.1.0 and its README.
+dotnet:
+  family: dotnet
+  path: /Products/DotNet
+  pageTitle: ".NET Libraries"
+  description: >-
+    Open-source .NET libraries from ONIXLabs: functional primitives, high-precision numerics, dependency injection,
+    cryptography, and Element Framework for graph databases.
+  title: "Products for .NET"
+  highlight: "Built for Precision"
+  lead: >-
+    A suite of general-purpose, production-ready libraries for modern .NET, with a strong emphasis on correctness,
+    composability and value semantics. They fit as cleanly into a small utility as into a large system, without imposing an
+    architecture or locking you into a framework.
+  repositoryUrl: https://github.com/onix-labs/onixlabs-dotnet
+  docsUrl: https://github.com/onix-labs/onixlabs-dotnet/wiki
+  packagesUrl: https://www.nuget.org/packages?q=onixlabs
+  packageRegistry: NuGet
+  colours: [violet, blue]
+  install:
+    tool: the .NET CLI
+    command: "dotnet add package {package}"
+    packageUrl: "https://www.nuget.org/packages/{package}"
+  packages:
+
+    - name: OnixLabs.Core
+      glass: lambda
+      title: The primitives
+      highlight: the BCL left out
+      summary: >-
+        The building blocks the other packages stand on, and a useful library in its own right. It fills the gaps in
+        .NET's standard library with small, dependable types that make your intent explicit.
+      pagePath: /Products/DotNet/Core
+      docsPage: OnixLabs.Core
+      points:
+        - title: Optional and Result
+          body: "Optional<T> and Result<T> make absence and failure part of a method's signature, so neither can be silently ignored."
+        - title: Specifications
+          body: "Write a business rule once and reuse it anywhere. Specifications combine with And, Or and Not, and run in memory or translate into database queries."
+        - title: Strongly Typed Enumerations
+          body: "Enumeration<T> replaces bare enums with strongly typed values that compare by value and can carry data of their own."
+        - title: Text Encodings
+          body: "Base16, Base32, Base58 and Base64 as types of their own, so encoded text is never mistaken for an ordinary string."
+
+    - name: OnixLabs.DependencyInjection
+      glass: dependency-injection
+      title: Register services
+      highlight: your way
+      summary: >-
+        Less boilerplate when you register services, without replacing the container you already use.
+      docsPage: OnixLabs.DependencyInjection
+      points:
+        - title: Built on Microsoft's Abstractions
+          body: "Extension methods for IServiceCollection, so they work with the dependency injection your application already has."
+        - title: Lifetimes at the Call Site
+          body: "Choose whether a service is a singleton, scoped or transient where you register it, so configuration can make the decision."
+        - title: Keyed and Unkeyed Services
+          body: "Register both in the same consistent way, with cleaner calls and less repetition."
+
+    - name: OnixLabs.Numerics
+      glass: geometry
+      title: Numbers beyond
+      highlight: the built-in types
+      summary: >-
+        Numbers for when decimal and double aren't enough, without giving up the familiar way .NET works with numbers.
+      pagePath: /Products/DotNet/Numerics
+      docsPage: OnixLabs.Numerics
+      points:
+        - title: BigDecimal
+          body: "An arbitrary-precision decimal built on .NET's generic math, with strict and semantic equality, so 1.20 and 1.2 can be the same number or different ones as the situation demands."
+        - title: Wider Integers
+          body: "Int256, UInt256, Int512 and UInt512, which plug into the same generic math interfaces as the built-in integer types."
+        - title: Extended-Precision Floating Point
+          body: "Float128 and Float256, for calculations where a double runs out of precision."
+        - title: NumberInfo
+          body: "Takes any rational number apart into its unscaled value, scale, significand, exponent and sign."
+
+    - name: OnixLabs.Security
+      glass: shield
+      title: Tokens
+      highlight: generated safely
+      summary: >-
+        Safe generation and handling of the values that guard your application, such as tokens.
+      pagePath: /Products/DotNet/Security
+      docsPage: OnixLabs.Security
+      points:
+        - title: Security Tokens
+          body: "A SecurityToken is immutable and compares by its content, so it behaves like the value it is."
+        - title: A Fluent Builder
+          body: "SecurityTokenBuilder generates tokens from the characters you choose: upper and lower case letters, digits and special characters."
+        - title: Your Choice of Randomness
+          body: "Generate from a pseudo-random source, or a cryptographically secure one when the token has to be unguessable."
+
+    - name: OnixLabs.Security.Cryptography
+      glass: shield
+      title: Cryptography
+      highlight: you can reason about
+      summary: >-
+        Cryptography that's harder to get wrong. Keys, signatures and hashes become distinct types, so it's always
+        clear what you're holding and what you can do with it.
+      pagePath: /Products/DotNet/Security
+      docsPage: OnixLabs.Security.Cryptography
+      points:
+        - title: Keys and Signatures
+          body: "ECDH, ECDSA, EdDSA and RSA keys, with digital signatures and import and export in PEM and PKCS #8."
+        - title: Hashes as Values
+          body: "Hashes, named hashes and salts compare by value, and Merkle trees build on them."
+        - title: SHA-3
+          body: "A fully managed FIPS 202 SHA-3, including the SHAKE128 and SHAKE256 extendable-output functions."
+        - title: Secrets in Memory
+          body: "Sensitive bytes stay encrypted while they're in memory, and two secrets can be compared without exposing either."
+
+    - name: OnixLabs.ElementFramework
+      glass: graph
+      title: Graph databases
+      highlight: the Entity Framework way
+      summary: >-
+        Work with graph databases the way Entity Framework lets you work with relational ones: model your domain in
+        plain C#, and let the framework handle the database.
+      docsUrl: https://github.com/onix-labs/onixlabs-dotnet-element-framework/wiki
+      registryUrl: https://www.nuget.org/packages?q=onixlabs.elementframework
+      points:
+        - title: Four Providers
+          body: "Neo4j, Apache AGE on PostgreSQL, ArangoDB and an in-memory store for tests. Every one passes the same conformance suite, so your model moves between them unchanged."
+        - title: Change Tracking
+          body: "Add nodes, connect them with edges and save the lot with SaveChangesAsync, inside a transaction when you need one."
+        - title: Typed Traversals
+          body: "Describe a traversal fluently in C#, and the provider turns it into Cypher or AQL for its database."
+        - title: Observable
+          body: "Every provider reports OpenTelemetry traces and metrics, ready for the monitoring you already run."
+
+  requirements:
+    - label: Target frameworks
+      value: .NET 8.0, 9.0 and 10.0
+    - label: Language
+      value: C# 14
+    - label: Nullable reference types
+      value: Enabled
+    - label: License
+      value: Apache 2.0, and MIT for Element Framework

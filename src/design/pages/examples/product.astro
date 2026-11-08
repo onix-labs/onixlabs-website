@@ -3,11 +3,11 @@ import { getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
 import Button from '../../../components/Button.astro';
-import CtaBand from '../../../components/CtaBand.astro';
 import FeatureTile from '../../../components/FeatureTile.astro';
 import Hero from '../../../components/Hero.astro';
 import ProductStage from '../../../components/ProductStage.astro';
 import SectionHeader from '../../../components/SectionHeader.astro';
+import TalkToUsSection from '../../../components/TalkToUsSection.astro';
 import type { StageStatement } from '../../../components/stage-statement';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ExampleFrame from '../../ExampleFrame.astro';
@@ -18,7 +18,7 @@ type AeroData = CollectionEntry<'aero'>['data'];
 const entry: CollectionEntry<'aero'> | undefined = await getEntry('aero', 'aero');
 const aero: AeroData | undefined = entry?.data;
 const glassFor: ReadonlyMap<string, string> = new Map<string, string>([
-    ['rocket-launch', 'rocket'], ['stack', 'stack'], ['building-office', 'buildings'], ['git-diff', 'lambda'], ['shield-check', 'shield-alt'], ['chart-line', 'telemetry'],
+    ['rocket-launch', 'rocket'], ['stack', 'stack'], ['building-office', 'buildings'], ['git-diff', 'lambda'], ['shield-check', 'shield'], ['chart-line', 'telemetry'],
 ]);
 const statements: ReadonlyArray<StageStatement> = [
     { icon: 'rocket-launch', text: 'Blazing fast.' },
@@ -31,7 +31,7 @@ const statements: ReadonlyArray<StageStatement> = [
         <strong>A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.</strong>{' '}
         It helps teams ship quickly, scale confidently, and modernize everything from cloud-native apps to legacy systems.
         <Fragment slot="actions">
-            <Button href="#cta-title" variant="primary" size="large">Request a demo</Button>
+            <Button href="#talk-to-us" variant="primary" size="large">Request a demo</Button>
             <Button href="#architecture" size="large">Explore the architecture</Button>
         </Fragment>
         <img slot="media" class="shot shot-light" src="/onixlabs/images/marketing/macbook-pro.webp" alt="The Aero platform on a laptop" width={1400} height={834} />
@@ -73,9 +73,7 @@ const statements: ReadonlyArray<StageStatement> = [
         </div>
     </section>
 
-    <CtaBand title="See Aero in action." primaryText="Request a demo" primaryHref="#cta-title" tone="alt">
-        Book a product or technical demo for a guided tour, real-world use cases, and answers tailored to your team’s needs.
-    </CtaBand>
+    <TalkToUsSection alternate />
     <ExampleFrame />
 </BaseLayout>
 

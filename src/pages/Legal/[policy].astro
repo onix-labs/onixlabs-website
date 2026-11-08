@@ -1,0 +1,59 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+
+import { formatArticleDate } from '../../collections/format-article-date';
+import { loadPolicies } from '../../collections/load-policies';
+import ReadingLayout from '../../components/ReadingLayout.astro';
+import { policyGroups } from '../../config/policy-groups';
+import type { PolicyGroup } from '../../config/policy-group';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// A policy (/Legal/Privacy and so on), in the same reading layout as an article, with its effective and last-updated
+// dates. One page for each file in src/content/policies.
+interface Props {
+    readonly policy: CollectionEntry<'policies'>;
+}
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+    const policies: ReadonlyArray<CollectionEntry<'policies'>> = await loadPolicies();
+
+    return policies.map((policy: CollectionEntry<'policies'>) => ({
+        params: { policy: policy.data.path.split('/')[2] },
+        props: { policy },
+    }));
+}
+
+const { policy }: Props = Astro.props;
+const { Content, headings } = await render(policy);
+const group: PolicyGroup | undefined = policyGroups.find((candidate: PolicyGroup): boolean => candidate.id === policy.data.group);
+
+function isoDate(date: Date): string {
+    return date.toISOString().slice(0, 10);
+}
+---
+<BaseLayout
+    title={policy.data.title}
+    description={policy.data.description}
+    path={policy.data.path}
+    breadcrumbs={[
+        { name: 'Home', path: '/' },
+        { name: 'Legal', path: '/Legal' },
+        { name: policy.data.title, path: policy.data.path },
+    ]}
+>
+    <ReadingLayout
+        label={group?.name}
+        labelHref={group === undefined ? undefined : `/Legal/#${group.id}`}
+        title={policy.data.title}
+        summary={policy.data.description}
+        headings={headings}
+    >
+        <Fragment slot="meta">
+            <span>Effective <time datetime={isoDate(policy.data.effective)}>{formatArticleDate(policy.data.effective)}</time></span>
+            <span>Last updated <time datetime={isoDate(policy.data.updated)}>{formatArticleDate(policy.data.updated)}</time></span>
+        </Fragment>
+        <Content />
+    </ReadingLayout>
+</BaseLayout>

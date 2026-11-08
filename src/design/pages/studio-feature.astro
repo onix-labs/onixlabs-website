@@ -1,0 +1,17 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import StudioFeature from '../../components/StudioFeature.astro';
+import Specimen from '../Specimen.astro';
+
+type Feature = CollectionEntry<'studio'>['data']['features'][number];
+
+const studio: CollectionEntry<'studio'> | undefined = await getEntry('studio', 'studio');
+const [first, second]: ReadonlyArray<Feature | undefined> = studio?.data.features ?? [];
+---
+<Specimen title="Studio feature" surface="none" padding="none" code={'<StudioFeature feature={feature} alternate={index % 2 === 1} reversed={index % 2 === 0} />'}>
+    <Fragment slot="notes"><p>One feature in a full band: the copy and its points beside a screenshot that holds still while they scroll past. Each swaps sides with the last, and the bands alternate.</p></Fragment>
+    {first !== undefined && <StudioFeature feature={first} reversed />}
+    {second !== undefined && <StudioFeature feature={second} alternate />}
+</Specimen>

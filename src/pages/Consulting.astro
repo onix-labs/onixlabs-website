@@ -1,0 +1,83 @@
+---
+import Button from '../components/Button.astro';
+import GlassAura from '../components/GlassAura.astro';
+import PageHero from '../components/PageHero.astro';
+import TalkToUsSection from '../components/TalkToUsSection.astro';
+import type { Principle } from '../config/principle';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// `icon` names a glass icon in public/onixlabs/images/icons/glass.
+const services: ReadonlyArray<Principle> = [
+    { title: 'Strategy', icon: 'dice', body: 'We help define your product roadmap, identify market fit, and architect scalable solutions aligned with your business goals.' },
+    { title: 'Development', icon: 'code', body: 'We design and build robust, maintainable software using modern best practices, delivering clean, efficient code that scales with your team.' },
+    { title: 'Testing', icon: 'vials', body: 'We implement robust testing strategies across unit, integration, and end-to-end levels to ensure quality and confidence at every stage.' },
+    { title: 'Integration', icon: 'git-merge', body: 'We implement CI/CD workflows that automate testing, deployment, and release, accelerating feedback and ensuring smooth, reliable delivery.' },
+    { title: 'Documentation', icon: 'scroll', body: 'We produce comprehensive, developer-friendly documentation, from code docs to full technical guides.' },
+    { title: 'Delivery', icon: 'cloud-upload', body: 'We handle production-ready cloud deployments, service monitoring, and uptime strategies to keep your software running smoothly.' },
+];
+---
+<BaseLayout
+    title="Software Engineering Consulting"
+    description="Engineering-first consulting from ONIXLabs: strategy, development, testing, CI/CD integration, documentation and cloud delivery for startups and enterprises."
+    path="/Consulting"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Consulting', path: '/Consulting' }]}
+>
+    <PageHero title="Engineering that fits" highlight="Built for your team" highlightStyle="gradient">
+        We help startups and enterprises build robust, scalable software, faster. Whether you're launching a product, scaling a system, or
+        untangling legacy code, our engineering-first consulting cuts through the noise to deliver real solutions, partnering with your
+        team across the whole lifecycle to ship software that works.
+        <div slot="actions" class="button-pair">
+            <Button href="/Contact?reason=consulting" variant="primary" size="large" icon="paper-plane-tilt">Send a message</Button>
+            <Button href="https://calendly.com/matthew-layton/30min" variant="ghost" size="large" trailingIcon="arrow-right-bold" external>Book a meeting</Button>
+        </div>
+        <div slot="media" class="container-wide">
+            <ol class="grid grid-3 services" role="list">
+                {services.map((service: Principle) => (
+                    <li class="service reveal-scale">
+                        <GlassAura name={service.icon} class="service-icon" />
+                        <h2>{service.title}</h2>
+                        <p>{service.body}</p>
+                    </li>
+                ))}
+            </ol>
+        </div>
+    </PageHero>
+
+    <TalkToUsSection alternate contactHref="/Contact?reason=consulting" />
+</BaseLayout>
+
+<style>
+    /* One stacking context for the whole list, so the glows stay above the band's background and behind all the text,
+       including the row above them. */
+    .services {
+        row-gap: clamp(3rem, 2.5rem + 2vw, 4.5rem);
+        isolation: isolate;
+    }
+
+    /* No tiles: each service is a large glass icon with its own colour blurred behind it. */
+    .service {
+        display: grid;
+        align-content: start;
+        justify-items: center;
+        gap: 0.75rem;
+        text-align: center;
+    }
+
+    .service :global(.service-icon) {
+        --aura-blur: 3rem;
+        --aura-scale: 1.4;
+        width: 11rem;
+        margin-bottom: 1rem;
+    }
+
+    .service h2 {
+        font-size: var(--text-xl);
+    }
+
+    /* The full text colour rather than the muted one: this sits close to the colour spilling from the icon. */
+    .service p {
+        max-width: 24rem;
+        margin: 0;
+        color: var(--text);
+    }
+</style>

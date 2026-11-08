@@ -4,7 +4,7 @@ import Icon from '../../components/Icon.astro';
 import Specimen from '../Specimen.astro';
 
 const glass: ReadonlyArray<string> = [
-    'rocket', 'stack', 'buildings', 'shield-alt', 'gauge', 'telemetry', 'code', 'design', 'documents', 'support', 'user-group', 'leaf',
+    'rocket', 'stack', 'buildings', 'shield', 'gauge', 'telemetry', 'code', 'design', 'documents', 'support', 'user-group', 'leaf',
     'cloud-upload', 'git-merge', 'vials', 'scroll', 'dice', 'lambda', 'envelope',
 ];
 // Every line icon in src/icons, so this page can't fall out of step with the set.
@@ -25,7 +25,7 @@ const emblems: ReadonlyArray<string> = ['dotnet/dotnet-core-outline', 'dotnet/do
 </Specimen>
 
 <Specimen title="Line icons" code={'<Icon name="github-logo" />  /* Phosphor names: phosphoricons.com */'}>
-    <Fragment slot="notes"><p><a href="https://phosphoricons.com">Phosphor</a> icons in the regular weight (MIT licence), inlined as SVG and sized to the text around them. For controls, links and small inline cues, never as illustration. To add one, copy its SVG from <code>@phosphor-icons/core/assets/regular</code> into <code>src/icons/</code>.</p></Fragment>
+    <Fragment slot="notes"><p><a href="https://phosphoricons.com">Phosphor</a> icons in the duotone weight (MIT licence), inlined as SVG and sized to the text around them. For controls, links and small inline cues, never as illustration. To add one, copy its SVG from <code>@phosphor-icons/core/assets/regular</code> into <code>src/icons/</code>.</p></Fragment>
     <div class="line-grid">
         {line.map((name: string) => (
             <figure>

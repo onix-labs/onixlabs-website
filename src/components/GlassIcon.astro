@@ -27,7 +27,12 @@ const { name, size = 96, alt = '', class: className = '' }: Props = Astro.props;
     }
 
     :global([data-theme='light']) .glass-dark,
-    :global([data-theme='dark']) .glass-light {
+    :global([data-theme='dark']) .glass-light,
+    :global([data-theme] .tone-dark) .glass-light {
         display: none;
+    }
+
+    :global([data-theme] .tone-dark) .glass-dark {
+        display: block;
     }
 </style>

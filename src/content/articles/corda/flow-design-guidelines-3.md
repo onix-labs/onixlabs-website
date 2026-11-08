@@ -4,7 +4,8 @@ navigationTitle: "Flow Design Guidelines (Part 3)"
 description: "How to implement Corda flows that perform vault queries, and the best practices and benefits of designing query flows this way."
 category: corda
 order: 3
-path: /archive/Documentation/Corda/Flow-Design-Guidelines-3
+path: /Documentation/Corda/Flow-Design-Guidelines-3
+published: 2022-03-13
 ---
 
 In Part 2 we identified some best practices for implementing transactional flows which cause state transitions to the ledger.

@@ -1,0 +1,71 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import Icon from './Icon.astro';
+
+// A family of libraries on the Products page: its brand gradient and nothing else, centred, with its logo and its pitch.
+// The whole tile links to the family's `tilePath`: its root page, or its core library until it has one. The footer links
+// to its `id`, which is on a wrapper because the browser would otherwise aim for the tile mid-entrance and land short.
+interface Props {
+    readonly family: CollectionEntry<'productFamilies'>;
+}
+
+const { family }: Props = Astro.props;
+---
+<div id={family.id}>
+    <a class={`tile family-${family.id} family-tile reveal-scale`} href={family.data.tilePath}>
+        <img class="family-logo" src={family.data.logo} alt="" width={128} height={128} loading="lazy" decoding="async" />
+        <h3>{family.data.name}</h3>
+        <p>{family.data.callout}</p>
+        <span class="family-more">Find out more <Icon name="arrow-right-bold" /></span>
+    </a>
+</div>
+
+<style>
+    .family-tile,
+    .family-tile:hover {
+        box-shadow: none;
+    }
+
+    .family-tile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        align-items: center;
+        height: 100%;
+        padding: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
+        border: 0;
+        background: linear-gradient(45deg, var(--family-from), var(--family-to));
+        color: #fff;
+        text-align: center;
+    }
+
+    .family-logo {
+        width: 7rem;
+        height: auto;
+    }
+
+    .family-tile h3 {
+        color: inherit;
+        font-size: var(--text-3xl);
+        letter-spacing: -0.022em;
+    }
+
+    .family-tile p {
+        margin: 0;
+        font-weight: 500;
+    }
+
+    .family-more {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-top: auto;
+        padding-top: 1rem;
+        font-weight: var(--weight-medium);
+    }
+
+    .family-more :global(.icon) {
+        font-size: 1.4em;
+    }
+</style>

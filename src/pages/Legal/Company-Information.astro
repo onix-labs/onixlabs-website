@@ -1,0 +1,52 @@
+---
+import ReadingLayout from '../../components/ReadingLayout.astro';
+import { site } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// The legal entity behind the site, as UK trading-disclosure rules require, from the verified details in src/config/site.ts.
+const company: typeof site.company = site.company;
+---
+<BaseLayout
+    title="Company Information"
+    description={`Company information for ${company.legalName}, trading as ONIXLabs: company number, registered office, place of registration and how to contact us.`}
+    path="/Legal/Company-Information"
+    breadcrumbs={[
+        { name: 'Home', path: '/' },
+        { name: 'Legal', path: '/Legal' },
+        { name: 'Company Information', path: '/Legal/Company-Information' },
+    ]}
+>
+    <ReadingLayout
+        label="Legal"
+        labelHref="/Legal/#legal"
+        title="Company Information"
+        summary={`ONIXLabs is the trading name of ${company.legalName}, a private limited company registered in ${company.registeredIn}.`}
+        headings={[]}
+    >
+        <div class="table-responsive">
+            <table>
+                <tbody>
+                    <tr><th scope="row">Legal name</th><td>{company.legalName}</td></tr>
+                    <tr><th scope="row">Trading name</th><td>{site.name}</td></tr>
+                    <tr><th scope="row">Company number</th><td>{company.number}</td></tr>
+                    <tr><th scope="row">Registered in</th><td>{company.registeredIn}</td></tr>
+                    <tr><th scope="row">Company type</th><td>{company.type}</td></tr>
+                    <tr><th scope="row">Registered office</th><td>{company.registeredOffice.map((line: string, index: number) => <Fragment>{index > 0 && <br />}{line}</Fragment>)}</td></tr>
+                    <tr><th scope="row">Incorporated</th><td>{company.incorporated}</td></tr>
+                    <tr><th scope="row">Nature of business</th><td>{company.natureOfBusiness}</td></tr>
+                    <tr><th scope="row">Director</th><td>{company.director}</td></tr>
+                    <tr><th scope="row">VAT</th><td>Not registered for VAT</td></tr>
+                    <tr><th scope="row">Email</th><td><a href={`mailto:${company.email}`}>{company.email}</a></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>
+            You can check these details on the <a href={company.companiesHouseUrl}>company's record at Companies House</a>. The
+            registered office is for official correspondence; for anything else, please email us.
+        </p>
+        <p>
+            The ONIXLabs brand has been in use since {site.foundingYear}. The company was incorporated in {company.incorporated.slice(-4)}.
+        </p>
+    </ReadingLayout>
+</BaseLayout>

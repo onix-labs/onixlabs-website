@@ -1,0 +1,209 @@
+---
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../config/site';
+import type { SocialLink } from '../config/social-link';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contactReasons } from '../scripts/contact-reasons';
+
+const reasons: ReadonlyArray<string> = [
+    'Aero Platform (General Inquiry)',
+    'Aero Platform (Book a Demo)',
+    'Product Line (.NET)',
+    'Product Line (Corda)',
+    'Product Line (Kotlin)',
+    'Consulting',
+    'Other',
+];
+const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
+
+for (const prefill of contactReasons.values()) {
+    if (!reasons.includes(prefill.reason)) {
+        throw new Error(`Contact prefill reason "${prefill.reason}" isn't one of the form's options.`);
+    }
+}
+---
+<BaseLayout
+    title="Contact"
+    description="Contact ONIXLabs about the Aero platform, our .NET, Corda and Kotlin product lines, or consulting. Send a message or book a meeting."
+    path="/Contact"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Contact', path: '/Contact' }]}
+    structuredData={[{ '@type': 'ContactPage', name: 'Contact ONIXLabs', url: `${site.url}/Contact`, about: { '@id': `${site.url}/#organization` } }]}
+>
+    <PageHero eyebrow="Contact" title="We'd love to" highlight="hear from you">
+        If you're interested in learning more about our Aero Platform, .NET, Corda, or Kotlin product lines, or if you're exploring
+        consulting opportunities, drop us a message. We're always happy to connect and help you find the right solution.
+    </PageHero>
+
+    <section class="section tone-alt contact" aria-label="Contact options">
+        <div class="container-wide contact-grid">
+            <div class="tile form-card reveal">
+                <h2 id="contact-form-title">Send us a message</h2>
+                <form action={site.contactFormEndpoint} method="post" aria-labelledby="contact-form-title">
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="name">Name</label>
+                            <input class="input" type="text" name="name" id="name" autocomplete="name" required />
+                        </div>
+                        <div class="field">
+                            <label for="email">Email address</label>
+                            <input class="input" type="email" name="email" id="email" autocomplete="email" required />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="reason">Reason</label>
+                        <select class="input" name="reason" id="reason" required>
+                            <option value="" disabled selected>Choose a topic</option>
+                            {reasons.map((reason: string) => <option>{reason}</option>)}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea class="input" name="message" id="message" rows="6" required></textarea>
+                    </div>
+
+                    <!-- Formspree's honeypot: real visitors never see or fill this field. -->
+                    <div class="honeypot" aria-hidden="true">
+                        <label for="gotcha">Leave this field empty</label>
+                        <input type="text" name="_gotcha" id="gotcha" tabindex="-1" autocomplete="off" />
+                    </div>
+
+                    <button type="submit" class="button button-primary button-large">
+                        <Icon name="paper-plane-tilt" />
+                        <span>Send message</span>
+                    </button>
+                </form>
+            </div>
+
+            <aside class="contact-aside">
+                <div class="tile aside-card reveal">
+                    <span class="icon-chip"><Icon name="calendar-blank" /></span>
+                    <h2>Book a meeting</h2>
+                    <p>
+                        Pick a time that works best for you — no back-and-forth emails, just a straightforward way to connect. Whether it's
+                        a quick chat or a deep dive, we're here when you're ready.
+                    </p>
+                    <a class="link-cta" href={calendlyUrl} target="_blank" rel="noopener noreferrer">
+                        Open Calendly <Icon name="arrow-square-out" />
+                        <span class="visually-hidden"> (opens in a new tab)</span>
+                    </a>
+                </div>
+
+                <div class="tile aside-card reveal">
+                    <span class="icon-chip"><Icon name="users-three" /></span>
+                    <h2>Follow along</h2>
+                    <p>The latest news, product updates, and insights from our team.</p>
+                    <ul class="socials" role="list">
+                        {site.socialLinks.map((link: SocialLink) => (
+                            <li>
+                                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                                    <Icon name={link.icon} />
+                                    <span>{link.name}</span>
+                                    <span class="visually-hidden"> (opens in a new tab)</span>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </section>
+</BaseLayout>
+
+<script>
+    import '../scripts/contact';
+</script>
+
+<style>
+    .contact-grid {
+        display: grid;
+        gap: var(--tile-gap);
+        align-items: start;
+        max-width: 68rem;
+    }
+
+    @media (min-width: 62rem) {
+        .contact-grid {
+            grid-template-columns: 1.7fr 1fr;
+        }
+    }
+
+    .form-card {
+        display: grid;
+        gap: 2rem;
+        padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+    }
+
+    .form-card h2 {
+        font-size: var(--text-4xl);
+    }
+
+    .aside-card h2 {
+        font-size: var(--text-2xl);
+    }
+
+    form {
+        display: grid;
+        gap: 1.25rem;
+    }
+
+    .form-row {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    }
+
+    form .button {
+        justify-self: start;
+        margin-top: 0.5rem;
+    }
+
+    .honeypot {
+        display: none;
+    }
+
+    .contact-aside {
+        display: grid;
+        gap: var(--tile-gap);
+    }
+
+    .aside-card {
+        display: grid;
+        gap: 1rem;
+        justify-items: start;
+        padding: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
+    }
+
+    .aside-card p {
+        color: var(--text-muted);
+    }
+
+    .aside-card .link-cta :global(.icon) {
+        width: 0.75em;
+        height: 0.75em;
+    }
+
+    .socials {
+        display: grid;
+        width: 100%;
+    }
+
+    .socials li + li {
+        border-top: 1px solid var(--border);
+    }
+
+    .socials a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.8rem 0;
+        color: var(--heading);
+    }
+
+    .socials a:hover {
+        color: var(--link);
+        text-decoration: none;
+    }
+</style>

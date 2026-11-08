@@ -1,0 +1,188 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { formatArticleDate } from '../../collections/format-article-date';
+import { loadPolicies } from '../../collections/load-policies';
+import Icon from '../../components/Icon.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import { policyGroups } from '../../config/policy-groups';
+import type { PolicyGroup } from '../../config/policy-group';
+import { site } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// The legal hub: who operates the site, then a band for each group of policies, its header beside the list of its pages.
+// Kept plain on purpose: these pages are for finding and reading.
+interface Entry {
+    readonly title: string;
+    readonly summary: string;
+    readonly path: string;
+    readonly updated?: Date | undefined;
+}
+
+const policies: ReadonlyArray<CollectionEntry<'policies'>> = await loadPolicies();
+const companyInformation: Entry = {
+    title: 'Company Information',
+    summary: `${site.company.legalName}: company number, registered office, place of registration and how to contact us.`,
+    path: '/Legal/Company-Information',
+};
+
+function entriesIn(group: PolicyGroup): ReadonlyArray<Entry> {
+    const listed: ReadonlyArray<Entry> = policies
+        .filter((policy: CollectionEntry<'policies'>): boolean => policy.data.group === group.id)
+        .map((policy: CollectionEntry<'policies'>): Entry => ({
+            title: policy.data.title,
+            summary: policy.data.description,
+            path: policy.data.path,
+            updated: policy.data.updated,
+        }));
+    return group.id === 'legal' ? [companyInformation, ...listed] : listed;
+}
+---
+<BaseLayout
+    title="Legal"
+    description="Company information, privacy, cookies and terms for ONIXLabs, with our code of conduct, anti-bribery and security policies."
+    path="/Legal"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Legal', path: '/Legal' }]}
+>
+    <section class="section legal-intro" aria-labelledby="legal-hub-title">
+        <div class="container-wide">
+            <h1 id="legal-hub-title" class="rise">Legal and policies</h1>
+            <p class="lead rise rise-2">
+                This website is operated by {site.company.legalName}, trading as ONIXLabs, a private limited company registered in
+                {` ${site.company.registeredIn}`} with company number {site.company.number}. Here you'll find our company details, how we
+                handle personal data, and the standards we hold ourselves to.
+            </p>
+        </div>
+    </section>
+
+    {policyGroups.map((group: PolicyGroup, index: number) => (
+        <section class:list={['section legal-group', { 'tone-alt': index % 2 === 0 }]} id={group.id} aria-labelledby={`${group.id}-title`}>
+            <div class="container-wide legal-layout">
+                <div class="legal-header">
+                    <SectionHeader eyebrow={group.name} title={group.title} highlight={group.highlight} id={`${group.id}-title`}>
+                        {group.lead}
+                    </SectionHeader>
+                </div>
+                <ul class="legal-list" role="list">
+                    {entriesIn(group).map((entry: Entry) => (
+                        <li class="reveal">
+                            <a class="legal-row" href={entry.path}>
+                                <span class="legal-row-title">{entry.title}</span>
+                                <span class="legal-row-summary">{entry.summary}</span>
+                                {entry.updated !== undefined && <span class="legal-row-meta">Last updated {formatArticleDate(entry.updated)}</span>}
+                                <span class="legal-row-arrow" aria-hidden="true"><Icon name="arrow-right-bold" /></span>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </section>
+    ))}
+</BaseLayout>
+
+<style>
+    .legal-intro {
+        padding-block: clamp(3rem, 2rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+    }
+
+    .legal-intro h1 {
+        font-size: var(--text-5xl);
+        letter-spacing: -0.035em;
+        line-height: 1.05;
+    }
+
+    .legal-intro .lead {
+        max-width: var(--lead-width);
+        margin-top: 1rem;
+    }
+
+    .legal-group {
+        scroll-margin-top: calc(-1 * 1.5rem);
+    }
+
+    .legal-layout {
+        display: grid;
+        gap: 2.5rem 5rem;
+    }
+
+    @media (min-width: 60rem) {
+        .legal-layout {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start;
+        }
+
+        .legal-header {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+        }
+    }
+
+    .legal-layout :global(.section-header) {
+        margin-bottom: 0;
+    }
+
+    .legal-layout :global(.section-header h2) {
+        font-size: var(--text-4xl);
+    }
+
+    .legal-layout :global(.headline-muted) {
+        display: block;
+    }
+
+    .legal-list {
+        display: grid;
+    }
+
+    .legal-list li + li {
+        border-top: 1px solid var(--border);
+    }
+
+    .legal-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.4rem 1.5rem;
+        align-items: center;
+        padding-block: 1.5rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .legal-list li:first-child .legal-row {
+        padding-top: 0;
+    }
+
+    .legal-row:hover {
+        text-decoration: none;
+    }
+
+    .legal-row-title {
+        color: var(--heading);
+        font-size: var(--text-xl);
+        font-weight: 600;
+        letter-spacing: -0.015em;
+    }
+
+    .legal-row-summary,
+    .legal-row-meta {
+        grid-column: 1;
+        color: var(--text-muted);
+        line-height: 1.55;
+    }
+
+    .legal-row-meta {
+        font-size: var(--text-sm);
+    }
+
+    .legal-row-arrow {
+        grid-column: 2;
+        grid-row: 1 / span 3;
+        display: inline-flex;
+        color: var(--heading);
+        font-size: 1.3rem;
+        transition: transform var(--duration) var(--ease-out);
+    }
+
+    .legal-row:hover .legal-row-arrow {
+        transform: translateX(4px);
+    }
+</style>

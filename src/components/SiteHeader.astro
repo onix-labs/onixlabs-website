@@ -91,7 +91,7 @@ const currentPath: string = Astro.url.pathname;
         align-items: center;
         justify-content: space-between;
         gap: 1.5rem;
-        width: min(100% - 2 * var(--gutter), 64rem);
+        width: min(100% - 2 * var(--tile-gap) - 1rem, var(--container-wide));
         height: var(--header-height);
         padding-block: var(--space-2);
         margin-inline: auto;

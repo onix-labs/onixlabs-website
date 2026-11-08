@@ -5,6 +5,7 @@ familyName: "Gledhill"
 order: 4
 path: /archive/Contributors/Ryan-Gledhill
 jobTitle: "Strategic Advisor"
+accent: "teal"
 headline: "Strategic Advisor"
 teaser: "A seasoned leader with enterprise experience, guiding high-performing teams and solutions."
 description: "Ryan Gledhill is a strategic advisor to ONIXLabs: a software engineering strategist and serial founder with expertise in enterprise blockchain."

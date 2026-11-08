@@ -2,16 +2,17 @@
 import Button from '../../components/Button.astro';
 import Specimen from '../Specimen.astro';
 ---
-<Specimen title="Variants" surface="alt" code={'<Button href="…" variant="primary">Primary</Button>\n<Button href="…">Secondary</Button>\n<Button href="…" variant="danger">Danger</Button>\n<Button href="…" variant="spectral">Spectral</Button>'}>
+<Specimen title="Variants" surface="alt" code={'<Button href="…" variant="primary">Primary</Button>\n<Button href="…">Secondary</Button>\n<Button href="…" variant="danger">Danger</Button>\n<Button href="…" variant="spectral">Spectral</Button>\n<Button href="…" variant="ghost" trailingIcon="arrow-right-bold">Ghost</Button>'}>
     <Fragment slot="notes">
         <p>Stride's buttons: soft squircle rectangles with a lighter edge on top and a darker one underneath, lifting slightly on hover and pressing in on click.</p>
-        <p><strong>Primary</strong> is the monochrome brand (near-black in light, near-white in dark) for the one action that matters most. <strong>Secondary</strong> is Stride's outline button, a raised surface. <strong>Danger</strong> is for destructive actions. <strong>Spectral</strong> is the ONIXLabs addition: a raised button wearing the turning brand gradient, at most once per page.</p>
+        <p><strong>Primary</strong> is the monochrome brand (near-black in light, near-white in dark) for the one action that matters most. <strong>Secondary</strong> is Stride's outline button, a raised surface. <strong>Danger</strong> is for destructive actions. <strong>Spectral</strong> is the ONIXLabs addition: a raised button wearing the turning brand gradient, at most once per page. <strong>Ghost</strong> is the content alone, text and icons with no surface, edges or shadow, for a secondary action beside a stronger one.</p>
     </Fragment>
     <div class="cluster">
         <Button href="#variants" variant="primary">Primary</Button>
         <Button href="#variants">Secondary</Button>
         <Button href="#variants" variant="danger">Danger</Button>
         <Button href="#variants" variant="spectral">Spectral</Button>
+        <Button href="#variants" variant="ghost" trailingIcon="arrow-right-bold">Ghost</Button>
     </div>
 </Specimen>
 
@@ -22,6 +23,7 @@ import Specimen from '../Specimen.astro';
         <Button href="#on-a-dark-band">Secondary</Button>
         <Button href="#on-a-dark-band" variant="danger">Danger</Button>
         <Button href="#on-a-dark-band" variant="spectral">Spectral</Button>
+        <Button href="#on-a-dark-band" variant="ghost" trailingIcon="arrow-right-bold">Ghost</Button>
     </div>
 </Specimen>
 
@@ -35,8 +37,8 @@ import Specimen from '../Specimen.astro';
     </div>
 </Specimen>
 
-<Specimen title="With icons" code={'<Button href="…" icon="github-logo" external>View on GitHub</Button>'}>
-    <Fragment slot="notes"><p>A leading icon names the destination. External links open in a new tab and say so to screen readers.</p></Fragment>
+<Specimen title="With icons" code={'<Button href="…" icon="github-logo" external>View on GitHub</Button>\n<Button href="…" variant="ghost" trailingIcon="arrow-right-bold">Find out more</Button>'}>
+    <Fragment slot="notes"><p>A leading icon names the destination; a trailing arrow says the action moves on. External links open in a new tab and say so to screen readers.</p></Fragment>
     <div class="cluster">
         <Button href="#with-icons" variant="primary" icon="paper-plane-tilt">Send a message</Button>
         <Button href="https://github.com/onix-labs" icon="github-logo" external>View on GitHub</Button>

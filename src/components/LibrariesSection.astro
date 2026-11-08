@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import FamilyTile from './FamilyTile.astro';
+import SectionHeader from './SectionHeader.astro';
+import { loadProductFamilies } from '../collections/load-product-families';
+
+// The libraries on the Products page: why we build them, then a tile for each family.
+const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
+---
+<section class="section tone-alt supercharged" aria-labelledby="software-supercharged">
+    <div class="container-wide">
+        <SectionHeader title="Software" highlight="supercharged" highlightStyle="gradient" id="software-supercharged" centered />
+        <div class="supercharged-image reveal">
+            <img class="supercharged-light" src="/onixlabs/images/heroes/supercharged.webp" alt="" width={1920} height={512} loading="lazy" decoding="async" />
+            <img class="supercharged-dark" src="/onixlabs/images/heroes/supercharged-dark.webp" alt="" width={1920} height={512} loading="lazy" decoding="async" />
+        </div>
+        <p class="lead supercharged-lead reveal">
+            Every great product stands on code its users never see. We design and maintain open-source libraries and frameworks that
+            take care of those foundations, so you can write better code with confidence and spend your time on what makes your software
+            different.
+        </p>
+        <div class="grid family-tiles">
+            {families.map((family: CollectionEntry<'productFamilies'>) => <FamilyTile family={family} />)}
+        </div>
+    </div>
+</section>
+
+<style>
+    .supercharged :global(.section-header) {
+        margin-bottom: 0;
+    }
+
+    .supercharged-image {
+        margin-block: clamp(2rem, 1.5rem + 2vw, 3rem);
+    }
+
+    .supercharged-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    :global([data-theme='light']) .supercharged-dark,
+    :global([data-theme='dark']) .supercharged-light {
+        display: none;
+    }
+
+    .supercharged-lead {
+        max-width: var(--lead-width);
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .family-tiles {
+        margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+    }
+
+    /* Three in a row or a single column: a two-column grid would strand the third. */
+    @media (min-width: 48rem) {
+        .family-tiles {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>

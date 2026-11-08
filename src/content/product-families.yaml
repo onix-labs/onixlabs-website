@@ -1,12 +1,9 @@
 - id: dotnet
   name: ".NET"
   order: 1
-  headline: "Products for .NET"
+  logo: /onixlabs/images/logo/dotnet.webp
+  tilePath: /Products/DotNet
   callout: "Precision libraries for modern .NET development"
-  introduction: >-
-      Discover a collection of focused, well-engineered libraries built to extend the power of the .NET ecosystem.
-      Designed for clarity, performance, and seamless integration, our tools help you build faster and more confidently
-      across enterprise-grade applications.
   capabilitiesCallout: "Discover the capabilities built to elevate your .NET applications"
   otherProductsHeadline: "Other Products for .NET"
   backgroundClass: bg-dotnet
@@ -18,13 +15,9 @@
 - id: corda
   name: "Corda"
   order: 2
-  headline: "Products for Corda"
-  callout: "Distributed Ledger with Superpowers"
-  introduction: >-
-      Unlock the full potential of Corda with a suite of powerful tools and libraries designed to enhance development,
-      improve productivity, and accelerate delivery. Whether you're building CorDapps, managing networks, or integrating
-      with enterprise systems, our products bring clarity, scalability, and performance to every layer of your distributed
-      ledger solution.
+  logo: /onixlabs/images/logo/corda.svg
+  tilePath: /Products/Corda/Core
+  callout: "Distributed ledger superpowers for CorDapps"
   capabilitiesCallout: "Discover the capabilities built to elevate your Corda applications"
   otherProductsHeadline: "Other Products for Corda"
   backgroundClass: bg-corda
@@ -36,12 +29,9 @@
 - id: kotlin
   name: "Kotlin"
   order: 3
-  headline: "Products for Kotlin"
+  logo: /onixlabs/images/logo/kotlin.svg
+  tilePath: /Products/Kotlin/Core
   callout: "Unlock the JVM with modern, idiomatic Kotlin"
-  introduction: >-
-      Designed with idiomatic Kotlin in mind, our products help developers write clean, expressive, and maintainable code.
-      From utility libraries to advanced tooling, each component is crafted to integrate seamlessly with modern Kotlin
-      projects, boosting productivity without adding complexity.
   capabilitiesCallout: "Discover the capabilities built to elevate your Kotlin applications"
   otherProductsHeadline: "Other Products for Kotlin"
   backgroundClass: bg-kotlin

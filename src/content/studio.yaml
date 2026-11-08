@@ -1,0 +1,245 @@
+# ONIXLabs Studio content for /Products/Studio, one feature for each screenshot in src/config/studio-screens.ts.
+studio:
+  features:
+    - id: workspace
+      screen: 1-os-ws
+      label: Workspace
+      colours:
+        label: teal
+        highlight: [teal, cyan]
+        glow: [teal, cyan]
+      title: A workbench that's
+      highlight: yours to arrange
+      lead: >-
+        Drag panels to dock, split, stack, float or pin them to an edge, open a group in a window of its own, and save the
+        arrangement as a layout to come back to. Start from the Default, Version Control or Agentic Engineering layouts, and
+        each folder remembers the one it uses.
+      points:
+        - title: Solution Explorer
+          body: Your project as its tooling sees it, across .NET, Node, Java and Kotlin, Python, C and C++, Rust and Go. Build, rebuild, clean, test, publish and restore from the tree, wherever the project's own tools offer them, and let it follow the file you're editing.
+        - title: The Ribbon
+          body: It follows whatever you're working on, so the actions on offer suit the current tab rather than everything at once. Every kind of tab has a ribbon of its own, and groups that don't fit fold into a menu instead of disappearing.
+        - title: Error List and References
+          body: Every problem your language tools report, in a single list. Every use of a symbol, grouped by file, with each line shown and the match highlighted.
+        - title: Agent
+          body: An agent docked alongside your code, working in the same project you have open. The code, Markdown and terminal menus all have Ask the Agent, so you can hand over whatever you're looking at.
+
+    - id: code-editor
+      screen: 6-os-ce
+      label: Code Editor
+      colours:
+        label: rose
+        highlight: [rose, coral]
+        glow: [coral, rose]
+      title: An editor that understands
+      highlight: what you're writing
+      lead: >-
+        Completion, navigation, inline errors and refactoring across TypeScript, Python, C#, Java, Kotlin, Rust, Go and C
+        and C++, because Studio speaks to the same language servers those communities maintain, each installed as a plugin.
+      points:
+        - title: Language Intelligence
+          body: Hover for types and documentation, with completion and signature help as you type. Go to Definition, Find All References and Rename are one click away, along with the fixes your language server suggests.
+        - title: Change Margin
+          body: A margin marks the lines you've changed since you last saved, and the ones you've saved this session, beside collapsible code. A setting turns it off or limits it to unsaved changes.
+        - title: Find and Replace
+          body: Search and replace across the workspace, the current project, your open files, the current file or a selection. Match case, whole words or a regular expression, and include ignored or hidden files when you need to.
+        - title: An Agent Alongside
+          body: Ask for a change and watch it land in the open document, through the same editor you're using. Changes an agent wants to make anywhere else go through the permissions you've set.
+
+    - id: binary-editor
+      screen: 10-os-be
+      label: Binary Editor
+      colours:
+        label: teal
+        highlight: [teal, cyan]
+        glow: [teal, cyan]
+      title: Look inside any file
+      highlight: byte by byte
+      lead: >-
+        For the times a text editor won't do. Studio reads files in 64 KB blocks rather than all at once, so it opens files
+        far too large for an ordinary editor.
+      points:
+        - title: Hex View
+          body: Insert, overwrite and delete bytes, with undo, and show 8, 16, 32 or 64 bytes to a row. Jump to the start, the end, or straight to where an executable's code begins.
+        - title: Assembly
+          body: With the decoder plugins, disassemble native PE, ELF and Mach-O binaries for x86, x64, ARM and ARM64, as well as JVM class files, WebAssembly and .NET IL. It recognizes ReadyToRun .NET images and reads symbol files alongside them.
+        - title: Inspector
+          body: Read the value at the cursor as a byte, word, integer, long, float, double, character or string. Switch the byte order, or between signed and unsigned, and every row updates.
+
+    - id: markdown
+      screen: 5-os-md
+      label: Markdown Editor
+      colours:
+        label: bs-danger
+        highlight: [rose, bs-danger]
+        glow: [rose, bs-danger]
+      title: Write docs the way
+      highlight: they'll be read
+      lead: >-
+        Not everything is code. The Markdown editor formats as you type, so notes and documentation look finished while you're
+        still writing them.
+      points:
+        - title: Live Diagrams and Math
+          body: Mermaid diagrams and KaTeX math render in place as you write them, alongside tables, footnotes and task lists. The ribbon inserts each one for you, so there's no syntax to remember.
+        - title: Outline
+          body: Every heading in one panel, which highlights the section you're reading as you scroll. Long documents stay easy to find your way around.
+        - title: Review and Read Aloud
+          body: Check spelling, grammar and style, from repeated words to the passive voice, and change, ignore or add words to your dictionary. Or have the document read back in your system's voices, with each word or sentence highlighted as it goes.
+        - title: Print and PDF
+          body: Print a document, or export it to PDF when it needs to leave the project. Copy and paste works as Markdown or as plain text, whichever the other side expects.
+
+    - id: agents
+      screen: 8-os-ai
+      label: Agents
+      colours:
+        label: blue
+        highlight: [blue, bs-primary]
+        glow: [bs-primary, blue]
+      title: It starts as a conversation
+      highlight: and gets to work
+      lead: >-
+        Talk to an agent the way you'd chat with an assistant in your browser, then attach the files and folders it needs.
+        When there's work to do, it runs commands and edits code on your machine with your permission, and keeps going in
+        the background while you get on with yours.
+      points:
+        - title: Your Choice of Engine
+          body: Sessions run on Claude through the Claude Agent SDK, or on OpenAI's Codex. Models from OpenAI, Google, xAI, DeepSeek, Ollama or any OpenAI-compatible endpoint get Studio's tools too, and each conversation can be a full agent or a read-only assistant.
+        - title: Reasoning in the Open
+          body: Follow what an agent is thinking and doing as it goes, from its thought process to each file it reads and command it runs. Work it hands to sub-agents shows in lanes of its own that you can expand.
+        - title: Attachments
+          body: Point an agent at a file, a folder or your current selection, so it starts from what you're looking at. Mention a file with @, or paste or drop in a screenshot.
+        - title: Context at a Glance
+          body: A meter in the message box shows how much of the model's context a session has used, including what you've attached. Compact the conversation when it starts to fill, and carry on where you left off.
+
+    - id: terminals
+      screen: 7-os-te
+      label: Terminals
+      colours:
+        label: violet
+        highlight: [violet, blue]
+        glow: [violet, blue]
+      title: Real terminals
+      highlight: right where you work
+      lead: >-
+        Terminals are fully interactive and behave exactly as they do outside Studio. Pick whichever shell you prefer, and run
+        or build your project in a session you can type into.
+      points:
+        - title: Your Shell, Your Tools
+          body: Docker, dotnet, gh and everything else on your path work as they always have, in the shells your system already has. Jump to your home folder or the project root from the ribbon.
+        - title: Find
+          body: Search back through a session's output instead of scrolling for it, and step from one match to the next.
+        - title: Clickable Output
+          body: Links in the output open with a click, and so do file paths, straight to the line and column they mention.
+        - title: Shared with Agents
+          body: Agents can open terminals, read their output and type into them, just as you would. Every command they type there runs in plain sight, and you can step in at any time.
+
+    - id: version-control
+      screen: 2-os-vc
+      label: Version Control
+      colours:
+        label: green
+        highlight: [green, bs-success]
+        glow: [green, bs-success]
+      title: Your whole repository
+      highlight: in the window you're in
+      lead: >-
+        Review your changes, read the history as a commit graph and keep several branches checked out at once as worktrees,
+        with no separate git client to switch to. It works with the git you already have installed.
+      points:
+        - title: Repository
+          body: Local and remote branches, tags and stashes in one tree. Merge, squash or set an upstream from a branch, and apply, pop or drop a stash, without the command line.
+        - title: Diffs
+          body: Review each change inline or side by side, in the same editor you write code in. Revert a file's changes from the explorer when you'd rather start again.
+        - title: History
+          body: Follow the commit graph across every branch, and open any commit to see what it changed. Or narrow it to a single file to see how that file got where it is.
+        - title: Pull Requests, Issues and Actions
+          body: With the GitHub plugin, your pull requests, issues and CI runs sit beside your branches. Check a pull request's status, re-run or cancel a workflow, or open an issue straight in an agent.
+
+    - id: database-explorer
+      screen: 3-os-de
+      label: Database Explorer
+      colours:
+        label: amber
+        highlight: [amber, coral]
+        glow: [amber, coral]
+      title: Query your data
+      highlight: beside your code
+      lead: >-
+        Connect to PostgreSQL, SQLite and Neo4j, browse the schema and run queries with results in a grid, with no database
+        client to keep open on the side. Connections and queries save with your project, and passwords can be locked behind
+        a passphrase.
+      points:
+        - title: Object Explorer
+          body: Connections, databases, tables, node labels and saved queries, in one tree. Expand a table to see its columns and types, keys, indexes and constraints.
+        - title: Results
+          body: Read rows as a table or raw, and export them to CSV, XLSX or JSON. Run just the statement you're on, and commit or roll back when you're working in a transaction.
+        - title: Graphs
+          body: Neo4j results can be drawn as the network they describe, as well as listed. The graph lays itself out as you watch, and you can zoom in on the part that matters.
+        - title: Agents
+          body: Agents can browse the schema and write queries, and each run asks for your permission first. They can also read an object's script and save the queries they write for you.
+
+    - id: containers
+      screen: 9-os-dc
+      label: Containers
+      colours:
+        label: cyan
+        highlight: [teal, cyan]
+        glow: [teal, cyan]
+      title: Is it running
+      highlight: and why not?
+      lead: >-
+        See and control your containers without dropping to the command line, on Docker or Podman, and get the day-to-day
+        answers in the window you're already in. Studio talks to the engine you already run, rather than installing one of
+        its own.
+      points:
+        - title: Containers, Images and Volumes
+          body: Everything your engine holds, in one searchable list, with each image's size and the containers using it. Pull an image, or run a new container with its ports, environment and volumes from a dialog.
+        - title: Live State
+          body: Ports, CPU, memory and status for each container, updating as things change, straight from your engine's own statistics.
+        - title: Control
+          body: Start, stop, restart, pause or remove from the ribbon, without typing a command. Select several containers to act on them all at once.
+        - title: Logs and Shells
+          body: Read a container's logs or open a shell inside it, in a panel under the list. Shells use your docker or podman command-line tool, so they behave as they would anywhere else.
+
+    - id: api-explorer
+      screen: 4-os-ae
+      label: API Explorer
+      colours:
+        label: amber
+        highlight: [amber, coral]
+        glow: [amber, coral]
+      title: No separate
+      highlight: REST client
+      lead: >-
+        The tool most developers keep open beside their editor, now inside it. Compose and send requests, save them with
+        your project and read responses properly formatted. Collections are plain JSON files, so they diff and review like
+        the rest of your code.
+      points:
+        - title: Collections and Environments
+          body: Group requests into collections and folders, and switch between environments such as localhost and staging. Variables fill in from whichever environment is active.
+        - title: Requests
+          body: Set the method, parameters, auth, headers and a JSON, text, XML or form body. Bearer, basic and API-key auth are all supported, and each request can set its own timeout and redirect handling.
+        - title: Responses
+          body: Formatted bodies, with the status, time and size at a glance. Timing separates the wait for the first byte from the total, and the final URL shows where any redirects ended up.
+        - title: History
+          body: Everything you've sent this session, with its status and timing, ready to filter. Agents can create, update and send requests as well.
+
+  extras:
+    - title: Mission Control
+      icon: squares-four
+      body: When several agents are running, each gets its own column on one screen, with its own model, effort level and history, so you can start, follow and redirect them all.
+    - title: You Set the Limits
+      icon: shield-check
+      body: Agents write inside your workspace by default, and per-tool policies decide what each one may do, ask first or never touch.
+    - title: Debugging
+      icon: flask
+      body: Set breakpoints, step through your code and inspect the call stack, local variables and watched expressions. Proven today with .NET, Node and Python.
+    - title: Package Management
+      icon: package
+      body: For NuGet and npm projects, see what you depend on, spot what has a newer version and search registries, including private feeds, with the credentials your project already has.
+    - title: Local Models
+      icon: sparkle
+      body: The model manager runs models on your own machine through Ollama, installing the runtime and pulling and removing weights for you.
+    - title: Plugins
+      icon: stack
+      body: Language servers, debug adapters, agent harnesses, database and container engines all arrive as plugins, so you install what your work needs.

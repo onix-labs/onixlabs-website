@@ -1,0 +1,231 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { loadContributors } from '../collections/load-contributors';
+import Icon from '../components/Icon.astro';
+import PrinciplesBento from '../components/PrinciplesBento.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import TalkToUsSection from '../components/TalkToUsSection.astro';
+import TeamTile from '../components/TeamTile.astro';
+import { site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// About ONIXLabs: who we are, what we do (each linking to where it's covered), what we stand for, and the people behind
+// it. Everything here is stated elsewhere on the site; this page brings it together.
+interface Area {
+    readonly title: string;
+    readonly summary: string;
+    readonly href: string;
+}
+
+const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
+const areas: ReadonlyArray<Area> = [
+    {
+        title: 'Products',
+        summary: 'ONIXLabs Studio, the agentic development environment; Aero, the modular .NET suite; ONIXPlayer; and open-source libraries for .NET, Kotlin and Corda.',
+        href: '/Products',
+    },
+    {
+        title: 'Consulting',
+        summary: 'Engineering-first consulting, from strategy and development to testing, integration, documentation and cloud delivery.',
+        href: '/Consulting',
+    },
+    {
+        title: 'Engineering with AI',
+        summary: 'How we use AI across our engineering, consulting and integration work, and the tools we build for it.',
+        href: '/Engineering-With-AI',
+    },
+    {
+        title: 'Documentation',
+        summary: 'Why we built our products, the ideas our libraries are built on, and the standards we hold our own code to.',
+        href: '/Documentation',
+    },
+];
+---
+<BaseLayout
+    title="About"
+    description="About ONIXLabs: enterprise software engineering for .NET, Kotlin, the JVM and Corda since 2020, the principles we work by, and the team."
+    path="/About"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'About', path: '/About' }]}
+>
+    <section class="hero-bloom about-hero" aria-labelledby="about-title">
+        <div class="about-hero-copy">
+            <h1 id="about-title" class="display rise">
+                Think beyond code{' '}
+                <span class="gradient-text">Build beyond limits</span>
+            </h1>
+            <p class="lead rise rise-2">
+                Since {site.foundingYear}, we've built enterprise software for .NET, Kotlin, the JVM and Corda: the platforms and tools we
+                ship ourselves, the open-source libraries we maintain, and the systems we build alongside our clients.
+            </p>
+        </div>
+    </section>
+
+    <section class="section" aria-labelledby="what-we-do">
+        <div class="container-wide split-layout">
+            <SectionHeader eyebrow="What we do" title="Software that scales" highlight="from tools to delivery" id="what-we-do">
+                We build products, maintain open-source libraries and work with teams on their own systems, with the same standards
+                throughout.
+            </SectionHeader>
+            <ul class="areas" role="list">
+                {areas.map((area: Area) => (
+                    <li class="reveal">
+                        <a class="area" href={area.href}>
+                            <span class="area-title">{area.title}</span>
+                            <span class="area-summary">{area.summary}</span>
+                            <span class="area-arrow" aria-hidden="true"><Icon name="arrow-right-bold" /></span>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </section>
+
+    <section class="section tone-alt" aria-labelledby="what-we-stand-for">
+        <div class="container-wide">
+            <SectionHeader title="What we" highlight="stand for" id="what-we-stand-for" centered>
+                The principles behind everything we build, from a single library to a client's production system.
+            </SectionHeader>
+            <PrinciplesBento />
+        </div>
+    </section>
+
+    <section class="section" aria-labelledby="the-team">
+        <div class="container-wide">
+            <SectionHeader title="The people" highlight="behind the code" id="the-team" centered>
+                We believe great software is a shared effort. We contribute to the tools we use, collaborate with the community, and
+                champion open-source wherever we can.
+            </SectionHeader>
+            <div class="grid grid-4 shelf-mobile">
+                {contributors.map((contributor: CollectionEntry<'contributors'>) => (
+                    <TeamTile
+                        name={contributor.data.name}
+                        jobTitle={contributor.data.jobTitle}
+                        accent={contributor.data.accent}
+                        photo={contributor.data.photo}
+                        href={contributor.data.path}
+                        teaser={contributor.data.teaser}
+                        gitHubUrl={contributor.data.gitHubUrl}
+                        linkedInUrl={contributor.data.linkedInUrl}
+                    />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <TalkToUsSection alternate />
+</BaseLayout>
+
+<style>
+    .about-hero {
+        padding-block: clamp(4rem, 3rem + 5vw, 7.5rem) clamp(5rem, 3.5rem + 7vw, 10rem);
+        overflow: clip;
+    }
+
+    .about-hero-copy {
+        display: grid;
+        gap: 1.4rem;
+        justify-items: center;
+        width: min(100% - 2 * var(--gutter), 76rem);
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .about-hero h1 {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-weight: 600;
+    }
+
+    .about-hero h1 .gradient-text {
+        display: block;
+    }
+
+    /* The full text colour rather than the muted one: the bloom reaches up behind this. */
+    .about-hero .lead {
+        max-width: var(--lead-width);
+        color: var(--text);
+        text-wrap: balance;
+    }
+
+    .split-layout {
+        display: grid;
+        gap: 2.5rem 5rem;
+    }
+
+    @media (min-width: 60rem) {
+        .split-layout {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start;
+        }
+
+        .split-layout :global(.section-header) {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+        }
+    }
+
+    .split-layout :global(.section-header) {
+        margin-bottom: 0;
+    }
+
+    .split-layout :global(.section-header h2) {
+        font-size: var(--text-4xl);
+    }
+
+    .split-layout :global(.headline-muted) {
+        display: block;
+    }
+
+    .areas {
+        display: grid;
+    }
+
+    .areas li + li {
+        border-top: 1px solid var(--border);
+    }
+
+    .area {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.4rem 1.5rem;
+        align-items: center;
+        padding-block: 1.75rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .areas li:first-child .area {
+        padding-top: 0;
+    }
+
+    .area:hover {
+        text-decoration: none;
+    }
+
+    .area-title {
+        color: var(--heading);
+        font-size: var(--text-2xl);
+        font-weight: 600;
+        letter-spacing: -0.022em;
+    }
+
+    .area-summary {
+        grid-column: 1;
+        color: var(--text-muted);
+        line-height: 1.55;
+    }
+
+    .area-arrow {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        display: inline-flex;
+        color: var(--heading);
+        font-size: 1.4rem;
+        transition: transform var(--duration) var(--ease-out);
+    }
+
+    .area:hover .area-arrow {
+        transform: translateX(4px);
+    }
+</style>

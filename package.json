@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "images": "node scripts/generate-raster-images.ts && node scripts/generate-social-images.ts"
+    "images": "node scripts/generate-raster-images.ts && node scripts/generate-social-images.ts && node scripts/generate-noise-texture.ts"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.5",

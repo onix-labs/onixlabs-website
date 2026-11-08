@@ -4,7 +4,8 @@ navigationTitle: "Relational Data & Pointers"
 description: "What state pointers in Corda are, how to use them to model relational data, and how to treat state pointers as a design pattern rather than an API."
 category: corda
 order: 4
-path: /archive/Documentation/Corda/Relational-Data-And-Pointers
+path: /Documentation/Corda/Relational-Data-And-Pointers
+published: 2022-03-13
 ---
 
 In this article we are going to look at state pointers in Corda, understanding what they are, how to use them, and finally how we can think of state pointers as a design pattern, rather than APIs belonging solely to the Corda SDK.

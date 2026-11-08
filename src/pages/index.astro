@@ -1,15 +1,93 @@
 ---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import { loadContributors } from '../collections/load-contributors';
+import AiCircuitSection from '../components/AiCircuitSection.astro';
+import PrinciplesBento from '../components/PrinciplesBento.astro';
+import SectionHeader from '../components/SectionHeader.astro';
 import StudioHero from '../components/StudioHero.astro';
+import TalkToUsSection from '../components/TalkToUsSection.astro';
+import TeamTile from '../components/TeamTile.astro';
+import TechnologyMarquee from '../components/TechnologyMarquee.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// The new home page, built up from the design language (/design in the dev server). The previous site lives under
-// /archive. Not indexed while it's a work in progress.
+// The home page, built from the design language (/design in the dev server).
+const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
+const technologies: ReadonlyArray<CollectionEntry<'technologies'>> = (await getCollection('technologies')).toSorted(
+    (left: CollectionEntry<'technologies'>, right: CollectionEntry<'technologies'>): number => left.id.localeCompare(right.id),
+);
 ---
 <BaseLayout
     title="ONIXLabs | ONIXLabs Studio, the agentic development environment"
     description="ONIXLabs Studio is an agentic development environment: code, terminals, source control, containers, databases and AI agents in one window."
     path="/"
-    noindex
 >
     <StudioHero />
+
+    <AiCircuitSection />
+
+    <section class="section tone-alt" aria-labelledby="code-that-connects">
+        <div class="container-wide">
+            <SectionHeader title="Code that connects" highlight="Software that scales" id="code-that-connects" centered>
+                At ONIXLabs, we enhance the software development journey through a relentless focus on quality, crafting robust and
+                scalable enterprise solutions that empower innovation and growth.
+            </SectionHeader>
+            <PrinciplesBento />
+        </div>
+    </section>
+
+    <section class="section technologies stacked-headline" aria-labelledby="purpose-over-preference">
+        <div class="container">
+            <SectionHeader title="Purpose over preference" highlight="Tools that fit the job" id="purpose-over-preference" centered>
+                We don't believe that one size fits all. We choose the right tools for the job, not just the ones we know. If we're not the
+                best fit, we'll learn fast or help connect you with those who are.
+            </SectionHeader>
+        </div>
+        <TechnologyMarquee technologies={technologies} />
+    </section>
+
+    <section class="section tone-alt stacked-headline" aria-labelledby="champions-of-contribution">
+        <div class="container-wide">
+            <SectionHeader title="Champions of contribution" highlight="Engineers of excellence" id="champions-of-contribution" centered>
+                We believe great software is a shared effort. At ONIXLabs, we contribute to the tools we use, collaborate with the
+                community, and champion open-source innovation wherever we can.
+            </SectionHeader>
+            <div class="grid grid-4 shelf-mobile">
+                {contributors.map((contributor: CollectionEntry<'contributors'>) => (
+                    <TeamTile
+                        name={contributor.data.name}
+                        jobTitle={contributor.data.jobTitle}
+                        accent={contributor.data.accent}
+                        photo={contributor.data.photo}
+                        href={contributor.data.path}
+                        teaser={contributor.data.teaser}
+                        gitHubUrl={contributor.data.gitHubUrl}
+                        linkedInUrl={contributor.data.linkedInUrl}
+                    />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <TalkToUsSection />
 </BaseLayout>
+
+<style>
+    .technologies {
+        overflow: hidden;
+    }
+
+    /* Wide enough for each phrase of the headline to hold its own line; the lead keeps the usual measure. */
+    .stacked-headline :global(.section-header) {
+        max-width: none;
+    }
+
+    .stacked-headline :global(.section-header .lead) {
+        max-width: var(--lead-width);
+    }
+
+    .stacked-headline :global(.headline-muted) {
+        display: block;
+    }
+</style>

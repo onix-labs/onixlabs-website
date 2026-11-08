@@ -1,0 +1,46 @@
+---
+import AeroShowcase from './AeroShowcase.astro';
+import Button from './Button.astro';
+import SectionHeader from './SectionHeader.astro';
+
+// Aero on the Products page, flat in its band: the laptop on the left, the pitch on the right. They stack with the pitch
+// first, which is why the pitch comes first here.
+---
+<section class="section tone-alt aero-product" aria-labelledby="aero">
+    <div class="container-wide product-split">
+        <div class="product-split-content">
+            <SectionHeader title="ONIXLabs Aero" highlight="Enterprise stack for .NET" highlightStyle="gradient" id="aero">
+                A modular suite of .NET APIs designed for fast, scalable, enterprise engineering.
+            </SectionHeader>
+            <div class="button-pair">
+                <Button href="/Contact?reason=aero-demo" variant="primary" size="large" icon="chat-circle-dots">Request a demo</Button>
+                <Button href="/Products/Aero" variant="ghost" size="large" trailingIcon="arrow-right-bold">Find out more</Button>
+            </div>
+        </div>
+        <div class="aero-stage settle">
+            <div class="window-light" aria-hidden="true"></div>
+            <AeroShowcase />
+        </div>
+    </div>
+</section>
+
+<style>
+    .aero-product {
+        overflow: clip;
+    }
+
+    .aero-stage {
+        position: relative;
+    }
+
+    /* The window light takes the place of the showcase's own. */
+    .aero-stage :global(.showcase-glow) {
+        display: none;
+    }
+
+    @media (min-width: 72rem) {
+        .aero-stage {
+            order: -1;
+        }
+    }
+</style>

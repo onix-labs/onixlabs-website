@@ -7,13 +7,13 @@ import { loadProducts } from '../../../collections/load-products';
 import ArticleTile from '../../../components/ArticleTile.astro';
 import Button from '../../../components/Button.astro';
 import CapstoneTile from '../../../components/CapstoneTile.astro';
-import CtaBand from '../../../components/CtaBand.astro';
 import FeatureTile from '../../../components/FeatureTile.astro';
 import Hero from '../../../components/Hero.astro';
 import Icon from '../../../components/Icon.astro';
 import ProductStage from '../../../components/ProductStage.astro';
 import ProductTile from '../../../components/ProductTile.astro';
 import SectionHeader from '../../../components/SectionHeader.astro';
+import TalkToUsSection from '../../../components/TalkToUsSection.astro';
 import TechnologyMarquee from '../../../components/TechnologyMarquee.astro';
 import type { StageStatement } from '../../../components/stage-statement';
 import type { Principle } from '../../../config/principle';
@@ -25,7 +25,7 @@ import ExampleFrame from '../../ExampleFrame.astro';
 // Example home page: capstone products first, company second, built only from design-language components.
 const principles: ReadonlyArray<Principle> = [
     { title: 'Craftsmanship', icon: 'design', body: 'We treat code as a craft, writing software with precision, care, and pride in every detail.' },
-    { title: 'Integrity', icon: 'shield-alt', body: 'We uphold transparency, honesty, and reliability in every decision, from code to client collaboration.' },
+    { title: 'Integrity', icon: 'shield', body: 'We uphold transparency, honesty, and reliability in every decision, from code to client collaboration.' },
     { title: 'Performance', icon: 'gauge', body: 'We engineer solutions that are not only functional but fast, efficient, and built to scale.' },
     { title: 'Enterprise', icon: 'buildings', body: 'Our platforms are designed for the complexity and demands of modern enterprises. Secure, scalable, and future-ready.' },
     { title: 'Community', icon: 'user-group', body: 'We thrive on collaboration, contributing to open-source and growing together with the global developer community.' },
@@ -141,7 +141,7 @@ function categoryName(id: string): string {
         </div>
     </section>
 
-    <CtaBand />
+    <TalkToUsSection alternate />
     <ExampleFrame />
 </BaseLayout>
 

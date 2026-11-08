@@ -44,6 +44,7 @@ body {
     line-height: var(--leading-normal);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-kerning: normal;
     text-rendering: optimizeLegibility;
     overflow-x: clip;
 }
@@ -126,14 +127,14 @@ h4 {
 
 h1 {
     font-size: var(--text-5xl);
-    letter-spacing: -0.04em;
-    line-height: 1.04;
+    letter-spacing: -0.03em;
+    line-height: 1.14;
 }
 
 h2 {
     font-size: var(--text-4xl);
-    letter-spacing: -0.035em;
-    line-height: 1.06;
+    letter-spacing: -0.028em;
+    line-height: 1.14;
 }
 
 h3 {
@@ -146,8 +147,8 @@ h3 {
 /* The display headline: the largest type on the site, one per page at most. */
 .display {
     font-size: var(--text-hero);
-    letter-spacing: -0.05em;
-    line-height: 0.98;
+    letter-spacing: -0.032em;
+    line-height: 1.1;
 }
 
 h4 {
@@ -283,7 +284,7 @@ main:focus {
 .section-header {
     display: grid;
     gap: 1rem;
-    max-width: 50rem;
+    max-width: var(--lead-width);
     margin-bottom: clamp(2.5rem, 2rem + 2.5vw, 4.5rem);
 }
 
@@ -457,14 +458,15 @@ a.tile:hover {
 /*
  * Buttons (Stride): soft rounded rectangles with a lighter edge on top and a darker one underneath. Primary is the
  * monochrome brand (near-black in light, near-white in dark); secondary is Stride's outline, a raised surface button;
- * danger for destructive actions; spectral wears the turning ONIXLabs brand gradient, for one action per page.
+ * danger for destructive actions; spectral wears the turning ONIXLabs brand gradient, for one action per page; ghost
+ * is the content alone, with no surface, edges or shadow.
  */
 
 .button {
     --button-bg: var(--surface);
     --button-text: var(--primary);
     --button-edge-top: var(--edge-light);
-    --button-edge-bottom: var(--edge-dark);
+    --button-edge-bottom: var(--edge-button);
     position: relative;
     isolation: isolate;
     display: inline-flex;
@@ -519,6 +521,14 @@ a.tile:hover {
         conic-gradient(from var(--angle), var(--brand-conic-stops)) border-box;
 }
 
+/* The edges go transparent rather than away, so it stays the same height as a button beside it. */
+.button-ghost {
+    --button-bg: transparent;
+    --button-edge-top: transparent;
+    --button-edge-bottom: transparent;
+    box-shadow: none;
+}
+
 .button-small {
     min-height: 2.25rem;
     padding: var(--space-1) var(--space-3);
@@ -540,6 +550,74 @@ a.tile:hover {
 
 .button .icon {
     font-size: 0.9em;
+}
+
+/* Buttons offered together: equal widths, as wide as the longest needs, with larger icons. They stack on phones. */
+.button-pair {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    gap: 0.75rem;
+    width: fit-content;
+}
+
+.button-pair .icon {
+    font-size: 1.4em;
+}
+
+/* A ghost button has no shape to match, so the content sizes each button. */
+.button-pair:has(.button-ghost) {
+    grid-auto-columns: auto;
+}
+
+/* A product hero: the pitch and its buttons on one side, the product on the other. They stack on narrower screens,
+   later than other split sections, because two equal buttons need half the row. */
+.product-split {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+/* Above the product, so its light can't tint the text and a screen scaling away passes behind it. */
+.product-split-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 2rem;
+}
+
+.product-split-content .section-header {
+    max-width: none;
+    margin-bottom: 0;
+}
+
+/* Two downloads and a ghost button are too wide for half the row. */
+.product-split-content .button-pair:has(.button-ghost):has(.platform-download-alternate:not([hidden])) {
+    grid-auto-flow: row;
+}
+
+.product-split-content .headline-muted,
+.product-split-content .gradient-text {
+    display: block;
+}
+
+@media (min-width: 72rem) {
+    .product-split {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+    }
+
+    /* Each phrase holds its own line in the half-width column on a desktop. */
+    .product-split-content h1,
+    .product-split-content h2 {
+        font-size: 2.875rem;
+    }
+}
+
+@media (max-width: 40rem) {
+    .button-pair {
+        grid-auto-flow: row;
+    }
 }
 
 /* Link-style call to action: "Learn more ›", with the chevron in brand coral. */

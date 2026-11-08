@@ -1,0 +1,92 @@
+---
+import { studioScreens } from '../config/studio-screens';
+import type { StudioColour } from '../config/studio-colour';
+import type { StudioScreen } from './studio-screen';
+
+// A Studio screenshot, by its id in src/config/studio-screens.ts. Each theme's image is lazy, so the other theme's never
+// downloads. `decorative` drops the alt text, for a window inside a link that names it. `glow` gives the window a neutral
+// elevation shadow and faint light in two colours spilling unevenly from behind it, the first at its top left and
+// the second at its bottom right.
+interface Props {
+    readonly screen: string;
+    readonly priority?: 'high' | 'low';
+    readonly decorative?: boolean;
+    readonly glow?: readonly [StudioColour, StudioColour] | undefined;
+}
+
+const { screen: screenId, priority = 'low', decorative = false, glow }: Props = Astro.props;
+const screen: StudioScreen | undefined = studioScreens.find((candidate: StudioScreen): boolean => candidate.id === screenId);
+
+if (screen === undefined) {
+    throw new Error(`No screen in src/config/studio-screens.ts has the id ${screenId}.`);
+}
+
+const alt: string = decorative ? '' : screen.alt;
+---
+<figure class:list={['studio-window', glow !== undefined && ['has-glow', `from-${glow[0]}`, `to-${glow[1]}`]]}>
+    <img class="shot-light" src={`/onixlabs/images/studio/${screen.id}-l.webp`} alt={alt} width={1712} height={1112} loading="lazy" fetchpriority={priority} decoding="async" />
+    <img class="shot-dark" src={`/onixlabs/images/studio/${screen.id}-d.webp`} alt={alt} width={1712} height={1112} loading="lazy" fetchpriority={priority} decoding="async" />
+</figure>
+
+<style>
+    .studio-window {
+        margin: 0;
+    }
+
+    .has-glow {
+        --window-shadow:
+            0 1px 2px rgba(0, 0, 0, 0.08),
+            0 6px 16px -4px rgba(0, 0, 0, 0.12),
+            0 28px 56px -18px rgba(0, 0, 0, 0.28);
+        position: relative;
+        isolation: isolate;
+    }
+
+    :global([data-theme='dark']) .has-glow {
+        --window-shadow:
+            0 1px 2px rgba(0, 0, 0, 0.3),
+            0 8px 20px -4px rgba(0, 0, 0, 0.35),
+            0 32px 64px -18px rgba(0, 0, 0, 0.6);
+    }
+
+    /* The elevation shadow, cast by a shape matching the window inside the screenshot's transparent margin: 56px of the
+       1712 at each side, 38 of the 1112 above and 74 below, with corners of about 20px. */
+    .has-glow::before {
+        content: '';
+        position: absolute;
+        inset: 3.42% 3.27% 6.65%;
+        z-index: -1;
+        border-radius: 1.25% / 2%;
+        box-shadow: var(--window-shadow);
+    }
+
+    /* The light behind the window: the first colour gathered at the top left and the second at the bottom right, larger and
+       further out at the bottom, so it spills unevenly rather than outlining the frame. */
+    .has-glow::after {
+        content: '';
+        position: absolute;
+        inset: -4% -6% -14% -5%;
+        z-index: -2;
+        background:
+            radial-gradient(45% 55% at 18% 22%, color-mix(in srgb, var(--from) 55%, transparent), transparent 70%),
+            radial-gradient(55% 60% at 80% 82%, color-mix(in srgb, var(--to) 60%, transparent), transparent 72%);
+        filter: blur(48px);
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    :global([data-theme='dark']) .has-glow::after {
+        opacity: 0.8;
+    }
+
+
+    .studio-window img {
+        width: 100%;
+        height: auto;
+    }
+
+    :global([data-theme='light']) .shot-dark,
+    :global([data-theme='dark']) .shot-light {
+        display: none;
+    }
+</style>

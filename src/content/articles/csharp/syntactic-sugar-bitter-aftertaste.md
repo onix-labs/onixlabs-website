@@ -2,9 +2,10 @@
 title: "Syntactic Sugar, Bitter Aftertaste"
 navigationTitle: "Syntactic Sugar, Bitter Aftertaste"
 description: "A deep dive into the C# var keyword: its intended use cases, the pitfalls of overusing it, and why explicit types improve clarity and maintainability."
-category: csharp
+category: standards
 order: 1
-path: /archive/Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste
+path: /Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste
+published: 2025-06-15
 ---
 
 This article takes a deep dive into the `var` keyword in C#, examining its intended use cases, the common pitfalls that can arise from overusing it, and the reasons why I personally favor explicit types that speak for themselves, especially when clarity, readability, and maintainability are priorities in a codebase.
@@ -85,21 +86,21 @@ Microsoft does, in fact, provide thoughtful guidance on this matter. In the offi
 
 Use [implicit typing](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/implicitly-typed-local-variables) for local variables when the type of the variable is obvious from the right side of the assignment.
 
-```c#
+```csharp
 var message = "This is clearly a string.";
 var currentTemperature = 27;
 ```
 
 Don't use [var](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables) when the type isn't apparent from the right side of the assignment. Don't assume the type is clear from a method name. A variable type is considered clear if it's a `new` operator, an explicit cast, or assignment to a literal value.
 
-```c#
+```csharp
 int numberOfIterations = Convert.ToInt32(Console.ReadLine());
 int currentMaximum = ExampleClass.ResultSoFar();
 ```
 
 Don't use variable names to specify the type of the variable. It might not be correct. Instead, use the type to specify the type, and use the variable name to indicate the semantic information of the variable. The following example should use `string` for the type and something like `iterations` to indicate the meaning of the information read from the console.
 
-```c#
+```csharp
 var inputInt = Console.ReadLine();
 Console.WriteLine(inputInt);
 ```
@@ -110,14 +111,14 @@ Let’s also not forget that `var` is not a universal substitute for type declar
 
 **Null Assignments:**
 
-```c#
+```csharp
 var message = null;            // Invalid
 string? message = null;        // Valid
 ```
 
 **Class Members:**
 
-```c#
+```csharp
 public sealed class MessageService
 {
     private readonly var prefix = "Hello";        // Invalid

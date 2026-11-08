@@ -1,0 +1,130 @@
+---
+import Button from './Button.astro';
+import PlatformDownload from './PlatformDownload.astro';
+import SectionHeader from './SectionHeader.astro';
+import { loadStudioRelease } from '../collections/load-studio-release';
+import { studioScreens } from '../config/studio-screens';
+import type { StudioRelease } from '../collections/studio-release';
+import type { StudioScreen } from './studio-screen';
+
+// ONIXLabs Studio on the Products page: the pitch beside a window showing one screen at a time, with brand light behind
+// it. On each beat the front screen scales up, blurs and fades away to reveal the next one behind it. All CSS: under reduced motion
+// (or without animation support) it holds the first screen.
+const releasesUrl: string = 'https://github.com/onix-labs/onixlabs-studio/releases';
+const release: StudioRelease | undefined = await loadStudioRelease();
+---
+<section class="section studio-product" aria-labelledby="onixlabs-studio">
+    <div class="container-wide product-split">
+        <div class="product-split-content">
+            <SectionHeader title="ONIXLabs Studio" highlight="Every tool in one window" highlightStyle="gradient" id="onixlabs-studio" level={1}>
+                An agentic development environment, where you and your AI agents work in the same project, the same terminals and the
+                same editor.
+            </SectionHeader>
+            <div class="button-pair">
+                <PlatformDownload release={release} releasesUrl={releasesUrl} />
+                <Button href="/Products/Studio" variant="ghost" size="large" trailingIcon="arrow-right-bold">Find out more</Button>
+            </div>
+        </div>
+        <div class="studio-stage">
+            <div class="window-light" aria-hidden="true"></div>
+            <div class="dissolve" role="group" aria-label="ONIXLabs Studio screens">
+                {studioScreens.map((screen: StudioScreen, index: number) => (
+                    <figure class="dissolve-shot">
+                        <img
+                            class="shot-light"
+                            src={`/onixlabs/images/studio/${screen.id}-l.webp`}
+                            alt={screen.alt}
+                            width={1712}
+                            height={1112}
+                            loading="lazy"
+                            fetchpriority={index === 0 ? 'high' : 'low'}
+                            decoding="async"
+                        />
+                        <img
+                            class="shot-dark"
+                            src={`/onixlabs/images/studio/${screen.id}-d.webp`}
+                            alt={screen.alt}
+                            width={1712}
+                            height={1112}
+                            loading="lazy"
+                            fetchpriority={index === 0 ? 'high' : 'low'}
+                            decoding="async"
+                        />
+                    </figure>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .studio-product {
+        overflow: clip;
+    }
+
+    .studio-stage {
+        position: relative;
+    }
+
+    .dissolve {
+        position: relative;
+        display: grid;
+        isolation: isolate;
+    }
+
+    .dissolve-shot {
+        grid-area: 1 / 1;
+        margin: 0;
+        opacity: 0;
+    }
+
+    /* The first screen, which is also the static fallback. */
+    .dissolve-shot:first-child {
+        opacity: 1;
+    }
+
+    .dissolve-shot img {
+        width: 100%;
+        height: auto;
+    }
+
+    :global([data-theme='light']) .shot-dark,
+    :global([data-theme='dark']) .shot-light {
+        display: none;
+    }
+
+    @media (max-width: 68rem) {
+        .studio-product .button-pair:has(:global(.platform-download-alternate:not([hidden]))) {
+            grid-auto-flow: row;
+        }
+    }
+
+    /*
+     * Each of the ten screens runs the same fifty-second sequence of ten five-second beats, offset by its place in the
+     * queue, and the exit matches the home page's showcase. A screen moves in behind the front one just before it leaves,
+     * and the z-index keeps the leaving screen above it, including where the sequence wraps from the last back to the
+     * first. Named apart from `showcase`, which hold-first-showcase-turn.ts holds on the home page.
+     */
+    @media (prefers-reduced-motion: no-preference) {
+        .dissolve-shot {
+            animation: dissolve 50s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        .dissolve-shot:nth-child(2) { animation-delay: -45s; }
+        .dissolve-shot:nth-child(3) { animation-delay: -40s; }
+        .dissolve-shot:nth-child(4) { animation-delay: -35s; }
+        .dissolve-shot:nth-child(5) { animation-delay: -30s; }
+        .dissolve-shot:nth-child(6) { animation-delay: -25s; }
+        .dissolve-shot:nth-child(7) { animation-delay: -20s; }
+        .dissolve-shot:nth-child(8) { animation-delay: -15s; }
+        .dissolve-shot:nth-child(9) { animation-delay: -10s; }
+        .dissolve-shot:nth-child(10) { animation-delay: -5s; }
+    }
+
+    @keyframes dissolve {
+        0%, 7.2% { z-index: 2; transform: scale(1); opacity: 1; filter: blur(0px); }
+        10% { z-index: 2; transform: scale(1.24); opacity: 0; filter: blur(18px); }
+        10.01%, 97.19% { z-index: 1; transform: scale(1); opacity: 0; filter: blur(0px); }
+        97.2%, 100% { z-index: 1; transform: scale(1); opacity: 1; filter: blur(0px); }
+    }
+</style>

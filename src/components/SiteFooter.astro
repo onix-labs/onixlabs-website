@@ -1,23 +1,39 @@
 ---
+import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
+import { loadPolicies } from '../collections/load-policies';
 import { loadProductFamilies } from '../collections/load-product-families';
+import { policyGroups } from '../config/policy-groups';
+import type { PolicyGroup } from '../config/policy-group';
 import { site } from '../config/site';
 import type { SocialLink } from '../config/social-link';
 import Icon from './Icon.astro';
 
 const currentYear: number = new Date().getFullYear();
 const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
+const libraryPages: ReadonlyArray<CollectionEntry<'libraryPages'>> = await getCollection('libraryPages');
+const policies: ReadonlyArray<CollectionEntry<'policies'>> = await loadPolicies();
+const footerLinks: ReadonlyArray<SocialLink> = site.socialLinks.filter((link: SocialLink): boolean => link.isInFooter);
+
+function policiesIn(group: PolicyGroup): ReadonlyArray<CollectionEntry<'policies'>> {
+    return policies.filter((policy: CollectionEntry<'policies'>): boolean => policy.data.group === group.id);
+}
+
+// A family's root page, or its tile on /Products until it has one.
+function familyHref(family: CollectionEntry<'productFamilies'>): string {
+    return libraryPages.find((page: CollectionEntry<'libraryPages'>): boolean => page.id === family.id)?.data.path ?? `/Products/#${family.id}`;
+}
 ---
-<footer class="site-footer tone-alt">
-    <div class="container">
+<footer class="site-footer">
+    <div class="container-wide">
         <div class="footer-grid">
             <div class="footer-brand">
                 <img class="footer-logo footer-logo-light" src="/onixlabs/images/logo/logo-full-light.webp" alt="ONIXLabs" width={153} height={29} loading="lazy" />
                 <img class="footer-logo footer-logo-dark" src="/onixlabs/images/logo/logo-full-dark.webp" alt="ONIXLabs" width={153} height={29} loading="lazy" />
-                <p>Enterprise software engineering for .NET, Kotlin, the JVM and Corda: platforms, libraries and consulting built to last.</p>
+                <p class="footer-tagline">Think beyond code. Build beyond limits.</p>
                 <ul class="social" role="list">
-                    {site.socialLinks.map((link: SocialLink) => (
+                    {footerLinks.map((link: SocialLink) => (
                         <li>
                             <a href={link.url} target="_blank" rel="noopener noreferrer">
                                 <Icon name={link.icon} />
@@ -31,9 +47,10 @@ const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadPr
             <nav class="footer-column" aria-labelledby="footer-products">
                 <h2 id="footer-products">Products</h2>
                 <ul role="list">
-                    <li><a href="/archive/Products/Aero">Aero</a></li>
+                    <li><a href="/Products/Studio">ONIXLabs Studio</a></li>
+                    <li><a href="/Products/Aero">Aero</a></li>
                     {families.map((family: CollectionEntry<'productFamilies'>) => (
-                        <li><a href={`/archive/Products/#${family.id}`}>{family.data.name} libraries</a></li>
+                        <li><a href={familyHref(family)}>{family.data.name} libraries</a></li>
                     ))}
                 </ul>
             </nav>
@@ -41,34 +58,41 @@ const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadPr
             <nav class="footer-column" aria-labelledby="footer-company">
                 <h2 id="footer-company">Company</h2>
                 <ul role="list">
-                    <li><a href="/archive/Consulting">Consulting</a></li>
-                    <li><a href="/archive/Documentation/">Documentation</a></li>
-                    <li><a href="/archive/Contact">Contact</a></li>
+                    <li><a href="/Consulting">Consulting</a></li>
+                    <li><a href="/Engineering-With-AI">Engineering with AI</a></li>
+                    <li><a href="/Documentation/">Documentation</a></li>
+                    <li><a href="/About">About</a></li>
+                    <li><a href="/Contact">Contact</a></li>
+                    <li><a href="/Legal/Company-Information">Company Information</a></li>
                 </ul>
             </nav>
 
+            {policyGroups.map((group: PolicyGroup) => (
+                <nav class="footer-column" aria-labelledby={`footer-${group.id}`}>
+                    <h2 id={`footer-${group.id}`}>{group.name}</h2>
+                    <ul role="list">
+                        {policiesIn(group).map((policy: CollectionEntry<'policies'>) => (
+                            <li><a href={policy.data.path}>{policy.data.shortTitle ?? policy.data.title}</a></li>
+                        ))}
+                    </ul>
+                </nav>
+            ))}
         </div>
 
-        <div class="footer-bottom">
-            <p>&copy; {site.foundingYear}&ndash;{currentYear} {site.name}. All rights reserved.</p>
-            <p class="footer-mark" aria-hidden="true"><span class="brand-rule"></span>Code that connects. Software that scales.</p>
-        </div>
+        <p class="footer-copyright">&copy; {site.foundingYear}&ndash;{currentYear} {site.name}. All rights reserved.</p>
     </div>
 </footer>
 
 <style>
     .site-footer {
         margin-top: auto;
+        --text-muted: var(--footer-text-muted);
+
         padding-block: clamp(2.5rem, 2rem + 2vw, 3.5rem) 2rem;
-        border-top: 1px solid var(--border);
-        background: var(--bg-alt);
+        background: var(--footer-bg);
         color: var(--text-muted);
         font-size: var(--text-xs);
         line-height: 1.5;
-    }
-
-    .site-footer .container {
-        width: min(100% - 2 * var(--gutter), 64rem);
     }
 
     .footer-grid {
@@ -87,7 +111,7 @@ const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadPr
 
     @media (min-width: 56rem) {
         .footer-grid {
-            grid-template-columns: 2fr repeat(2, 1fr);
+            grid-template-columns: 1.6fr repeat(5, 1fr);
         }
 
         .footer-brand {
@@ -98,6 +122,13 @@ const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadPr
     .footer-logo {
         width: auto;
         height: 1.1rem;
+    }
+
+    /* The company tagline, tucked under the logo. */
+    .footer-tagline {
+        margin-top: -0.4rem;
+        color: var(--heading);
+        font-weight: 600;
     }
 
     :global([data-theme='light']) .footer-logo-dark,
@@ -149,25 +180,7 @@ const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadPr
         color: var(--heading);
     }
 
-    .footer-bottom {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
+    .footer-copyright {
         margin-top: 2.5rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border);
-    }
-
-    .footer-mark {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .footer-mark .brand-rule {
-        width: 1.5rem;
-        height: 2px;
     }
 </style>

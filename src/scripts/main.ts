@@ -1,7 +1,11 @@
 import { initialiseSpotlight } from './initialise-spotlight';
-import { initialiseStudioDownload } from './initialise-studio-download';
+import { holdFirstShowcaseTurn } from './hold-first-showcase-turn';
+import { initialiseOutlineScrollspy } from './initialise-outline-scrollspy';
+import { initialisePlatformDownload } from './initialise-platform-download';
 import { initialiseThemeToggle } from './initialise-theme-toggle';
 
 initialiseThemeToggle();
 initialiseSpotlight();
-initialiseStudioDownload();
+void initialisePlatformDownload();
+holdFirstShowcaseTurn();
+initialiseOutlineScrollspy();

@@ -1,0 +1,181 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import { loadStudioRelease } from '../../collections/load-studio-release';
+import type { StudioRelease } from '../../collections/studio-release';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import PlatformDownload from '../../components/PlatformDownload.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import StudioFeature from '../../components/StudioFeature.astro';
+import { site } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type StudioData = CollectionEntry<'studio'>['data'];
+type Feature = StudioData['features'][number];
+
+const entry: CollectionEntry<'studio'> | undefined = await getEntry('studio', 'studio');
+
+if (entry === undefined) {
+    throw new Error('src/content/studio.yaml must define a `studio` entry.');
+}
+
+const studio: StudioData = entry.data;
+const repositoryUrl: string = 'https://github.com/onix-labs/onixlabs-studio';
+const releasesUrl: string = `${repositoryUrl}/releases`;
+const release: StudioRelease | undefined = await loadStudioRelease();
+---
+<BaseLayout
+    title="ONIXLabs Studio: The Agentic Development Environment"
+    description="ONIXLabs Studio is an open-source agentic development environment, where you and your AI agents share the same project, terminals and editor."
+    path="/Products/Studio"
+    breadcrumbs={[
+        { name: 'Home', path: '/' },
+        { name: 'Products', path: '/Products' },
+        { name: 'ONIXLabs Studio', path: '/Products/Studio' },
+    ]}
+    structuredData={[
+        {
+            '@type': 'SoftwareApplication',
+            '@id': `${site.url}/Products/Studio#software`,
+            name: 'ONIXLabs Studio',
+            applicationCategory: 'DeveloperApplication',
+            operatingSystem: 'macOS, Windows, Linux',
+            description: 'An agentic development environment, built around people and AI agents working together.',
+            url: `${site.url}/Products/Studio`,
+            publisher: { '@id': `${site.url}/#organization` },
+        },
+    ]}
+>
+    <section class="hero-bloom studio-page-hero" aria-labelledby="studio-title">
+        <div class="studio-page-copy">
+            <h1 id="studio-title" class="display blur-in">
+                ONIXLabs Studio{' '}
+                <span class="gradient-text">Agentic Engineering</span>
+            </h1>
+            <p class="lead blur-in">
+                Where a traditional IDE adds an AI chat on the side, an agentic development environment makes your agents part of the
+                workbench itself: the same project, the same terminals and the same editor, all watched and steered from one screen.
+            </p>
+            <div class="button-pair studio-page-actions">
+                <PlatformDownload release={release} releasesUrl={releasesUrl} />
+                <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
+            </div>
+        </div>
+    </section>
+
+    {studio.features.map((feature: Feature, index: number) => (
+        <StudioFeature feature={feature} alternate={index % 2 === 1} reversed={index % 2 === 0} />
+    ))}
+
+    <section class="section" aria-labelledby="studio-extras">
+        <div class="container-wide">
+            <SectionHeader title="And everything" highlight="around it" id="studio-extras" class="studio-closing-header" />
+            <div class="grid grid-3 extras">
+                {studio.extras.map((extra: StudioData['extras'][number]) => (
+                    <article class="extra reveal">
+                        <span class="icon-chip"><Icon name={extra.icon} /></span>
+                        <h3>{extra.title}</h3>
+                        <p>{extra.body}</p>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="section tone-alt" id="download" aria-labelledby="studio-download">
+        <div class="container-wide">
+            <SectionHeader title="Try" highlight="ONIXLabs Studio" highlightStyle="gradient" id="studio-download" centered class="studio-closing-header">
+                Studio is open source under the MIT license, and runs on macOS, Windows and Linux. It's a beta, so expect rough edges,
+                and releases aren't signed yet, so macOS and Windows will warn you the first time it launches.
+            </SectionHeader>
+            <div class="button-pair download-actions">
+                <PlatformDownload release={release} releasesUrl={releasesUrl} />
+                <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
+            </div>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    .studio-page-hero {
+        padding-block: clamp(3.5rem, 2.5rem + 5vw, 7rem) clamp(5rem, 3.5rem + 7vw, 10rem);
+        overflow: clip;
+    }
+
+    .studio-page-copy {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 1.4rem;
+        justify-items: center;
+        width: min(100% - 2 * var(--gutter), 76rem);
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .studio-page-copy h1 {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-weight: 600;
+    }
+
+    .studio-page-copy h1 .gradient-text {
+        display: block;
+    }
+
+    /* The full text colour rather than the muted one: the bloom reaches up behind this. */
+    .studio-page-copy .lead {
+        --blur-delay: 250ms;
+        max-width: var(--lead-width);
+        color: var(--text);
+        text-wrap: balance;
+    }
+
+    .studio-page-actions {
+        margin-top: 0.6rem;
+    }
+
+    /* Three equal buttons need more room than two. */
+    @media (max-width: 68rem) {
+        .studio-page-actions:has(:global(.platform-download-alternate:not([hidden]))),
+        .download-actions:has(:global(.platform-download-alternate:not([hidden]))) {
+            grid-auto-flow: row;
+        }
+    }
+
+    .extras {
+        gap: 2.5rem 3rem;
+    }
+
+    .extra {
+        display: grid;
+        align-content: start;
+        justify-items: start;
+        gap: 0.6rem;
+    }
+
+    .extra h3 {
+        margin-top: 0.35rem;
+        font-size: var(--text-xl);
+    }
+
+    .extra p {
+        color: var(--text-muted);
+        font-size: var(--text-base);
+        line-height: 1.55;
+    }
+
+    .download-actions {
+        margin-inline: auto;
+    }
+
+    :global(.studio-closing-header h2) {
+        font-size: var(--text-4xl);
+    }
+
+    #download :global(.studio-closing-header) {
+        margin-bottom: 2.5rem;
+    }
+</style>

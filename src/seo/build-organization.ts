@@ -8,6 +8,8 @@ export function buildOrganization(site: SiteSettings): JsonLdObject {
         '@type': 'Organization',
         '@id': `${site.url}/#organization`,
         name: site.name,
+        legalName: site.company.legalName,
+        email: site.company.email,
         url: `${site.url}/`,
         logo: toAbsoluteUrl(site.logo, site.url),
         foundingDate: String(site.foundingYear),

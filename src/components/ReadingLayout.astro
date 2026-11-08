@@ -1,0 +1,166 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+// A long document laid out for reading: a header (label, title, summary and details such as dates), the text filling the
+// width beside an "On this page" outline of its `##` headings, which starts level with the label, stays in view as the
+// text scrolls, and marks the section being read (initialise-outline-scrollspy.ts). Below 72rem the outline sits
+// between the header and the text. Used by documentation articles and policy pages.
+interface Props {
+    readonly label?: string | undefined;
+    readonly labelHref?: string | undefined;
+    readonly title: string;
+    readonly summary: string;
+    readonly headings: ReadonlyArray<MarkdownHeading>;
+}
+
+const { label, labelHref, title, summary, headings }: Props = Astro.props;
+const outline: ReadonlyArray<MarkdownHeading> = headings.filter((heading: MarkdownHeading): boolean => heading.depth === 2);
+---
+<div class="container-wide reading">
+    <header class="reading-header">
+        {label !== undefined && (labelHref === undefined
+            ? <p class="label reading-label rise">{label}</p>
+            : <a class="label reading-label rise" href={labelHref}>{label}</a>)}
+        <h1 class="rise">{title}</h1>
+        <p class="lead rise rise-2">{summary}</p>
+        {Astro.slots.has('meta') && <p class="reading-meta rise rise-2"><slot name="meta" /></p>}
+    </header>
+
+    <article class="prose reading-body">
+        <slot />
+    </article>
+
+    {outline.length > 1 && (
+        <nav class="outline" aria-labelledby="outline-title" data-outline>
+            <p id="outline-title" class="label label-muted">On this page</p>
+            <ul role="list">
+                {outline.map((heading: MarkdownHeading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+            </ul>
+        </nav>
+    )}
+</div>
+
+<style>
+    .reading {
+        display: grid;
+        gap: 2.5rem;
+        padding-block: clamp(3rem, 2rem + 4vw, 6rem) var(--space-section);
+    }
+
+    @media (min-width: 72rem) {
+        .reading {
+            grid-template-columns: minmax(0, 1fr) 14rem;
+            column-gap: 5rem;
+        }
+
+        .reading-header,
+        .reading-body {
+            grid-column: 1;
+        }
+
+        .reading-body {
+            grid-row: 2;
+        }
+
+        .outline {
+            grid-row: 1 / span 2;
+            grid-column: 2;
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            align-self: start;
+        }
+    }
+
+    .reading-header {
+        display: grid;
+        gap: 1rem;
+        padding-bottom: 2.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .reading-label {
+        justify-self: start;
+        text-decoration: none;
+    }
+
+    .reading-header h1 {
+        font-size: var(--text-5xl);
+        letter-spacing: -0.035em;
+        line-height: 1.05;
+        text-wrap: balance;
+    }
+
+    .reading-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem 1.5rem;
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .reading-body {
+        min-width: 0;
+    }
+
+    /* A block, not the label's usual inline-flex, so it starts level with the header's label rather than sitting low in a
+       line of body text. */
+    #outline-title {
+        display: flex;
+    }
+
+    .outline ul {
+        display: grid;
+        gap: 0.55rem;
+        margin-top: 0.85rem;
+        padding-left: 0.9rem;
+        border-left: 1px solid var(--border);
+        font-size: var(--text-sm);
+    }
+
+    .outline a {
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color var(--duration);
+    }
+
+    .outline a:hover {
+        color: var(--heading);
+        text-decoration: none;
+    }
+
+    /* The section being read, marked by the scrollspy: brighter, with its own stretch of the rule beside the list. */
+    .outline li {
+        position: relative;
+    }
+
+    .outline a[aria-current='location'] {
+        color: var(--heading);
+        font-weight: 500;
+    }
+
+    .outline a[aria-current='location']::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(-0.9rem - 1px);
+        width: 2px;
+        border-radius: 1px;
+        background: linear-gradient(var(--brand-violet), var(--brand-blue));
+    }
+
+    /* Below 72rem the outline sits between the header and the text, where it's still useful. */
+    @media (max-width: 71.99rem) {
+        .outline {
+            order: -1;
+            grid-row: 2;
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius);
+            background: var(--bg-alt);
+        }
+
+        .reading-body {
+            grid-row: 3;
+        }
+    }
+</style>

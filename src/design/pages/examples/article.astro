@@ -6,10 +6,10 @@ import type { MarkdownHeading } from 'astro';
 import { estimateReadingMinutes } from '../../../collections/estimate-reading-minutes';
 import { loadArticles } from '../../../collections/load-articles';
 import ArticleTile from '../../../components/ArticleTile.astro';
-import CtaBand from '../../../components/CtaBand.astro';
 import Hero from '../../../components/Hero.astro';
 import Icon from '../../../components/Icon.astro';
 import SectionHeader from '../../../components/SectionHeader.astro';
+import TalkToUsSection from '../../../components/TalkToUsSection.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ExampleFrame from '../../ExampleFrame.astro';
 
@@ -59,7 +59,7 @@ const related: ReadonlyArray<CollectionEntry<'articles'>> = (await loadArticles(
         </div>
     </section>
 
-    <CtaBand />
+    <TalkToUsSection />
     <ExampleFrame />
 </BaseLayout>
 

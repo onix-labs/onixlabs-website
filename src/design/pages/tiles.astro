@@ -1,18 +1,24 @@
 ---
+import type { CollectionEntry } from 'astro:content';
+
+import { loadProductFamilies } from '../../collections/load-product-families';
 import ArticleTile from '../../components/ArticleTile.astro';
 import Button from '../../components/Button.astro';
 import CapstoneTile from '../../components/CapstoneTile.astro';
+import FamilyTile from '../../components/FamilyTile.astro';
 import FeatureTile from '../../components/FeatureTile.astro';
 import ProductTile from '../../components/ProductTile.astro';
 import TeamTile from '../../components/TeamTile.astro';
 import Specimen from '../Specimen.astro';
+
+const families: ReadonlyArray<CollectionEntry<'productFamilies'>> = await loadProductFamilies();
 ---
 <Specimen title="Feature tile" surface="alt" code={'<FeatureTile title="Craftsmanship" glass="design" body="…" />\n<FeatureTile … index={1} />   /* numbered, for capabilities */\n<FeatureTile … spotlight />   <FeatureTile … spectral />'}>
     <Fragment slot="notes"><p>One idea per tile, with a glass icon for principles and services or a coral index for numbered capabilities. Spotlight and spectral are optional accents for a single featured tile.</p></Fragment>
     <div class="grid grid-3">
         <FeatureTile title="Craftsmanship" glass="design" body="We treat code as a craft, writing software with precision, care, and pride in every detail." />
         <FeatureTile title="Spotlight" glass="gauge" body="Move the pointer across this tile: a soft brand light follows it." spotlight />
-        <FeatureTile title="Spectral" glass="shield-alt" body="The turning brand-gradient border marks one featured tile." spectral />
+        <FeatureTile title="Spectral" glass="shield" body="The turning brand-gradient border marks one featured tile." spectral />
     </div>
     <div class="grid grid-2 spaced">
         <FeatureTile title="API-First Design" index={1} body="Every module defines a clean, public-facing contract that exposes only what developers need." />
@@ -39,6 +45,13 @@ import Specimen from '../Specimen.astro';
             Placeholder description.
             <Fragment slot="actions"><Button href="#capstone-tile" variant="link">Learn more</Button></Fragment>
         </CapstoneTile>
+    </div>
+</Specimen>
+
+<Specimen title="Family tile" surface="alt" code={'<FamilyTile family={family} />'}>
+    <Fragment slot="notes"><p>A family of libraries as one link: its brand colours in a 45° gradient, with no edges, shadow or glow, its white logo and its pitch. Three in a row or a single column, never two.</p></Fragment>
+    <div class="grid grid-3">
+        {families.map((family: CollectionEntry<'productFamilies'>) => <FamilyTile family={family} />)}
     </div>
 </Specimen>
 

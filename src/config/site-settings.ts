@@ -1,3 +1,4 @@
+import type { CompanyDetails } from './company-details';
 import type { SocialLink } from './social-link';
 
 export interface SiteSettings {
@@ -12,4 +13,5 @@ export interface SiteSettings {
     readonly foundingYear: number;
     readonly contactFormEndpoint: string;
     readonly socialLinks: ReadonlyArray<SocialLink>;
+    readonly company: CompanyDetails;
 }

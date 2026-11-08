@@ -1,0 +1,198 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { loadArticles } from '../../collections/load-articles';
+import ArticleList from '../../components/ArticleList.astro';
+import Icon from '../../components/Icon.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import TalkToUsSection from '../../components/TalkToUsSection.astro';
+import { documentationCategories } from '../../config/documentation-categories';
+import type { DocumentationCategory } from '../../config/documentation-category';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// The documentation hub: what's here, where the API reference lives, then a band for each category, its header held beside
+// the list of its articles. Categories with no articles yet are left out.
+interface Reference {
+    readonly name: string;
+    readonly summary: string;
+    readonly href: string;
+}
+
+const articles: ReadonlyArray<CollectionEntry<'articles'>> = await loadArticles();
+const categories: ReadonlyArray<DocumentationCategory> = documentationCategories.filter(
+    (category: DocumentationCategory): boolean => articles.some((article: CollectionEntry<'articles'>): boolean => article.data.category === category.id),
+);
+const references: ReadonlyArray<Reference> = [
+    { name: '.NET Libraries', summary: 'Every type in the ONIXLabs .NET libraries.', href: 'https://github.com/onix-labs/onixlabs-dotnet/wiki' },
+    { name: 'Element Framework', summary: 'Architecture, providers and a complete example.', href: 'https://github.com/onix-labs/onixlabs-dotnet-element-framework/wiki' },
+    { name: 'ONIXLabs Studio', summary: 'How Studio is built, and how its agents work.', href: 'https://github.com/onix-labs/onixlabs-studio/wiki' },
+];
+
+function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEntry<'articles'>> {
+    return articles.filter((article: CollectionEntry<'articles'>): boolean => article.data.category === category.id);
+}
+---
+<BaseLayout
+    title="Documentation"
+    description="Why ONIXLabs builds its products, the ideas behind its .NET libraries and how to use them, its engineering standards, and guidance for Corda 4."
+    path="/Documentation"
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/Documentation' }]}
+>
+    <section class="hero-bloom docs-hero" aria-labelledby="docs-title">
+        <div class="docs-hero-copy">
+            <h1 id="docs-title" class="display rise">
+                Documentation{' '}
+                <span class="gradient-text">Behind the code</span>
+            </h1>
+            <p class="lead rise rise-2">
+                Why we built our products, the ideas our libraries are built on and how to use them, and the standards we hold our own
+                code to.
+            </p>
+        </div>
+    </section>
+
+    <section class="section tone-alt" aria-labelledby="api-reference">
+        <div class="container-wide reference-layout">
+            <SectionHeader eyebrow="API reference" title="Looking for" highlight="a particular type?" id="api-reference">
+                Reference documentation lives beside the code, in each project's wiki, so it changes when the code does.
+            </SectionHeader>
+            <ul class="references" role="list">
+                {references.map((reference: Reference) => (
+                    <li>
+                        <a href={reference.href} target="_blank" rel="noopener noreferrer">
+                            <span class="reference-name">{reference.name} <Icon name="arrow-square-out" /></span>
+                            <span class="reference-summary">{reference.summary}</span>
+                            <span class="visually-hidden"> (opens in a new tab)</span>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </section>
+
+    {categories.map((category: DocumentationCategory, index: number) => (
+        <section class:list={['section docs-category', { 'tone-alt': index % 2 === 1 }]} id={category.id} aria-labelledby={`${category.id}-title`}>
+            <div class="container-wide category-layout">
+                <div class="category-header">
+                    <SectionHeader eyebrow={category.name} title={category.title} highlight={category.highlight} id={`${category.id}-title`}>
+                        {category.lead}
+                    </SectionHeader>
+                </div>
+                <ArticleList articles={articlesIn(category)} />
+            </div>
+        </section>
+    ))}
+
+    <TalkToUsSection alternate={categories.length % 2 === 0} />
+</BaseLayout>
+
+<style>
+    .docs-hero {
+        padding-block: clamp(4rem, 3rem + 5vw, 7.5rem) clamp(5rem, 3.5rem + 7vw, 10rem);
+        overflow: clip;
+    }
+
+    .docs-hero-copy {
+        display: grid;
+        gap: 1.4rem;
+        justify-items: center;
+        width: min(100% - 2 * var(--gutter), 76rem);
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .docs-hero h1 {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-weight: 600;
+    }
+
+    .docs-hero h1 .gradient-text {
+        display: block;
+    }
+
+    /* The full text colour rather than the muted one: the bloom reaches up behind this. */
+    .docs-hero .lead {
+        max-width: var(--lead-width);
+        color: var(--text);
+        text-wrap: balance;
+    }
+
+
+    .reference-layout,
+    .category-layout {
+        display: grid;
+        gap: 2.5rem 5rem;
+    }
+
+    @media (min-width: 60rem) {
+        .reference-layout,
+        .category-layout {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start;
+        }
+
+        /* The header stays in view while its articles scroll past. */
+        .category-header {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+        }
+    }
+
+    .reference-layout :global(.section-header),
+    .category-layout :global(.section-header) {
+        margin-bottom: 0;
+    }
+
+    .reference-layout :global(.section-header h2),
+    .category-layout :global(.section-header h2) {
+        font-size: var(--text-4xl);
+    }
+
+    .reference-layout :global(.headline-muted),
+    .category-layout :global(.headline-muted) {
+        display: block;
+    }
+
+    .docs-category {
+        scroll-margin-top: calc(-1 * 1.5rem);
+    }
+
+    .references {
+        display: grid;
+    }
+
+    .references li + li {
+        border-top: 1px solid var(--border);
+    }
+
+    .references a {
+        display: grid;
+        gap: 0.35rem;
+        padding-block: 1.25rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .references li:first-child a {
+        padding-top: 0;
+    }
+
+    .reference-name {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--heading);
+        font-size: var(--text-xl);
+        font-weight: 600;
+    }
+
+    .reference-name :global(.icon) {
+        color: var(--label);
+        font-size: 0.7em;
+    }
+
+    .reference-summary {
+        color: var(--text-muted);
+    }
+</style>
