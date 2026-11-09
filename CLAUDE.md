@@ -125,6 +125,9 @@ Each product's source of truth is its repository (`repositoryUrl`). When updatin
   `public/onixlabs/images/contributors/`, then add the URL to `tests/e2e/support/site-pages.ts`.
 - **An icon:** copy its SVG from `node_modules/@phosphor-icons/core/assets/duotone/` into `src/icons/`, dropping the
   `-duotone` suffix from the file name, and use `<Icon name="..." />` with the Phosphor name. Aero principles reference icons by name.
+- **A glass icon:** export a light and a `-dark` WebP from Affinity, 640×640 with the high quality preset (840×840 for
+  `envelope`), into `public/onixlabs/images/icons/glass/`. `npm run images` leaves these alone; only `ai` is still
+  rendered from its SVG.
 - **A bitmap-backed SVG** (an SVG that embeds `data:image`): add it under `public/onixlabs/images/`, run
   `npm run images`, and reference the generated `.webp`.
 

@@ -1,0 +1,140 @@
+---
+import FeaturePoints from './FeaturePoints.astro';
+import GlassAura from './GlassAura.astro';
+import SectionHeader from './SectionHeader.astro';
+import type { StudioColour } from '../config/studio-colour';
+
+// A band laid out like a Studio feature: 60% for its copy (an optional eyebrow, a two-part headline, a standfirst, the
+// points that explain it, then whatever links are slotted in) and 40% for its glass icon, glowing in its own colours with
+// grain over the blur, level with the top of the copy and staying in view while the copy scrolls. `reversed` puts the
+// icon on the left. Stacks below 60rem, icon first. The headline's second phrase is grey, or runs between
+// `highlightColours` when they're given. LibrarySection and /Engineering-With-AI use it.
+interface Props {
+    readonly id: string;
+    readonly eyebrow?: string | undefined;
+    readonly glass: string;
+    readonly title: string;
+    readonly highlight: string;
+    readonly highlightColours?: readonly [StudioColour, StudioColour] | undefined;
+    readonly summary: string;
+    readonly points: ReadonlyArray<{ readonly title: string; readonly body: string }>;
+    readonly alternate?: boolean;
+    readonly reversed?: boolean;
+}
+
+const { id, eyebrow, glass, title, highlight, highlightColours, summary, points, alternate = false, reversed = false }: Props = Astro.props;
+---
+<section class:list={['section glass-band', { 'tone-alt': alternate, 'is-reversed': reversed }]} id={id} aria-labelledby={`${id}-title`}>
+    <div class="container-wide glass-band-layout">
+        <div class="glass-band-copy">
+            <SectionHeader
+                eyebrow={eyebrow}
+                title={title}
+                highlight={highlight}
+                highlightStyle={highlightColours === undefined ? 'muted' : 'gradient'}
+                highlightClass={highlightColours === undefined ? '' : `text-pair from-${highlightColours[0]} to-${highlightColours[1]}`}
+                id={`${id}-title`}
+            >
+                {summary}
+            </SectionHeader>
+            <FeaturePoints points={points} />
+            {Astro.slots.has('default') && <div class="glass-band-links"><slot /></div>}
+        </div>
+        <div class="glass-band-icon zoom-through">
+            <GlassAura name={glass} class="glass-band-aura" />
+        </div>
+    </div>
+</section>
+
+<style>
+    /* The glow spreads well past the icon, so the band clips it. */
+    .glass-band {
+        overflow: clip;
+    }
+
+    .glass-band-layout {
+        display: grid;
+        gap: 2.5rem;
+    }
+
+    .glass-band-icon {
+        display: grid;
+        place-items: start center;
+        order: -1;
+        isolation: isolate;
+    }
+
+    .glass-band-icon :global(.glass-band-aura) {
+        --aura-blur: 3.5rem;
+        --aura-scale: 1.6;
+        width: min(13rem, 55vw);
+    }
+
+    @media (min-width: 60rem) {
+        .glass-band-layout {
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+            gap: 5rem;
+            align-items: start;
+        }
+
+        /* Like a Studio screenshot, the icon holds still while its copy scrolls past. */
+        .glass-band-icon {
+            position: sticky;
+            top: calc(var(--header-height) + 1.5rem);
+            order: 0;
+        }
+
+        .is-reversed .glass-band-layout {
+            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+        }
+
+        .is-reversed .glass-band-icon {
+            order: -1;
+        }
+
+        .glass-band-icon :global(.glass-band-aura) {
+            width: min(100%, 20rem);
+        }
+    }
+
+    .glass-band-copy {
+        display: grid;
+        gap: 2rem;
+    }
+
+    .glass-band-copy :global(.section-header) {
+        max-width: none;
+        margin-bottom: 0;
+    }
+
+    .glass-band-copy :global(.section-header h2) {
+        font-size: 2.5rem;
+    }
+
+    .glass-band-copy :global(.section-header .lead) {
+        font-size: var(--text-lg);
+    }
+
+    .glass-band-copy :global(.headline-muted),
+    .glass-band-copy :global(.gradient-text) {
+        display: block;
+    }
+
+    /* Package names keep their case. */
+    .glass-band-copy :global(.label) {
+        text-transform: none;
+        letter-spacing: 0;
+    }
+
+    .glass-band-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 1.75rem;
+    }
+
+    /* The ghost button's own padding would push it in from the text above. */
+    .glass-band-links :global(.button-ghost) {
+        padding-inline: 0;
+    }
+</style>

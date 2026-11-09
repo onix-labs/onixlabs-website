@@ -1,35 +1,75 @@
 ---
-import { getEntry } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-
 import AiCircuitSection from '../components/AiCircuitSection.astro';
 import Button from '../components/Button.astro';
-import FeatureTile from '../components/FeatureTile.astro';
-import SectionHeader from '../components/SectionHeader.astro';
-import StudioFeature from '../components/StudioFeature.astro';
+import GlassBand from '../components/GlassBand.astro';
 import TalkToUsSection from '../components/TalkToUsSection.astro';
-import type { Principle } from '../config/principle';
+import type { StudioColour } from '../config/studio-colour';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-type Feature = CollectionEntry<'studio'>['data']['features'][number];
-
-// `icon` names a glass icon in public/onixlabs/images/icons/glass.
-const areas: ReadonlyArray<Principle> = [
-    { title: 'Engineering', icon: 'code', body: 'We build with AI in the loop, from design through to delivery, and hold the result to the same standard as any other code: clean, efficient and ready to scale with your team.' },
-    { title: 'Consulting', icon: 'dice', body: 'We help you decide where AI belongs in your product and your process, and how to adopt it in a way that serves your business goals.' },
-    { title: 'Integration', icon: 'git-merge', body: 'We bring AI into the systems you already run, working with your team, your tools and your tech stack rather than around them.' },
-];
-
-const studio: CollectionEntry<'studio'> | undefined = await getEntry('studio', 'studio');
-const agents: Feature | undefined = studio?.data.features.find((feature: Feature): boolean => feature.id === 'agents');
-
-if (agents === undefined) {
-    throw new Error('src/content/studio.yaml must define an `agents` feature.');
+// What ONIXLabs commits to in each area of its AI work, one band each, laid out like the packages on /Products/DotNet.
+// Read together they're the pledge the hero opens. `glass` names a glass icon in public/onixlabs/images/icons/glass, and
+// `colours` runs the headline's second phrase between two of its colours.
+interface Pledge {
+    readonly id: string;
+    readonly glass: string;
+    readonly title: string;
+    readonly highlight: string;
+    readonly colours: readonly [StudioColour, StudioColour];
+    readonly summary: string;
+    readonly points: ReadonlyArray<{ readonly title: string; readonly body: string }>;
 }
+
+const pledges: ReadonlyArray<Pledge> = [
+    {
+        id: 'engineering',
+        glass: 'code',
+        title: 'Engineering',
+        highlight: 'Built by professionals, faster with AI',
+        colours: ['coral', 'teal'],
+        summary:
+            'We build with AI from design through to delivery, and it makes us faster. Speed is only worth having if what ships is right, so ' +
+            'we hold what AI produces to the same standard as the code we write by hand: clean, efficient and ready to scale with your team.',
+        points: [
+            { title: 'Reviewed like any other code', body: 'We review what AI writes the way we review any code: an engineer reads it, understands it and stands behind it before it is merged.' },
+            { title: 'Tested, not trusted', body: 'We test generated code with the same unit, integration and end-to-end tests as the rest, so its correctness is shown rather than assumed.' },
+            { title: 'Built to be maintained', body: "We judge code by how easily your team can read and change it years from now, not by how quickly it was produced." },
+        ],
+    },
+    {
+        id: 'consulting',
+        glass: 'user-group',
+        title: 'Consulting',
+        highlight: 'Deciding where AI earns its place',
+        colours: ['cyan', 'green'],
+        summary:
+            "AI isn't the answer to every problem, and adopting it for its own sake is expensive. We help you decide where it belongs in your " +
+            'product and your process, and how to adopt it in a way that serves your business goals rather than the hype around them.',
+        points: [
+            { title: 'The problem comes first', body: "We start from what you're trying to achieve, and recommend AI where it moves that forward." },
+            { title: 'Honest about the trade-offs', body: "We're open about what AI does well, where it falls short and what it costs to run and maintain, so you can decide with your eyes open." },
+            { title: 'A plan you can act on', body: 'We help you shape a practical path to adoption, sized to your team, your budget and your timeline.' },
+        ],
+    },
+    {
+        id: 'integration',
+        glass: 'git-merge',
+        title: 'Integration',
+        highlight: 'Part of your business, not bolted on',
+        colours: ['violet', 'blue'],
+        summary:
+            "AI delivers the most when it's part of the systems you already run. We bring it into your existing platforms, working with your " +
+            "team, your tools and your tech stack, so it strengthens what you've built instead of sitting beside it.",
+        points: [
+            { title: 'Fits your stack', body: 'We work with the languages, platforms and pipelines you already use, rather than asking you to start again.' },
+            { title: 'Alongside your team', body: "We work with your engineers, not in place of them, and hand over what we've built together so they can run and extend it." },
+            { title: 'Shipped like everything else', body: 'We ship AI features through your existing review, testing and release process, alongside anything else you deploy.' },
+        ],
+    },
+];
 ---
 <BaseLayout
     title="Engineering with AI"
-    description="How ONIXLabs uses AI across engineering, consulting and integration work, and ONIXLabs Studio, where you and your AI agents work side by side."
+    description="How ONIXLabs uses AI across engineering, consulting and integration work, and the engineering discipline it holds that work to."
     path="/Engineering-With-AI"
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Engineering with AI', path: '/Engineering-With-AI' }]}
 >
@@ -40,31 +80,22 @@ if (agents === undefined) {
         </Fragment>
         <Fragment slot="actions">
             <Button href="/Contact?reason=consulting" variant="primary" size="large" icon="chat-circle-dots">Talk to us about AI</Button>
-            <Button href="/Products/Studio" variant="ghost" size="large" trailingIcon="arrow-right-bold">Explore ONIXLabs Studio</Button>
         </Fragment>
     </AiCircuitSection>
 
-    <section class="section tone-alt" aria-labelledby="where-ai-fits">
-        <div class="container-wide">
-            <SectionHeader title="Where AI" highlight="earns its place" id="where-ai-fits" centered>
-                AI runs through the way we work, not alongside it.
-            </SectionHeader>
-            <div class="grid areas">
-                {areas.map((area: Principle) => <FeatureTile title={area.title} glass={area.icon} body={area.body} />)}
-            </div>
-        </div>
-    </section>
+    {pledges.map((pledge: Pledge, index: number) => (
+        <GlassBand
+            id={pledge.id}
+            glass={pledge.glass}
+            title={pledge.title}
+            highlight={pledge.highlight}
+            highlightColours={pledge.colours}
+            summary={pledge.summary}
+            points={pledge.points}
+            alternate={index % 2 === 0}
+            reversed={index % 2 === 1}
+        />
+    ))}
 
-    <StudioFeature feature={{ ...agents, label: 'ONIXLabs Studio' }} />
-
-    <TalkToUsSection alternate contactHref="/Contact?reason=consulting" />
+    <TalkToUsSection contactHref="/Contact?reason=consulting" />
 </BaseLayout>
-
-<style>
-    /* Three in a row or a single column: a two-column grid would strand the third. */
-    @media (min-width: 56rem) {
-        .areas {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-</style>

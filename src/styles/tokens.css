@@ -104,6 +104,7 @@
     --border-width: 1px;
     --shadow-sm: 0 0.125rem 0.25rem rgba(16, 24, 40, 0.075);
     --shadow-md: 0 0.5rem 1rem rgba(16, 24, 40, 0.12);
+    --shadow-button-hover: 0 0.5rem 1rem rgba(16, 24, 40, 0.22);
     --shadow-lg: 0 1rem 3rem rgba(16, 24, 40, 0.175);
 
     /* Motion (Stride) */

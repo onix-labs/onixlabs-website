@@ -22,11 +22,16 @@ const widthOverrides: ReadonlyMap<string, number> = new Map<string, number>([
     ['logo-full-dark.svg', 340],
     ['logo-full-light.svg', 340],
     ['dotnet.svg', 256],
-    ['envelope.svg', 840],
-    ['envelope-dark.svg', 840],
     ['ai.svg', 640],
     ['ai-dark.svg', 640],
 ]);
+// The other glass icons are exported as WebPs straight from Affinity, which renders their blurs at full resolution
+// rather than stretching the 1× bitmaps it embeds in an SVG, so rendering them here would overwrite better images.
+const renderedGlassIcons: ReadonlySet<string> = new Set<string>(['ai.svg', 'ai-dark.svg']);
+
+function isExportedFromAffinity(directory: string, file: string): boolean {
+    return directory === 'icons/glass' && !renderedGlassIcons.has(file);
+}
 
 async function embedsBitmap(filePath: string): Promise<boolean> {
     const contents: string = await readFile(filePath, 'utf8');
@@ -45,7 +50,8 @@ async function render(source: string, width: number, quality: number): Promise<v
 
 async function renderTarget(target: RasterTarget): Promise<void> {
     const directory: string = path.join(imagesRoot, target.directory);
-    const files: ReadonlyArray<string> = (await readdir(directory)).filter((file: string): boolean => file.endsWith('.svg'));
+    const files: ReadonlyArray<string> = (await readdir(directory))
+        .filter((file: string): boolean => file.endsWith('.svg') && !isExportedFromAffinity(target.directory, file));
 
     await Promise.all(files.map(async (file: string): Promise<void> => {
         const source: string = path.join(directory, file);

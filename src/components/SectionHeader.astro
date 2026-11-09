@@ -2,7 +2,7 @@
 // Eyebrow, headline and lead for a section. `highlight` is appended to the title in grey, giving the two-tone
 // headline used across the site. The page's hero uses level 1; everything else is level 2.
 interface Props {
-    readonly eyebrow?: string;
+    readonly eyebrow?: string | undefined;
     readonly title: string;
     readonly highlight?: string;
     readonly highlightStyle?: 'muted' | 'gradient';

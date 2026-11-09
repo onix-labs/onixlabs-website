@@ -1,13 +1,10 @@
 ---
 import Button from './Button.astro';
-import FeaturePoints from './FeaturePoints.astro';
-import GlassAura from './GlassAura.astro';
-import SectionHeader from './SectionHeader.astro';
+import GlassBand from './GlassBand.astro';
 
-// One package on a family's root page, in a band of its own, laid out like a Studio feature: 60% for its copy (its name,
-// a two-part headline, a standfirst, the points that explain it, then links to its product page when there is one, its
-// reference and its registry) and 40% for its glass icon, glowing in its own colours with grain over the blur, level with the top of the copy and staying in view while the copy scrolls.
-// `reversed` puts the icon on the left. Stacks below 60rem, icon first.
+// One package on a family's root page, in a GlassBand of its own: its name as the eyebrow, a two-part headline, a
+// standfirst and the points that explain it, then links to its product page when there is one, its reference and its
+// registry.
 interface Props {
     readonly name: string;
     readonly glass: string;
@@ -27,111 +24,8 @@ const { name, glass, title, highlight, summary, points, pagePath, docsUrl, regis
     Astro.props;
 const id: string = name.toLowerCase().replaceAll('.', '-');
 ---
-<section class:list={['section library-section', { 'tone-alt': alternate, 'is-reversed': reversed }]} id={id} aria-labelledby={`${id}-title`}>
-    <div class="container-wide library-layout">
-        <div class="library-copy">
-            <SectionHeader eyebrow={name} title={title} highlight={highlight} id={`${id}-title`}>{summary}</SectionHeader>
-            <FeaturePoints points={points} />
-            <div class="library-links">
-                {pagePath !== undefined && <Button href={pagePath} variant="ghost" trailingIcon="arrow-right-bold">Find out more</Button>}
-                <Button href={docsUrl} variant="link" external>API reference</Button>
-                <Button href={registryUrl} variant="link" external>{registry}</Button>
-            </div>
-        </div>
-        <div class="library-icon zoom-through">
-            <GlassAura name={glass} class="library-aura" />
-        </div>
-    </div>
-</section>
-
-<style>
-    /* The glow spreads well past the icon, so the band clips it. */
-    .library-section {
-        overflow: clip;
-    }
-
-    .library-layout {
-        display: grid;
-        gap: 2.5rem;
-    }
-
-    .library-icon {
-        display: grid;
-        place-items: start center;
-        order: -1;
-        isolation: isolate;
-    }
-
-    .library-icon :global(.library-aura) {
-        --aura-blur: 3.5rem;
-        --aura-scale: 1.6;
-        width: min(13rem, 55vw);
-    }
-
-    @media (min-width: 60rem) {
-        .library-layout {
-            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-            gap: 5rem;
-            align-items: start;
-        }
-
-        /* Like a Studio screenshot, the icon holds still while its copy scrolls past. */
-        .library-icon {
-            position: sticky;
-            top: calc(var(--header-height) + 1.5rem);
-            order: 0;
-        }
-
-        .is-reversed .library-layout {
-            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-        }
-
-        .is-reversed .library-icon {
-            order: -1;
-        }
-
-        .library-icon :global(.library-aura) {
-            width: min(100%, 20rem);
-        }
-    }
-
-    .library-copy {
-        display: grid;
-        gap: 2rem;
-    }
-
-    .library-copy :global(.section-header) {
-        max-width: none;
-        margin-bottom: 0;
-    }
-
-    .library-copy :global(.section-header h2) {
-        font-size: 2.5rem;
-    }
-
-    .library-copy :global(.section-header .lead) {
-        font-size: var(--text-lg);
-    }
-
-    .library-copy :global(.headline-muted) {
-        display: block;
-    }
-
-    /* Package names keep their case. */
-    .library-copy :global(.label) {
-        text-transform: none;
-        letter-spacing: 0;
-    }
-
-    .library-links {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5rem 1.75rem;
-    }
-
-    /* The ghost button's own padding would push it in from the text above. */
-    .library-links :global(.button-ghost) {
-        padding-inline: 0;
-    }
-</style>
+<GlassBand id={id} eyebrow={name} glass={glass} title={title} highlight={highlight} summary={summary} points={points} alternate={alternate} reversed={reversed}>
+    {pagePath !== undefined && <Button href={pagePath} variant="ghost" trailingIcon="arrow-right-bold">Find out more</Button>}
+    <Button href={docsUrl} variant="link" external>API reference</Button>
+    <Button href={registryUrl} variant="link" external>{registry}</Button>
+</GlassBand>

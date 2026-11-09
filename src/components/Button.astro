@@ -29,7 +29,7 @@ const isLink: boolean = variant === 'link';
 >
     {icon !== undefined && <Icon name={icon} />}
     <span><slot /></span>
-    {trailingIcon !== undefined && <Icon name={trailingIcon} />}
+    {trailingIcon !== undefined && <Icon name={trailingIcon} class="button-trailing-icon" />}
     {isLink &&<Icon name={external ? 'arrow-square-out' : 'caret-right'} />}
     {external && <span class="visually-hidden"> (opens in a new tab)</span>}
 </a>

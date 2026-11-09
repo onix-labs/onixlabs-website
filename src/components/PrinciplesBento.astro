@@ -67,11 +67,28 @@ function bentoSize(index: number): string {
 
     .bento :global(.bento-icon) {
         width: 5.5rem;
-        transition: transform 600ms var(--ease-out);
     }
 
-    .bento:hover :global(.bento-icon) {
-        transform: scale(1.12);
+    /* The icon and the colour spilling from it grow by different amounts. `scale` rather than `transform`, because the
+       glow's transform already enlarges it, and the two compose. */
+    .bento :global(.bento-icon > .glass-icon) {
+        transition: scale 600ms var(--ease-out);
+    }
+
+    .bento:hover :global(.bento-icon > .glass-icon) {
+        scale: 1.12;
+    }
+
+    /* The glow is quieter at rest and brightens on hover: opacity rather than its filter, which would re-run the blur
+       on every frame. */
+    .bento :global(.bento-icon > .aura-glow) {
+        opacity: 0.75;
+        transition: scale 600ms var(--ease-out), opacity 600ms var(--ease-out);
+    }
+
+    .bento:hover :global(.bento-icon > .aura-glow) {
+        scale: 1.04;
+        opacity: 1;
     }
 
     .bento-large h3,

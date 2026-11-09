@@ -473,8 +473,12 @@ a.tile:hover {
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    min-height: 2.75rem;
-    padding: var(--space-2) var(--space-5);
+    /* The same space on every side: half of what the height leaves after the line of text, less the top or bottom edge
+       above and below it. Each size sets only its height. */
+    --button-height: 2.75rem;
+    --button-inset: calc((var(--button-height) - 1lh) / 2);
+    min-height: var(--button-height);
+    padding: calc(var(--button-inset) - var(--border-width)) var(--button-inset);
     border: none;
     border-top: var(--border-width) solid var(--button-edge-top);
     border-bottom: var(--border-width) solid var(--button-edge-bottom);
@@ -488,16 +492,19 @@ a.tile:hover {
     line-height: 1.25;
     text-decoration: none;
     white-space: nowrap;
-    transition: background-color var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+    transition: background-color var(--transition), border-color var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
+/* Hovering zooms the button in a little and drops a shadow below it; pressing pushes it back down. */
 .button:hover {
     text-decoration: none;
-    transform: translateY(-1px) scale(1.02);
+    transform: scale(1.04);
+    box-shadow: var(--shadow-button-hover);
 }
 
 .button:active {
-    transform: translateY(1px);
+    transform: scale(0.98);
+    box-shadow: var(--shadow-sm);
 }
 
 .button-primary {
@@ -521,23 +528,33 @@ a.tile:hover {
         conic-gradient(from var(--angle), var(--brand-conic-stops)) border-box;
 }
 
-/* The edges go transparent rather than away, so it stays the same height as a button beside it. */
-.button-ghost {
+/* The edges go transparent rather than away, so it stays the same height as a button beside it. With no surface, it
+   neither zooms nor casts a shadow; the trailing arrow nudges forward instead. */
+.button-ghost,
+.button-ghost:hover,
+.button-ghost:active {
     --button-bg: transparent;
     --button-edge-top: transparent;
     --button-edge-bottom: transparent;
     box-shadow: none;
+    transform: none;
+}
+
+.button-ghost .button-trailing-icon {
+    transition: translate var(--transition);
+}
+
+.button-ghost:hover .button-trailing-icon {
+    translate: 0.25rem 0;
 }
 
 .button-small {
-    min-height: 2.25rem;
-    padding: var(--space-1) var(--space-3);
+    --button-height: 2.25rem;
     font-size: var(--text-sm);
 }
 
 .button-large {
-    min-height: 3.25rem;
-    padding: var(--space-3) var(--space-6);
+    --button-height: 3.25rem;
     font-size: var(--text-lg);
 }
 

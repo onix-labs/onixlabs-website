@@ -1,6 +1,6 @@
 ---
 // The Aero product shot. On a near-black band (tone="dark") only the dark rendering is used; otherwise the image
-// follows the site theme.
+// follows the site theme. Both renderings are the light one until the dark one is drawn.
 interface Props {
     readonly eager?: boolean;
     readonly tone?: 'auto' | 'dark';
@@ -8,17 +8,17 @@ interface Props {
 }
 
 const { eager = false, tone = 'auto', class: className = '' }: Props = Astro.props;
-const alt: string = 'The Aero platform running on a laptop (for illustration purposes only)';
+const alt: string = 'The Aero logo on a central block, surrounded by six module blocks';
 ---
 <div class:list={['showcase', className]}>
     <div class="showcase-glow" aria-hidden="true"></div>
     {tone === 'auto' && (
         <img
             class="showcase-image showcase-light"
-            src="/onixlabs/images/marketing/macbook-pro.webp"
+            src="/onixlabs/images/marketing/aero.webp"
             alt={alt}
-            width={1400}
-            height={834}
+            width={1280}
+            height={1280}
             loading={eager ? 'eager' : 'lazy'}
             fetchpriority={eager ? 'high' : 'auto'}
             decoding="async"
@@ -26,10 +26,10 @@ const alt: string = 'The Aero platform running on a laptop (for illustration pur
     )}
     <img
         class:list={['showcase-image', { 'showcase-dark': tone === 'auto' }]}
-        src="/onixlabs/images/marketing/macbook-pro-dark.webp"
+        src="/onixlabs/images/marketing/aero.webp"
         alt={alt}
-        width={1400}
-        height={834}
+        width={1280}
+        height={1280}
         loading={eager ? 'eager' : 'lazy'}
         fetchpriority={eager ? 'high' : 'auto'}
         decoding="async"
@@ -45,7 +45,7 @@ const alt: string = 'The Aero platform running on a laptop (for illustration pur
         isolation: isolate;
     }
 
-    /* A faint wash of the Aero colours beneath the laptop, like light spilling from the screen. */
+    /* A faint wash of the Aero colours beneath the blocks. */
     .showcase-glow {
         position: absolute;
         inset: 18% 12% 4%;
