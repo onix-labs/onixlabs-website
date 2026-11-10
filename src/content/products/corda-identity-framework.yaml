@@ -8,6 +8,7 @@ description: >-
     ONIXLabs Corda Identity Framework: a claims-based identity model for Corda with claim states, claim pointers,
     attestations and accounts.
 callout: "Secure, scalable identity management built for enterprise Corda"
+lead: "Scalable, privacy-preserving digital identities for people and organizations on Corda, inspired by W3C Verifiable Credentials."
 icon: /onixlabs/images/icons/corda/corda-idfx-outline.svg
 iconAlt: "Identity Framework for Corda"
 summary: >-

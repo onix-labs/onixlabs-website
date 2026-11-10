@@ -1,0 +1,67 @@
+---
+// The hero of a library page (/Products/DotNet and each product under it): a two-part headline over a bloom in the
+// family's colours, a standfirst and the actions. Sit it inside a `.family-<id>` wrapper, which supplies the colours.
+// `highlightClass` sets the second phrase's gradient; without it, the phrase takes the brand gradient.
+interface Props {
+    readonly title: string;
+    readonly highlight: string;
+    readonly highlightClass?: string;
+    readonly lead: string;
+}
+
+const { title, highlight, highlightClass = '', lead }: Props = Astro.props;
+---
+<section class="hero-bloom library-hero" aria-labelledby="library-title">
+    <div class="library-hero-copy">
+        <h1 id="library-title" class="display rise">
+            {title}{' '}
+            <span class:list={['gradient-text', highlightClass]}>{highlight}</span>
+        </h1>
+        <p class="lead rise rise-2">{lead}</p>
+        <div class="button-pair rise rise-3"><slot name="actions" /></div>
+    </div>
+</section>
+
+<style>
+    /* The bloom runs from the family's first colour to its second, left to right. */
+    .library-hero {
+        --bloom-gradient: linear-gradient(90deg, var(--family-from), var(--family-to));
+        padding-block: clamp(4rem, 3rem + 5vw, 7.5rem) clamp(5rem, 3.5rem + 7vw, 10rem);
+        overflow: clip;
+    }
+
+    .library-hero-copy {
+        display: grid;
+        gap: 1.4rem;
+        justify-items: center;
+        width: min(100% - 2 * var(--tile-gap) - 1rem, var(--container-wide));
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .library-hero h1 {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-weight: 600;
+    }
+
+    .library-hero h1 .gradient-text {
+        display: block;
+    }
+
+    /* Wider than other standfirsts, and in the full text colour, because the bloom reaches up behind it. */
+    .library-hero .lead {
+        max-width: 66rem;
+        color: var(--text);
+        text-wrap: balance;
+    }
+
+    .library-hero .button-pair {
+        margin-top: 0.6rem;
+    }
+
+    /* Bare text on the strongest part of the bloom. */
+    .library-hero :global(.button-ghost) {
+        --button-text: var(--text-on-bloom);
+    }
+</style>

@@ -10,15 +10,38 @@ import TeamTile from '../components/TeamTile.astro';
 import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// About ONIXLabs: who we are, what we do (each linking to where it's covered), what we stand for, and the people behind
-// it. Everything here is stated elsewhere on the site; this page brings it together.
+// About ONIXLabs: who we are, where we began, our mission, what we do (each linking to where it's covered), what we
+// stand for, and the people behind it.
 interface Area {
     readonly title: string;
     readonly summary: string;
     readonly href: string;
 }
 
+interface Commitment {
+    readonly title: string;
+    readonly summary: string;
+}
+
 const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
+const commitments: ReadonlyArray<Commitment> = [
+    {
+        title: 'Communities through open source',
+        summary: 'We publish the code others can use, and build communities around improving and maintaining it together.',
+    },
+    {
+        title: 'Tools that help developers',
+        summary: 'From open-source libraries to ONIXLabs Studio, we build tools that help developers work more effectively.',
+    },
+    {
+        title: 'The right tool for the job',
+        summary: "We build and choose tools for the problem in front of us, not for the sake of what's new.",
+    },
+    {
+        title: 'AI where it fits',
+        summary: 'We apply AI through our consulting and engineering, and help businesses understand what it can do and where it belongs.',
+    },
+];
 const areas: ReadonlyArray<Area> = [
     {
         title: 'Products',
@@ -58,6 +81,49 @@ const areas: ReadonlyArray<Area> = [
                 Since {site.foundingYear}, we've built enterprise software for .NET, Kotlin, the JVM and Corda: the platforms and tools we
                 ship ourselves, the open-source libraries we maintain, and the systems we build alongside our clients.
             </p>
+        </div>
+    </section>
+
+    <section class="section" aria-labelledby="where-we-began">
+        <div class="container-wide split-layout">
+            <SectionHeader eyebrow="Our story" title="Where we began" highlight="From a monolith to open source" id="where-we-began" />
+            <div class="story reveal">
+                <p>
+                    Before ONIXLabs was founded, we were building a monolith. Alongside the code that made the application unique sat a
+                    great deal that didn't: utilities, patterns and building blocks that any developer could use, and that gave nothing
+                    away about the business they served.
+                </p>
+                <p>
+                    So we took it apart. We broke the application down into reusable libraries, kept what belonged to the business, and
+                    published the rest as open source, where the community could use it, improve it and help maintain it. ONIXLabs began
+                    with that work, and those libraries are the foundations of our .NET, Kotlin and Corda libraries
+                    today.
+                </p>
+                <p>
+                    That decision became a philosophy we've held on to ever since. Building a business and giving back aren't at odds:
+                    even as entrepreneurs, we can share what we've built with the community that helped us build it.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section tone-alt" aria-labelledby="our-mission">
+        <div class="container-wide split-layout">
+            <SectionHeader eyebrow="Mission statement" title="Our mission" highlight="Build the right tools, and share them" id="our-mission">
+                We're dedicated to building cohesive communities through open source, and to building the tools that help developers
+                work more effectively. As AI changes how software is made, we apply it through our consulting and engineering, and help
+                businesses understand where it fits.
+            </SectionHeader>
+            <ul class="areas" role="list">
+                {commitments.map((commitment: Commitment) => (
+                    <li class="reveal">
+                        <div class="area">
+                            <span class="area-title">{commitment.title}</span>
+                            <span class="area-summary">{commitment.summary}</span>
+                        </div>
+                    </li>
+                ))}
+            </ul>
         </div>
     </section>
 
@@ -175,6 +241,14 @@ const areas: ReadonlyArray<Area> = [
 
     .split-layout :global(.headline-muted) {
         display: block;
+    }
+
+    .story {
+        display: grid;
+        gap: 1.25rem;
+        color: var(--text-muted);
+        font-size: var(--text-lg);
+        line-height: 1.65;
     }
 
     .areas {

@@ -3,14 +3,15 @@ import Button from './Button.astro';
 import GlassBand from './GlassBand.astro';
 
 // One package on a family's root page, in a GlassBand of its own: its name as the eyebrow, a two-part headline, a
-// standfirst and the points that explain it, then links to its product page when there is one, its reference and its
-// registry.
+// standfirst and the points that explain it, then its product page when there is one, its reference and its registry
+// listing.
 interface Props {
     readonly name: string;
     readonly glass: string;
     readonly title: string;
     readonly highlight: string;
     readonly summary: string;
+    readonly details: ReadonlyArray<string>;
     readonly points: ReadonlyArray<{ readonly title: string; readonly body: string }>;
     readonly pagePath?: string | undefined;
     readonly docsUrl: string;
@@ -20,12 +21,24 @@ interface Props {
     readonly reversed?: boolean;
 }
 
-const { name, glass, title, highlight, summary, points, pagePath, docsUrl, registryUrl, registry, alternate = false, reversed = false }: Props =
+const { name, glass, title, highlight, summary, details, pagePath, docsUrl, registryUrl, registry, alternate = false, reversed = false }: Props =
     Astro.props;
 const id: string = name.toLowerCase().replaceAll('.', '-');
 ---
-<GlassBand id={id} eyebrow={name} glass={glass} title={title} highlight={highlight} summary={summary} points={points} alternate={alternate} reversed={reversed}>
-    {pagePath !== undefined && <Button href={pagePath} variant="ghost" trailingIcon="arrow-right-bold">Find out more</Button>}
-    <Button href={docsUrl} variant="link" external>API reference</Button>
-    <Button href={registryUrl} variant="link" external>{registry}</Button>
+{/* The points are left out for now, to keep the bands short. Pass points={points} to GlassBand to bring them back. */}
+<GlassBand id={id} eyebrow={name} glass={glass} title={title} highlight={highlight} summary={summary} details={details} alternate={alternate} reversed={reversed}>
+    <div class="package-actions">
+        {pagePath !== undefined && <Button href={pagePath} variant="primary">Find out more</Button>}
+        <Button href={docsUrl} icon="github-logo" external>API reference</Button>
+        <Button href={registryUrl} variant="ghost" trailingIcon="arrow-right-bold" external>Browse on {registry}</Button>
+    </div>
 </GlassBand>
+
+<style>
+    .package-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem 1.25rem;
+    }
+</style>

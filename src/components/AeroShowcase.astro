@@ -1,6 +1,7 @@
 ---
 // The Aero product shot. On a near-black band (tone="dark") only the dark rendering is used; otherwise the image
-// follows the site theme. Both renderings are the light one until the dark one is drawn.
+// follows the site theme. Both renderings are the light one until the dark one is drawn. It glows in its own colours,
+// like the glass icons, so the band it sits in must clip it.
 interface Props {
     readonly eager?: boolean;
     readonly tone?: 'auto' | 'dark';
@@ -11,7 +12,18 @@ const { eager = false, tone = 'auto', class: className = '' }: Props = Astro.pro
 const alt: string = 'The Aero logo on a central block, surrounded by six module blocks';
 ---
 <div class:list={['showcase', className]}>
-    <div class="showcase-glow" aria-hidden="true"></div>
+    <span class="showcase-aura" aria-hidden="true">
+        {tone === 'auto' && <img class="showcase-light" src="/onixlabs/images/marketing/aero.webp" alt="" width={1280} height={1280} loading="lazy" decoding="async" />}
+        <img
+            class:list={{ 'showcase-dark': tone === 'auto' }}
+            src="/onixlabs/images/marketing/aero.webp"
+            alt=""
+            width={1280}
+            height={1280}
+            loading="lazy"
+            decoding="async"
+        />
+    </span>
     {tone === 'auto' && (
         <img
             class="showcase-image showcase-light"
@@ -45,21 +57,46 @@ const alt: string = 'The Aero logo on a central block, surrounded by six module 
         isolation: isolate;
     }
 
-    /* A faint wash of the Aero colours beneath the blocks. */
-    .showcase-glow {
-        position: absolute;
-        inset: 18% 12% 4%;
+    /* The glass icons' aura (see GlassAura): a second copy behind the image, scaled up, blurred and saturated, so it
+       spills its own colours, each module's behind it. The grain over it breaks up its bands. */
+    .showcase-aura,
+    .showcase-image {
+        grid-area: 1 / 1;
+        width: 100%;
+    }
+
+    .showcase-aura {
         z-index: -1;
-        border-radius: 50%;
-        background: radial-gradient(closest-side, color-mix(in srgb, var(--brand-rose) 45%, transparent), color-mix(in srgb, var(--brand-violet) 25%, transparent) 55%, transparent);
-        filter: blur(50px);
-        opacity: 0.55;
+        display: grid;
+        opacity: 0.95;
+        filter: blur(var(--aura-blur, 4rem)) saturate(3.2) brightness(1.05);
+        transform: scale(var(--aura-scale, 1.15));
+        pointer-events: none;
+    }
+
+    .showcase-aura img {
+        grid-area: 1 / 1;
+        width: 100%;
+    }
+
+    :global([data-theme='dark']) .showcase-aura,
+    :global(.tone-dark) .showcase-aura {
+        filter: blur(var(--aura-blur, 4rem)) saturate(2.6) brightness(1.15);
+    }
+
+    .showcase::after {
+        content: '';
+        position: absolute;
+        inset: -15%;
+        z-index: -1;
+        background: url('/onixlabs/images/noise-aura.png');
+        -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent);
+        mask-image: radial-gradient(closest-side, #000 45%, transparent);
+        pointer-events: none;
     }
 
     .showcase-image {
         position: relative;
-        width: 100%;
-        filter: drop-shadow(var(--shadow-product));
     }
 
     :global([data-theme='light']) .showcase-dark,

@@ -8,12 +8,14 @@ description: >-
     ONIXLabs Core Library for .NET: smart enumerations, value semantics, Result and Optional monads, guard clauses, LINQ
     enhancements and text encoding.
 callout: "Powerful, general-purpose APIs for .NET developers"
+lead: "Essential abstractions and utilities for clean, consistent .NET code, with explicit, exception-free error handling built in."
 icon: /onixlabs/images/icons/dotnet/dotnet-core-outline.svg
 iconAlt: "Core Library for .NET"
 summary: >-
-    Provides essential abstractions and utilities for building clean, consistent applications. It includes standardized
-    interfaces for value equality, comparison, and binary conversion, along with extension methods and guard clauses to
-    enhance code clarity and safety, and functional constructs that enable explicit, exception-free error handling.
+    Foundational primitives, patterns and extensions that fill common gaps in .NET's base class library. It brings
+    explicit, exception-free error handling with Result and Optional, reusable specifications, smart enumerations, guard
+    clauses and strongly typed text encodings, and is the base layer for the other ONIXLabs libraries while remaining
+    useful on its own.
 hook: >-
     Designed to be lightweight and reusable, this module serves as the base layer for other ONIXLabs components while
     remaining broadly useful on its own.
@@ -22,68 +24,78 @@ packagesUrl: https://www.nuget.org/packages?q=OnixLabs.Core
 packagesLabel: "View NuGet Packages"
 sections:
   - features:
-        - title: "Smart Enumerations"
+        - title: "Results Instead of Exceptions"
           body: >-
-              The Enumeration class implements the strongly typed enumeration pattern, providing a powerful alternative to
-              standard enums. Unlike native enum types, smart enumerations can encapsulate additional data and behavior, making
-              them ideal for domain-driven design scenarios where richer semantics and extensibility are required.
+              Result and Result<T> return success or failure as a value, so a method's signature says it can fail and
+              callers can't ignore it. Result.Of wraps code that might throw and captures the exception as a Failure,
+              and Match, Select and SelectMany run the next step only when the last one succeeded.
+
+              Every operation has Task and ValueTask overloads, with cancellation, so asynchronous code composes the
+              same way.
+        - title: "Optional Values"
+          body: >-
+              Optional<T> makes absence explicit, with distinct Some and None states instead of null. Map, flatten and
+              match optional values fluently, turn them into results, and read them with a default or a clear exception.
+              Asynchronous overloads cover Task and ValueTask throughout, and FirstOrNone, LastOrNone and SingleOrNone
+              bring the same safety to sequences.
         - title: "Composable Specifications"
           body: >-
-              The Specification class abstracts the specification pattern to enable reusable, composable, and parameterized query
-              logic. Specifications can be used with in-memory collections or translated to LINQ queries against data sources like
-              Entity Framework. Logical operators such as AND, OR, and NOT are fully supported, making this an expressive and
-              testable mechanism for encapsulating business rules and query criteria.
+              Specification<T> captures a business rule as an expression tree, so you write it once and reuse it
+              everywhere. Combine rules with And, Or and Not, test an object with IsSatisfiedBy, or filter an
+              IEnumerable or IQueryable with Where and WhereNot. Combined rules stay plain expression trees, so query
+              providers can translate them into database queries.
+        - title: "Smart Enumerations"
+          body: >-
+              Enumeration<T> replaces bare enums with strongly typed classes that can carry data and behavior of their
+              own. Look entries up by name or value, list them all, and compare them by value. Each type's entries are
+              discovered once and cached in frozen collections, so lookups stay fast.
+        - title: "Guard Clauses"
+          body: >-
+              Preconditions that read like the rule they enforce. Check methods throw InvalidOperationException and
+              Require methods throw the appropriate ArgumentException, covering null and empty values, ranges, defined
+              enum values, and the state of optionals and results. The argument name is captured automatically, each
+              method returns the value it checked so it can be used inline, and interpolated messages are only built
+              when a check fails.
         - title: "Value Semantics"
           body: >-
-              IValueEquatable and IValueComparable extend IEquatable and IComparable to include operator overloads for equality
-              and comparison. These abstractions simplify the creation of value types that behave consistently across .NET's
-              equality and sorting mechanisms, encouraging clarity and correctness in value semantics.
-        - title: "Binary Conversion Interfaces"
+              IValueEquatable<T> and IValueComparable<T> extend .NET's equality and comparison interfaces to require the
+              matching operators, so a value type's operators can't be forgotten or drift out of step with Equals and
+              CompareTo. Equality comparers for optionals and results compare by content, and accept a custom comparer
+              for the value inside.
+        - title: "Strongly Typed Text Encodings"
           body: >-
-              Interfaces like IBinaryConvertible, IMemoryBinaryConvertible, and ISpanBinaryConvertible allow types to expose their
-              underlying data as byte representations. This supports efficient serialization, cryptographic operations, and
-              low-level data manipulation, and is especially useful in performance-sensitive or binary-focused applications.
-        - title: "Result Monad"
+              Base16, Base32, Base58 and Base64 are value types of their own, so encoded text is never mistaken for an
+              ordinary string. They parse and format through .NET's standard interfaces, and format providers cover the
+              common alphabets: uppercase and lowercase hex; RFC 4648, z-base-32, Geohash, Crockford and Base32hex, with
+              or without padding; and the Bitcoin, Flickr and Ripple alphabets for Base58.
+        - title: "Binary Conversion"
           body: >-
-              Aero’s Result and Result<T> types provide a structured approach to success/failure modeling. Each result is either a
-              Success or a Failure, with error states represented using Exception, allowing deep integration with the language's
-              native error-handling mechanisms. These types support rich functional workflows, including async integration,
-              chaining, pattern matching, and comprehensive extension methods that make error propagation explicit and
-              maintainable.
-        - title: "Optional Monad"
+              IBinaryConvertible, IMemoryBinaryConvertible and ISpanBinaryConvertible give types a standard way to
+              expose their underlying bytes as a read-only span or memory. The encoded text types implement them, and so
+              can your own types, for serialization, hashing and other low-level work.
+        - title: "LINQ Extensions"
           body: >-
-              The Optional<T> type provides a clear abstraction for representing optional values. With explicit Some and None
-              states, it removes the ambiguity of null and promotes safer handling of optional data. The library includes
-              extensive methods and async-compatible workflows for transforming, filtering, and consuming optional values in a
-              fluent, expressive way.
-        - title: "Precondition Utilities"
+              The queries LINQ leaves out: AllEqualBy and AnyEqualBy, None and CountNot, IsEmpty and IsSingle, WhereNot
+              and WhereNotNull, Sum and SumBy for any numeric type through generic math, content-based hash codes, and
+              JoinToString for turning a sequence into readable text.
+        - title: "Collection Factories"
           body: >-
-              Methods such as Check, Require, CheckIsNotNull, RequireNotNullOrEmpty, etc. provide idiomatic, parameterized
-              precondition validation. These utilities offer consistent and expressive ways to enforce method contracts and fail
-              fast when inputs don't meet expectations, improving both developer ergonomics and runtime safety.
-        - title: "Extension Methods"
+              ListOf, HashSetOf, DictionaryOf and their sorted and immutable counterparts build typed collections in a
+              single call, and EmptyList, EmptyDictionary and the rest give you empty ones without spelling out their
+              types.
+        - title: "Everyday Extensions"
           body: >-
-              The Core library includes a broad collection of extension methods for working with objects, arrays, strings, dates &
-              times, sequences, and more. These helpers reduce boilerplate, improve code readability, and enhance developer
-              productivity across a wide range of everyday tasks.
-        - title: "Functional Collections"
+              Helpers for the tasks every codebase repeats: the substring before or after a delimiter, the nth
+              occurrence of a character, Kotlin-style Apply and Let scope functions, record-style string output for any
+              object, range checks for anything comparable, StringBuilder trimming, wrapping and prepending, and
+              conversions between dates, times, strings and bytes.
+        - title: "C# Type Names"
           body: >-
-              Factory methods like ListOf, HashSetOf, ImmutableQueueOf, EmptyList, EmptyDictionary, etc. offer a concise,
-              functional approach to creating strongly typed collections. Unlike .NET's collection expressions, these utilities
-              guarantee type consistency and enable functional chaining, supporting cleaner, more declarative collection handling.
-        - title: "LINQ Enhancements"
+              GetCSharpTypeDeclaration turns a runtime type into the name you'd write in C#, such as List<int?> or
+              (string, int), rather than the CLR's List`1. Flags control namespaces, keyword aliases, nullable
+              shorthand, generic arguments and tuple syntax, so diagnostics and logs show types the way developers read
+              them.
+        - title: "Built for Modern .NET"
           body: >-
-              LINQ is supercharged with extensions like AllEqualBy, AnyEqualBy, IsEmpty, WhereNot, and CountNot, among others.
-              These extensions are designed to work seamlessly with IEnumerable and IEnumerable<T>, offering expressive shortcuts
-              and structural clarity for common operations.
-        - title: "Advanced Type Reflection"
-          body: >-
-              The library provides a customizable C# type formatter for reflection scenarios. It supports fully qualified names,
-              generic type arguments, nullable shorthand, and tuple formatting with named elements. This is ideal for diagnostics,
-              logging, or developer tooling where precise type display is essential.
-        - title: "Flexible Text Encoding"
-          body: >-
-              The library includes a powerful encoding framework with built-in support for Base-16, Base-32, Base-58, and Base-64.
-              Format providers and alphabet variants are supported out-of-the-box, and extension methods enhance interoperability
-              with .NET's Encoding and StringBuilder classes. Whether you’re encoding binary data or building secure identifiers,
-              this API is built for precision and performance.
+              Targets .NET 8, 9 and 10, uses C# 14 extension members to add guard clauses and helpers where you'd
+              naturally look for them, and has no third-party dependencies.

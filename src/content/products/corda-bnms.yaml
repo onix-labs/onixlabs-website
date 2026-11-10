@@ -8,6 +8,7 @@ description: >-
     ONIXLabs Corda BNMS: membership, relationship and attestation management for centralized and decentralized Corda
     business networks.
 callout: "Streamlined membership and relationships for Corda business networks"
+lead: "Membership and multi-party relationships for Corda business networks, with centralized or decentralized governance."
 icon: /onixlabs/images/icons/corda/corda-bnms-outline.svg
 iconAlt: "Business Network Management System for Corda"
 summary: >-

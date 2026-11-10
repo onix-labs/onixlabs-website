@@ -16,7 +16,7 @@
   name: "Corda"
   order: 2
   logo: /onixlabs/images/logo/corda.svg
-  tilePath: /Products/Corda/Core
+  tilePath: /Products/Corda
   callout: "Distributed ledger superpowers for CorDapps"
   capabilitiesCallout: "Discover the capabilities built to elevate your Corda applications"
   otherProductsHeadline: "Other Products for Corda"
@@ -30,7 +30,7 @@
   name: "Kotlin"
   order: 3
   logo: /onixlabs/images/logo/kotlin.svg
-  tilePath: /Products/Kotlin/Core
+  tilePath: /Products/Kotlin
   callout: "Unlock the JVM with modern, idiomatic Kotlin"
   capabilitiesCallout: "Discover the capabilities built to elevate your Kotlin applications"
   otherProductsHeadline: "Other Products for Kotlin"

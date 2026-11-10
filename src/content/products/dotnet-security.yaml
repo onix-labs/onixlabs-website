@@ -5,16 +5,17 @@ title: ".NET Security Library"
 shortTitle: "Security Library"
 pageTitle: "Security Library for .NET"
 description: >-
-    ONIXLabs Security Library for .NET: security tokens, hashes, digital signatures, key pairs, Merkle trees and a FIPS
-    202 SHA-3 implementation.
+    ONIXLabs Security Library for .NET: ECDSA, EdDSA and RSA signatures, ECDH, SHA-3, Merkle trees, encrypted-in-memory
+    secrets and security tokens.
 callout: "Comprehensive security for your .NET application"
+lead: "Cryptography and secure data handling for .NET, from hashes and signatures to tokens and secrets kept safe in memory."
 icon: /onixlabs/images/icons/dotnet/dotnet-security-outline.svg
 iconAlt: "Security Library for .NET"
 summary: >-
-    Provides robust tools for secure data handling and cryptographic operations in .NET applications. It includes
-    primitives like salts, hashes, digital signatures, key pairs, and a FIPS 202-compliant SHA-3 implementation. The
-    library supports secure token generation and in-memory secret management to minimize exposure risks. Features like
-    Merkle tree construction enable data integrity checks in distributed or tamper-resistant systems.
+    Tools for secure data handling and cryptography in .NET. Keys, signatures, hashes, salts and secrets are strongly
+    typed values; ECDSA, EdDSA and RSA sign and verify data, ECDH agrees keys, and a managed FIPS 202 implementation
+    adds SHA-3 and SHAKE. Secrets and private keys stay encrypted in memory, Merkle trees summarize sets of data in a
+    single hash, and security tokens are generated from the characters you choose.
 hook: "Built for high-assurance environments, it’s the cryptographic backbone of the ONIXLabs ecosystem."
 repositoryUrl: https://github.com/onix-labs/onixlabs-dotnet
 packagesUrl: https://www.nuget.org/packages?q=OnixLabs.Security
@@ -23,38 +24,60 @@ sections:
   - features:
         - title: "Security Tokens"
           body: >-
-              Easily generate highly secure tokens using either pseudo-random or cryptographically strong random number
-              generators. With support for upper‑case and lower‑case letters, digits, special characters, and custom alphabets,
-              the SecurityToken API gives you complete control over token format and entropy, ideal for use in authentication,
-              session management, and more.
-        - title: "Cryptographic Primitives"
+              SecurityTokenBuilder generates tokens of any length from the characters you choose: lower and upper case
+              letters, digits, two sets of special characters, or an alphabet of your own. Draw from the operating
+              system's cryptographically secure random number generator for anything that has to be unguessable, or from
+              a seeded pseudo-random source when you need repeatable output in tests.
+        - title: "Typed Cryptographic Primitives"
           body: >-
-              Reduce error-prone handling of raw byte arrays or strings with strongly typed primitives like DigitalSignature,
-              PublicKey, PrivateKey, Hash, Salt, Secret, and MerkleTree. These wrappers encapsulate cryptographic semantics and
-              securely manage sensitive data with value-type safety baked in.
-        - title: "Asymmetric Cryptography"
+              Keys, signatures, hashes, salts and secrets are distinct types with value semantics, so a hash can't be
+              passed where a signature is expected and nothing is handled as anonymous bytes. They parse and format as
+              hex, convert from spans and memory, and compare in constant time.
+        - title: "Digital Signatures"
           body: >-
-              The library includes a full-featured API for public-key cryptography, delivering abstractions over EC
-              Diffie-Hellman, ECDSA, and RSA. Your code can create and manage PublicKey and PrivateKey instances, perform secure
-              key exchanges and digital signatures, and verify signatures seamlessly, while keeping private material safe.
+              Sign and verify data with ECDSA, EdDSA and RSA. ECDSA works on any curve the platform supports and with
+              any hash algorithm, including SHA-3, in IEEE P1363 or DER format, and RSA supports PKCS #1 v1.5 and PSS
+              padding. Check a signature with a simple true or false, or verify it with an exception on failure.
+        - title: "Ed25519 in Managed Code"
+          body: >-
+              EdDSA is a managed implementation of Ed25519 as specified in RFC 8032, with constant-time scalar
+              multiplication, tested against the RFC's own vectors and Project Wycheproof's. It doesn't depend on the
+              platform's own support for Ed25519.
+        - title: "Key Agreement"
+          body: >-
+              ECDH private keys derive a shared secret from another party's public key and return it as a Secret, so the
+              agreed key material is encrypted in memory from the moment it exists.
+        - title: "Key Import and Export"
+          body: >-
+              Keys move in and out in the standard formats: PKCS #8, optionally encrypted with a password,
+              SubjectPublicKeyInfo and PEM, alongside the raw SEC1, PKCS #1 and Ed25519 encodings. Named keys carry
+              their algorithm with them, so a stored key always says what it's for.
+        - title: "Hashes"
+          body: >-
+              Hash computes digests with any HashAlgorithm, including HMAC and SHA-3, over bytes, text, streams or your
+              own types, with optional repeated rounds. Hashes compare in constant time, order by value and concatenate,
+              and named hashes record the algorithm that produced them.
+        - title: "SHA-3 and SHAKE"
+          body: >-
+              A fully managed implementation of FIPS 202: SHA3-224, SHA3-256, SHA3-384 and SHA3-512, plus the SHAKE128
+              and SHAKE256 extendable-output functions with an output length of your choosing. Each is a standard .NET
+              HashAlgorithm, so it drops in wherever SHA-2 does.
         - title: "Merkle Trees"
           body: >-
-              Build Merkle trees with high performance and modular hashing. Harness any HashAlgorithm implementation for tree
-              generation and verify integrity at scale; for example, computing a Merkle root for 1 million leaves in milliseconds.
-        - title: "Cryptographic Hashes"
-          body: >-
-              The Hash struct wraps cryptographic hash values in a semantic, type-safe primitive. It supports flexible creation
-              from HashAlgorithm or keyed hash instances, alongside utilities for comparison, conversion, and storage.
-        - title: "SHA-3 & SHAKE"
-          body: >-
-              Fully conformant with FIPS‑202, the library delivers SHA-3 hash functions (224/256/384/512 bits) and variable-length
-              outputs via SHAKE128 and SHAKE256. A reliable, standardised, and cross-platform alternative to Merle-Damgård hash
-              functions like SHA 1 and SHA 2.
+              Build a Merkle tree from hashes, or from any of your own types that can hash themselves, with whichever
+              hash algorithm you choose. The root summarizes the whole set in a single hash, so two collections can be
+              checked for integrity by comparing one value.
         - title: "Salts"
           body: >-
-              Manage salt values securely with the Salt struct, which generates cryptographically strong random salts and provides
-              utility methods for consistent, secure generation, essential for hashing and password storage.
-        - title: "Secrets"
+              Salt generates cryptographically strong random values of any length, with the option to exclude zero
+              bytes, ready for hashing passwords and other values.
+        - title: "Secrets in Memory"
           body: >-
-              The Secret struct offers a secure, encrypted-in-memory container for sensitive data, protecting secrets at rest and
-              in transit without exposing raw values. Ideal for API keys, tokens, or other credentials.
+              Secret keeps sensitive values such as API keys and credentials encrypted in memory, each under a key of
+              its own, and clears the original bytes as soon as it's created. Private keys are protected the same way.
+              When you need a value, decrypt it into a buffer you control, and compare two secrets without revealing
+              either.
+        - title: "Built for Modern .NET"
+          body: >-
+              Targets .NET 8, 9 and 10. The security package depends only on the ONIXLabs Core library, and the
+              cryptography package adds only Microsoft's System.Security.Cryptography.Pkcs.

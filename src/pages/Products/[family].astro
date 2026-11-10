@@ -4,14 +4,17 @@ import type { CollectionEntry } from 'astro:content';
 import type { GetStaticPathsResult } from 'astro';
 
 import Button from '../../components/Button.astro';
+import FamilyTile from '../../components/FamilyTile.astro';
+import LibraryHero from '../../components/LibraryHero.astro';
 import LibrarySection from '../../components/LibrarySection.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
-import TalkToUsSection from '../../components/TalkToUsSection.astro';
+import { loadProductFamilies } from '../../collections/load-product-families';
 import { site } from '../../config/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 // The root page of a family of libraries (/Products/DotNet): a hero blooming in the family's colours, a band for each
-// package and what it offers, and how to add them. One page for each entry in src/content/library-pages.yaml.
+// package and what it offers, then the other families. One page for each entry in
+// src/content/library-pages.yaml.
 type LibraryPage = CollectionEntry<'libraryPages'>['data'];
 type Package = LibraryPage['packages'][number];
 
@@ -30,7 +33,8 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
 
 const { page }: Props = Astro.props;
 const family: CollectionEntry<'productFamilies'> = await getEntry(page.family);
-const installCommands: string = page.packages.map((pkg: Package): string => page.install.command.replace('{package}', pkg.name)).join('\n');
+const otherFamilies: ReadonlyArray<CollectionEntry<'productFamilies'>> = (await loadProductFamilies())
+    .filter((other: CollectionEntry<'productFamilies'>): boolean => other.id !== family.id);
 const [highlightFrom, highlightTo]: readonly [string, string] = page.colours;
 
 function docsUrlFor(pkg: Package): string {
@@ -38,7 +42,7 @@ function docsUrlFor(pkg: Package): string {
 }
 
 function registryUrlFor(pkg: Package): string {
-    return pkg.registryUrl ?? page.install.packageUrl.replace('{package}', pkg.name);
+    return pkg.registryUrl ?? page.packageUrl.replace('{package}', pkg.name);
 }
 ---
 <BaseLayout
@@ -65,19 +69,9 @@ function registryUrlFor(pkg: Package): string {
     ]}
 >
     <div class={`family-${family.id}`}>
-        <section class="hero-bloom library-hero" aria-labelledby="library-title">
-            <div class="library-hero-copy">
-                <h1 id="library-title" class="display rise">
-                    {page.title}{' '}
-                    <span class={`gradient-text text-pair from-${highlightFrom} to-${highlightTo}`}>{page.highlight}</span>
-                </h1>
-                <p class="lead rise rise-2">{page.lead}</p>
-                <div class="button-pair rise rise-3">
-                    <Button href={page.packagesUrl} variant="primary" size="large" icon="package" external>Browse on {page.packageRegistry}</Button>
-                    <Button href={page.docsUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>Read the documentation</Button>
-                </div>
-            </div>
-        </section>
+        <LibraryHero title={page.title} highlight={page.highlight} highlightClass={`text-pair from-${highlightFrom} to-${highlightTo}`} lead={page.lead}>
+            <Button slot="actions" href={page.packagesUrl} variant="primary" size="large" icon="package" external>Browse on {page.packageRegistry}</Button>
+        </LibraryHero>
 
         {page.packages.map((pkg: Package, index: number) => (
             <LibrarySection
@@ -86,6 +80,7 @@ function registryUrlFor(pkg: Package): string {
                 title={pkg.title}
                 highlight={pkg.highlight}
                 summary={pkg.summary}
+                details={pkg.details}
                 points={pkg.points}
                 pagePath={pkg.pagePath}
                 docsUrl={docsUrlFor(pkg)}
@@ -96,141 +91,25 @@ function registryUrlFor(pkg: Package): string {
             />
         ))}
 
-        <section class:list={['section', { 'tone-alt': page.packages.length % 2 === 0 }]} aria-labelledby="library-install">
-            <div class="container-wide install-layout">
-                <div class="install-copy">
-                    <SectionHeader title="Add a package" highlight="and go" id="library-install">
-                        Every package is on {page.packageRegistry}. Add the ones you need with {page.install.tool}.
-                    </SectionHeader>
-                    <dl class="requirements">
-                        {page.requirements.map((requirement: LibraryPage['requirements'][number]) => (
-                            <div>
-                                <dt>{requirement.label}</dt>
-                                <dd>{requirement.value}</dd>
-                            </div>
-                        ))}
-                    </dl>
-                    <div class="button-pair">
-                        <Button href={page.repositoryUrl} variant="primary" size="large" icon="github-logo" external>View on GitHub</Button>
-                        <Button href={page.docsUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>Read the documentation</Button>
-                    </div>
+        <section class:list={['section', { 'tone-alt': page.packages.length % 2 === 1 }]} aria-labelledby="other-families">
+            <div class="container-wide">
+                <SectionHeader title="Libraries for" highlight="other platforms" id="other-families" centered />
+                <div class="grid family-tiles">
+                    {otherFamilies.map((other: CollectionEntry<'productFamilies'>) => <FamilyTile family={other} />)}
                 </div>
-                <pre class="install-code" tabindex="0" aria-label="Commands to install every package"><code>{installCommands}</code></pre>
             </div>
         </section>
     </div>
-
-    <TalkToUsSection />
 </BaseLayout>
 
 <style>
-    /* The bloom runs from the family's first colour to its second, left to right. */
-    .library-hero {
-        --bloom-gradient: linear-gradient(90deg, var(--family-from), var(--family-to));
-        padding-block: clamp(4rem, 3rem + 5vw, 7.5rem) clamp(5rem, 3.5rem + 7vw, 10rem);
-        overflow: clip;
+    .family-tiles {
+        margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
     }
 
-    .library-hero-copy {
-        display: grid;
-        gap: 1.4rem;
-        justify-items: center;
-        width: min(100% - 2 * var(--gutter), 76rem);
-        margin-inline: auto;
-        text-align: center;
-    }
-
-    .library-hero h1 {
-        color: var(--heading);
-        font-family: var(--font-display);
-        font-weight: 600;
-    }
-
-    .library-hero h1 .gradient-text {
-        display: block;
-    }
-
-    /* Wider than other standfirsts, and in the full text colour, because the bloom reaches up behind it. */
-    .library-hero .lead {
-        max-width: 66rem;
-        color: var(--text);
-        text-wrap: balance;
-    }
-
-    .library-hero .button-pair {
-        margin-top: 0.6rem;
-    }
-
-    /* Bare text on the strongest part of the bloom. */
-    .library-hero :global(.button-ghost) {
-        --button-text: var(--text-on-bloom);
-    }
-
-    .install-layout {
-        display: grid;
-        gap: 2.5rem 4rem;
-        align-items: center;
-    }
-
-    @media (min-width: 64rem) {
-        .install-layout {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    @media (min-width: 48rem) {
+        .family-tiles {
+            grid-template-columns: repeat(2, 1fr);
         }
-    }
-
-    .install-copy {
-        display: grid;
-        gap: 2rem;
-    }
-
-    .install-copy :global(.section-header) {
-        margin-bottom: 0;
-    }
-
-    .install-copy :global(.section-header h2) {
-        font-size: var(--text-4xl);
-    }
-
-    .install-copy :global(.headline-muted) {
-        display: block;
-    }
-
-    .requirements {
-        display: grid;
-        gap: 0.75rem;
-        margin: 0;
-    }
-
-    .requirements div {
-        display: grid;
-        grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
-        gap: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .requirements dt {
-        color: var(--text-muted);
-    }
-
-    .requirements dd {
-        margin: 0;
-        color: var(--heading);
-        font-weight: 500;
-    }
-
-    .install-code {
-        margin: 0;
-        padding: clamp(1.25rem, 1rem + 1vw, 2rem);
-        border-radius: var(--radius-xl);
-        corner-shape: var(--corner-shape);
-        border-top: var(--border-width) solid var(--edge-light);
-        border-bottom: var(--border-width) solid var(--edge-dark);
-        background: var(--surface);
-        box-shadow: var(--shadow-sm);
-        color: var(--heading);
-        font-size: var(--text-sm);
-        line-height: 1.9;
-        overflow-x: auto;
     }
 </style>

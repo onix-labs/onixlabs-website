@@ -40,6 +40,8 @@ const products = defineCollection({
         pageTitle: z.string(),
         description: metaDescription,
         callout: z.string(),
+        // The hero's standfirst: one short statement of what it is and why it matters.
+        lead: z.string(),
         icon: publicImage,
         iconAlt: z.string().min(1),
         // The Phosphor icon on its tile on the Products index, by file name in src/icons.
@@ -174,12 +176,8 @@ const libraryPages = defineCollection({
         packageRegistry: z.string(),
         // The headline's gradient, from the family's colours.
         colours: z.tuple([z.enum(studioColours), z.enum(studioColours)]),
-        // How to add a package, and where it's published; {package} stands for its name.
-        install: z.object({
-            tool: z.string(),
-            command: z.string().includes('{package}'),
-            packageUrl: z.string().includes('{package}'),
-        }),
+        // Where each package is published; {package} stands for its name.
+        packageUrl: z.string().includes('{package}'),
         packages: z.array(z.object({
             name: z.string(),
             // The glass icon beside its section, in public/onixlabs/images/icons/glass.
@@ -187,17 +185,18 @@ const libraryPages = defineCollection({
             // Its section's two-part headline.
             title: z.string(),
             highlight: z.string(),
+            // A short standfirst, then two paragraphs: the problem, then how and why the package solves it.
             summary: z.string(),
+            details: z.tuple([z.string(), z.string()]),
             // The product page that covers it, when there is one.
             pagePath: z.string().startsWith('/Products/').optional(),
             // Its page in the wiki at docsUrl, or a documentation URL of its own for a package with its own repository.
             docsPage: z.string().optional(),
             docsUrl: z.url().optional(),
-            // Its registry listing, when it isn't the single package the install pattern points at.
+            // Its registry listing, when it isn't the single package packageUrl points at.
             registryUrl: z.url().optional(),
             points: z.array(z.object({ title: z.string(), body: z.string() })).min(1).max(4),
         })).min(1),
-        requirements: z.array(z.object({ label: z.string(), value: z.string() })),
     }),
 });
 

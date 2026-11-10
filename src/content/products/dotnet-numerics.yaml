@@ -5,16 +5,16 @@ title: ".NET Numerics Library"
 shortTitle: "Numerics Library"
 pageTitle: "Numerics Library for .NET"
 description: >-
-    ONIXLabs Numerics Library for .NET: arbitrary-precision BigDecimal, NumberInfo, culture-aware formatting and generic
-    math utilities.
+    ONIXLabs Numerics Library for .NET: arbitrary-precision BigDecimal, 256- and 512-bit integers, 128- and 256-bit
+    floats, NumberInfo and culture-aware formatting.
 callout: "Enhanced math and arithmetic for .NET applications"
+lead: "Exact decimals, wider integers and more precise floats, all built on .NET's generic math."
 icon: /onixlabs/images/icons/dotnet/dotnet-numerics-outline.svg
 iconAlt: "Numerics Library for .NET"
 summary: >-
-    Extends .NET's generic math with powerful tools for precision, formatting, and numeric analysis. Features include an
-    arbitrary-precision BigDecimal, culture-aware formatting, and a NumberInfo struct that reveals the inner workings of
-    any number; significand, exponent, scale, and more. It also adds smart extensions like Pow10 and SetScale for
-    fine-grained decimal control.
+    Numeric types for when the built-in ones aren't enough. BigDecimal stores decimals of any size exactly, Int256 to
+    UInt512 extend the integers, Float128 and Float256 add quadruple and octuple precision, and NumberInfo takes numbers
+    apart into their components. Everything plugs into .NET's generic math, and parses and formats according to culture.
 hook: >-
     Designed for flexibility and accuracy, the Numerics library empowers developers to reliably work with numbers in
     scientific, financial, or engineering contexts.
@@ -23,22 +23,53 @@ packagesUrl: https://www.nuget.org/packages?q=OnixLabs.Numerics
 packagesLabel: "View NuGet Packages"
 sections:
   - features:
-        - title: "BigDecimal"
+        - title: "Arbitrarily Large Decimals"
           body: >-
-              The BigDecimal struct delivers arbitrary‑precision, base‑10 decimal arithmetic while implementing IFloatingPoint<T>.
-              This means your numeric logic integrates seamlessly with .NET's generic math ecosystem, without sacrificing
-              accuracy. Ideal for financial calculations, scientific models, and anywhere decimal exactness matters.
+              BigDecimal holds decimal numbers of any size as an unscaled integer and a scale, so values like money and
+              measurements are stored exactly rather than approximated in binary. Addition, subtraction and
+              multiplication are exact, while division and rounding round to the scale you need with whichever
+              MidpointRounding mode you choose.
+        - title: "Native to Generic Math"
+          body: >-
+              BigDecimal implements IFloatingPoint<T>, so it works anywhere .NET's generic math does, with the same
+              operators, the same INumber<T> methods and the same generic algorithms as the built-in types. Its
+              constants for E, Pi and Tau are accurate to 1,001 decimal digits.
+        - title: "Strict and Semantic Equality"
+          body: >-
+              Is 1.20 the same number as 1.2? Sometimes it is, and sometimes the scale matters. Equals compares value
+              and scale strictly, == compares numerically, and dedicated comparers let you choose either explicitly,
+              while ordering always follows the numeric value.
+        - title: "Wider Integers"
+          body: >-
+              Int256, UInt256, Int512 and UInt512 implement IBinaryInteger<T>, just like int and long, so they work with
+              every generic algorithm and operator, including bitwise operations and shifts. Ordinary arithmetic wraps
+              like the built-in types, checked arithmetic throws on overflow, and values read and write as big- or
+              little-endian bytes.
+        - title: "Quadruple and Octuple Precision"
+          body: >-
+              Float128 and Float256 implement IEEE 754 binary128 and binary256, with 113- and 237-bit significands, for
+              calculations where a double runs out of precision. As IBinaryFloatingPointIeee754<T> types, they bring
+              trigonometric, hyperbolic, exponential, logarithmic, power and root functions, fused multiply-add and the
+              rest of the standard floating-point toolkit.
+        - title: "Conversions on Your Terms"
+          body: >-
+              Moving between binary floating point and decimal is where precision quietly goes missing. ConversionMode
+              chooses between the shortest decimal that round-trips, so 0.1 stays 0.1, and the exact binary value the
+              float actually holds. ScaleMode decides whether an integer given a scale keeps its digits or its value,
+              and narrowing conversions throw on overflow instead of failing silently.
         - title: "NumberInfo"
           body: >-
-              The NumberInfo struct decomposes numbers into their core components; including unscaled value, scale, exponent,
-              precision, and sign. With built-in parsing and formatting, it's the ideal foundation for custom numeric types and
-              data analysis scenarios.
-        - title: "Generic Math Utilities"
+              NumberInfo takes any decimal number apart into its unscaled value, scale, significand, exponent, precision
+              and sign, whether it started as a built-in numeric type, a BigDecimal, a Float128 or a Float256. It's a
+              solid foundation for numeric types of your own, and for analyzing values without losing detail.
+        - title: "Culture-Aware Parsing and Formatting"
           body: >-
-              Extend .NET's generic math support with powerful helpers like Delta, Factorial, IntegerLength, MinMax, and Pow10.
-              These utilities simplify complex numeric operations across data types with reusable, type-safe methods.
-        - title: "Numeric Extensions"
+              BigDecimal, NumberInfo and the floating-point types parse and format according to the culture you give
+              them, including currency symbols, thousands separators, negative patterns and exponents. The standard
+              format strings work as you'd expect: currency, decimal, exponential, fixed-point, general, number,
+              percentage, round-trip and hexadecimal.
+        - title: "Generic Math Helpers"
           body: >-
-              A comprehensive suite of extension methods enhances numeric workflows. Convert numbers to BigInteger, BigDecimal, or
-              NumberInfo, extract unscaled values, adjust decimal scales, and more. These helpers make complex transformations
-              feel intuitive and coding more expressive.
+              Delta, Factorial, IntegerLength, MinMax, Pow and Pow10 work across numeric types through generic math.
+              Extension methods convert integers, floats and decimals to BigDecimal, BigInteger or NumberInfo, read a
+              decimal's unscaled value, change its scale, and check whether a value falls within a range.

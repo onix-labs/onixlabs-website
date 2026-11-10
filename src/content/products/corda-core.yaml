@@ -8,6 +8,7 @@ description: >-
     ONIXLabs Corda Core Library: contract APIs, chained and hashable states, vault query and transaction DSLs, flow
     steps and messaging workflows.
 callout: "Powerful, general-purpose APIs for Corda developers"
+lead: "A modular toolkit of contract, workflow and integration APIs that takes the boilerplate out of CorDapp development."
 icon: /onixlabs/images/icons/corda/corda-core-outline.svg
 iconAlt: "Core Library for Corda"
 summary: >-

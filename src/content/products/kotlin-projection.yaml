@@ -1,46 +1,53 @@
 family: kotlin
-order: 2
+order: 4
 path: /Products/Kotlin/Projection
-title: "Kotlin Projection Library"
-shortTitle: "Projection Library"
-pageTitle: "Kotlin Projection Library"
+title: "Kotlin Graph Projection Library"
+shortTitle: "Graph Projection"
+pageTitle: "Graph Projection Library for Kotlin"
 description: >-
-    ONIXLabs Kotlin Projection Library: type-safe, reflection-based object projection with a builder DSL and type
-    converter configuration.
-callout: "Streamlined data transformation for layered architectures"
+    ONIXLabs Graph Projection Library for Kotlin: convention-based object-to-object projection with type conversion,
+    target factories and descriptive failures.
+callout: "Convention-based object-to-object projection"
+lead: "Convention-based object mapping that respects the Kotlin type system, with little or no mapping code."
 icon: /onixlabs/images/icons/kotlin/kotlin-projection-outline.svg
-iconAlt: "Kotlin Projection Library"
+iconAlt: "Graph Projection Library for Kotlin"
 summary: >-
-    A lightweight, convention-based projection library for Kotlin that enables clean, boilerplate-free mapping between
-    data classes. It auto-maps matching fields, supports custom overrides, and leverages Kotlin’s reflection for safe,
-    type-aware transformations. Ideal for converting between domain, DTO, and persistence models, it helps maintain
-    clear layer separation with minimal overhead. Built for clarity and efficiency, it simplifies a traditionally messy
-    task.
-hook: "Deceptively simple on the outside. Pure Kotlin magic where it counts."
-repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin-projection
-packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin-projection
+    Unobtrusive, convention-based object-to-object projection, as a plugin for the Graph library. Constructor parameters
+    and properties are matched by name and converted along the way, a small DSL covers unconventional mappings, nested
+    objects and collections are projected recursively, and every failure is reported at once with its path.
+hook: "Mapping code you don't have to write."
+repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
 packagesLabel: "View Maven Packages"
 sections:
   - features:
-        - title: "Type-Safe Projection"
+        - title: "Projection by Convention"
           body: >-
-              The Kotlin Projection API provides a robust, type-safe mechanism for mapping one object to another using Kotlin
-              reflection. At its core is the Projector abstract class, which drives the transformation logic by inspecting
-              constructor parameters and applying registered type converters. Projections can be fully automatic or manually
-              customized through builder lambdas.
-        - title: "Projection Builder DSL"
+              Target constructor parameters and mutable properties take their values from source properties with the
+              same name. Constructor defaults are kept where there's no value, and nullable parameters receive null. In
+              the best case, a projection needs no configuration at all.
+        - title: "A DSL for the Exceptions"
           body: >-
-              The ProjectionBuilder offers a fluent DSL for defining projection rules, including support for custom value
-              injection, conditional mapping, and cross-property conversions. It supports multiple syntaxes (e.g., by property, by
-              name, or via lambda), enabling fine-grained control over how data flows from source to target types.
-        - title: "Type Converter Configuration"
+              Where the convention doesn't fit, map a renamed property, compute a value, set a constant, convert with a
+              specific type converter or ignore a member.
+        - title: "Type Conversion"
           body: >-
-              Projections rely on a flexible TypeConverterConfiguration registry that resolves appropriate converters between
-              types. Default behavior includes identity conversion for matching types and custom error handling for unknown
-              mappings. You can register your own converters or override defaults for granular control of how values are
-              translated.
-        - title: "Projection Safety"
+              Values are converted by clear, ordered rules: element by element for collections, arrays and maps, through
+              registered projections and type converters, by name for enums, and recursively for nested classes. The
+              core type converters are included, and you can add, replace or remove them.
+        - title: "Target Factories"
           body: >-
-              Projection failures are wrapped in ProjectionException, with contextual diagnostics such as mismatched types,
-              missing parameters, and nullability violations. ProjectionContext ensures every value is validated against its
-              target parameter's constraints, enforcing safe, predictable transformation logic during runtime.
+              Create targets that have no usable primary constructor through factories, which apply to subtypes too,
+              with values then set through mutable properties.
+        - title: "Nested and Collection Projection"
+          body: >-
+              Nested objects, lists, sets, arrays and maps are projected recursively, with a path for every element, and
+              cycles are reported as failures rather than overflowing the stack.
+        - title: "Every Failure at Once"
+          body: >-
+              Projection carries on wherever it can, then reports every problem together in a single
+              ProjectionException, each with its target path, its source path and the cause.
+        - title: "With or Without a Registry"
+          body: >-
+              Project without a registry when you only need to once, or through a registry that honors each graph's
+              member access policies.

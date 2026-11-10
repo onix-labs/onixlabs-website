@@ -1,0 +1,60 @@
+family: kotlin
+order: 5
+path: /Products/Kotlin/Scheduler
+title: "Kotlin Scheduler Library"
+shortTitle: "Scheduler"
+pageTitle: "Scheduler Library for Kotlin"
+description: >-
+    ONIXLabs Scheduler Library for Kotlin: calendar-aware recurring schedules in explicit time zones, with a task
+    scheduler and overlap and misfire policies.
+callout: "Calendar-aware scheduling of recurring tasks"
+lead: "Calendar-aware scheduling of recurring tasks, in explicit time zones, with clear policies for failures, overlaps and missed runs."
+icon: /onixlabs/images/icons/kotlin/kotlin-core-outline.svg
+iconAlt: "Scheduler Library for Kotlin"
+summary: >-
+    Calendar-aware scheduling of recurring tasks, supporting rules such as the second Tuesday of every month at 09:00,
+    every other Tuesday at 09:00, or the last Friday of March, June, September and December. Every calendar schedule has
+    an explicit time zone, next occurrences can be calculated for any schedule, and an in-process task scheduler
+    isolates failures and applies overlap and misfire policies.
+hook: "Schedules the way people describe them."
+repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
+packagesLabel: "View Maven Packages"
+sections:
+  - features:
+        - title: "Five Kinds of Schedule"
+          body: >-
+              Interval schedules repeat at a fixed elapsed time from an anchor, independent of time zones and daylight
+              saving. Daily, weekly, monthly and yearly schedules follow the calendar.
+        - title: "Every Other Week, or Month"
+          body: >-
+              Run every second week, every third month or at any other frequency, counted from a starting date.
+        - title: "Ordinal and Date Rules"
+          body: >-
+              Schedule the second Tuesday or the last Friday of a month, or the 15th or the last day, and dates a month
+              doesn't have are simply skipped.
+        - title: "Time Zones and Daylight Saving"
+          body: >-
+              Every calendar schedule names its time zone. A time that falls in a daylight-saving gap moves forward by
+              the gap, and one that falls in an overlap runs once.
+        - title: "Composite and Custom Schedules"
+          body: >-
+              Combine rules into a schedule that fires at the earliest of them, or implement your own, such as a
+              business-day calendar.
+        - title: "Next-Occurrence Calculation"
+          body: >-
+              Find the next occurrence after any instant, or a lazy sequence of occurrences, with or without the task
+              scheduler.
+        - title: "Task Scheduler"
+          body: >-
+              Run tasks in-process on your own executor or on daemon threads the scheduler manages. A task that fails is
+              reported and stays scheduled without affecting any other, tasks can be added, removed or rescheduled while
+              it runs, and closing it waits for runs in progress.
+        - title: "Overlap and Misfire Policies"
+          body: >-
+              Choose whether an occurrence that arrives while the last run is still going is skipped, queued or run
+              alongside it, and whether missed occurrences are skipped, run once or all run in order.
+        - title: "Outcome Listeners"
+          body: >-
+              Listen for tasks starting, succeeding, failing or being skipped, with how long each run took. By default,
+              outcomes are logged through the JDK's System.Logger.

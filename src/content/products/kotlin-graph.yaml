@@ -1,0 +1,52 @@
+family: kotlin
+order: 2
+path: /Products/Kotlin/Graph
+title: "Kotlin Graph Library"
+shortTitle: "Graph Library"
+pageTitle: "Graph Library for Kotlin"
+description: >-
+    ONIXLabs Graph Library for Kotlin: a declarative object graph DSL, a type registry, graph paths and extension points
+    for plugins like validation.
+callout: "Describe a type once and reuse it everywhere"
+lead: "Describe each type's object graph once, and let validation, projection and your own plugins build on it."
+icon: /onixlabs/images/icons/kotlin/kotlin-core-outline.svg
+iconAlt: "Graph Library for Kotlin"
+summary: >-
+    A declarative DSL for describing object graphs. A graph is built once, is immutable and can be shared across
+    threads; a registry resolves nested types automatically, every member has a precise path, and plugins such as
+    validation and projection interpret the same description.
+hook: "One description of your types, shared by everything that needs it."
+repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
+packagesLabel: "View Maven Packages"
+sections:
+  - features:
+        - title: "Declarative Graph DSL"
+          body: >-
+              Describe a type once with graph<T> { }, and give the description a name of its own by delegation. A graph
+              is built once, is immutable and can be shared across threads.
+        - title: "Graph Registry"
+          body: >-
+              Collect graphs in a registry that resolves nested types automatically, matching each object's runtime
+              class across its superclasses and interfaces, from the most general graph to the most specific.
+        - title: "Configuration Checked Up Front"
+          body: >-
+              Problems in a registry's configuration, such as two graphs for the same type, are found as soon as it's
+              built and reported together in a single exception, before anything relies on them.
+        - title: "Members and Paths"
+          body: >-
+              Properties, collection elements and map keys and values are all members with a path, such as
+              Customer.orders[2].total. Paths can be compared, extended and matched against wildcards like
+              Customer.orders[*].total.
+        - title: "Path Formats"
+          body: >-
+              Paths render as Kotlin-style paths, JSON Pointers (RFC 6901) or JSONPath expressions (RFC 9535), with
+              property names transformed to match your API, such as snake case, or in a format of your own.
+        - title: "Member Access Policies"
+          body: >-
+              Decide which members plugins may read, for example to skip lazy JPA associations that haven't been loaded,
+              and leave out infrastructure members inherited from base types.
+        - title: "Plugin Extension Points"
+          body: >-
+              Validation and projection are plugins, and you can write your own: a plugin adds its DSL to the graph
+              builder, keeps its definitions on each graph, and can verify them when the registry is built.

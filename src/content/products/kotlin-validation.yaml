@@ -1,53 +1,59 @@
 family: kotlin
 order: 3
 path: /Products/Kotlin/Validation
-title: "Validation Library for Kotlin"
-shortTitle: "Validation Library"
-pageTitle: "Kotlin Validation Library"
+title: "Kotlin Graph Validation Library"
+shortTitle: "Graph Validation"
+pageTitle: "Graph Validation Library for Kotlin"
 description: >-
-    ONIXLabs Kotlin Validation Library: a validation builder DSL with member assertions, tree-structured results and
-    collection validations.
-callout: "Consistent, type-safe validation built for real-world data."
+    ONIXLabs Graph Validation Library for Kotlin: declarative validation of object graphs with nested rules, path-
+    addressed results and machine-readable failures.
+callout: "Fluent, inspectable validation of object graphs"
+lead: "Declarative validation of whole object graphs, with every failure reported at its path."
 icon: /onixlabs/images/icons/kotlin/kotlin-validation-outline.svg
-iconAlt: "Kotlin Validation Library"
+iconAlt: "Graph Validation Library for Kotlin"
 summary: >-
-    A fluent, type-safe validation framework for Kotlin that enables clear, expressive checks across complex object
-    graphs. It supports nested rules, functional error accumulation, and reusable validators with customizable
-    messaging. Designed for minimal boilerplate and seamless domain integration, it makes enforcing business constraints
-    straightforward and maintainable.
-hook: "Not just a validator. It's the silent enforcer behind clean, dependable Kotlin code."
-repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin-validation
-packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin-validation
+    Fluent, declarative validation of object graphs, as a plugin for the Graph library. Rules are declared alongside
+    each type's graph and reused wherever the type appears, nested objects are validated through their own graphs, and
+    results report every failure with its path, a machine-readable rule identifier and its parameters. The rules can
+    even be described without a subject.
+hook: "Rules declared once, failures you can act on."
+repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
 packagesLabel: "View Maven Packages"
 sections:
   - features:
-        - title: "Validator & Validation Builder"
+        - title: "Validation DSL"
           body: >-
-              The Validator class orchestrates object validation through a builder DSL. The ValidationBuilder exposes concise
-              property, function, and allProperties entry points that bind validations to data points. Assertions can be applied
-              to any callable—including functions with up to 9 parameters—enabling flexible, expressive validation rules.
-        - title: "Member Assertion Context"
+              Declare rules for properties, collection elements, map keys and values, and no-argument functions
+              alongside each type's graph, selecting members by reference or applying rules to all of them at once.
+        - title: "Built-in Rules"
           body: >-
-              Each member under validation operates in a scoped MemberAssertionContext, which provides DSL-style syntax for
-              expressing constraints using validate(condition, message) or nesting validations using validateWith(...). This
-              enables clear local reasoning for both leaf and nested properties in complex object graphs.
-        - title: "Tree-Structured Validation Results"
+              Rules for strings, collections, maps, comparable values, booleans and any value: blank and empty checks,
+              lengths, contents, prefixes and suffixes, regular expressions, UUIDs and Luhn checksums, counts,
+              distinctness, exact contents, keys and entries, ranges, equality, identity and null checks.
+        - title: "Custom and Conditional Rules"
           body: >-
-              Validation results are composed into a graph of ValidationResult and MemberResult nodes. These support deep
-              inspection of validation failures across nested models, with automatic tracking of callables, types, and locations
-              in the graph. Each assertion captures its exact position and semantics, ideal for debugging or UI feedback.
-        - title: "Assertion Semantics & Types"
+              Reuse any core Specification as a rule, or write one as a lambda, and override any rule's message. Rules
+              can apply conditionally with whenever and otherwise, and the condition is recorded on any failure it
+              produces.
+        - title: "Nested Validation"
           body: >-
-              Assertions are represented by MemberAssertion, which includes a failure message, type (relative or absolute), and a
-              ValidationCondition. This allows layering of contextualized error messaging while supporting flexible validation
-              modes.
-        - title: "Validation Modes & Exception Handling"
+              Validation descends into nested objects, collection elements and map values that have registered graphs,
+              applying every graph in the class hierarchy and detecting cycles. Require a nested graph to be present, or
+              skip one where descending isn't wanted.
+        - title: "Hierarchical Results"
           body: >-
-              The engine supports multiple modes: STOP_ON_ERROR halts validation at the first failure, while EMULATION collects
-              all failures into a complete result set. Exceptions are thrown as ValidationException or ValidationGraphException,
-              and include detailed paths to the failing assertion within the graph.
-        - title: "Collection & Map Validations"
+              Results mirror the shape of the subject, with the failures at each path, and can be queried by path or
+              wildcard pattern, checked for validity or turned into an exception.
+        - title: "Machine-Readable Failures"
           body: >-
-              The API includes specialized support for Iterable, Map, String, Boolean, and Comparable extensions. These offer
-              idiomatic assertions like isNullOrEmpty(), isTrue(), hasSize(...), isGreaterThan(...), and more, enabling readable,
-              type-safe validation logic across domain types.
+              Every failure carries its path, a namespaced rule identifier such as string.notBlank, the rule's
+              parameters and a message, so clients can act on failures rather than parse them. Results render as tree-
+              shaped or flat JSON with no extra dependencies.
+        - title: "Stop on the First Error"
+          body: >-
+              Collect every failure, or stop at the first when that's all you need to know.
+        - title: "Rules Without a Subject"
+          body: >-
+              describe<T>() lists every rule that applies to a type, including conditional branches and subtypes, at
+              wildcard paths, so rules can be documented or shown to users before anything is validated.

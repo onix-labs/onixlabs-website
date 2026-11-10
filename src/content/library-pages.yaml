@@ -1,6 +1,8 @@
 # The root page for each family of libraries, at its `path`, which its tile on /Products links to. Every claim comes from
 # the family's repository and wiki: for .NET, github.com/onix-labs/onixlabs-dotnet at v16.1.0 and its wiki, and
-# github.com/onix-labs/onixlabs-dotnet-element-framework at 2.1.0 and its README.
+# github.com/onix-labs/onixlabs-dotnet-element-framework at 2.1.0 and its README. For Corda, the READMEs and wikis of
+# github.com/onix-labs/onixlabs-corda-core and onixlabs-corda-identity-framework (4.0.3) and onixlabs-corda-bnms (1.0.0).
+# For Kotlin, github.com/onix-labs/onixlabs-kotlin at 0.1.0: its README, public API dumps and sources.
 dotnet:
   family: dotnet
   path: /Products/DotNet
@@ -19,19 +21,18 @@ dotnet:
   packagesUrl: https://www.nuget.org/packages?q=onixlabs
   packageRegistry: NuGet
   colours: [violet, blue]
-  install:
-    tool: the .NET CLI
-    command: "dotnet add package {package}"
-    packageUrl: "https://www.nuget.org/packages/{package}"
+  packageUrl: "https://www.nuget.org/packages/{package}"
   packages:
 
     - name: OnixLabs.Core
       glass: lambda
-      title: The primitives
-      highlight: the BCL left out
+      title: The primitive types
+      highlight: that the BCL left out
       summary: >-
-        The building blocks the other packages stand on, and a useful library in its own right. It fills the gaps in
-        .NET's standard library with small, dependable types that make your intent explicit.
+        Small, dependable types that make your intent explicit.
+      details:
+        - "Everyday code rests on quiet assumptions: that a value is there, that an operation succeeded, that a string holds what it should. When those assumptions live only in someone's head, bugs slip through the gaps."
+        - "Core gives them a place in the code itself. Small, dependable types make absence, failure and intent explicit, so the compiler and the next developer can see what you meant, and a rule written once can be reused anywhere."
       pagePath: /Products/DotNet/Core
       docsPage: OnixLabs.Core
       points:
@@ -44,27 +45,15 @@ dotnet:
         - title: Text Encodings
           body: "Base16, Base32, Base58 and Base64 as types of their own, so encoded text is never mistaken for an ordinary string."
 
-    - name: OnixLabs.DependencyInjection
-      glass: dependency-injection
-      title: Register services
-      highlight: your way
-      summary: >-
-        Less boilerplate when you register services, without replacing the container you already use.
-      docsPage: OnixLabs.DependencyInjection
-      points:
-        - title: Built on Microsoft's Abstractions
-          body: "Extension methods for IServiceCollection, so they work with the dependency injection your application already has."
-        - title: Lifetimes at the Call Site
-          body: "Choose whether a service is a singleton, scoped or transient where you register it, so configuration can make the decision."
-        - title: Keyed and Unkeyed Services
-          body: "Register both in the same consistent way, with cleaner calls and less repetition."
-
     - name: OnixLabs.Numerics
       glass: geometry
-      title: Numbers beyond
-      highlight: the built-in types
+      title: Advanced number types
+      highlight: for when precision matters
       summary: >-
-        Numbers for when decimal and double aren't enough, without giving up the familiar way .NET works with numbers.
+        For when decimal and double aren't enough.
+      details:
+        - "The built-in number types are fine until they aren't. Values outgrow their range, precision quietly runs out, and even whether 1.20 equals 1.2 depends on what you're doing."
+        - "Numerics extends .NET's own generic math with wider and more precise numbers, so your code reads the same however demanding the calculation, and you decide what equality means."
       pagePath: /Products/DotNet/Numerics
       docsPage: OnixLabs.Numerics
       points:
@@ -75,40 +64,27 @@ dotnet:
         - title: Extended-Precision Floating Point
           body: "Float128 and Float256, for calculations where a double runs out of precision."
         - title: NumberInfo
-          body: "Takes any rational number apart into its unscaled value, scale, significand, exponent and sign."
+          body: "Takes any decimal number apart into its unscaled value, scale, significand, exponent and sign."
 
     - name: OnixLabs.Security
       glass: shield
-      title: Tokens
-      highlight: generated safely
-      summary: >-
-        Safe generation and handling of the values that guard your application, such as tokens.
-      pagePath: /Products/DotNet/Security
-      docsPage: OnixLabs.Security
-      points:
-        - title: Security Tokens
-          body: "A SecurityToken is immutable and compares by its content, so it behaves like the value it is."
-        - title: A Fluent Builder
-          body: "SecurityTokenBuilder generates tokens from the characters you choose: upper and lower case letters, digits and special characters."
-        - title: Your Choice of Randomness
-          body: "Generate from a pseudo-random source, or a cryptographically secure one when the token has to be unguessable."
-
-    - name: OnixLabs.Security.Cryptography
-      glass: shield
-      title: Cryptography
+      title: Security and cryptography
       highlight: you can reason about
       summary: >-
-        Cryptography that's harder to get wrong. Keys, signatures and hashes become distinct types, so it's always
-        clear what you're holding and what you can do with it.
+        Cryptography that's harder to get wrong.
+      details:
+        - "Security code fails quietly. A key used for the wrong job, a value compared the wrong way or a secret left readable in memory all look like working code, until an attacker finds the vulnerability it left behind."
+        - "The security packages give keys, signatures, hashes, secrets and tokens types of their own, so it's always clear what you're holding and what you can do with it, and the safe choice is the easy one."
       pagePath: /Products/DotNet/Security
-      docsPage: OnixLabs.Security.Cryptography
+      docsPage: OnixLabs.Security
+      registryUrl: https://www.nuget.org/packages?q=onixlabs.security
       points:
+        - title: Security Tokens
+          body: "SecurityTokenBuilder generates immutable, value-compared tokens from the characters you choose, from a pseudo-random source or a cryptographically secure one when the token has to be unguessable."
         - title: Keys and Signatures
           body: "ECDH, ECDSA, EdDSA and RSA keys, with digital signatures and import and export in PEM and PKCS #8."
         - title: Hashes as Values
-          body: "Hashes, named hashes and salts compare by value, and Merkle trees build on them."
-        - title: SHA-3
-          body: "A fully managed FIPS 202 SHA-3, including the SHAKE128 and SHAKE256 extendable-output functions."
+          body: "Hashes, named hashes and salts compare by value, Merkle trees build on hashes, and a fully managed FIPS 202 SHA-3 includes the SHAKE128 and SHAKE256 extendable-output functions."
         - title: Secrets in Memory
           body: "Sensitive bytes stay encrypted while they're in memory, and two secrets can be compared without exposing either."
 
@@ -117,8 +93,10 @@ dotnet:
       title: Graph databases
       highlight: the Entity Framework way
       summary: >-
-        Work with graph databases the way Entity Framework lets you work with relational ones: model your domain in
-        plain C#, and let the framework handle the database.
+        Graph databases, modeled in plain C#.
+      details:
+        - "Graph databases are a natural fit for connected data, but each speaks its own query language, and working with one often means writing queries by hand and tying your code to a single database."
+        - "Element Framework lets you model your domain in plain C# and work with it the way Entity Framework works with relational data, through one model that runs on several graph databases and an in-memory store for tests."
       docsUrl: https://github.com/onix-labs/onixlabs-dotnet-element-framework/wiki
       registryUrl: https://www.nuget.org/packages?q=onixlabs.elementframework
       points:
@@ -131,12 +109,219 @@ dotnet:
         - title: Observable
           body: "Every provider reports OpenTelemetry traces and metrics, ready for the monitoring you already run."
 
-  requirements:
-    - label: Target frameworks
-      value: .NET 8.0, 9.0 and 10.0
-    - label: Language
-      value: C# 14
-    - label: Nullable reference types
-      value: Enabled
-    - label: License
-      value: Apache 2.0, and MIT for Element Framework
+    - name: OnixLabs.DependencyInjection
+      glass: dependency-injection
+      title: Cleaner registration
+      highlight: for the container you already use
+      summary: >-
+        Less boilerplate, same container.
+      details:
+        - "As an application grows, so does the code that wires it together: long, repetitive registrations, with decisions like a service's lifetime hard-coded into them."
+        - "DependencyInjection trims that setup down without replacing the container you already use, and lets configuration make the decisions that code shouldn't."
+      docsPage: OnixLabs.DependencyInjection
+      points:
+        - title: Built on Microsoft's Abstractions
+          body: "Extension methods for IServiceCollection, so they work with the dependency injection your application already has."
+        - title: Lifetimes at the Call Site
+          body: "Choose whether a service is a singleton, scoped or transient where you register it, so configuration can make the decision."
+        - title: Keyed and Unkeyed Services
+          body: "Register both in the same consistent way, with cleaner calls and less repetition."
+
+corda:
+  family: corda
+  path: /Products/Corda
+  pageTitle: "Corda Libraries"
+  description: >-
+    Open-source Corda libraries from ONIXLabs: core contract and workflow APIs, a decentralized identity framework, and
+    business network management.
+  title: "Products for Corda"
+  highlight: "Built for Trust"
+  lead: >-
+    Open-source libraries for building CorDapps on Corda: the APIs every contract and workflow needs, decentralized
+    identities inspired by W3C standards, and business networks that are run by an operator or govern themselves.
+  repositoryUrl: https://github.com/onix-labs/onixlabs-corda-core
+  docsUrl: https://github.com/onix-labs/onixlabs-corda-core/wiki
+  packagesUrl: https://github.com/orgs/onix-labs/packages?q=onixlabs-corda
+  packageRegistry: Maven
+  colours: [coral, rose]
+  packageUrl: "https://github.com/orgs/onix-labs/packages?repo_name={package}"
+  packages:
+
+    - name: onixlabs-corda-core
+      glass: corda-core
+      title: Corda development
+      highlight: without the boilerplate
+      summary: >-
+        The groundwork every CorDapp needs, built once.
+      details:
+        - "Every CorDapp repeats the same groundwork: building transactions, querying the vault, coordinating flows and proving who signed what. Written by hand each time, it drifts between projects and buries the business logic."
+        - "Corda Core packages that groundwork as contract, workflow and integration APIs, with idiomatic Kotlin for vault queries and transactions, reusable flow steps and stronger state types, so every CorDapp starts from the same consistent foundations."
+      pagePath: /Products/Corda/Core
+      docsUrl: https://github.com/onix-labs/onixlabs-corda-core/wiki
+      points:
+        - title: Vault Query DSL
+          body: "Write vault queries in idiomatic Kotlin, behind adapters that behave the same through CordaRPCOps and ServiceHub."
+        - title: Transaction DSL
+          body: "Build transactions with inputs, outputs, commands and signatures grouped by intent."
+        - title: Stronger State Types
+          body: "Chained, hashable and resolvable states for verifiable histories and richer relationships."
+        - title: Signed Commands
+          body: "Commands signed by their originator, so a counterparty can see who initiated a transaction."
+
+    - name: onixlabs-corda-identity-framework
+      glass: corda-idfx
+      title: Digital identity
+      highlight: that stays in your control
+      summary: >-
+        Decentralized identities for people, organizations and assets on Corda.
+      details:
+        - "Identity data tends to pile up in central stores that become targets, while every application keeps its own copy of the same facts. Proving one thing often means handing over far more than was needed."
+        - "The Identity Framework models identity as claims, inspired by the W3C standards for Verifiable Credentials and Decentralized Identifiers. Claims are shared on a need-to-know basis, referenced through pointers that keep their data private, and trusted through attestations, so applications can rely on the same facts without copying them."
+      pagePath: /Products/Corda/Identity-Framework
+      docsUrl: https://github.com/onix-labs/onixlabs-corda-identity-framework/wiki
+      points:
+        - title: Claims
+          body: "Statements about an individual, organization or asset, issued by one party to another or self-issued."
+        - title: Claim Pointers
+          body: "Reference a claim, at its latest or a specific version, while keeping its data private."
+        - title: Attestations
+          body: "Accept or reject a claim or any Corda state, so verifiers can trust it without seeing it."
+        - title: An Open Type Hierarchy
+          body: "Use the built-in claim types as they are, or extend them with claim types of your own."
+
+    - name: onixlabs-corda-bnms
+      glass: corda-bnms
+      title: Business networks
+      highlight: governed your way
+      summary: >-
+        Membership and relationships for Corda business networks, centralized or decentralized.
+      details:
+        - "Corda nodes often belong to several business networks, each with its own rules for identity and membership. Without common standards those networks can't work together, and nothing stops a member from simply asserting its own credentials."
+        - "BNMS provides configurable standards for membership and multi-lateral relationships, built on the Identity Framework. A network can be run by an operator or govern itself, and attestations mean no membership or relationship is trusted until the network has accepted it."
+      pagePath: /Products/Corda/Business-Network-Management-System
+      docsUrl: https://github.com/onix-labs/onixlabs-corda-bnms#readme
+      points:
+        - title: Centralized or Decentralized
+          body: "Networks governed by an operator, or by their members, with the same APIs."
+        - title: Membership Management
+          body: "Members request to join, amend and leave, with roles, permissions and settings of their own."
+        - title: Relationship Management
+          body: "Multi-lateral agreements between members, protected by revocation locks."
+        - title: Attestations
+          body: "Memberships and relationships count only once they're attested, and every amendment needs attesting again."
+
+kotlin:
+  family: kotlin
+  path: /Products/Kotlin
+  pageTitle: "Kotlin Libraries"
+  description: >-
+    Open-source Kotlin libraries from ONIXLabs: core extensions and specifications, a declarative object graph DSL,
+    validation, projection and scheduling.
+  title: "Products for Kotlin"
+  highlight: "Built for Clarity"
+  lead: >-
+    A suite of general-purpose libraries for the JVM, with a strong emphasis on correctness, type safety and expressive,
+    idiomatic Kotlin. They fit as cleanly into a small utility as into a large system, without imposing an architecture or
+    locking you into a framework.
+  repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
+  docsUrl: https://github.com/onix-labs/onixlabs-kotlin#readme
+  packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
+  packageRegistry: Maven
+  colours: [blue, cyan]
+  packageUrl: "https://github.com/orgs/onix-labs/packages?q={package}"
+  packages:
+
+    - name: onixlabs-kotlin-core
+      glass: stack
+      title: The building blocks
+      highlight: the standard library left out
+      summary: >-
+        Small, dependable pieces that make everyday Kotlin safer and clearer.
+      details:
+        - "Business rules end up as ad-hoc conditions scattered through the code, conversions between types quietly overflow or lose precision, and the same small helpers get copied from project to project."
+        - "Core gives those rules a shape of their own as composable, self-describing specifications, converts between types with explicit overflow and precision checks, and fills the everyday gaps in the standard library."
+      pagePath: /Products/Kotlin/Core
+      docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-core
+      points:
+        - title: Specifications
+          body: "Business rules as composable, self-describing objects."
+        - title: Checked Type Conversion
+          body: "Conversions that throw rather than overflow or lose precision."
+        - title: Everyday Extensions
+          body: "Helpers for numbers, strings, comparables, collections and reflection."
+
+    - name: onixlabs-kotlin-graph
+      glass: graph
+      title: Describe a type once
+      highlight: and reuse it everywhere
+      summary: >-
+        A declarative description of your object graphs that other libraries build on.
+      details:
+        - "Validation, mapping and other cross-cutting concerns all need to know the shape of your types, and each one usually works it out in its own way and its own configuration, out of step with the others."
+        - "Graph lets you describe each type once in a declarative DSL. The description is immutable and thread-safe, nested types are resolved through a shared registry, and plugins such as validation and projection interpret it, with a precise path to every member."
+      pagePath: /Products/Kotlin/Graph
+      docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-graph
+      points:
+        - title: Graph DSL
+          body: "An immutable, thread-safe description of each type."
+        - title: Graph Paths
+          body: "A precise path to every member, in Kotlin, JSON Pointer or JSONPath form."
+        - title: Plugins
+          body: "Validation, projection and your own extensions, built on the same description."
+
+    - name: onixlabs-kotlin-graph-validation
+      glass: vials
+      title: Validation
+      highlight: you can inspect
+      summary: >-
+        Declare the rules once, and validate whole object graphs.
+      details:
+        - "Validation logic tends to scatter across services and controllers, stops at the first problem, and reports errors as strings that are hard to act on, let alone show beside the right field."
+        - "Graph Validation declares rules alongside each type's graph, descends into nested objects automatically, and returns every failure with its path and a machine-readable rule identifier. The rules can even be described without a subject, so you can see what will be checked before anything is."
+      pagePath: /Products/Kotlin/Validation
+      docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-graph-validation
+      points:
+        - title: Validation DSL
+          body: "Rules for properties, collections and maps, declared alongside each graph."
+        - title: Nested Validation
+          body: "Nested objects validated through their own registered graphs."
+        - title: Path-Addressed Results
+          body: "Every failure with its path and a machine-readable rule identifier."
+
+    - name: onixlabs-kotlin-graph-projection
+      glass: design
+      title: Object mapping
+      highlight: without the mapping code
+      summary: >-
+        Project one object onto another by convention.
+      details:
+        - "Moving data between domain models, DTOs and persistence types means pages of hand-written mapping code that has to change whenever a type does, and fails one field at a time when it's wrong."
+        - "Graph Projection maps objects by convention, matching constructor parameters and properties by name and converting types along the way. Where a mapping is unusual, a small DSL covers it, and when something fails, every problem is reported at once with its path."
+      pagePath: /Products/Kotlin/Projection
+      docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-graph-projection
+      points:
+        - title: Projection by Convention
+          body: "Parameters and properties matched by name, with little or no configuration."
+        - title: Type Conversion
+          body: "Collections, enums, nested classes and registered converters handled for you."
+        - title: Every Failure at Once
+          body: "One exception listing every problem with its path."
+
+    - name: onixlabs-kotlin-scheduler
+      glass: gauge
+      title: Recurring tasks
+      highlight: on the calendar's terms
+      summary: >-
+        Schedules that understand calendars, time zones and daylight saving.
+      details:
+        - "Real schedules are calendar rules: the second Tuesday of every month, every other Friday, the last day of each quarter. Cron expressions struggle to express them, and time zones and daylight saving make them easy to get wrong."
+        - "Scheduler expresses those rules directly in a Kotlin DSL, with an explicit time zone for every calendar schedule, and runs tasks in-process with failures isolated per task and clear policies for overlapping and missed runs."
+      pagePath: /Products/Kotlin/Scheduler
+      docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-scheduler
+      points:
+        - title: Calendar Schedules
+          body: "Daily, weekly, monthly and yearly rules, including ordinal days."
+        - title: Time Zones
+          body: "An explicit time zone for every calendar schedule, with daylight saving handled."
+        - title: Task Scheduler
+          body: "Isolated failures, with overlap and misfire policies."

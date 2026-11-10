@@ -1,18 +1,24 @@
 ---
-// A library or smaller product: its emblem, name, a one-line pitch and a link. The whole tile is the link.
+import GlassIcon from './GlassIcon.astro';
+
+// A library or smaller product: its emblem (or its glass icon, when it has one), name, a one-line pitch and a link. The
+// whole tile is the link.
 interface Props {
     readonly href: string;
     readonly name: string;
     readonly pitch: string;
     readonly icon: string;
+    readonly glass?: string | undefined;
     readonly family: string;
     readonly label?: string;
 }
 
-const { href, name, pitch, icon, family, label }: Props = Astro.props;
+const { href, name, pitch, icon, glass, family, label }: Props = Astro.props;
 ---
 <a class:list={['tile product-tile reveal-scale', `family-${family}`]} href={href}>
-    <span class="emblem"><img src={icon} alt="" width={64} height={64} loading="lazy" decoding="async" /></span>
+    {glass === undefined
+        ? <span class="emblem"><img src={icon} alt="" width={64} height={64} loading="lazy" decoding="async" /></span>
+        : <GlassIcon name={glass} size={64} class="product-glass" />}
     <span class="product-text">
         {label !== undefined && <span class="label label-muted">{label}</span>}
         <span class="product-name">{name}</span>
@@ -33,6 +39,12 @@ const { href, name, pitch, icon, family, label }: Props = Astro.props;
 
     .product-tile:hover {
         box-shadow: var(--shadow-tile-hover);
+    }
+
+    .product-tile :global(.product-glass) {
+        flex: none;
+        width: 4rem;
+        margin: -0.25rem 0 -0.25rem -0.25rem;
     }
 
     .product-text {

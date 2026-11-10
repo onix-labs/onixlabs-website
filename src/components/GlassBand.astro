@@ -4,9 +4,9 @@ import GlassAura from './GlassAura.astro';
 import SectionHeader from './SectionHeader.astro';
 import type { StudioColour } from '../config/studio-colour';
 
-// A band laid out like a Studio feature: 60% for its copy (an optional eyebrow, a two-part headline, a standfirst, the
-// points that explain it, then whatever links are slotted in) and 40% for its glass icon, glowing in its own colours with
-// grain over the blur, level with the top of the copy and staying in view while the copy scrolls. `reversed` puts the
+// A band laid out like a Studio feature: 60% for its copy (an optional eyebrow, a two-part headline, a standfirst, any
+// paragraphs of detail and points that explain it, then whatever links are slotted in) and 40% for its glass icon,
+// glowing in its own colours with grain over the blur, level with the top of the copy and staying in view while the copy scrolls. `reversed` puts the
 // icon on the left. Stacks below 60rem, icon first. The headline's second phrase is grey, or runs between
 // `highlightColours` when they're given. LibrarySection and /Engineering-With-AI use it.
 interface Props {
@@ -17,12 +17,13 @@ interface Props {
     readonly highlight: string;
     readonly highlightColours?: readonly [StudioColour, StudioColour] | undefined;
     readonly summary: string;
-    readonly points: ReadonlyArray<{ readonly title: string; readonly body: string }>;
+    readonly details?: ReadonlyArray<string> | undefined;
+    readonly points?: ReadonlyArray<{ readonly title: string; readonly body: string }> | undefined;
     readonly alternate?: boolean;
     readonly reversed?: boolean;
 }
 
-const { id, eyebrow, glass, title, highlight, highlightColours, summary, points, alternate = false, reversed = false }: Props = Astro.props;
+const { id, eyebrow, glass, title, highlight, highlightColours, summary, details, points, alternate = false, reversed = false }: Props = Astro.props;
 ---
 <section class:list={['section glass-band', { 'tone-alt': alternate, 'is-reversed': reversed }]} id={id} aria-labelledby={`${id}-title`}>
     <div class="container-wide glass-band-layout">
@@ -37,7 +38,8 @@ const { id, eyebrow, glass, title, highlight, highlightColours, summary, points,
             >
                 {summary}
             </SectionHeader>
-            <FeaturePoints points={points} />
+            {details !== undefined && <div class="glass-band-details">{details.map((paragraph: string) => <p>{paragraph}</p>)}</div>}
+            {points !== undefined && <FeaturePoints points={points} />}
             {Astro.slots.has('default') && <div class="glass-band-links"><slot /></div>}
         </div>
         <div class="glass-band-icon zoom-through">
@@ -126,11 +128,17 @@ const { id, eyebrow, glass, title, highlight, highlightColours, summary, points,
         letter-spacing: 0;
     }
 
+    .glass-band-details {
+        display: grid;
+        gap: 1rem;
+        color: var(--text-muted);
+        line-height: 1.65;
+    }
+
     .glass-band-links {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5rem 1.75rem;
+        display: grid;
+        justify-items: start;
+        gap: 1.25rem;
     }
 
     /* The ghost button's own padding would push it in from the text above. */

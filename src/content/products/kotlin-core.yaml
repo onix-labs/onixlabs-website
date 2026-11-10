@@ -3,50 +3,59 @@ order: 1
 path: /Products/Kotlin/Core
 title: "Kotlin Core Library"
 shortTitle: "Core Library"
-pageTitle: "Kotlin Core Library"
+pageTitle: "Core Library for Kotlin"
 description: >-
-    ONIXLabs Kotlin Core Library: extensions for primitive types and strings, reflection, date and time utilities,
-    console colors and type conversion.
+    ONIXLabs Core Library for Kotlin: composable specifications, checked type conversion, calendar day types, reflection
+    helpers and everyday extensions.
 callout: "Essential building blocks for modern Kotlin development"
+lead: "Composable specifications, checked type conversion and the everyday extensions the Kotlin standard library leaves out."
 icon: /onixlabs/images/icons/kotlin/kotlin-core-outline.svg
-iconAlt: "Kotlin Core Library"
+iconAlt: "Core Library for Kotlin"
 summary: >-
-    Offers a comprehensive set of Kotlin extensions and utilities designed to streamline common programming tasks. It
-    enhances standard types like Byte, Int, Double, and String with fluent, expressive operations, while also extending
-    collections and mathematical types for cleaner code. The library includes time-related helpers, lightweight
-    reflection tools, and flexible type conversion APIs to reduce boilerplate and improve readability. Built with
-    clarity and consistency in mind, it supports developers looking to write more idiomatic and maintainable Kotlin.
-hook: "Not flashy, but fiercely practical. The kind of toolkit that's quietly dependable."
-repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin-core
-packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin-core
+    Foundational extensions and patterns that fill common gaps in the Kotlin standard library: composable, self-
+    describing specifications, type conversion with overflow and precision checks, ordinal day-of-month types for
+    calendar logic, reflection helpers and extensions for numbers, strings, comparables and collections. It is the base
+    layer for the other ONIXLabs Kotlin libraries, and useful on its own in any Kotlin application.
+hook: "The small, dependable pieces every Kotlin codebase ends up needing."
+repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
+packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
 packagesLabel: "View Maven Packages"
 sections:
   - features:
-        - title: "Primitive Type Extensions"
+        - title: "Composable Specifications"
           body: >-
-              Extension functions for Int, Float, Double, Long, Short, Byte, and BigDecimal provide constants like ZERO and ONE,
-              as well as numeric utilities such as isInteger, toBigDecimal, toBigInteger, and more. These help express numeric
-              logic clearly and idiomatically across different scales and types.
-        - title: "String & Text Utilities"
+              Specification<T> captures a business rule as an object you can test, name and reuse. Combine rules with
+              and, or and not, or combine whole lists at once, and every specification describes itself in readable
+              language, so a composed rule can explain what it checks.
+        - title: "Built-in Specifications"
           body: >-
-              Adds the String.EMPTY constant and methods like wrap, toUpperSnakeCase, toLowerSnakeCase, toUpperKebabCase, and
-              toLowerKebabCase. These provide fluent transformations for formatting, serialization, and identifier generation.
-        - title: "Reflection Extensions"
+              Ready-made specifications for strings, collections, comparable values, booleans and any value: length and
+              content checks, regular expressions, UUIDs and Luhn checksums, counts, distinctness, exact contents,
+              ranges, equality and null checks.
+        - title: "Checked Type Conversion"
           body: >-
-              Extension support for KClass, and KType helps bridge Kotlin's reflection and sequence APIs with concise, reusable
-              operations. These utilities enable safer introspection patterns.
-        - title: "Date and Time Utilities"
+              Type converters for the numeric types, BigInteger, BigDecimal, Boolean, Char, String and UUID refuse to
+              lose data quietly. A conversion that would overflow or drop a fractional part throws an exception that
+              says so, rather than returning the wrong value.
+        - title: "Calendar Day Types"
           body: >-
-              Utility functions in and domain types like DayOfMonth and DayOfMonthOccurrence provide expressive ways to model
-              time-related logic, such as monthly scheduling and ISO duration formatting.
-        - title: "Console Color"
+              DayOfMonth and DayOfMonthOccurrence describe days like the second Tuesday or the last Friday of a month,
+              and can tell whether a date matches, so calendar logic reads the way people describe it.
+        - title: "Everyday Extensions"
           body: >-
-              Console styling is powered by the ConsoleColor enum, which defines a full palette of ANSI-compatible foreground and
-              background colors. Paired with ConsoleColorModifier, these colors can be dynamically formatted using escape
-              sequences for terminal output. Extensions to the Console API make it easy to apply structured styles in CLI
-              applications, ideal for highlighting logs, prompts, errors, and results with clear visual cues.
-        - title: "Type Conversion API"
+              Extensions for the tasks every codebase repeats: zero and one constants and BigDecimal conversions for the
+              numeric types, comparison and range checks for anything comparable, content and count checks for
+              collections, string helpers for UUIDs, checksums, regular expressions and snake and kebab case, and
+              arithmetic for java.time durations.
+        - title: "Reflection Helpers"
           body: >-
-              A robust set of type converters; for example, IntTypeConverter, UUIDTypeConverter, BigDecimalTypeConverter, and
-              more, enable safe, declarative casting between primitives and complex types. Includes custom exception handling via
-              IllegalTypeConversionException for reliable validation.
+              Find a class's primary constructor and properties, create instances from a map of arguments, resolve
+              generic type arguments, and format type names with their generics and nullability intact.
+        - title: "Terminal Colors"
+          body: >-
+              Write colored output to the terminal with the sixteen ANSI colors, with the colors reset automatically
+              after each print.
+        - title: "Built for Modern Kotlin"
+          body: >-
+              Built with Kotlin 2.4 for Java 17 and later, with an explicit public API that is checked for compatibility
+              on every build, and no dependencies beyond the Kotlin standard library and kotlin-reflect.
