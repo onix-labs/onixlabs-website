@@ -14,6 +14,7 @@ export const site: SiteSettings = {
     logo: '/onixlabs/images/logo/logo-orb-96.png',
     foundingYear: 2020,
     contactFormEndpoint: 'https://formspree.io/f/xwpqpeay',
+    calendlyUrl: 'https://calendly.com/onixlabs',
     socialLinks: [
         { name: 'X (Twitter)', url: 'https://x.com/onix_labs', icon: 'x-logo', isInFooter: true },
         { name: 'Hashnode', url: 'https://onixlabs.hashnode.dev/', icon: 'hash', isInFooter: false },

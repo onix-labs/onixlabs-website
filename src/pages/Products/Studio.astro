@@ -60,7 +60,7 @@ const release: StudioRelease | undefined = await loadStudioRelease();
             </p>
             <div class="button-pair studio-page-actions">
                 <PlatformDownload release={release} releasesUrl={releasesUrl} />
-                <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
+                <Button href={repositoryUrl} size="large" external>View on GitHub</Button>
             </div>
         </div>
     </section>
@@ -87,12 +87,12 @@ const release: StudioRelease | undefined = await loadStudioRelease();
     <section class="section tone-alt" id="download" aria-labelledby="studio-download">
         <div class="container-wide">
             <SectionHeader title="Try" highlight="ONIXLabs Studio" highlightStyle="gradient" id="studio-download" centered class="studio-closing-header">
-                Studio is open source under the MIT license, and runs on macOS, Windows and Linux. It's a beta, so expect rough edges,
+                Studio is open source under the MIT licence, and runs on macOS, Windows and Linux. It's a beta, so expect rough edges,
                 and releases aren't signed yet, so macOS and Windows will warn you the first time it launches.
             </SectionHeader>
             <div class="button-pair download-actions">
                 <PlatformDownload release={release} releasesUrl={releasesUrl} />
-                <Button href={repositoryUrl} size="large" icon="github-logo" external>View on GitHub</Button>
+                <Button href={repositoryUrl} size="large" external>View on GitHub</Button>
             </div>
         </div>
     </section>

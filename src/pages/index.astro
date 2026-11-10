@@ -74,8 +74,9 @@ const technologies: ReadonlyArray<CollectionEntry<'technologies'>> = (await getC
 </BaseLayout>
 
 <style>
+    /* Clip rather than hide, so the band isn't a scroll container and scroll-driven effects inside it follow the page. */
     .technologies {
-        overflow: hidden;
+        overflow: clip;
     }
 
     /* Wide enough for each phrase of the headline to hold its own line; the lead keeps the usual measure. */

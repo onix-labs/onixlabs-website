@@ -1,21 +1,27 @@
 ---
+import Button from '../components/Button.astro';
 import Icon from '../components/Icon.astro';
-import PageHero from '../components/PageHero.astro';
+import LibraryHero from '../components/LibraryHero.astro';
 import { site } from '../config/site';
 import type { SocialLink } from '../config/social-link';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { contactReasons } from '../scripts/contact-reasons';
 
+// Contact: a hero blooming in the whole brand spectrum, then the form in a raised tile beside the other ways to reach us,
+// as rows between rules. Links across the site prefill the form with ?reason= (src/scripts/contact-reasons.ts); the
+// form works without JavaScript and posts to Formspree.
+// The first reason is selected until a visitor, or a ?reason= link, chooses another.
 const reasons: ReadonlyArray<string> = [
-    'Aero Platform (General Inquiry)',
-    'Aero Platform (Book a Demo)',
-    'Product Line (.NET)',
-    'Product Line (Corda)',
-    'Product Line (Kotlin)',
-    'Consulting',
-    'Other',
+    'General enquiry',
+    'Consultation',
+    'ONIXLabs Studio',
+    'ONIXLabs Aero',
+    '.NET Libraries',
+    'Kotlin Libraries',
+    'Corda Libraries',
+    'Something else',
 ];
-const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
+const followLinks: ReadonlyArray<SocialLink> = site.socialLinks.filter((link: SocialLink): boolean => link.isInFooter);
 
 for (const prefill of contactReasons.values()) {
     if (!reasons.includes(prefill.reason)) {
@@ -25,19 +31,26 @@ for (const prefill of contactReasons.values()) {
 ---
 <BaseLayout
     title="Contact"
-    description="Contact ONIXLabs about the Aero platform, our .NET, Corda and Kotlin product lines, or consulting. Send a message or book a meeting."
+    description="Contact ONIXLabs about Aero, ONIXLabs Studio, our open-source libraries or consulting. Send a message, email us or book a meeting."
     path="/Contact"
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Contact', path: '/Contact' }]}
     structuredData={[{ '@type': 'ContactPage', name: 'Contact ONIXLabs', url: `${site.url}/Contact`, about: { '@id': `${site.url}/#organization` } }]}
 >
-    <PageHero eyebrow="Contact" title="We'd love to" highlight="hear from you">
-        If you're interested in learning more about our Aero Platform, .NET, Corda, or Kotlin product lines, or if you're exploring
-        consulting opportunities, drop us a message. We're always happy to connect and help you find the right solution.
-    </PageHero>
+    <LibraryHero
+        title="Start the conversation"
+        highlight="We'll take it from there"
+        spectrum
+        lead="Whether you're exploring our products, thinking about consulting, or just want to talk through an idea, we'd be glad to help you find the right solution."
+    >
+        <Fragment slot="actions">
+            <Button href="#contact-form" variant="primary" size="large">Send a message</Button>
+            <Button href={site.calendlyUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>Book a meeting</Button>
+        </Fragment>
+    </LibraryHero>
 
-    <section class="section tone-alt contact" aria-label="Contact options">
-        <div class="container-wide contact-grid">
-            <div class="tile form-card reveal">
+    <section class="section tone-alt" aria-label="Ways to get in touch">
+        <div class="container-wide contact-layout">
+            <div class="tile form-card reveal-scale" id="contact-form">
                 <h2 id="contact-form-title">Send us a message</h2>
                 <form action={site.contactFormEndpoint} method="post" aria-labelledby="contact-form-title">
                     <div class="form-row">
@@ -54,14 +67,13 @@ for (const prefill of contactReasons.values()) {
                     <div class="field">
                         <label for="reason">Reason</label>
                         <select class="input" name="reason" id="reason" required>
-                            <option value="" disabled selected>Choose a topic</option>
-                            {reasons.map((reason: string) => <option>{reason}</option>)}
+                            {reasons.map((reason: string, index: number) => <option selected={index === 0}>{reason}</option>)}
                         </select>
                     </div>
 
                     <div class="field">
                         <label for="message">Message</label>
-                        <textarea class="input" name="message" id="message" rows="6" required></textarea>
+                        <textarea class="input" name="message" id="message" rows="7" required></textarea>
                     </div>
 
                     <!-- Formspree's honeypot: real visitors never see or fill this field. -->
@@ -71,32 +83,27 @@ for (const prefill of contactReasons.values()) {
                     </div>
 
                     <button type="submit" class="button button-primary button-large">
-                        <Icon name="paper-plane-tilt" />
                         <span>Send message</span>
                     </button>
                 </form>
             </div>
 
-            <aside class="contact-aside">
-                <div class="tile aside-card reveal">
-                    <span class="icon-chip"><Icon name="calendar-blank" /></span>
-                    <h2>Book a meeting</h2>
-                    <p>
-                        Pick a time that works best for you — no back-and-forth emails, just a straightforward way to connect. Whether it's
-                        a quick chat or a deep dive, we're here when you're ready.
-                    </p>
-                    <a class="link-cta" href={calendlyUrl} target="_blank" rel="noopener noreferrer">
-                        Open Calendly <Icon name="arrow-square-out" />
-                        <span class="visually-hidden"> (opens in a new tab)</span>
-                    </a>
-                </div>
-
-                <div class="tile aside-card reveal">
-                    <span class="icon-chip"><Icon name="users-three" /></span>
-                    <h2>Follow along</h2>
-                    <p>The latest news, product updates, and insights from our team.</p>
+            <ul class="channels" role="list">
+                <li class="channel reveal">
+                    <h2 class="channel-title"><span class="icon-chip"><Icon name="calendar-blank" /></span>Book a meeting</h2>
+                    <p>Pick a time that suits you, with no back-and-forth. Whether it's a quick chat or a deep dive, we're here when you're ready.</p>
+                    <Button href={site.calendlyUrl} external>Book a Meeting</Button>
+                </li>
+                <li class="channel reveal">
+                    <h2 class="channel-title"><span class="icon-chip"><Icon name="envelope-simple" /></span>Email us</h2>
+                    <p>Prefer to write? Email us directly, and we'll get back to you.</p>
+                    <a class="link-cta" href={`mailto:${site.company.email}`}>{site.company.email}</a>
+                </li>
+                <li class="channel reveal">
+                    <h2 class="channel-title"><span class="icon-chip"><Icon name="users-three" /></span>Follow along</h2>
+                    <p>News, product updates and insights from the team.</p>
                     <ul class="socials" role="list">
-                        {site.socialLinks.map((link: SocialLink) => (
+                        {followLinks.map((link: SocialLink) => (
                             <li>
                                 <a href={link.url} target="_blank" rel="noopener noreferrer">
                                     <Icon name={link.icon} />
@@ -106,8 +113,8 @@ for (const prefill of contactReasons.values()) {
                             </li>
                         ))}
                     </ul>
-                </div>
-            </aside>
+                </li>
+            </ul>
         </div>
     </section>
 </BaseLayout>
@@ -117,31 +124,32 @@ for (const prefill of contactReasons.values()) {
 </script>
 
 <style>
-    .contact-grid {
+    /* The form beside the other ways to reach us, 60/40; they stack below 62rem, form first. */
+    .contact-layout {
         display: grid;
-        gap: var(--tile-gap);
+        gap: 3rem 5rem;
         align-items: start;
-        max-width: 68rem;
     }
 
     @media (min-width: 62rem) {
-        .contact-grid {
-            grid-template-columns: 1.7fr 1fr;
+        .contact-layout {
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
         }
+    }
+
+    #contact-form {
+        scroll-margin-top: calc(var(--header-height) + 1.5rem);
     }
 
     .form-card {
         display: grid;
         gap: 2rem;
         padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+        box-shadow: var(--shadow-tile);
     }
 
     .form-card h2 {
         font-size: var(--text-4xl);
-    }
-
-    .aside-card h2 {
-        font-size: var(--text-2xl);
     }
 
     form {
@@ -156,7 +164,7 @@ for (const prefill of contactReasons.values()) {
     }
 
     form .button {
-        justify-self: start;
+        justify-self: end;
         margin-top: 0.5rem;
     }
 
@@ -164,46 +172,60 @@ for (const prefill of contactReasons.values()) {
         display: none;
     }
 
-    .contact-aside {
+    /* The other ways to reach us: rows with rules between them, like the areas on /About. */
+    .channel {
         display: grid;
-        gap: var(--tile-gap);
-    }
-
-    .aside-card {
-        display: grid;
-        gap: 1rem;
+        gap: 0.75rem;
         justify-items: start;
-        padding: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
+        padding-block: 2rem;
     }
 
-    .aside-card p {
-        color: var(--text-muted);
+    .channel:first-child {
+        padding-top: 0;
     }
 
-    .aside-card .link-cta :global(.icon) {
-        width: 0.75em;
-        height: 0.75em;
-    }
-
-    .socials {
-        display: grid;
-        width: 100%;
-    }
-
-    .socials li + li {
+    .channel + .channel {
         border-top: 1px solid var(--border);
+    }
+
+    /* The icon sits on the title's line. */
+    .channel-title {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        font-size: var(--text-2xl);
+        letter-spacing: -0.022em;
+    }
+
+    .channel p {
+        color: var(--text-muted);
+        line-height: 1.55;
+    }
+
+    /* Each network as a pill, like the email address in the footer. */
+    .socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     .socials a {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        padding: 0.8rem 0;
+        gap: 0.5rem;
+        padding: 0.45rem 1rem;
+        border-radius: 999px;
+        corner-shape: round;
+        background: color-mix(in srgb, var(--heading) 8%, transparent);
         color: var(--heading);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color var(--duration);
     }
 
     .socials a:hover {
-        color: var(--link);
+        background: color-mix(in srgb, var(--heading) 14%, transparent);
         text-decoration: none;
     }
 </style>

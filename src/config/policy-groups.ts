@@ -22,5 +22,6 @@ export const policyGroups: ReadonlyArray<PolicyGroup> = [
         title: 'Keeping your work',
         highlight: 'secure',
         lead: "How we protect the systems and information we're trusted with, and how to report a vulnerability.",
+        footerColumn: 'responsibility',
     },
 ];

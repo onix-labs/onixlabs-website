@@ -11,8 +11,11 @@ export default defineConfig({
     use: {
         baseURL: 'https://www.onixlabs.io',
     },
+    // WebKit renders filters, edges and animations differently from Chromium, and most phone visitors use Safari, so the
+    // suite also runs on WebKit as an iPhone.
     projects: [
         { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
         { name: 'mobile', use: { ...devices['Pixel 7'] } },
+        { name: 'webkit-mobile', use: { ...devices['iPhone 15 Pro Max'] } },
     ],
 });

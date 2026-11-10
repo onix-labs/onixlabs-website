@@ -2,13 +2,14 @@
 import Icon from './Icon.astro';
 
 // A replica of ONIXPlayer's main window built in HTML and CSS rather than a screenshot, in a glass macOS window,
-// playing real visualization footage. It follows the app's layout (src/angular/components/layout in the onixlabs-media-
+// playing real visualisation footage (a 30-second loop that starts once the window scrolls near; see
+// src/scripts/initialise-lazy-video.ts). It follows the app's layout (src/angular/components/layout in the onixlabs-media-
 // player repository), with its playlist closed, and uses the same Font Awesome icons, as fa-*.svg in src/icons.
 // Everything inside is scaled in em from the window's font size, which follows the width of the container, and nothing
 // is interactive, so it's one image to assistive technology. The glass is plain translucency over light that's already
 // blurred: a backdrop-filter here halves the frame rate.
 ---
-<div class="player-window" role="img" aria-label="The ONIXPlayer window playing a track, with a real-time visualization filling the screen">
+<div class="player-window" role="img" aria-label="The ONIXPlayer window playing a track, with a real-time visualisation filling the screen">
     <div class="player-header" aria-hidden="true">
         <span class="round traffic-light close"></span>
         <span class="round traffic-light minimize"></span>
@@ -19,8 +20,8 @@ import Icon from './Icon.astro';
         <div class="player-container">
             <div class="player-media">
                 <img src="/onixlabs/images/marketing/onixplayer-visualization.webp" alt="" width={960} height={540} decoding="async" />
-                <video width={960} height={540} autoplay muted loop playsinline>
-                    <source src="/onixlabs/video/onixplayer-visualizations.mp4" type="video/mp4" media="(prefers-reduced-motion: no-preference)" />
+                <video width={960} height={540} muted loop playsinline preload="none" data-lazy-video>
+                    <source data-src="/onixlabs/video/onixplayer-visualizations.mp4" type="video/mp4" />
                 </video>
             </div>
             <div class="media-bar">

@@ -2,6 +2,7 @@
 import Button from './Button.astro';
 import GlassIcon from './GlassIcon.astro';
 import SectionHeader from './SectionHeader.astro';
+import { site } from '../config/site';
 
 // The closing section of most pages, flat in its band: the invitation on the left, the envelope on the right. On phones they
 // stack. `contactHref` points "Send a message" at a prefilled contact form.
@@ -11,7 +12,6 @@ interface Props {
 }
 
 const { alternate = false, contactHref = '/Contact' }: Props = Astro.props;
-const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
 ---
 <section class:list={['section talk', { 'tone-alt': alternate }]} aria-labelledby="talk-to-us">
     <div class="container-wide talk-layout">
@@ -20,8 +20,8 @@ const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
                 Whether you have a question, need a custom solution, or just want to explore what's possible, we're just a message away.
             </SectionHeader>
             <div class="button-pair">
-                <Button href={contactHref} variant="primary" size="large" icon="paper-plane-tilt">Send a message</Button>
-                <Button href={calendlyUrl} size="large" icon="calendar-blank" external>Book a meeting</Button>
+                <Button href={contactHref} variant="primary" size="large">Send a message</Button>
+                <Button href={site.calendlyUrl} size="large" external>Book a meeting</Button>
             </div>
         </div>
         <GlassIcon name="envelope" size={420} class="talk-icon" />
@@ -48,6 +48,24 @@ const calendlyUrl: string = 'https://calendly.com/matthew-layton/30min';
     .talk-layout :global(.talk-icon) {
         justify-self: center;
         width: min(100%, 16rem);
+    }
+
+    /* Below the side-by-side layout, the content is centred, and the buttons sit side by side wherever they fit (from
+       a large phone up) rather than stacking as button pairs otherwise do on small screens. */
+    @media (max-width: 59.99rem) {
+        .talk-content {
+            text-align: center;
+        }
+
+        .talk-content .button-pair {
+            justify-self: center;
+        }
+    }
+
+    @media (min-width: 25rem) and (max-width: 40rem) {
+        .talk-content .button-pair {
+            grid-auto-flow: column;
+        }
     }
 
     @media (min-width: 60rem) {

@@ -130,12 +130,12 @@ const components: ReadonlyArray<TokenMapping> = [
 
     .table-wrap {
         overflow-x: auto;
-        border-top: var(--border-width) solid var(--edge-light);
-        border-bottom: var(--border-width) solid var(--edge-dark);
+        --edge-top: var(--edge-light);
+        --edge-bottom: var(--edge-dark);
         border-radius: var(--radius-lg);
         corner-shape: var(--corner-shape);
         background: var(--surface);
-        box-shadow: var(--shadow-sm);
+        box-shadow: var(--edge-shadow), var(--shadow-sm);
     }
 
     table {

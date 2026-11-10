@@ -23,7 +23,7 @@ import Specimen from '../Specimen.astro';
     </div>
 </Specimen>
 
-<Specimen title="Edges and elevation" surface="alt" code={'border-top: 1px solid var(--edge-light);\nborder-bottom: 1px solid var(--edge-dark);\nbox-shadow: var(--shadow-sm);   /* or --shadow-md, --shadow-lg */'}>
+<Specimen title="Edges and elevation" surface="alt" code={'--edge-top: var(--edge-light);\n--edge-bottom: var(--edge-dark);\nbox-shadow: var(--edge-shadow), var(--shadow-sm);   /* or --shadow-md, --shadow-lg */'}>
     <Fragment slot="notes"><p>Stride's signature: raised surfaces carry a lit top edge and a shaded bottom edge instead of a border on four sides, so they read as matte panels lifted off the page. In dark mode the light edge is a translucent white overlay, so it works on any surface. Shadows stay soft.</p></Fragment>
     <div class="grid grid-3">
         <div class="tile elev"><code>edges + --shadow-sm</code></div>

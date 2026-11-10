@@ -10,8 +10,8 @@ content is in the HTML.
 |---|---|
 | Blazor WebAssembly on .NET 9 | Astro 7, `output: 'static'` |
 | Razor components | Astro components (`src/components/`) |
-| Scoped `.razor.css` and `wwwroot` CSS | Scoped `<style>` blocks and `src/styles/global.css` |
-| Bootstrap, Font Awesome, Poppins and animate.css copied into `wwwroot` (about 2,400 files, 28 MB of Font Awesome) | A small custom design system (`src/styles/`), fonts from npm, and only the Font Awesome icons used, inlined as SVG |
+| Scoped `.razor.css` and `wwwroot` CSS | Scoped `<style>` blocks and the stylesheets in `src/styles/` |
+| Bootstrap, Font Awesome, Poppins and animate.css copied into `wwwroot` (about 2,400 files, 28 MB of Font Awesome) | A small custom design system (`src/styles/`), fonts from npm, and inline SVG icons (Phosphor, plus the Font Awesome icons the ONIXPlayer replica needs) |
 | Markdown fetched and converted in the browser with Markdig | Markdown rendered at build time (remark/rehype) |
 | Hard-coded copy in `.razor` pages | Typed content collections in `src/content/`, validated by Zod |
 | `peaceiris/actions-gh-pages` pushing to the `gh-pages` branch | `actions/deploy-pages`, after lint, tests and Lighthouse pass |
@@ -36,7 +36,7 @@ checks each one.
 | `/Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste`, `/Underscore-Overkill` | ✅ |
 | `/Documentation/Corda/Flow-Design-Guidelines-1`, `-2`, `-3`, `/Relational-Data-And-Pointers` | ✅ |
 | `/Documentation/Number-Theory/The-Problem-With-Decimals` | ✅ |
-| `/Contributors/Matthew-Layton`, `/Laura-Perez-Crespo`, `/Adam-Dry`, `/Ryan-Gledhill` | ✅ |
+| `/Contributors/Matthew-Layton`, `/Laura-Perez-Crespo`, `/Adam-Dry`, `/Ryan-Gledhill` | ✅ (now under `/archive/Contributors/…`) |
 | `/Tools` and the seven `/Tools/*` pages | ❌ Not migrated: moving to a separate site. These now return the 404 page. |
 
 ### URL behaviour that changed

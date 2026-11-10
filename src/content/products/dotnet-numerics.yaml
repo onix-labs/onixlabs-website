@@ -7,20 +7,15 @@ pageTitle: "Numerics Library for .NET"
 description: >-
     ONIXLabs Numerics Library for .NET: arbitrary-precision BigDecimal, 256- and 512-bit integers, 128- and 256-bit
     floats, NumberInfo and culture-aware formatting.
-callout: "Enhanced math and arithmetic for .NET applications"
+callout: "Enhanced maths and arithmetic for .NET applications"
 lead: "Exact decimals, wider integers and more precise floats, all built on .NET's generic math."
 icon: /onixlabs/images/icons/dotnet/dotnet-numerics-outline.svg
-iconAlt: "Numerics Library for .NET"
 summary: >-
     Numeric types for when the built-in ones aren't enough. BigDecimal stores decimals of any size exactly, Int256 to
     UInt512 extend the integers, Float128 and Float256 add quadruple and octuple precision, and NumberInfo takes numbers
     apart into their components. Everything plugs into .NET's generic math, and parses and formats according to culture.
-hook: >-
-    Designed for flexibility and accuracy, the Numerics library empowers developers to reliably work with numbers in
-    scientific, financial, or engineering contexts.
 repositoryUrl: https://github.com/onix-labs/onixlabs-dotnet
 packagesUrl: https://www.nuget.org/packages?q=OnixLabs.Numerics
-packagesLabel: "View NuGet Packages"
 sections:
   - features:
         - title: "Arbitrarily Large Decimals"
@@ -61,7 +56,7 @@ sections:
           body: >-
               NumberInfo takes any decimal number apart into its unscaled value, scale, significand, exponent, precision
               and sign, whether it started as a built-in numeric type, a BigDecimal, a Float128 or a Float256. It's a
-              solid foundation for numeric types of your own, and for analyzing values without losing detail.
+              solid foundation for numeric types of your own, and for analysing values without losing detail.
         - title: "Culture-Aware Parsing and Formatting"
           body: >-
               BigDecimal, NumberInfo and the floating-point types parse and format according to the culture you give

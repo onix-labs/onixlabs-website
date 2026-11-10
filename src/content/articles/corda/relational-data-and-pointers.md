@@ -1,6 +1,5 @@
 ---
 title: "Relational Data & Pointers"
-navigationTitle: "Relational Data & Pointers"
 description: "What state pointers in Corda are, how to use them to model relational data, and how to treat state pointers as a design pattern rather than an API."
 category: corda
 order: 4

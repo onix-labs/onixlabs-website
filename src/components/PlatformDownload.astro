@@ -1,5 +1,4 @@
 ---
-import Icon from './Icon.astro';
 import type { PlayerRelease } from '../collections/player-release';
 import type { StudioRelease } from '../collections/studio-release';
 
@@ -24,16 +23,24 @@ const href: string = release?.pageUrl ?? releasesUrl;
     data-download-windows={release?.windows}
     data-download-linux={release?.linux}
 >
-    <Icon name="download-simple" />
     <span data-download-label>Download</span>
 </a>
 <a class="button button-primary button-large platform-download-alternate" href={href} data-platform-download-alternate hidden>
-    <Icon name="download-simple" />
     <span data-download-label>Download</span>
 </a>
 
 <style>
+    /* The class's display would otherwise override the hidden attribute. */
+    .button[data-platform-download][hidden],
     .platform-download-alternate[hidden] {
         display: none;
+    }
+
+    /* Desktop apps can't be installed on phones and tablets, so the buttons go where touch is the only input. The script
+       does the same for an iPad with a trackpad, which this can't catch. */
+    @media (hover: none) and (pointer: coarse) {
+        .button[data-platform-download] {
+            display: none;
+        }
     }
 </style>

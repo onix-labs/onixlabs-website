@@ -1,18 +1,20 @@
 ---
-// One of the 3D glass icons in public/onixlabs/images/icons/glass, in the variant that matches the theme.
-// Decorative by default: the heading beside it names the idea.
+// One of the 3D glass icons in public/onixlabs/images/icons/glass, in the variant that matches the theme, or with
+// `aura`, its pre-rendered glow (scripts/generate-auras.ts). Decorative by default: the heading beside it names the idea.
 interface Props {
     readonly name: string;
     readonly size?: number;
     readonly alt?: string;
+    readonly aura?: boolean;
     readonly class?: string;
 }
 
-const { name, size = 96, alt = '', class: className = '' }: Props = Astro.props;
+const { name, size = 96, alt = '', aura = false, class: className = '' }: Props = Astro.props;
+const file: string = aura ? `${name}-aura` : name;
 ---
 <span class:list={['glass-icon', className]}>
-    <img class="glass-light" src={`/onixlabs/images/icons/glass/${name}.webp`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
-    <img class="glass-dark" src={`/onixlabs/images/icons/glass/${name}-dark.webp`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
+    <img class="glass-light" src={`/onixlabs/images/icons/glass/${file}.webp`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
+    <img class="glass-dark" src={`/onixlabs/images/icons/glass/${file}-dark.webp`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
 </span>
 
 <style>

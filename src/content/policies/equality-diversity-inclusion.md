@@ -1,6 +1,6 @@
 ---
 title: "Equality, Diversity and Inclusion"
-shortTitle: "Equality, Diversity and Inclusion"
+shortTitle: "DEI Policy"
 description: "ONIXLabs' commitment to fair treatment and non-discrimination in how it works with clients, contractors, collaborators and the open-source community."
 group: responsibility
 order: 3

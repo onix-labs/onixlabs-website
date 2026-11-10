@@ -5,9 +5,6 @@
   tilePath: /Products/DotNet
   callout: "Precision libraries for modern .NET development"
   capabilitiesCallout: "Discover the capabilities built to elevate your .NET applications"
-  otherProductsHeadline: "Other Products for .NET"
-  backgroundClass: bg-dotnet
-  heroBackgroundClass: bg-dotnet-fade
   packageRegistry:
     name: NuGet
     programmingLanguage: "C#"
@@ -19,9 +16,6 @@
   tilePath: /Products/Corda
   callout: "Distributed ledger superpowers for CorDapps"
   capabilitiesCallout: "Discover the capabilities built to elevate your Corda applications"
-  otherProductsHeadline: "Other Products for Corda"
-  backgroundClass: bg-corda
-  heroBackgroundClass: bg-corda-fade
   packageRegistry:
     name: Maven
     programmingLanguage: "Kotlin"
@@ -33,9 +27,6 @@
   tilePath: /Products/Kotlin
   callout: "Unlock the JVM with modern, idiomatic Kotlin"
   capabilitiesCallout: "Discover the capabilities built to elevate your Kotlin applications"
-  otherProductsHeadline: "Other Products for Kotlin"
-  backgroundClass: bg-kotlin
-  heroBackgroundClass: bg-kotlin-fade
   packageRegistry:
     name: Maven
     programmingLanguage: "Kotlin"

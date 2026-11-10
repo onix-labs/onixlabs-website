@@ -1,6 +1,5 @@
 ---
 title: "Billion-Dollar Mistakes and Functional Fixes"
-navigationTitle: "Billion-Dollar Mistakes and Functional Fixes"
 description: "Why null references and unchecked exceptions cause so many bugs, and how Optional<T> and Result<T> make absence and failure explicit in C#."
 category: dotnet
 order: 4
@@ -62,7 +61,7 @@ string? title = FetchBookTitle(id);
 Console.WriteLine(title.Length); // Warning: title might be null (CS8602)
 ```
 
-The compiler warns you that `title` might be null, reminding you to handle that case (say, with an `if` or the null-coalescing `??` operator). This doesn’t **prevent** you from compiling/running (unlike Kotlin, which errors out), but it makes potential null issues highly visible. The goal is the same: **make nullability part of the type system**. By doing so, the language nudges (or forces) you toward safer code, so that a forgotten null check becomes a compile-time problem, not a runtime crash.
+The compiler warns you that `title` might be null, reminding you to handle that case (say, with an `if` or the null-coalescing `??` operator). This doesn’t **prevent** you from compiling/running (unlike Kotlin, which errors out), but it makes potential null issues highly visible. The goal is the same: **make nullability part of the type system**. By doing so, the language nudges (or forces) you towards safer code, so that a forgotten null check becomes a compile-time problem, not a runtime crash.
 
 These language features are great, and if you’re using them, you’re a step ahead in the battle against `null`. But what about languages (or legacy code) where such features aren’t available or fully adopted? Here’s where a concept from functional programming shines: the **Optional** type.
 
@@ -123,7 +122,7 @@ Before we move on, let’s concisely wrap up the null story: We started with a s
 
 ## Exceptions: Unchecked & Unhandled
 
-Null references are one giant of buggy behaviour; unhandled exceptions are the other. If nulls are *"billion-dollar mistakes"*, unhandled exceptions are the landmines that blow up our programs in spectacular ways. We need to tackle them with the same candor.
+Null references are one giant of buggy behaviour; unhandled exceptions are the other. If nulls are *"billion-dollar mistakes"*, unhandled exceptions are the landmines that blow up our programs in spectacular ways. We need to tackle them with the same candour.
 
 ### The Problem with Exceptions
 
@@ -258,13 +257,13 @@ Result<Customer> TryLoadCustomer(int id) {
 
 Now `TryLoadCustomer` will never throw; it catches any exception from `LoadCustomer` and returns a `Failure<Customer>` wrapping that exception. The nice part is we preserve the error info – the `Failure` can carry the caught exception (or just the message, or a custom error type). The caller of `TryLoadCustomer` can inspect the failure and see *which* exception occurred, effectively getting the same info as a catch block would, but without crashing or unwinding the stack. We have *contained* the exception in a safe package.
 
-Over time, you might refactor `LoadCustomer` itself to return Result and not throw at all. But even without touching `LoadCustomer`, you’ve made its outward behavior safer. This is the power of these patterns – they aren’t all-or-nothing. You can gradually **encapsulate unpredictable exceptions** into predictable result objects.
+Over time, you might refactor `LoadCustomer` itself to return Result and not throw at all. But even without touching `LoadCustomer`, you’ve made its outward behaviour safer. This is the power of these patterns – they aren’t all-or-nothing. You can gradually **encapsulate unpredictable exceptions** into predictable result objects.
 
 ### Justifications & Rebuttals
 
 > Why not just use try/catch in the calling code? Why wrap exceptions in another object?
 
-Using try/catch is fine for one-off calls. But when failure is a *expected* outcome of a function (e.g., “file might not exist”, “parse might fail”), sprinkling try/catch everywhere leads to verbose, repetitive code – and sometimes developers simply omit it (leading to crashes). A Result type makes the expectation explicit and uniforms the handling. It also composes better – you can pass a Result through multiple layers without each needing its own try/catch unless it wants to handle it. In other words, Result gives us *checked exceptions* in spirit, but with the ergonomics of a return type. It localizes error handling responsibility: maybe low-level code converts exception -> Result, and higher-level code decides what to do with failures (log, retry, user message, etc.). By treating exceptions as data, we gain flexibility. We can even map different Failure types, accumulate errors, etc., all in a type-safe way.
+Using try/catch is fine for one-off calls. But when failure is a *expected* outcome of a function (e.g., “file might not exist”, “parse might fail”), sprinkling try/catch everywhere leads to verbose, repetitive code – and sometimes developers simply omit it (leading to crashes). A Result type makes the expectation explicit and uniforms the handling. It also composes better – you can pass a Result through multiple layers without each needing its own try/catch unless it wants to handle it. In other words, Result gives us *checked exceptions* in spirit, but with the ergonomics of a return type. It localises error handling responsibility: maybe low-level code converts exception -> Result, and higher-level code decides what to do with failures (log, retry, user message, etc.). By treating exceptions as data, we gain flexibility. We can even map different Failure types, accumulate errors, etc., all in a type-safe way.
 
 ### Succeed or Fail, But Never Surprise
 

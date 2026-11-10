@@ -1,17 +1,19 @@
 ---
 // The hero of a library page (/Products/DotNet and each product under it): a two-part headline over a bloom in the
 // family's colours, a standfirst and the actions. Sit it inside a `.family-<id>` wrapper, which supplies the colours.
-// `highlightClass` sets the second phrase's gradient; without it, the phrase takes the brand gradient.
+// `highlightClass` sets the second phrase's gradient; without it, the phrase takes the brand gradient. `spectrum`
+// blooms in the whole brand spectrum, as the home page's hero does, rather than the family's two colours.
 interface Props {
     readonly title: string;
     readonly highlight: string;
     readonly highlightClass?: string;
     readonly lead: string;
+    readonly spectrum?: boolean;
 }
 
-const { title, highlight, highlightClass = '', lead }: Props = Astro.props;
+const { title, highlight, highlightClass = '', lead, spectrum = false }: Props = Astro.props;
 ---
-<section class="hero-bloom library-hero" aria-labelledby="library-title">
+<section class:list={['hero-bloom library-hero', { 'is-spectrum': spectrum }]} aria-labelledby="library-title">
     <div class="library-hero-copy">
         <h1 id="library-title" class="display rise">
             {title}{' '}
@@ -23,9 +25,12 @@ const { title, highlight, highlightClass = '', lead }: Props = Astro.props;
 </section>
 
 <style>
-    /* The bloom runs from the family's first colour to its second, left to right. */
-    .library-hero {
+    /* The bloom runs from the family's first colour to its second, left to right, unless it shows the whole spectrum. */
+    .library-hero:not(.is-spectrum) {
         --bloom-gradient: linear-gradient(90deg, var(--family-from), var(--family-to));
+    }
+
+    .library-hero {
         padding-block: clamp(4rem, 3rem + 5vw, 7.5rem) clamp(5rem, 3.5rem + 7vw, 10rem);
         overflow: clip;
     }

@@ -1,10 +1,11 @@
 ---
 import GlassIcon from './GlassIcon.astro';
 
-// A glass icon spilling its own colour across whatever it sits on: a second copy behind it, scaled up, blurred and
-// saturated. That's markup rather than a ::before because the Content Security Policy rules out passing each image to
-// CSS inline. The grain over the blurred colour gives it texture and breaks up its bands, as on .window-light. The
-// stacking context it sits in must clip it (a .tile does); size it with width on the class.
+// A glass icon spilling its own colour across whatever it sits on: its pre-rendered glow behind it (the icon blurred and
+// saturated on a canvas 2.2 times its size, by scripts/generate-auras.ts), scaled up. Rendered ahead of time rather
+// than with filter: blur(), which iOS Safari clips to the parent's box while an ancestor animates, and which costs the
+// GPU every frame. The grain over the glow gives it texture and breaks up its bands, as on .window-light. The stacking
+// context it sits in must clip it (a .tile does); size it with width on the class, and spread the glow with --aura-scale.
 interface Props {
     readonly name: string;
     readonly size?: number;
@@ -14,7 +15,7 @@ interface Props {
 const { name, size = 320, class: className = '' }: Props = Astro.props;
 ---
 <span class:list={['glass-aura', className]}>
-    <GlassIcon name={name} size={size} class="aura-glow" />
+    <GlassIcon name={name} size={size} aura class="aura-glow" />
     <GlassIcon name={name} size={size} />
 </span>
 
@@ -24,11 +25,11 @@ const { name, size = 320, class: className = '' }: Props = Astro.props;
         display: grid;
     }
 
-    /* Fades out with the glow, so it doesn't show on the plain page around it. */
+    /* Fades out with the glow, so it doesn't show on the plain page around it. The glow's canvas is 2.2 times the icon. */
     .glass-aura::after {
         content: '';
         position: absolute;
-        inset: calc((var(--aura-scale, 2.1) - 1) * -50% - var(--aura-blur, 2.5rem) * 1.5);
+        inset: calc((2.2 * var(--aura-scale, 2.1) - 1) * -50%);
         z-index: -1;
         background: url('/onixlabs/images/noise-aura.png');
         -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent);
@@ -41,16 +42,15 @@ const { name, size = 320, class: className = '' }: Props = Astro.props;
         width: 100%;
     }
 
+    /* The glow's canvas is 2.2 times the icon, so spread 60% past the icon on every side its icon lines up with the one
+       in front; absolute, so it takes no room in the layout. */
     .glass-aura :global(.aura-glow) {
+        position: absolute;
+        inset: -60%;
         z-index: -1;
+        width: auto;
         opacity: 0.95;
-        filter: blur(var(--aura-blur, 2.5rem)) saturate(3.2) brightness(1.05);
         transform: scale(var(--aura-scale, 2.1));
         pointer-events: none;
-    }
-
-    :global([data-theme='dark']) .glass-aura :global(.aura-glow),
-    :global(.tone-dark) .glass-aura :global(.aura-glow) {
-        filter: blur(var(--aura-blur, 2.5rem)) saturate(2.6) brightness(1.15);
     }
 </style>

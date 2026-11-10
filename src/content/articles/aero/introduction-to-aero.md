@@ -1,6 +1,5 @@
 ---
 title: "Introduction to Aero"
-navigationTitle: "Introduction To Aero"
 description: "An introduction to Aero, the ONIXLabs suite of .NET APIs that removes boilerplate so teams can build reliable, scalable enterprise software faster."
 category: products
 order: 1
@@ -24,7 +23,7 @@ The result is **ONIXLabs Aero**: a production-ready API platform and architectur
 Developers are natural optimists. We love starting new projects, tinkering with new ideas, and moving fast. But in almost every project, we find ourselves dragged down by the same repetitive, foundational tasks:
 
 - Setting up logging, configuration, secrets management
-- Writing (and rewriting) serialization and data access layers
+- Writing (and rewriting) serialisation and data access layers
 - Designing consistent error handling patterns
 - Building scaffolding for observability, telemetry, and security
 
@@ -94,9 +93,9 @@ Supports JSON, environment variables, and in-memory configuration, perfect for b
 
 Repository patterns, granular roles (e.g., read-only or write-only), and full transaction support are built in. Aero also includes a best-practice **Entity Framework** implementation that wraps boilerplate in clear, reusable abstractions.
 
-### Serialization
+### Serialisation
 
-Supports both JSON and binary formats like **MessagePack**, with pluggable APIs to control how and when data is serialized. Ideal for performance-sensitive APIs, messaging, or distributed systems.
+Supports both JSON and binary formats like **MessagePack**, with pluggable APIs to control how and when data is serialised. Ideal for performance-sensitive APIs, messaging, or distributed systems.
 
 ### Secrets and Key Management
 
@@ -152,4 +151,4 @@ With IDEs like **Visual Studio**, **Rider**, and **VS Code**, and a mature ecosy
 
 **ONIXLabs Aero** was created to solve a problem every modern development team faces: the hidden complexity of building serious software. By handling the cross-cutting concerns that every system eventually needs, *from the very beginning*, Aero helps teams ship faster, scale confidently, and focus on what makes their applications unique.
 
-Whether you're a startup trying to move fast without cutting corners, or an enterprise modernizing legacy systems, **Aero + .NET** is a combination that balances speed with stability, simplicity with power, and elegance with performance.
+Whether you're a startup trying to move fast without cutting corners, or an enterprise modernising legacy systems, **Aero + .NET** is a combination that balances speed with stability, simplicity with power, and elegance with performance.

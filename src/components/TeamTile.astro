@@ -36,10 +36,18 @@ const { name, jobTitle, accent, photo, href, teaser, gitHubUrl, linkedInUrl }: P
 </article>
 
 <style>
-    .accent-blue { --team-accent: var(--brand-blue); }
-    .accent-rose { --team-accent: var(--brand-rose); }
-    .accent-coral { --team-accent: var(--brand-coral); }
-    .accent-teal { --team-accent: var(--brand-teal); }
+    /* The inks rather than the brand colours themselves: the title is small text, and the inks are deepened to AA on the
+       bands. The tile's surface is lighter than the dark band, so there each colour is lifted as far as it must be to
+       clear 4.5:1 against it (tokens.css records the surface colours). */
+    .accent-blue { --team-accent: var(--ink-blue); }
+    .accent-rose { --team-accent: var(--ink-rose); }
+    .accent-coral { --team-accent: var(--ink-coral); }
+    .accent-teal { --team-accent: var(--ink-teal); }
+
+    :global([data-theme='dark']) .accent-blue { --team-accent: color-mix(in srgb, var(--brand-blue), #fff 36%); }
+    :global([data-theme='dark']) .accent-rose { --team-accent: color-mix(in srgb, var(--brand-rose), #fff 30%); }
+    :global([data-theme='dark']) .accent-coral { --team-accent: color-mix(in srgb, var(--brand-coral), #fff 14%); }
+    :global([data-theme='dark']) .accent-teal { --team-accent: color-mix(in srgb, var(--brand-teal), #fff 6%); }
 
     .team-tile {
         display: flex;

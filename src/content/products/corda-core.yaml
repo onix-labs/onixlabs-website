@@ -10,25 +10,21 @@ description: >-
 callout: "Powerful, general-purpose APIs for Corda developers"
 lead: "A modular toolkit of contract, workflow and integration APIs that takes the boilerplate out of CorDapp development."
 icon: /onixlabs/images/icons/corda/corda-core-outline.svg
-iconAlt: "Core Library for Corda"
 summary: >-
     Provides Corda developers with a modular toolkit of contract, workflow, and integration APIs to streamline CorDapp
     development. Instead of a standalone app, it offers reusable abstractions, utilities, and patterns for building
-    scalable, maintainable solutions. With features like clean vault queries, transaction builders, standardized
+    scalable, maintainable solutions. With features like clean vault queries, transaction builders, standardised
     signing, and modular Gradle support, it reduces boilerplate and enforces consistency. Clear structure and seamless
     integration make it easy to adopt across projects.
-hook: >-
-    Signed and maintained by ONIXLabs, it’s the trusted foundation for building serious, production-grade CorDapps.
 repositoryUrl: https://github.com/onix-labs/onixlabs-corda-core
 packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-corda-core
-packagesLabel: "View Maven Packages"
 sections:
   - features:
         - title: "Contract APIs"
           body: |-
-              Implementing ContractID automates and standardizes how contract identifiers are generated and managed, eliminating boilerplate and reducing future refactoring. It ensures every contract has a deterministic and idiomatic ID from day one.
+              Implementing ContractID automates and standardises how contract identifiers are generated and managed, eliminating boilerplate and reducing future refactoring. It ensures every contract has a deterministic and idiomatic ID from day one.
 
-              Corda's flows often require explicit verification of who initiated a transaction, which isn’t always straightforward in a decentralized context. To solve this, the library introduces SignatureData and SignedCommandData, enforcing that each command be signed by its originator before a counterparty can endorse the transaction. This mechanism strengthens authorization guarantees and provides clear attribution of transaction intent.
+              Corda's flows often require explicit verification of who initiated a transaction, which isn’t always straightforward in a decentralised context. To solve this, the library introduces SignatureData and SignedCommandData, enforcing that each command be signed by its originator before a counterparty can endorse the transaction. This mechanism strengthens authorisation guarantees and provides clear attribution of transaction intent.
         - title: "Enhanced State Types"
           body: |-
               Chained States create a cryptographic sequence of state transitions, preventing splits, merges, or duplicates and preserving a verifiable linear history.
@@ -52,7 +48,7 @@ sections:
               development.
         - title: "Flow Steps"
           body: >-
-              Complemented by reusable Flow Step utilities, the library standardizes tasks like session initiation, subflow
+              Complemented by reusable Flow Step utilities, the library standardises tasks like session initiation, subflow
               invocation, and error handling. These helpers eliminate boilerplate and simplify workflow logic for faster
               development.
         - title: "Messaging Workflows"

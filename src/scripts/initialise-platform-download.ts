@@ -1,4 +1,5 @@
 import { detectArchitecture } from './detect-architecture';
+import { detectHandheld } from './detect-handheld';
 import { detectPlatform } from './detect-platform';
 import { selectPlatformDownloads } from './select-platform-downloads';
 import type { PlatformDownload } from './platform-download';
@@ -21,10 +22,19 @@ function apply(link: HTMLAnchorElement, download: PlatformDownload, text: string
 // offer (a Mac whose processor the browser won't reveal), the hidden [data-platform-download-alternate] button beside it
 // carries it, and both name their processor instead ("Download (Intel)") so they can be told apart and still fit. Without
 // this script, or with no installer to offer, the button keeps its server-rendered link to the release page and reads
-// just "Download".
+// just "Download". On a phone or tablet, where the apps can't be installed, the buttons are hidden; CSS hides them too
+// on touch-only devices, which covers visitors without JavaScript.
 export async function initialisePlatformDownload(): Promise<void> {
     const links: ReadonlyArray<HTMLAnchorElement> = [...document.querySelectorAll<HTMLAnchorElement>('a[data-platform-download]')];
     const platform: 'macos' | 'windows' | 'linux' | undefined = detectPlatform(navigator.userAgent, navigator.maxTouchPoints);
+
+    if (detectHandheld(navigator.userAgent, navigator.maxTouchPoints)) {
+        for (const link of links) {
+            link.hidden = true;
+        }
+
+        return;
+    }
 
     if (links.length === 0 || platform === undefined) {
         return;

@@ -49,21 +49,13 @@ export const designNavigation: ReadonlyArray<DesignGroup> = [
             { slug: 'breadcrumbs', title: 'Breadcrumbs and pagination', summary: 'Where you are, and moving between pages.' },
             { slug: 'overlays', title: 'Tooltips, toasts and modals', summary: 'Content that appears above the page.' },
             { slug: 'section-headers', title: 'Section headers', summary: 'Label, headline and standfirst at the top of a section.' },
-            { slug: 'heroes', title: 'Heroes', summary: 'The opening of a page: capstone, family and simple heroes.' },
-            { slug: 'tiles', title: 'Tiles', summary: 'Feature, product, capstone, article and team tiles.' },
+            { slug: 'heroes', title: 'Heroes', summary: 'The opening of a page: the library hero in family colours or the full spectrum.' },
+            { slug: 'tiles', title: 'Tiles', summary: 'Family, product and team tiles.' },
             { slug: 'studio-feature', title: 'Studio features', summary: 'The staggered feature bands: a screenshot beside the points that explain it.' },
             { slug: 'bands', title: 'Bands', summary: 'Full-width sections in the page, alt and dark tones.' },
             { slug: 'marquee', title: 'Marquee', summary: 'The scrolling technology strip.' },
             { slug: 'calls-to-action', title: 'Calls to action', summary: 'The closing call-to-action band.' },
             { slug: 'navigation', title: 'Header and footer', summary: 'The site header, its scroll progress, and the directory footer.' },
-        ],
-    },
-    {
-        title: 'Examples',
-        pages: [
-            { slug: 'examples/home', title: 'Home page', summary: 'A home page assembled from the components above.' },
-            { slug: 'examples/product', title: 'Product page', summary: 'A capstone product page.' },
-            { slug: 'examples/article', title: 'Article', summary: 'A documentation or blog article.' },
         ],
     },
 ];

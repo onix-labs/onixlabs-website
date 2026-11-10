@@ -6,7 +6,7 @@ group: legal
 order: 6
 path: /Legal/Accessibility
 effective: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-10
 ---
 
 We want everyone to be able to use this website, including people who use assistive technology, navigate by keyboard, or need higher contrast or less motion.
@@ -29,8 +29,8 @@ We aim to meet the **Web Content Accessibility Guidelines (WCAG) 2.2 at level AA
 
 These parts of the website don't yet meet WCAG 2.2 AA:
 
-- **Team role labels** on the home and About pages use brand colors whose contrast against the card background falls below 4.5:1, the minimum for text that size (success criterion 1.4.3).
-- **Library family tiles** on the Products page show white text on brand-color gradients, some of which fall below the required contrast (1.4.3).
+- **Team role labels** on the home and About pages use brand colours whose contrast against the card background falls below 4.5:1, the minimum for text that size (success criterion 1.4.3).
+- **Library family tiles** on the Products page show white text on brand-colour gradients, some of which fall below the required contrast (1.4.3).
 - **The ONIXLabs Studio showcases** at the top of the home and Products pages cycle through screenshots automatically, and there's no control to pause them, other than reducing motion in your device's settings (2.2.2).
 
 We're working on fixes for each of these.

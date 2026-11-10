@@ -1,6 +1,5 @@
 ---
 title: "Syntactic Sugar, Bitter Aftertaste"
-navigationTitle: "Syntactic Sugar, Bitter Aftertaste"
 description: "A deep dive into the C# var keyword: its intended use cases, the pitfalls of overusing it, and why explicit types improve clarity and maintainability."
 category: standards
 order: 1
@@ -8,7 +7,7 @@ path: /Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste
 published: 2025-06-15
 ---
 
-This article takes a deep dive into the `var` keyword in C#, examining its intended use cases, the common pitfalls that can arise from overusing it, and the reasons why I personally favor explicit types that speak for themselves, especially when clarity, readability, and maintainability are priorities in a codebase.
+This article takes a deep dive into the `var` keyword in C#, examining its intended use cases, the common pitfalls that can arise from overusing it, and the reasons why I personally favour explicit types that speak for themselves, especially when clarity, readability, and maintainability are priorities in a codebase.
 
 ## A Shortcut Too Far
 
@@ -48,7 +47,7 @@ So here’s the real question: can you honestly say you follow that rule consist
 
 > It's the default setting in Resharper, so I just follow what Resharper suggests.
 
-Resharper is a tool, not a mentor, not a style guide, and certainly not a substitute for developer judgment. At best, it enforces a set of **opinionated** heuristics. At worst, it encourages mechanical refactoring without any consideration for readability or intent. Blind adherence to tooling is not a standard; **it's abdication of craftsmanship**.
+Resharper is a tool, not a mentor, not a style guide, and certainly not a substitute for developer judgement. At best, it enforces a set of **opinionated** heuristics. At worst, it encourages mechanical refactoring without any consideration for readability or intent. Blind adherence to tooling is not a standard; **it's abdication of craftsmanship**.
 
 > I can easily discover a variable's type. I just hover over its name.
 
@@ -62,7 +61,7 @@ Now, tell me what `message` is, without help from your IDE. In the vacuum of a c
 
 > Explicit types are just verbose. I can code faster with `var`.
 
-Speed of writing code is not the same as speed of understanding code. Typing `string` instead of `var` might cost you a second; figuring out what `var` represents in a deeply nested call chain can cost minutes. Code is read far more than it is written. **Optimize for the reader.**
+Speed of writing code is not the same as speed of understanding code. Typing `string` instead of `var` might cost you a second; figuring out what `var` represents in a deeply nested call chain can cost minutes. Code is read far more than it is written. **Optimise for the reader.**
 
 Besides, if your metric for productivity is keystrokes per minute, then learn to type faster!
 

@@ -10,16 +10,13 @@ description: >-
 callout: "Essential building blocks for modern Kotlin development"
 lead: "Composable specifications, checked type conversion and the everyday extensions the Kotlin standard library leaves out."
 icon: /onixlabs/images/icons/kotlin/kotlin-core-outline.svg
-iconAlt: "Core Library for Kotlin"
 summary: >-
     Foundational extensions and patterns that fill common gaps in the Kotlin standard library: composable, self-
     describing specifications, type conversion with overflow and precision checks, ordinal day-of-month types for
     calendar logic, reflection helpers and extensions for numbers, strings, comparables and collections. It is the base
     layer for the other ONIXLabs Kotlin libraries, and useful on its own in any Kotlin application.
-hook: "The small, dependable pieces every Kotlin codebase ends up needing."
 repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
 packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
-packagesLabel: "View Maven Packages"
 sections:
   - features:
         - title: "Composable Specifications"
@@ -51,9 +48,9 @@ sections:
           body: >-
               Find a class's primary constructor and properties, create instances from a map of arguments, resolve
               generic type arguments, and format type names with their generics and nullability intact.
-        - title: "Terminal Colors"
+        - title: "Terminal Colours"
           body: >-
-              Write colored output to the terminal with the sixteen ANSI colors, with the colors reset automatically
+              Write coloured output to the terminal with the sixteen ANSI colours, with the colours reset automatically
               after each print.
         - title: "Built for Modern Kotlin"
           body: >-

@@ -1,12 +1,12 @@
 ---
 title: "Code of Conduct and Ethics"
 shortTitle: "Code of Conduct"
-description: "The standards of professional behavior and integrity ONIXLabs holds itself to: honesty, quality, confidentiality, conflicts of interest and respectful conduct."
+description: "The standards of professional behaviour and integrity ONIXLabs holds itself to: honesty, quality, confidentiality, conflicts of interest and respectful conduct."
 group: responsibility
 order: 1
 path: /Legal/Code-Of-Conduct
 effective: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-10
 ---
 
 This code sets out how ONIXLabs conducts its business. It's short and practical on purpose: it describes what our clients, collaborators and the wider community can expect from us, and what we expect in return.
@@ -22,7 +22,7 @@ The code applies to ONIXLABS LIMITED and its director, and to anyone who works w
 - We keep accurate business and financial records.
 - We comply with the law wherever we work, including the Bribery Act 2010, as described in our [Anti-Bribery and Corruption Policy](/Legal/Anti-Bribery).
 
-## Quality and professional judgment
+## Quality and professional judgement
 
 - We only take on work we're competent to deliver, and we say so when something is outside our expertise.
 - We treat code as a craft: we review it, test it, and take responsibility for what we ship.
@@ -43,7 +43,7 @@ We treat everyone we work with fairly and with respect. We don't tolerate harass
 
 ## Open source and intellectual property
 
-We respect intellectual property. We follow the licenses of the open-source software we use and contribute to, we credit others' work, and we're clear with clients about the third-party components in what we deliver.
+We respect intellectual property. We follow the licences of the open-source software we use and contribute to, we credit others' work, and we're clear with clients about the third-party components in what we deliver.
 
 ## Raising a concern
 

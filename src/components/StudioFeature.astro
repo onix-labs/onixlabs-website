@@ -5,8 +5,8 @@ import FeaturePoints from './FeaturePoints.astro';
 import SectionHeader from './SectionHeader.astro';
 import StudioWindow from './StudioWindow.astro';
 
-// One Studio feature in its own band: the copy and its points beside a screenshot, which holds still while they scroll
-// past, in the feature's own colours. `reversed` puts the screenshot on the left. Below 72rem it stacks as headline,
+// One Studio feature in its own band: the copy and its points beside a screenshot centred against them, in the
+// feature's own colours. `reversed` puts the screenshot on the left. Below 72rem it stacks as headline,
 // window, points.
 type Feature = CollectionEntry<'studio'>['data']['features'][number];
 
@@ -81,7 +81,7 @@ const [highlightFrom, highlightTo]: readonly [string, string] = feature.colours.
         .feature-layout {
             grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
             gap: 2.5rem;
-            align-items: start;
+            align-items: center;
         }
 
         .is-reversed .feature-layout {
@@ -103,11 +103,6 @@ const [highlightFrom, highlightTo]: readonly [string, string] = feature.colours.
 
         .is-reversed .feature-stage {
             order: -1;
-        }
-
-        .feature-stage {
-            position: sticky;
-            top: calc(var(--header-height) + 1.5rem);
         }
     }
 </style>

@@ -6,8 +6,7 @@ import type { StudioColour } from '../config/studio-colour';
 
 // A band laid out like a Studio feature: 60% for its copy (an optional eyebrow, a two-part headline, a standfirst, any
 // paragraphs of detail and points that explain it, then whatever links are slotted in) and 40% for its glass icon,
-// glowing in its own colours with grain over the blur, level with the top of the copy and staying in view while the copy scrolls. `reversed` puts the
-// icon on the left. Stacks below 60rem, icon first. The headline's second phrase is grey, or runs between
+// glowing in its own colours with grain over the blur, centred against the copy. `reversed` puts the icon on the left. Stacks below 60rem, icon first. The headline's second phrase is grey, or runs between
 // `highlightColours` when they're given. LibrarySection and /Engineering-With-AI use it.
 interface Props {
     readonly id: string;
@@ -42,7 +41,7 @@ const { id, eyebrow, glass, title, highlight, highlightColours, summary, details
             {points !== undefined && <FeaturePoints points={points} />}
             {Astro.slots.has('default') && <div class="glass-band-links"><slot /></div>}
         </div>
-        <div class="glass-band-icon zoom-through">
+        <div class="glass-band-icon zoom-arrive">
             <GlassAura name={glass} class="glass-band-aura" />
         </div>
     </div>
@@ -67,7 +66,6 @@ const { id, eyebrow, glass, title, highlight, highlightColours, summary, details
     }
 
     .glass-band-icon :global(.glass-band-aura) {
-        --aura-blur: 3.5rem;
         --aura-scale: 1.6;
         width: min(13rem, 55vw);
     }
@@ -76,13 +74,11 @@ const { id, eyebrow, glass, title, highlight, highlightColours, summary, details
         .glass-band-layout {
             grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
             gap: 5rem;
-            align-items: start;
+            align-items: center;
         }
 
-        /* Like a Studio screenshot, the icon holds still while its copy scrolls past. */
         .glass-band-icon {
-            position: sticky;
-            top: calc(var(--header-height) + 1.5rem);
+            place-items: center;
             order: 0;
         }
 

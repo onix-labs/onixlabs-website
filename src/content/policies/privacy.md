@@ -6,7 +6,7 @@ group: legal
 order: 2
 path: /Legal/Privacy
 effective: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-10
 ---
 
 This policy explains what personal data we collect when you use this website or contact us, why we collect it, how long we keep it, who we share it with, and the rights you have. We keep it as short as we can while giving you everything the law requires.
@@ -53,7 +53,7 @@ If you switch between light and dark mode, your browser remembers the choice for
 
 If an enquiry becomes a business relationship, we keep the contact details and correspondence needed to deliver our services, invoice and keep proper records.
 
-- **Lawful basis:** performing our contract with you or your organization, our legitimate interest in managing business relationships, and our legal obligations, such as keeping accounting records.
+- **Lawful basis:** performing our contract with you or your organisation, our legitimate interest in managing business relationships, and our legal obligations, such as keeping accounting records.
 
 ## Who we share it with
 

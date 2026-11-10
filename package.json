@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "images": "node scripts/generate-raster-images.ts && node scripts/generate-social-images.ts && node scripts/generate-noise-texture.ts"
+    "images": "node scripts/generate-raster-images.ts && node scripts/generate-studio-sizes.ts && node scripts/generate-auras.ts && node scripts/generate-social-images.ts && node scripts/generate-noise-texture.ts"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.5",
@@ -40,6 +40,7 @@
     "eslint-plugin-import-x": "4.17.1",
     "eslint-plugin-jsx-a11y-x": "0.2.0",
     "globals": "17.14.0",
+    "sharp": "0.35.5",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.1",
     "vitest": "5.1.0"

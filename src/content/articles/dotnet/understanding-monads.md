@@ -1,6 +1,5 @@
 ---
 title: "Understanding Monads"
-navigationTitle: "Understanding Monads"
 description: "What a monad is in practical terms, the operations that define one, and how Optional<T> and Result<T> bring monads to everyday C#."
 category: dotnet
 order: 3

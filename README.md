@@ -32,10 +32,10 @@ src/
   content/            Site content: products, articles, contributors, technologies, Aero (YAML and Markdown)
   content.config.ts   Zod schemas for that content; invalid content fails the build
   pages/              Routes; file paths match the public URLs (/Products/DotNet/Core, ...)
-  layouts/            BaseLayout (head, header, footer) and DocumentationLayout
+  layouts/            BaseLayout (head, header, footer)
   components/         Shared Astro components
   seo/                Canonical URLs, titles and JSON-LD builders
-  scripts/            The little client-side JavaScript the site uses (theme switch, contact prefill)
+  scripts/            The little client-side JavaScript the site uses (theme switch, contact prefill, download buttons, lazy video, outline scrollspy)
   styles/             The design system: tokens, base styles, effects and prose
 public/               Files served as-is, including images at their existing /onixlabs/images/... URLs
 tests/e2e/            Playwright tests

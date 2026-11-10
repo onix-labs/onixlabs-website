@@ -10,15 +10,12 @@ description: >-
 callout: "Describe a type once and reuse it everywhere"
 lead: "Describe each type's object graph once, and let validation, projection and your own plugins build on it."
 icon: /onixlabs/images/icons/kotlin/kotlin-core-outline.svg
-iconAlt: "Graph Library for Kotlin"
 summary: >-
     A declarative DSL for describing object graphs. A graph is built once, is immutable and can be shared across
     threads; a registry resolves nested types automatically, every member has a precise path, and plugins such as
     validation and projection interpret the same description.
-hook: "One description of your types, shared by everything that needs it."
 repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
 packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
-packagesLabel: "View Maven Packages"
 sections:
   - features:
         - title: "Declarative Graph DSL"

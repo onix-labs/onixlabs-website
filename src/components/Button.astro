@@ -3,18 +3,17 @@ import Icon from './Icon.astro';
 
 // A call to action (Stride): the monochrome primary, a raised surface button (secondary), danger, a button wearing
 // the turning ONIXLabs brand gradient (spectral), bare content with no surface (ghost), or a "Learn more ›" text link
-// (link). `icon` leads the text and `trailingIcon` follows it.
+// (link). Buttons carry no leading icon; `trailingIcon` follows the text, for the arrow on a ghost button.
 interface Props {
     readonly href: string;
     readonly variant?: 'primary' | 'secondary' | 'danger' | 'spectral' | 'ghost' | 'link';
     readonly size?: 'small' | 'default' | 'large';
-    readonly icon?: string;
     readonly trailingIcon?: string;
     readonly external?: boolean;
     readonly class?: string;
 }
 
-const { href, variant = 'secondary', size = 'default', icon, trailingIcon, external = false, class: className = '' }: Props = Astro.props;
+const { href, variant = 'secondary', size = 'default', trailingIcon, external = false, class: className = '' }: Props = Astro.props;
 const isLink: boolean = variant === 'link';
 ---
 <a
@@ -27,7 +26,6 @@ const isLink: boolean = variant === 'link';
     target={external ? '_blank' : undefined}
     rel={external ? 'noopener noreferrer' : undefined}
 >
-    {icon !== undefined && <Icon name={icon} />}
     <span><slot /></span>
     {trailingIcon !== undefined && <Icon name={trailingIcon} class="button-trailing-icon" />}
     {isLink &&<Icon name={external ? 'arrow-square-out' : 'caret-right'} />}

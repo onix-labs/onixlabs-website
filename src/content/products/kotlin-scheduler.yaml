@@ -10,16 +10,13 @@ description: >-
 callout: "Calendar-aware scheduling of recurring tasks"
 lead: "Calendar-aware scheduling of recurring tasks, in explicit time zones, with clear policies for failures, overlaps and missed runs."
 icon: /onixlabs/images/icons/kotlin/kotlin-core-outline.svg
-iconAlt: "Scheduler Library for Kotlin"
 summary: >-
     Calendar-aware scheduling of recurring tasks, supporting rules such as the second Tuesday of every month at 09:00,
     every other Tuesday at 09:00, or the last Friday of March, June, September and December. Every calendar schedule has
     an explicit time zone, next occurrences can be calculated for any schedule, and an in-process task scheduler
     isolates failures and applies overlap and misfire policies.
-hook: "Schedules the way people describe them."
 repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
 packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
-packagesLabel: "View Maven Packages"
 sections:
   - features:
         - title: "Five Kinds of Schedule"

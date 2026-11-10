@@ -10,8 +10,8 @@ import TeamTile from '../components/TeamTile.astro';
 import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// About ONIXLabs: who we are, where we began, our mission, what we do (each linking to where it's covered), what we
-// stand for, and the people behind it.
+// About ONIXLabs: who we are, where we began, our mission, what we do (each linking to where it's covered), what our
+// name means, what we stand for, and the people behind it.
 interface Area {
     readonly title: string;
     readonly summary: string;
@@ -78,8 +78,8 @@ const areas: ReadonlyArray<Area> = [
                 <span class="gradient-text">Build beyond limits</span>
             </h1>
             <p class="lead rise rise-2">
-                Since {site.foundingYear}, we've built enterprise software for .NET, Kotlin, the JVM and Corda: the platforms and tools we
-                ship ourselves, the open-source libraries we maintain, and the systems we build alongside our clients.
+                Since {site.foundingYear}, we've been building software that lasts: the products we ship, the open-source libraries we share,
+                and the systems we build alongside our clients. AI makes us faster; engineers make sure it's right.
             </p>
         </div>
     </section>
@@ -109,7 +109,7 @@ const areas: ReadonlyArray<Area> = [
 
     <section class="section tone-alt" aria-labelledby="our-mission">
         <div class="container-wide split-layout">
-            <SectionHeader eyebrow="Mission statement" title="Our mission" highlight="Build the right tools, and share them" id="our-mission">
+            <SectionHeader eyebrow="Mission statement" title="Build the right tools" highlight="and share them" id="our-mission">
                 We're dedicated to building cohesive communities through open source, and to building the tools that help developers
                 work more effectively. As AI changes how software is made, we apply it through our consulting and engineering, and help
                 businesses understand where it fits.
@@ -147,7 +147,28 @@ const areas: ReadonlyArray<Area> = [
         </div>
     </section>
 
-    <section class="section tone-alt" aria-labelledby="what-we-stand-for">
+    <section class="section tone-alt" aria-labelledby="our-name">
+        <div class="container-wide split-layout">
+            <SectionHeader eyebrow="What's in a name" title="Why it's ONIXLabs" highlight="and not OnyxLabs" id="our-name" />
+            <div class="story reveal">
+                <p>
+                    Almost everyone gets our name wrong, and we can't really blame them: onyx, the stone, is spelled with a y. We've been
+                    OnyxLabs in more emails, invoices and introductions than we can count.
+                </p>
+                <p>
+                    But ONIX isn't a misspelling. It's an acronym for Open Networks of Information eXchange, and those networks can be
+                    digital ones or networks of people. We care about both.
+                </p>
+                <p>
+                    The O in our logo has a story of its own. We call it the Orb, and its outer ring is an everlasting rainbow of colour.
+                    That's deliberate: just as God established a covenant with Noah, we've established one with the developer community.
+                    What we release for free stays free, forever.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" aria-labelledby="what-we-stand-for">
         <div class="container-wide">
             <SectionHeader title="What we" highlight="stand for" id="what-we-stand-for" centered>
                 The principles behind everything we build, from a single library to a client's production system.
@@ -156,7 +177,7 @@ const areas: ReadonlyArray<Area> = [
         </div>
     </section>
 
-    <section class="section" aria-labelledby="the-team">
+    <section class="section tone-alt" aria-labelledby="the-team">
         <div class="container-wide">
             <SectionHeader title="The people" highlight="behind the code" id="the-team" centered>
                 We believe great software is a shared effort. We contribute to the tools we use, collaborate with the community, and
@@ -179,7 +200,7 @@ const areas: ReadonlyArray<Area> = [
         </div>
     </section>
 
-    <TalkToUsSection alternate />
+    <TalkToUsSection />
 </BaseLayout>
 
 <style>

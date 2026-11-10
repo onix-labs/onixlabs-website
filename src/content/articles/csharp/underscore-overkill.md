@@ -1,6 +1,5 @@
 ---
 title: "Underscore, Overkill"
-navigationTitle: "Underscore, Overkill"
 description: "Why prefixing members with underscores is overkill: the history of the convention, the arguments for it, and the readability costs it introduces."
 category: standards
 order: 2
@@ -8,7 +7,7 @@ path: /Documentation/CSharp/Underscore-Overkill
 published: 2022-05-02
 ---
 
-This article takes a deep dive into the use of underscores to denote member scope in code, exploring the historical context behind the convention, the common arguments made in its favor, the potential downsides it introduces in terms of readability and consistency, and the reasons why I personally believe that relying on more explicit naming conventions, rather than visual markers like underscores, leads to cleaner, more maintainable, and more modern codebases.
+This article takes a deep dive into the use of underscores to denote member scope in code, exploring the historical context behind the convention, the common arguments made in its favour, the potential downsides it introduces in terms of readability and consistency, and the reasons why I personally believe that relying on more explicit naming conventions, rather than visual markers like underscores, leads to cleaner, more maintainable, and more modern codebases.
 
 ## A Problem Disguised as Convention
 
@@ -89,7 +88,7 @@ At first glance, a `_` might suggest a member, but so does `this.`, and the latt
 
 > Resharper recommends it.
 
-Resharper also allows customising nearly every rule. Following a tool’s default blindly is not an act of professionalism, **it’s an abdication of judgment**. Tools should conform to thoughtful code standards, not the other way around.
+Resharper also allows customising nearly every rule. Following a tool’s default blindly is not an act of professionalism, **it’s an abdication of judgement**. Tools should conform to thoughtful code standards, not the other way around.
 
 > In a long function or method, I can immediately tell whether something is a member without scrolling.
 

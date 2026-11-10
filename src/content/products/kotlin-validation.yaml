@@ -10,16 +10,13 @@ description: >-
 callout: "Fluent, inspectable validation of object graphs"
 lead: "Declarative validation of whole object graphs, with every failure reported at its path."
 icon: /onixlabs/images/icons/kotlin/kotlin-validation-outline.svg
-iconAlt: "Graph Validation Library for Kotlin"
 summary: >-
     Fluent, declarative validation of object graphs, as a plugin for the Graph library. Rules are declared alongside
     each type's graph and reused wherever the type appears, nested objects are validated through their own graphs, and
     results report every failure with its path, a machine-readable rule identifier and its parameters. The rules can
     even be described without a subject.
-hook: "Rules declared once, failures you can act on."
 repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
 packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
-packagesLabel: "View Maven Packages"
 sections:
   - features:
         - title: "Validation DSL"

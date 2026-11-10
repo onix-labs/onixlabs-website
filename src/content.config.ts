@@ -19,9 +19,6 @@ const productFamilies = defineCollection({
         tilePath: z.string().startsWith('/Products/'),
         callout: z.string(),
         capabilitiesCallout: z.string(),
-        otherProductsHeadline: z.string(),
-        backgroundClass: z.enum(['bg-dotnet', 'bg-corda', 'bg-kotlin']),
-        heroBackgroundClass: z.enum(['bg-dotnet-fade', 'bg-corda-fade', 'bg-kotlin-fade']),
         packageRegistry: z.object({
             name: z.string(),
             programmingLanguage: z.string(),
@@ -42,16 +39,12 @@ const products = defineCollection({
         callout: z.string(),
         // The hero's standfirst: one short statement of what it is and why it matters.
         lead: z.string(),
+        // The product's outline emblem, for structured data and the sibling tiles of families without glass icons.
         icon: publicImage,
-        iconAlt: z.string().min(1),
-        // The Phosphor icon on its tile on the Products index, by file name in src/icons.
+        // The description in the page's structured data.
         summary: z.string(),
-        hook: z.string(),
-        // Card text on the Products index and sibling product pages; falls back to `summary` when omitted.
-        overview: z.string().optional(),
         repositoryUrl: z.url(),
         packagesUrl: z.url(),
-        packagesLabel: z.string(),
         sections: z.array(z.object({
             heading: z.string().optional(),
             paragraphs: z.array(z.string()).default([]),
@@ -70,7 +63,6 @@ const articles = defineCollection({
     loader: glob({ pattern: '**/*.md', base: 'src/content/articles' }),
     schema: z.object({
         title: z.string(),
-        navigationTitle: z.string(),
         description: metaDescription,
         category: z.enum(['products', 'dotnet', 'standards', 'corda']),
         order: z.number().int(),
@@ -91,7 +83,6 @@ const contributors = defineCollection({
         path: sitePath.startsWith('/archive/Contributors/'),
         jobTitle: z.string(),
         accent: z.enum(['blue', 'rose', 'coral', 'teal']),
-        headline: z.string(),
         teaser: z.string(),
         description: metaDescription,
         photo: publicImage,
@@ -115,8 +106,8 @@ const aero = defineCollection({
     schema: z.object({
         principles: z.array(z.object({
             title: z.string(),
-            // The name of an SVG in src/icons.
-            icon: z.string(),
+            // A glass icon in public/onixlabs/images/icons/glass.
+            glass: z.string(),
             body: z.string(),
         })).min(1),
         architecture: z.array(z.object({
@@ -195,7 +186,6 @@ const libraryPages = defineCollection({
             docsUrl: z.url().optional(),
             // Its registry listing, when it isn't the single package packageUrl points at.
             registryUrl: z.url().optional(),
-            points: z.array(z.object({ title: z.string(), body: z.string() })).min(1).max(4),
         })).min(1),
     }),
 });

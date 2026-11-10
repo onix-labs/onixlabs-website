@@ -70,7 +70,7 @@ function registryUrlFor(pkg: Package): string {
 >
     <div class={`family-${family.id}`}>
         <LibraryHero title={page.title} highlight={page.highlight} highlightClass={`text-pair from-${highlightFrom} to-${highlightTo}`} lead={page.lead}>
-            <Button slot="actions" href={page.packagesUrl} variant="primary" size="large" icon="package" external>Browse on {page.packageRegistry}</Button>
+            <Button slot="actions" href={page.packagesUrl} variant="primary" size="large" external>Browse on {page.packageRegistry}</Button>
         </LibraryHero>
 
         {page.packages.map((pkg: Package, index: number) => (
@@ -81,7 +81,6 @@ function registryUrlFor(pkg: Package): string {
                 highlight={pkg.highlight}
                 summary={pkg.summary}
                 details={pkg.details}
-                points={pkg.points}
                 pagePath={pkg.pagePath}
                 docsUrl={docsUrlFor(pkg)}
                 registryUrl={registryUrlFor(pkg)}

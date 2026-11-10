@@ -35,15 +35,6 @@ dotnet:
         - "Core gives them a place in the code itself. Small, dependable types make absence, failure and intent explicit, so the compiler and the next developer can see what you meant, and a rule written once can be reused anywhere."
       pagePath: /Products/DotNet/Core
       docsPage: OnixLabs.Core
-      points:
-        - title: Optional and Result
-          body: "Optional<T> and Result<T> make absence and failure part of a method's signature, so neither can be silently ignored."
-        - title: Specifications
-          body: "Write a business rule once and reuse it anywhere. Specifications combine with And, Or and Not, and run in memory or translate into database queries."
-        - title: Strongly Typed Enumerations
-          body: "Enumeration<T> replaces bare enums with strongly typed values that compare by value and can carry data of their own."
-        - title: Text Encodings
-          body: "Base16, Base32, Base58 and Base64 as types of their own, so encoded text is never mistaken for an ordinary string."
 
     - name: OnixLabs.Numerics
       glass: geometry
@@ -56,15 +47,6 @@ dotnet:
         - "Numerics extends .NET's own generic math with wider and more precise numbers, so your code reads the same however demanding the calculation, and you decide what equality means."
       pagePath: /Products/DotNet/Numerics
       docsPage: OnixLabs.Numerics
-      points:
-        - title: BigDecimal
-          body: "An arbitrary-precision decimal built on .NET's generic math, with strict and semantic equality, so 1.20 and 1.2 can be the same number or different ones as the situation demands."
-        - title: Wider Integers
-          body: "Int256, UInt256, Int512 and UInt512, which plug into the same generic math interfaces as the built-in integer types."
-        - title: Extended-Precision Floating Point
-          body: "Float128 and Float256, for calculations where a double runs out of precision."
-        - title: NumberInfo
-          body: "Takes any decimal number apart into its unscaled value, scale, significand, exponent and sign."
 
     - name: OnixLabs.Security
       glass: shield
@@ -78,36 +60,18 @@ dotnet:
       pagePath: /Products/DotNet/Security
       docsPage: OnixLabs.Security
       registryUrl: https://www.nuget.org/packages?q=onixlabs.security
-      points:
-        - title: Security Tokens
-          body: "SecurityTokenBuilder generates immutable, value-compared tokens from the characters you choose, from a pseudo-random source or a cryptographically secure one when the token has to be unguessable."
-        - title: Keys and Signatures
-          body: "ECDH, ECDSA, EdDSA and RSA keys, with digital signatures and import and export in PEM and PKCS #8."
-        - title: Hashes as Values
-          body: "Hashes, named hashes and salts compare by value, Merkle trees build on hashes, and a fully managed FIPS 202 SHA-3 includes the SHAKE128 and SHAKE256 extendable-output functions."
-        - title: Secrets in Memory
-          body: "Sensitive bytes stay encrypted while they're in memory, and two secrets can be compared without exposing either."
 
     - name: OnixLabs.ElementFramework
       glass: graph
       title: Graph databases
       highlight: the Entity Framework way
       summary: >-
-        Graph databases, modeled in plain C#.
+        Graph databases, modelled in plain C#.
       details:
         - "Graph databases are a natural fit for connected data, but each speaks its own query language, and working with one often means writing queries by hand and tying your code to a single database."
         - "Element Framework lets you model your domain in plain C# and work with it the way Entity Framework works with relational data, through one model that runs on several graph databases and an in-memory store for tests."
       docsUrl: https://github.com/onix-labs/onixlabs-dotnet-element-framework/wiki
       registryUrl: https://www.nuget.org/packages?q=onixlabs.elementframework
-      points:
-        - title: Four Providers
-          body: "Neo4j, Apache AGE on PostgreSQL, ArangoDB and an in-memory store for tests. Every one passes the same conformance suite, so your model moves between them unchanged."
-        - title: Change Tracking
-          body: "Add nodes, connect them with edges and save the lot with SaveChangesAsync, inside a transaction when you need one."
-        - title: Typed Traversals
-          body: "Describe a traversal fluently in C#, and the provider turns it into Cypher or AQL for its database."
-        - title: Observable
-          body: "Every provider reports OpenTelemetry traces and metrics, ready for the monitoring you already run."
 
     - name: OnixLabs.DependencyInjection
       glass: dependency-injection
@@ -119,25 +83,18 @@ dotnet:
         - "As an application grows, so does the code that wires it together: long, repetitive registrations, with decisions like a service's lifetime hard-coded into them."
         - "DependencyInjection trims that setup down without replacing the container you already use, and lets configuration make the decisions that code shouldn't."
       docsPage: OnixLabs.DependencyInjection
-      points:
-        - title: Built on Microsoft's Abstractions
-          body: "Extension methods for IServiceCollection, so they work with the dependency injection your application already has."
-        - title: Lifetimes at the Call Site
-          body: "Choose whether a service is a singleton, scoped or transient where you register it, so configuration can make the decision."
-        - title: Keyed and Unkeyed Services
-          body: "Register both in the same consistent way, with cleaner calls and less repetition."
 
 corda:
   family: corda
   path: /Products/Corda
   pageTitle: "Corda Libraries"
   description: >-
-    Open-source Corda libraries from ONIXLabs: core contract and workflow APIs, a decentralized identity framework, and
+    Open-source Corda libraries from ONIXLabs: core contract and workflow APIs, a decentralised identity framework, and
     business network management.
   title: "Products for Corda"
   highlight: "Built for Trust"
   lead: >-
-    Open-source libraries for building CorDapps on Corda: the APIs every contract and workflow needs, decentralized
+    Open-source libraries for building CorDapps on Corda: the APIs every contract and workflow needs, decentralised
     identities inspired by W3C standards, and business networks that are run by an operator or govern themselves.
   repositoryUrl: https://github.com/onix-labs/onixlabs-corda-core
   docsUrl: https://github.com/onix-labs/onixlabs-corda-core/wiki
@@ -158,57 +115,30 @@ corda:
         - "Corda Core packages that groundwork as contract, workflow and integration APIs, with idiomatic Kotlin for vault queries and transactions, reusable flow steps and stronger state types, so every CorDapp starts from the same consistent foundations."
       pagePath: /Products/Corda/Core
       docsUrl: https://github.com/onix-labs/onixlabs-corda-core/wiki
-      points:
-        - title: Vault Query DSL
-          body: "Write vault queries in idiomatic Kotlin, behind adapters that behave the same through CordaRPCOps and ServiceHub."
-        - title: Transaction DSL
-          body: "Build transactions with inputs, outputs, commands and signatures grouped by intent."
-        - title: Stronger State Types
-          body: "Chained, hashable and resolvable states for verifiable histories and richer relationships."
-        - title: Signed Commands
-          body: "Commands signed by their originator, so a counterparty can see who initiated a transaction."
 
     - name: onixlabs-corda-identity-framework
       glass: corda-idfx
       title: Digital identity
       highlight: that stays in your control
       summary: >-
-        Decentralized identities for people, organizations and assets on Corda.
+        Decentralised identities for people, organisations and assets on Corda.
       details:
         - "Identity data tends to pile up in central stores that become targets, while every application keeps its own copy of the same facts. Proving one thing often means handing over far more than was needed."
-        - "The Identity Framework models identity as claims, inspired by the W3C standards for Verifiable Credentials and Decentralized Identifiers. Claims are shared on a need-to-know basis, referenced through pointers that keep their data private, and trusted through attestations, so applications can rely on the same facts without copying them."
+        - "The Identity Framework models identity as claims, inspired by the W3C standards for Verifiable Credentials and Decentralised Identifiers. Claims are shared on a need-to-know basis, referenced through pointers that keep their data private, and trusted through attestations, so applications can rely on the same facts without copying them."
       pagePath: /Products/Corda/Identity-Framework
       docsUrl: https://github.com/onix-labs/onixlabs-corda-identity-framework/wiki
-      points:
-        - title: Claims
-          body: "Statements about an individual, organization or asset, issued by one party to another or self-issued."
-        - title: Claim Pointers
-          body: "Reference a claim, at its latest or a specific version, while keeping its data private."
-        - title: Attestations
-          body: "Accept or reject a claim or any Corda state, so verifiers can trust it without seeing it."
-        - title: An Open Type Hierarchy
-          body: "Use the built-in claim types as they are, or extend them with claim types of your own."
 
     - name: onixlabs-corda-bnms
       glass: corda-bnms
       title: Business networks
       highlight: governed your way
       summary: >-
-        Membership and relationships for Corda business networks, centralized or decentralized.
+        Membership and relationships for Corda business networks, centralised or decentralised.
       details:
         - "Corda nodes often belong to several business networks, each with its own rules for identity and membership. Without common standards those networks can't work together, and nothing stops a member from simply asserting its own credentials."
         - "BNMS provides configurable standards for membership and multi-lateral relationships, built on the Identity Framework. A network can be run by an operator or govern itself, and attestations mean no membership or relationship is trusted until the network has accepted it."
       pagePath: /Products/Corda/Business-Network-Management-System
       docsUrl: https://github.com/onix-labs/onixlabs-corda-bnms#readme
-      points:
-        - title: Centralized or Decentralized
-          body: "Networks governed by an operator, or by their members, with the same APIs."
-        - title: Membership Management
-          body: "Members request to join, amend and leave, with roles, permissions and settings of their own."
-        - title: Relationship Management
-          body: "Multi-lateral agreements between members, protected by revocation locks."
-        - title: Attestations
-          body: "Memberships and relationships count only once they're attested, and every amendment needs attesting again."
 
 kotlin:
   family: kotlin
@@ -242,13 +172,6 @@ kotlin:
         - "Core gives those rules a shape of their own as composable, self-describing specifications, converts between types with explicit overflow and precision checks, and fills the everyday gaps in the standard library."
       pagePath: /Products/Kotlin/Core
       docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-core
-      points:
-        - title: Specifications
-          body: "Business rules as composable, self-describing objects."
-        - title: Checked Type Conversion
-          body: "Conversions that throw rather than overflow or lose precision."
-        - title: Everyday Extensions
-          body: "Helpers for numbers, strings, comparables, collections and reflection."
 
     - name: onixlabs-kotlin-graph
       glass: graph
@@ -261,13 +184,6 @@ kotlin:
         - "Graph lets you describe each type once in a declarative DSL. The description is immutable and thread-safe, nested types are resolved through a shared registry, and plugins such as validation and projection interpret it, with a precise path to every member."
       pagePath: /Products/Kotlin/Graph
       docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-graph
-      points:
-        - title: Graph DSL
-          body: "An immutable, thread-safe description of each type."
-        - title: Graph Paths
-          body: "A precise path to every member, in Kotlin, JSON Pointer or JSONPath form."
-        - title: Plugins
-          body: "Validation, projection and your own extensions, built on the same description."
 
     - name: onixlabs-kotlin-graph-validation
       glass: vials
@@ -280,13 +196,6 @@ kotlin:
         - "Graph Validation declares rules alongside each type's graph, descends into nested objects automatically, and returns every failure with its path and a machine-readable rule identifier. The rules can even be described without a subject, so you can see what will be checked before anything is."
       pagePath: /Products/Kotlin/Validation
       docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-graph-validation
-      points:
-        - title: Validation DSL
-          body: "Rules for properties, collections and maps, declared alongside each graph."
-        - title: Nested Validation
-          body: "Nested objects validated through their own registered graphs."
-        - title: Path-Addressed Results
-          body: "Every failure with its path and a machine-readable rule identifier."
 
     - name: onixlabs-kotlin-graph-projection
       glass: design
@@ -299,13 +208,6 @@ kotlin:
         - "Graph Projection maps objects by convention, matching constructor parameters and properties by name and converting types along the way. Where a mapping is unusual, a small DSL covers it, and when something fails, every problem is reported at once with its path."
       pagePath: /Products/Kotlin/Projection
       docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-graph-projection
-      points:
-        - title: Projection by Convention
-          body: "Parameters and properties matched by name, with little or no configuration."
-        - title: Type Conversion
-          body: "Collections, enums, nested classes and registered converters handled for you."
-        - title: Every Failure at Once
-          body: "One exception listing every problem with its path."
 
     - name: onixlabs-kotlin-scheduler
       glass: gauge
@@ -318,10 +220,3 @@ kotlin:
         - "Scheduler expresses those rules directly in a Kotlin DSL, with an explicit time zone for every calendar schedule, and runs tasks in-process with failures isolated per task and clear policies for overlapping and missed runs."
       pagePath: /Products/Kotlin/Scheduler
       docsUrl: https://github.com/onix-labs/onixlabs-kotlin#onixlabs-kotlin-scheduler
-      points:
-        - title: Calendar Schedules
-          body: "Daily, weekly, monthly and yearly rules, including ordinal days."
-        - title: Time Zones
-          body: "An explicit time zone for every calendar schedule, with daylight saving handled."
-        - title: Task Scheduler
-          body: "Isolated failures, with overlap and misfire policies."

@@ -1,6 +1,5 @@
 ---
 title: "HashCode Algorithms and Why They Matter"
-navigationTitle: "HashCode Algorithms and Why They Matter"
 description: "Why GetHashCode matters, how hash collisions happen, how to implement a hash algorithm such as FNV, and how to hash collections by their content."
 category: dotnet
 order: 2
@@ -265,4 +264,4 @@ public sealed class Signature(string algorithm, byte[] value) : IEquatable<Signa
 }
 ```
 
-For other collections, `OnixLabs.Core.Linq` provides the same `GetContentHashCode()` for any `IEnumerable<T>`. One caution applies to all of these, and to `System.HashCode` itself: the result is randomized for each process, so it's for lookups while your program runs, never for storing or sending anywhere.
+For other collections, `OnixLabs.Core.Linq` provides the same `GetContentHashCode()` for any `IEnumerable<T>`. One caution applies to all of these, and to `System.HashCode` itself: the result is randomised for each process, so it's for lookups while your program runs, never for storing or sending anywhere.

@@ -76,7 +76,7 @@ function nextFeatureNumber(): number {
     <div class={`family-${family.id}`}>
         <LibraryHero title={product.data.shortTitle} highlight={`for ${family.data.name}`} highlightClass={highlightClass} lead={product.data.lead}>
             <Fragment slot="actions">
-                <Button href={product.data.repositoryUrl} variant="primary" size="large" icon="github-logo" external>View on GitHub</Button>
+                <Button href={product.data.repositoryUrl} variant="primary" size="large" external>View on GitHub</Button>
                 <Button href={product.data.packagesUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>
                     Browse on {family.data.packageRegistry.name}
                 </Button>
@@ -147,14 +147,14 @@ function nextFeatureNumber(): number {
         margin-top: clamp(4rem, 3rem + 4vw, 7rem);
     }
 
-    .feature-list {
-        border-bottom: 1px solid var(--border);
-    }
-
     .feature-row {
         display: grid;
         gap: 0.75rem 4rem;
         padding-block: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+    }
+
+    /* Rules between the rows only, not above the first or below the last. */
+    .feature-row + .feature-row {
         border-top: 1px solid var(--border);
     }
 

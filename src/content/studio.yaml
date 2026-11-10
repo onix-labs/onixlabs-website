@@ -62,7 +62,7 @@ studio:
         - title: Hex View
           body: Insert, overwrite and delete bytes, with undo, and show 8, 16, 32 or 64 bytes to a row. Jump to the start, the end, or straight to where an executable's code begins.
         - title: Assembly
-          body: With the decoder plugins, disassemble native PE, ELF and Mach-O binaries for x86, x64, ARM and ARM64, as well as JVM class files, WebAssembly and .NET IL. It recognizes ReadyToRun .NET images and reads symbol files alongside them.
+          body: With the decoder plugins, disassemble native PE, ELF and Mach-O binaries for x86, x64, ARM and ARM64, as well as JVM class files, WebAssembly and .NET IL. It recognises ReadyToRun .NET images and reads symbol files alongside them.
         - title: Inspector
           body: Read the value at the cursor as a byte, word, integer, long, float, double, character or string. Switch the byte order, or between signed and unsigned, and every row updates.
 
@@ -79,7 +79,7 @@ studio:
         Not everything is code. The Markdown editor formats as you type, so notes and documentation look finished while you're
         still writing them.
       points:
-        - title: Live Diagrams and Math
+        - title: Live Diagrams and Maths
           body: Mermaid diagrams and KaTeX math render in place as you write them, alongside tables, footnotes and task lists. The ribbon inserts each one for you, so there's no syntax to remember.
         - title: Outline
           body: Every heading in one panel, which highlights the section you're reading as you scroll. Long documents stay easy to find your way around.

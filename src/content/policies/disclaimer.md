@@ -6,7 +6,7 @@ group: legal
 order: 5
 path: /Legal/Disclaimer
 effective: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-10
 ---
 
 We write the content on this website carefully and keep it up to date where we can. This page explains what it is, and isn't, intended to be. It should be read together with our [Terms and Conditions](/Legal/Terms).
@@ -23,7 +23,7 @@ Code samples are illustrations. They're often simplified to make a point and are
 
 ## Product information
 
-Descriptions of our products and libraries summarize what they do at the time of writing. Features, supported platforms and availability can change between releases, and pre-release software in particular may change significantly. Each product's repository, documentation and release notes are the authoritative record of what it does. Nothing on the website is a contractual commitment; commitments to clients are made only in written agreements.
+Descriptions of our products and libraries summarise what they do at the time of writing. Features, supported platforms and availability can change between releases, and pre-release software in particular may change significantly. Each product's repository, documentation and release notes are the authoritative record of what it does. Nothing on the website is a contractual commitment; commitments to clients are made only in written agreements.
 
 ## External links and third parties
 

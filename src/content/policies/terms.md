@@ -6,7 +6,7 @@ group: legal
 order: 4
 path: /Legal/Terms
 effective: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-10
 ---
 
 These terms apply to your use of this website, www.onixlabs.io. By using it, you accept them. If you don't, please don't use the site.
@@ -17,7 +17,7 @@ The website is operated by **ONIXLABS LIMITED**, trading as ONIXLabs, a private 
 
 ## These terms and our services
 
-These terms cover the website only. Any consulting or engineering services we provide, and any commercial license for our products, are governed by a separate written agreement between us and our client, and these terms don't form part of it. Nothing on the website is an offer capable of acceptance; it's an invitation to get in touch.
+These terms cover the website only. Any consulting or engineering services we provide, and any commercial licence for our products, are governed by a separate written agreement between us and our client, and these terms don't form part of it. Nothing on the website is an offer capable of acceptance; it's an invitation to get in touch.
 
 ## Using the website
 
@@ -26,7 +26,7 @@ The website is free to use. We may change, suspend or withdraw any part of it at
 When you use it, you must not:
 
 - use it in any way that breaks the law, or for any fraudulent or harmful purpose
-- try to gain unauthorized access to the website, the server it's hosted on, or any connected system
+- try to gain unauthorised access to the website, the server it's hosted on, or any connected system
 - introduce viruses or other malicious or technologically harmful material
 - interfere with the website's operation, including by denial-of-service attacks
 - copy or scrape its content in bulk, other than as normal search engine indexing allows
@@ -43,7 +43,7 @@ Third-party names and logos shown on the site, such as the technologies we work 
 
 ## Software downloads and open-source projects
 
-Software you download through this website, including ONIXLabs Studio, ONIXPlayer and our open-source libraries, is provided under the license that accompanies it, such as the Apache License 2.0 or the MIT License. That license governs your use of the software, not these terms. Some of this software is pre-release, beta software, and its license explains the extent to which it's provided "as is", without warranties.
+Software you download through this website, including ONIXLabs Studio, ONIXPlayer and our open-source libraries, is provided under the licence that accompanies it, such as the Apache License 2.0 or the MIT License. That licence governs your use of the software, not these terms. Some of this software is pre-release, beta software, and its licence explains the extent to which it's provided "as is", without warranties.
 
 ## Information on the website
 

@@ -1,5 +1,4 @@
 ---
-import Aurora from '../../components/Aurora.astro';
 import Specimen from '../Specimen.astro';
 ---
 <Specimen title="Principles" surface="none">
@@ -35,19 +34,6 @@ import Specimen from '../Specimen.astro';
         <div class="tile demo-tile reveal">reveal</div>
         <div class="tile demo-tile reveal-scale">reveal-scale</div>
         <div class="tile demo-tile settle">settle</div>
-    </div>
-</Specimen>
-
-<Specimen title="Aurora" padding="none" code={'<Aurora palette="brand" />  /* brand | aero | studio | player */'}>
-    <Fragment slot="notes"><p>Brand light drifting slowly behind a hero, in both themes. Each capstone product has its own palette.</p></Fragment>
-    <div class="aurora-demo">
-        <Aurora />
-        <p class="label">Aurora · brand</p>
-    </div>
-    <div class="aurora-row">
-        <div class="aurora-demo small"><Aurora palette="aero" /><p class="label">aero</p></div>
-        <div class="aurora-demo small"><Aurora palette="studio" /><p class="label">studio</p></div>
-        <div class="aurora-demo small"><Aurora palette="player" /><p class="label">player</p></div>
     </div>
 </Specimen>
 
@@ -92,39 +78,5 @@ import Specimen from '../Specimen.astro';
         box-shadow: var(--shadow-tile);
         font-family: var(--font-mono);
         font-size: var(--text-sm);
-    }
-
-    .aurora-demo {
-        position: relative;
-        display: grid;
-        place-items: end start;
-        height: 18rem;
-        padding: 1.5rem;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        background: var(--bg);
-        isolation: isolate;
-        overflow: hidden;
-    }
-
-    .aurora-demo :global(.aurora) {
-        -webkit-mask-image: none;
-        mask-image: none;
-    }
-
-    .aurora-row {
-        display: grid;
-        gap: var(--tile-gap);
-        margin-top: var(--tile-gap);
-    }
-
-    @media (min-width: 48rem) {
-        .aurora-row {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    .aurora-demo.small {
-        height: 12rem;
     }
 </style>

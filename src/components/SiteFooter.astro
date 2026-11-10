@@ -16,8 +16,14 @@ const libraryPages: ReadonlyArray<CollectionEntry<'libraryPages'>> = await getCo
 const policies: ReadonlyArray<CollectionEntry<'policies'>> = await loadPolicies();
 const footerLinks: ReadonlyArray<SocialLink> = site.socialLinks.filter((link: SocialLink): boolean => link.isInFooter);
 
-function policiesIn(group: PolicyGroup): ReadonlyArray<CollectionEntry<'policies'>> {
-    return policies.filter((policy: CollectionEntry<'policies'>): boolean => policy.data.group === group.id);
+// A footer column: a group, followed by the policies of any group folded into it.
+const footerColumns: ReadonlyArray<PolicyGroup> = policyGroups.filter((group: PolicyGroup): boolean => group.footerColumn === undefined);
+
+function policiesIn(column: PolicyGroup): ReadonlyArray<CollectionEntry<'policies'>> {
+    return policyGroups
+        .filter((group: PolicyGroup): boolean => (group.footerColumn ?? group.id) === column.id)
+        .flatMap((group: PolicyGroup): ReadonlyArray<CollectionEntry<'policies'>> =>
+            policies.filter((policy: CollectionEntry<'policies'>): boolean => policy.data.group === group.id));
 }
 
 // A family's root page, or its tile on /Products until it has one.
@@ -41,13 +47,14 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
                             </a>
                         </li>
                     ))}
+                    <li><a class="footer-email" href={`mailto:${site.company.email}`}>{site.company.email}</a></li>
                 </ul>
             </div>
 
             <nav class="footer-column" aria-labelledby="footer-products">
                 <h2 id="footer-products">Products</h2>
                 <ul role="list">
-                    <li><a href="/Products/Studio">ONIXLabs Studio</a></li>
+                    <li><a href="/Products/Studio">Studio</a></li>
                     <li><a href="/Products/Aero">Aero</a></li>
                     {families.map((family: CollectionEntry<'productFamilies'>) => (
                         <li><a href={familyHref(family)}>{family.data.name} libraries</a></li>
@@ -67,7 +74,7 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
                 </ul>
             </nav>
 
-            {policyGroups.map((group: PolicyGroup) => (
+            {footerColumns.map((group: PolicyGroup) => (
                 <nav class="footer-column" aria-labelledby={`footer-${group.id}`}>
                     <h2 id={`footer-${group.id}`}>{group.name}</h2>
                     <ul role="list">
@@ -111,7 +118,7 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
 
     @media (min-width: 56rem) {
         .footer-grid {
-            grid-template-columns: 1.6fr repeat(5, 1fr);
+            grid-template-columns: 1.6fr repeat(4, 1fr);
         }
 
         .footer-brand {
@@ -158,6 +165,15 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
         color: var(--heading);
     }
 
+    /* The address sits in the row with the social icons, as a pill rather than a circle. */
+    .social a.footer-email {
+        width: auto;
+        padding-inline: 0.75rem;
+        border-radius: 999px;
+        font-size: var(--text-sm);
+        text-decoration: none;
+    }
+
     .footer-column h2 {
         margin-bottom: 0.75rem;
         color: var(--heading);
@@ -182,5 +198,35 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
 
     .footer-copyright {
         margin-top: 2.5rem;
+    }
+
+    /* Narrow screens, where the brand sits above the columns: everything is centred, and the social links wear their hover
+       tint from the start, since there's no hover to reveal it. */
+    @media (max-width: 55.99rem) {
+        .footer-brand {
+            justify-items: center;
+            max-width: none;
+            text-align: center;
+        }
+
+        .social {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-left: 0;
+        }
+
+        .social a {
+            background: color-mix(in srgb, var(--heading) 8%, transparent);
+            color: var(--heading);
+        }
+
+        .footer-column {
+            text-align: center;
+        }
+
+        .footer-copyright {
+            text-align: center;
+        }
     }
 </style>

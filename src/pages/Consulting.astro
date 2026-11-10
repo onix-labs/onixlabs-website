@@ -4,6 +4,7 @@ import GlassAura from '../components/GlassAura.astro';
 import PageHero from '../components/PageHero.astro';
 import TalkToUsSection from '../components/TalkToUsSection.astro';
 import type { Principle } from '../config/principle';
+import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 // `icon` names a glass icon in public/onixlabs/images/icons/glass.
@@ -27,8 +28,8 @@ const services: ReadonlyArray<Principle> = [
         untangling legacy code, our engineering-first consulting cuts through the noise to deliver real solutions, partnering with your
         team across the whole lifecycle to ship software that works.
         <div slot="actions" class="button-pair">
-            <Button href="/Contact?reason=consulting" variant="primary" size="large" icon="paper-plane-tilt">Send a message</Button>
-            <Button href="https://calendly.com/matthew-layton/30min" variant="ghost" size="large" trailingIcon="arrow-right-bold" external>Book a meeting</Button>
+            <Button href="/Contact?reason=consulting" variant="primary" size="large">Send a message</Button>
+            <Button href={site.calendlyUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>Book a meeting</Button>
         </div>
         <div slot="media" class="container-wide">
             <ol class="grid grid-3 services" role="list">
@@ -64,7 +65,6 @@ const services: ReadonlyArray<Principle> = [
     }
 
     .service :global(.service-icon) {
-        --aura-blur: 3rem;
         --aura-scale: 1.4;
         width: 11rem;
         margin-bottom: 1rem;

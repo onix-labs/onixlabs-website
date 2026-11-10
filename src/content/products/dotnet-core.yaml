@@ -10,18 +10,13 @@ description: >-
 callout: "Powerful, general-purpose APIs for .NET developers"
 lead: "Essential abstractions and utilities for clean, consistent .NET code, with explicit, exception-free error handling built in."
 icon: /onixlabs/images/icons/dotnet/dotnet-core-outline.svg
-iconAlt: "Core Library for .NET"
 summary: >-
     Foundational primitives, patterns and extensions that fill common gaps in .NET's base class library. It brings
     explicit, exception-free error handling with Result and Optional, reusable specifications, smart enumerations, guard
     clauses and strongly typed text encodings, and is the base layer for the other ONIXLabs libraries while remaining
     useful on its own.
-hook: >-
-    Designed to be lightweight and reusable, this module serves as the base layer for other ONIXLabs components while
-    remaining broadly useful on its own.
 repositoryUrl: https://github.com/onix-labs/onixlabs-dotnet
 packagesUrl: https://www.nuget.org/packages?q=OnixLabs.Core
-packagesLabel: "View NuGet Packages"
 sections:
   - features:
         - title: "Results Instead of Exceptions"
@@ -46,7 +41,7 @@ sections:
               providers can translate them into database queries.
         - title: "Smart Enumerations"
           body: >-
-              Enumeration<T> replaces bare enums with strongly typed classes that can carry data and behavior of their
+              Enumeration<T> replaces bare enums with strongly typed classes that can carry data and behaviour of their
               own. Look entries up by name or value, list them all, and compare them by value. Each type's entries are
               discovered once and cached in frozen collections, so lookups stay fast.
         - title: "Guard Clauses"
@@ -72,7 +67,7 @@ sections:
           body: >-
               IBinaryConvertible, IMemoryBinaryConvertible and ISpanBinaryConvertible give types a standard way to
               expose their underlying bytes as a read-only span or memory. The encoded text types implement them, and so
-              can your own types, for serialization, hashing and other low-level work.
+              can your own types, for serialisation, hashing and other low-level work.
         - title: "LINQ Extensions"
           body: >-
               The queries LINQ leaves out: AllEqualBy and AnyEqualBy, None and CountNot, IsEmpty and IsSingle, WhereNot

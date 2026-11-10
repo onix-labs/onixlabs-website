@@ -6,12 +6,12 @@ group: responsibility
 order: 4
 path: /Legal/Modern-Slavery
 effective: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-10
 ---
 
 ## A voluntary statement
 
-Section 54 of the **Modern Slavery Act 2015** requires commercial organizations with an annual turnover of £36 million or more to publish a slavery and human trafficking statement. ONIXLABS LIMITED is well below that threshold, so this statement is **voluntary**, and it isn't a statement made under that section. We publish it because we oppose modern slavery and human trafficking, and because our clients may reasonably want to know our position.
+Section 54 of the **Modern Slavery Act 2015** requires commercial organisations with an annual turnover of £36 million or more to publish a slavery and human trafficking statement. ONIXLABS LIMITED is well below that threshold, so this statement is **voluntary**, and it isn't a statement made under that section. We publish it because we oppose modern slavery and human trafficking, and because our clients may reasonably want to know our position.
 
 ## Our business
 

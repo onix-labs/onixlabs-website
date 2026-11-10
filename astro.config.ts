@@ -7,7 +7,6 @@ import rehypeExternalLinks from 'rehype-external-links';
 import { site } from './src/config/site';
 import { toCanonicalPath } from './src/config/to-canonical-path';
 import { emitSectionIndexes } from './src/integrations/emit-section-indexes';
-import { rehypeBootstrapTables } from './src/markdown/rehype-bootstrap-tables';
 import { rehypeFocusableCodeBlocks } from './src/markdown/rehype-focusable-code-blocks';
 
 // URLs keep the PascalCase, extension-less paths of the Blazor site (e.g. /Products/DotNet/Core).
@@ -39,7 +38,6 @@ export default defineConfig({
         syntaxHighlight: 'prism',
         processor: unified({
             rehypePlugins: [
-                rehypeBootstrapTables,
                 rehypeFocusableCodeBlocks,
                 [rehypeExternalLinks, {
                     target: '_blank',

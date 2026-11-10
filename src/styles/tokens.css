@@ -94,7 +94,6 @@
     --container-narrow: 43rem;
     --lead-width: 56rem;                /* Every standfirst: wide enough to breathe, short of an unreadable line. */
     --header-height: 4.5rem;            /* includes 0.5rem of vertical padding above and below the bar's content */
-    --local-nav-height: 3.25rem;
 
     /* Radius (Stride). The scale is set in the @supports blocks at the end: wider for squircle corners, narrower for
        circular ones, so the perceived roundness is the same either way. The pill is constant. */
@@ -105,6 +104,9 @@
     --shadow-sm: 0 0.125rem 0.25rem rgba(16, 24, 40, 0.075);
     --shadow-md: 0 0.5rem 1rem rgba(16, 24, 40, 0.12);
     --shadow-button-hover: 0 0.5rem 1rem rgba(16, 24, 40, 0.22);
+    /* The light top edge and dark bottom edge of a raised surface, as inset shadows: they follow a rounded corner, where
+       a top and bottom border taper away and render jagged. Elements set --edge-top and --edge-bottom. */
+    --edge-shadow: inset 0 var(--border-width) 0 var(--edge-top), inset 0 calc(-1 * var(--border-width)) 0 var(--edge-bottom);
     --shadow-lg: 0 1rem 3rem rgba(16, 24, 40, 0.175);
 
     /* Motion (Stride) */
@@ -220,7 +222,7 @@
     --code-comment: #406c4b;            /* green */
     --code-operator: var(--text);
     --code-attribute: #815289;          /* violet */
-    --selection: rgba(161, 102, 171, 0.25);
+    --selection: color-mix(in srgb, var(--brand-blue) 25%, transparent);
     --glow: 0.3;
     --shadow-tile: var(--shadow-sm);
     --shadow-tile-hover: var(--shadow-md);
@@ -318,7 +320,7 @@
     --code-comment: var(--brand-green);
     --code-operator: var(--text);
     --code-attribute: #a974b3;          /* violet, lifted. AA */
-    --selection: rgba(161, 102, 171, 0.45);
+    --selection: color-mix(in srgb, var(--brand-blue) 45%, transparent);
     --glow: 0.45;
     --shadow-tile: var(--shadow-sm);
     --shadow-tile-hover: var(--shadow-md);

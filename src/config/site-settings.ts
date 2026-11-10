@@ -12,6 +12,7 @@ export interface SiteSettings {
     readonly logo: string;
     readonly foundingYear: number;
     readonly contactFormEndpoint: string;
+    readonly calendlyUrl: string;
     readonly socialLinks: ReadonlyArray<SocialLink>;
     readonly company: CompanyDetails;
 }

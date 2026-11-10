@@ -6,7 +6,7 @@ group: trust
 order: 2
 path: /Legal/Responsible-Disclosure
 effective: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-10
 ---
 
 We welcome reports from security researchers and users who believe they've found a vulnerability in our website or software. This policy explains how to report one, and what you can expect from us in return.
@@ -25,7 +25,7 @@ Please don't report vulnerabilities in public, such as in a GitHub issue, until 
 ## What's in scope
 
 - the website at onixlabs.io and its subdomains
-- software published by ONIXLabs, including ONIXLabs Studio, ONIXPlayer and our open-source libraries in the [onix-labs](https://github.com/onix-labs) organization on GitHub
+- software published by ONIXLabs, including ONIXLabs Studio, ONIXPlayer and our open-source libraries in the [onix-labs](https://github.com/onix-labs) organisation on GitHub
 
 ## What's out of scope
 
@@ -48,11 +48,11 @@ When investigating a vulnerability, please:
 - We'll investigate, keep you informed of our progress, and tell you when the issue is fixed.
 - With your permission, we'll credit you when we publish the fix.
 
-We don't run a paid bug bounty program.
+We don't run a paid bug bounty programme.
 
-## Legal safe harbor
+## Legal safe harbour
 
-If you act in good faith and follow this policy, we won't take legal action against you or ask law enforcement to investigate you for your research. This applies only to our own systems and software; we can't authorize testing of third-party systems. If you're unsure whether something you plan to do is covered, ask us first.
+If you act in good faith and follow this policy, we won't take legal action against you or ask law enforcement to investigate you for your research. This applies only to our own systems and software; we can't authorise testing of third-party systems. If you're unsure whether something you plan to do is covered, ask us first.
 
 ## security.txt
 

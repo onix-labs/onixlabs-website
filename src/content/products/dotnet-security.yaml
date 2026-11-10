@@ -10,16 +10,13 @@ description: >-
 callout: "Comprehensive security for your .NET application"
 lead: "Cryptography and secure data handling for .NET, from hashes and signatures to tokens and secrets kept safe in memory."
 icon: /onixlabs/images/icons/dotnet/dotnet-security-outline.svg
-iconAlt: "Security Library for .NET"
 summary: >-
     Tools for secure data handling and cryptography in .NET. Keys, signatures, hashes, salts and secrets are strongly
     typed values; ECDSA, EdDSA and RSA sign and verify data, ECDH agrees keys, and a managed FIPS 202 implementation
-    adds SHA-3 and SHAKE. Secrets and private keys stay encrypted in memory, Merkle trees summarize sets of data in a
+    adds SHA-3 and SHAKE. Secrets and private keys stay encrypted in memory, Merkle trees summarise sets of data in a
     single hash, and security tokens are generated from the characters you choose.
-hook: "Built for high-assurance environments, it’s the cryptographic backbone of the ONIXLabs ecosystem."
 repositoryUrl: https://github.com/onix-labs/onixlabs-dotnet
 packagesUrl: https://www.nuget.org/packages?q=OnixLabs.Security
-packagesLabel: "View NuGet Packages"
 sections:
   - features:
         - title: "Security Tokens"
@@ -65,7 +62,7 @@ sections:
         - title: "Merkle Trees"
           body: >-
               Build a Merkle tree from hashes, or from any of your own types that can hash themselves, with whichever
-              hash algorithm you choose. The root summarizes the whole set in a single hash, so two collections can be
+              hash algorithm you choose. The root summarises the whole set in a single hash, so two collections can be
               checked for integrity by comparing one value.
         - title: "Salts"
           body: >-

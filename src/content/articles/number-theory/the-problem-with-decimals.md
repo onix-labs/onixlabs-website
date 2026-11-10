@@ -1,6 +1,5 @@
 ---
 title: "The Problem with Decimals"
-navigationTitle: "The Problem With Decimals"
 description: "Why decimal precision and scale are lost between Java's BigDecimal and JavaScript numbers, and how to preserve them across front-end and back-end systems."
 category: dotnet
 order: 5

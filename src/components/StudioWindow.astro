@@ -24,8 +24,30 @@ if (screen === undefined) {
 const alt: string = decorative ? '' : screen.alt;
 ---
 <figure class:list={['studio-window', glow !== undefined && ['has-glow', `from-${glow[0]}`, `to-${glow[1]}`]]}>
-    <img class="shot-light" src={`/onixlabs/images/studio/${screen.id}-l.webp`} alt={alt} width={1712} height={1112} loading="lazy" fetchpriority={priority} decoding="async" />
-    <img class="shot-dark" src={`/onixlabs/images/studio/${screen.id}-d.webp`} alt={alt} width={1712} height={1112} loading="lazy" fetchpriority={priority} decoding="async" />
+    <img
+        class="shot-light"
+        src={`/onixlabs/images/studio/${screen.id}-l.webp`}
+        srcset={`/onixlabs/images/studio/${screen.id}-l-856.webp 856w, /onixlabs/images/studio/${screen.id}-l.webp 1712w`}
+        sizes="(min-width: 72rem) 48vw, 85vw"
+        alt={alt}
+        width={1712}
+        height={1112}
+        loading="lazy"
+        fetchpriority={priority}
+        decoding="async"
+    />
+    <img
+        class="shot-dark"
+        src={`/onixlabs/images/studio/${screen.id}-d.webp`}
+        srcset={`/onixlabs/images/studio/${screen.id}-d-856.webp 856w, /onixlabs/images/studio/${screen.id}-d.webp 1712w`}
+        sizes="(min-width: 72rem) 48vw, 85vw"
+        alt={alt}
+        width={1712}
+        height={1112}
+        loading="lazy"
+        fetchpriority={priority}
+        decoding="async"
+    />
 </figure>
 
 <style>

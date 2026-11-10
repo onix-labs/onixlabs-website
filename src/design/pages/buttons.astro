@@ -37,12 +37,13 @@ import Specimen from '../Specimen.astro';
     </div>
 </Specimen>
 
-<Specimen title="With icons" code={'<Button href="…" icon="github-logo" external>View on GitHub</Button>\n<Button href="…" variant="ghost" trailingIcon="arrow-right-bold">Find out more</Button>'}>
-    <Fragment slot="notes"><p>A leading icon names the destination; a trailing arrow says the action moves on. External links open in a new tab and say so to screen readers.</p></Fragment>
+<Specimen title="With icons" code={'<Button href="…" external>View on GitHub</Button>\n<Button href="…" variant="ghost" trailingIcon="arrow-right-bold">Find out more</Button>'}>
+    <Fragment slot="notes"><p>Buttons carry no leading icon: the label does the work. The one icon is the trailing arrow on a ghost button, which says the action moves on. External links open in a new tab and say so to screen readers.</p></Fragment>
     <div class="cluster">
-        <Button href="#with-icons" variant="primary" icon="paper-plane-tilt">Send a message</Button>
-        <Button href="https://github.com/onix-labs" icon="github-logo" external>View on GitHub</Button>
-        <Button href="#with-icons" icon="calendar-blank">Book a meeting</Button>
+        <Button href="#with-icons" variant="primary">Send a message</Button>
+        <Button href="https://github.com/onix-labs" external>View on GitHub</Button>
+        <Button href="#with-icons">Book a meeting</Button>
+        <Button href="#with-icons" variant="ghost" trailingIcon="arrow-right-bold">Find out more</Button>
     </div>
 </Specimen>
 

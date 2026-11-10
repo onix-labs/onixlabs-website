@@ -36,20 +36,24 @@ const release: StudioRelease | undefined = await loadStudioRelease();
                 <img
                     class="shot-light"
                     src={`/onixlabs/images/studio/${screen.id}-l.webp`}
+                    srcset={`/onixlabs/images/studio/${screen.id}-l-856.webp 856w, /onixlabs/images/studio/${screen.id}-l.webp 1712w`}
+                    sizes="(max-width: 40rem) 80vw, 68vw"
                     alt={screen.alt}
                     width={1712}
                     height={1112}
-                    loading="lazy"
+                    loading={index === 0 ? 'eager' : 'lazy'}
                     fetchpriority={index === 0 ? 'high' : 'low'}
                     decoding="async"
                 />
                 <img
                     class="shot-dark"
                     src={`/onixlabs/images/studio/${screen.id}-d.webp`}
+                    srcset={`/onixlabs/images/studio/${screen.id}-d-856.webp 856w, /onixlabs/images/studio/${screen.id}-d.webp 1712w`}
+                    sizes="(max-width: 40rem) 80vw, 68vw"
                     alt={screen.alt}
                     width={1712}
                     height={1112}
-                    loading="lazy"
+                    loading={index === 0 ? 'eager' : 'lazy'}
                     fetchpriority={index === 0 ? 'high' : 'low'}
                     decoding="async"
                 />
@@ -170,9 +174,9 @@ const release: StudioRelease | undefined = await loadStudioRelease();
      * the leaving screen stays above the one arriving.
      */
     /*
-     * The entrance: the showcase fades in and pops down into place, then the copy rises out from behind it. The copy
-     * only sits behind the showcase for the entrance, and moves back above it once it has landed. Filled backwards only,
-     * so nothing stays in effect at rest to soften the text.
+     * The entrance: the showcase pops down into place while the copy sharpens and rises beneath it. Nothing starts
+     * invisible: the front screen and the copy are the largest things on the page, and hiding them would hold back its
+     * largest paint. Filled backwards only, so nothing stays in effect at rest to soften the text.
      */
     @media (prefers-reduced-motion: no-preference) {
         .studio-hero {
@@ -182,7 +186,6 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         .studio-copy {
             --blur-duration: 1s;
             --blur-easing: var(--entrance-ease);
-            animation: copy-behind 1.5s step-end backwards;
         }
 
         .showcase {
@@ -217,12 +220,9 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         .shot-9 { --turn-delay: -30s; }
     }
 
-    @keyframes copy-behind {
-        from { z-index: -1; }
-    }
-
+    /* No fade: the front screen is the largest thing on the page, and hiding it would hold back the page's largest paint. */
     @keyframes showcase-arrive {
-        from { opacity: 0; transform: translateY(-6rem) scale(1.03); }
+        from { transform: translateY(-6rem) scale(1.03); }
     }
 
     @keyframes shot-fly {

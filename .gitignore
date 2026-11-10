@@ -7,3 +7,6 @@ playwright-report/
 .lighthouseci/
 .studio/*.user.json
 .tools/
+
+# macOS
+.DS_Store

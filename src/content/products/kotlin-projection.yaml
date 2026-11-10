@@ -10,15 +10,12 @@ description: >-
 callout: "Convention-based object-to-object projection"
 lead: "Convention-based object mapping that respects the Kotlin type system, with little or no mapping code."
 icon: /onixlabs/images/icons/kotlin/kotlin-projection-outline.svg
-iconAlt: "Graph Projection Library for Kotlin"
 summary: >-
     Unobtrusive, convention-based object-to-object projection, as a plugin for the Graph library. Constructor parameters
     and properties are matched by name and converted along the way, a small DSL covers unconventional mappings, nested
     objects and collections are projected recursively, and every failure is reported at once with its path.
-hook: "Mapping code you don't have to write."
 repositoryUrl: https://github.com/onix-labs/onixlabs-kotlin
 packagesUrl: https://github.com/orgs/onix-labs/packages?repo_name=onixlabs-kotlin
-packagesLabel: "View Maven Packages"
 sections:
   - features:
         - title: "Projection by Convention"
@@ -49,5 +46,5 @@ sections:
               ProjectionException, each with its target path, its source path and the cause.
         - title: "With or Without a Registry"
           body: >-
-              Project without a registry when you only need to once, or through a registry that honors each graph's
+              Project without a registry when you only need to once, or through a registry that honours each graph's
               member access policies.

@@ -1,6 +1,5 @@
 ---
 title: "Flow Design Guidelines - Part 3"
-navigationTitle: "Flow Design Guidelines (Part 3)"
 description: "How to implement Corda flows that perform vault queries, and the best practices and benefits of designing query flows this way."
 category: corda
 order: 3

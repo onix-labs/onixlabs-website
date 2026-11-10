@@ -15,7 +15,7 @@ interface Props {
 const { eyebrow, title, highlight, highlightStyle = 'muted', tone = 'default', align = 'center', class: className = '' }: Props = Astro.props;
 ---
 <section class:list={['page-hero', `align-${align}`, { 'tone-alt': tone === 'alt', 'tone-dark': tone === 'dark', 'has-media': Astro.slots.has('media') }, className]}>
-    <div class="container page-hero-copy recede">
+    <div class="container page-hero-copy">
         {Astro.slots.has('before') && <div class="rise"><slot name="before" /></div>}
         {eyebrow !== undefined && <p class="eyebrow rise">{eyebrow}</p>}
         <h1 class="rise">{title}{highlight !== undefined && <Fragment> <span class={highlightStyle === 'gradient' ? 'gradient-text' : 'headline-muted'}>{highlight}</span></Fragment>}</h1>

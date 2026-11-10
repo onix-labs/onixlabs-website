@@ -81,11 +81,6 @@ const currentPath: string = Astro.url.pathname;
         color: var(--header-text);
     }
 
-    /* Pages with a local navigation bar let the global bar scroll away, as the local one takes over. */
-    :global(html:has(.local-nav)) .site-header {
-        position: relative;
-    }
-
     .header-inner {
         display: flex;
         align-items: center;

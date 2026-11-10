@@ -70,7 +70,7 @@ const glowTimes: string = ['0', round(timeAt(0.5)), round(travelShare), round(ar
 ---
 <section class="section ai-circuit" aria-labelledby="ai-title">
     <div class="container-wide ai-circuit-layout">
-        <div class="board-slot">
+        <div class:list={['board-slot', level === 1 ? 'rise rise-2' : 'settle']}>
     <div class="board" aria-hidden="true">
         <svg viewBox={`0 0 ${String(size)} ${String(size)}`} focusable="false">
             <defs>
@@ -148,7 +148,7 @@ const glowTimes: string = ['0', round(timeAt(0.5)), round(travelShare), round(ar
     </div>
         </div>
 
-        <div class="ai-circuit-content">
+        <div class:list={['ai-circuit-content', { rise: level === 1 }]}>
             <SectionHeader title="Engineering with AI" highlight="Proven in practice" highlightStyle="gradient" id="ai-title" level={level}>
                 <slot name="lead">
                     We've embraced AI across our engineering, consulting and integration work, with a proven track record of turning it into
@@ -157,7 +157,7 @@ const glowTimes: string = ['0', round(timeAt(0.5)), round(travelShare), round(ar
             </SectionHeader>
             <div class="button-pair">
                 <slot name="actions">
-                    <Button href="/Engineering-With-AI" variant="primary" size="large" icon="info">Find out more</Button>
+                    <Button href="/Engineering-With-AI" variant="primary" size="large">Find out more</Button>
                     <Button href="/Contact?reason=consulting" variant="ghost" size="large" trailingIcon="arrow-right-bold">Talk to us about AI</Button>
                 </slot>
             </div>
@@ -166,9 +166,10 @@ const glowTimes: string = ['0', round(timeAt(0.5)), round(travelShare), round(ar
 </section>
 
 <style>
+    /* Clip rather than hide, so the band isn't a scroll container and scroll-driven effects inside it follow the page. */
     .ai-circuit {
         isolation: isolate;
-        overflow: hidden;
+        overflow: clip;
     }
 
     .ai-circuit-layout {

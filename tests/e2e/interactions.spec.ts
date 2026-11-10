@@ -61,7 +61,7 @@ test('the current page is marked in the navigation', async ({ page, isMobile }: 
 test('the contact form is prefilled from ?reason=', async ({ page }: TestArguments): Promise<void> => {
     await page.goto('/Contact?reason=aero-demo');
 
-    await expect(page.getByLabel('Reason', { exact: true })).toHaveValue('Aero Platform (Book a Demo)');
+    await expect(page.getByLabel('Reason', { exact: true })).toHaveValue('ONIXLabs Aero');
     await expect(page.getByLabel('Message', { exact: true })).toHaveValue("Hello. I'd like to see Aero in action.");
 });
 

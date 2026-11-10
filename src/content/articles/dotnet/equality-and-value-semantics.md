@@ -1,6 +1,5 @@
 ---
 title: "Equality and Value Semantics"
-navigationTitle: "Equality and Value Semantics"
 description: "How .NET tests equality, and how to give your own types value semantics with IEquatable<T>, Equals, the == and != operators, and GetHashCode."
 category: dotnet
 order: 1
@@ -147,7 +146,7 @@ This correlates with the default implementation for `Equals` on class types as d
 
 ##### Step 1: Implementing IEquatable<T>
 
-It might seem like overriding `Equals` on the `Product` class would be a good place to start, but actually a better place to start would be to implement `IEquatable<Product>` since this gives us a typed equality testing mechanism, and we can forward more generalized, object-based equality calls into this method.
+It might seem like overriding `Equals` on the `Product` class would be a good place to start, but actually a better place to start would be to implement `IEquatable<Product>` since this gives us a typed equality testing mechanism, and we can forward more generalised, object-based equality calls into this method.
 
 ```csharp
 public sealed class Product(string name, decimal price) : IEquatable<Product>
