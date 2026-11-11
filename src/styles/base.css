@@ -290,6 +290,60 @@ main:focus {
     font-size: var(--text-5xl);
 }
 
+/* A section split in two on wide screens: its header held on the left as the content on the right scrolls past it.
+   Stacks below 60rem. */
+.split-layout {
+    display: grid;
+    gap: 2.5rem 5rem;
+}
+
+@media (min-width: 60rem) {
+    .split-layout {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+
+    .split-layout .section-header {
+        position: sticky;
+        top: calc(var(--header-height) + 2rem);
+    }
+}
+
+.split-layout .section-header {
+    margin-bottom: 0;
+}
+
+.split-layout .section-header h2 {
+    font-size: var(--text-4xl);
+}
+
+.split-layout .headline-muted {
+    display: block;
+}
+
+/* Running text set large beside a split section's header: a story, a biography. */
+.story {
+    display: grid;
+    gap: 1.25rem;
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+    line-height: 1.65;
+}
+
+/* A person's accent colour, for their role (TeamTile, the profile pages), as --accent-ink. The inks rather than the brand
+   colours themselves: the role is small text, and the inks are deepened to AA on the light bands. In the dark theme each
+   colour is lifted as far as it must be to clear 4.5:1 against the lighter tile surface, which also clears the darker
+   bands (tokens.css records the surface colours). */
+.accent-blue { --accent-ink: var(--ink-blue); }
+.accent-rose { --accent-ink: var(--ink-rose); }
+.accent-coral { --accent-ink: var(--ink-coral); }
+.accent-teal { --accent-ink: var(--ink-teal); }
+
+[data-theme='dark'] .accent-blue { --accent-ink: color-mix(in srgb, var(--brand-blue), #fff 36%); }
+[data-theme='dark'] .accent-rose { --accent-ink: color-mix(in srgb, var(--brand-rose), #fff 30%); }
+[data-theme='dark'] .accent-coral { --accent-ink: color-mix(in srgb, var(--brand-coral), #fff 14%); }
+[data-theme='dark'] .accent-teal { --accent-ink: color-mix(in srgb, var(--brand-teal), #fff 6%); }
+
 /* Two-tone headline: the second phrase in grey. */
 .headline-muted {
     color: var(--text-muted);

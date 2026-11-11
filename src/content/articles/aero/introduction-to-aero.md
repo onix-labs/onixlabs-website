@@ -1,9 +1,10 @@
 ---
-title: "Introduction to Aero"
+title: "Introduction to ONIXLabs Aero"
 description: "An introduction to Aero, the ONIXLabs suite of .NET APIs that removes boilerplate so teams can build reliable, scalable enterprise software faster."
 category: products
-order: 1
+order: 2
 path: /Documentation/Aero/Introduction-To-Aero
+published: 2025-05-17
 ---
 
 In today’s world of high-speed innovation, building enterprise-grade software is harder than it should be. Developers are expected to move faster than ever, delivering systems that are reliable, secure, scalable, and maintainable from day one. But the journey from whiteboard to production is rarely smooth.

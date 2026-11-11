@@ -10,8 +10,8 @@ import { documentationCategories } from '../../config/documentation-categories';
 import type { DocumentationCategory } from '../../config/documentation-category';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-// The documentation hub: what's here, where the API reference lives, then a band for each category, its header held beside
-// the list of its articles. Categories with no articles yet are left out.
+// The documentation hub: what's here, a band for each category, its header held beside the list of its articles, then
+// where the API reference lives. Categories with no articles yet are left out.
 interface Reference {
     readonly name: string;
     readonly summary: string;
@@ -27,6 +27,9 @@ const references: ReadonlyArray<Reference> = [
     { name: 'Element Framework', summary: 'Architecture, providers and a complete example.', href: 'https://github.com/onix-labs/onixlabs-dotnet-element-framework/wiki' },
     { name: 'ONIXLabs Studio', summary: 'How Studio is built, and how its agents work.', href: 'https://github.com/onix-labs/onixlabs-studio/wiki' },
 ];
+
+// The bands alternate from the hero down, starting on the alternate tone: the categories, the API reference, then Talk to us.
+const referenceIsAlternate: boolean = categories.length % 2 === 0;
 
 function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEntry<'articles'>> {
     return articles.filter((article: CollectionEntry<'articles'>): boolean => article.data.category === category.id);
@@ -51,7 +54,20 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
         </div>
     </section>
 
-    <section class="section tone-alt" aria-labelledby="api-reference">
+    {categories.map((category: DocumentationCategory, index: number) => (
+        <section class:list={['section docs-category', { 'tone-alt': index % 2 === 0 }]} id={category.id} aria-labelledby={`${category.id}-title`}>
+            <div class="container-wide category-layout">
+                <div class="category-header">
+                    <SectionHeader eyebrow={category.name} title={category.title} highlight={category.highlight} id={`${category.id}-title`}>
+                        {category.lead}
+                    </SectionHeader>
+                </div>
+                <ArticleList articles={articlesIn(category)} />
+            </div>
+        </section>
+    ))}
+
+    <section class:list={['section', { 'tone-alt': referenceIsAlternate }]} aria-labelledby="api-reference">
         <div class="container-wide reference-layout">
             <SectionHeader eyebrow="API reference" title="Looking for" highlight="a particular type?" id="api-reference">
                 Reference documentation lives beside the code, in each project's wiki, so it changes when the code does.
@@ -70,20 +86,7 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
         </div>
     </section>
 
-    {categories.map((category: DocumentationCategory, index: number) => (
-        <section class:list={['section docs-category', { 'tone-alt': index % 2 === 1 }]} id={category.id} aria-labelledby={`${category.id}-title`}>
-            <div class="container-wide category-layout">
-                <div class="category-header">
-                    <SectionHeader eyebrow={category.name} title={category.title} highlight={category.highlight} id={`${category.id}-title`}>
-                        {category.lead}
-                    </SectionHeader>
-                </div>
-                <ArticleList articles={articlesIn(category)} />
-            </div>
-        </section>
-    ))}
-
-    <TalkToUsSection alternate={categories.length % 2 === 0} />
+    <TalkToUsSection alternate={!referenceIsAlternate} />
 </BaseLayout>
 
 <style>

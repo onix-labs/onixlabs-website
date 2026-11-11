@@ -235,43 +235,6 @@ const areas: ReadonlyArray<Area> = [
         text-wrap: balance;
     }
 
-    .split-layout {
-        display: grid;
-        gap: 2.5rem 5rem;
-    }
-
-    @media (min-width: 60rem) {
-        .split-layout {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            align-items: start;
-        }
-
-        .split-layout :global(.section-header) {
-            position: sticky;
-            top: calc(var(--header-height) + 2rem);
-        }
-    }
-
-    .split-layout :global(.section-header) {
-        margin-bottom: 0;
-    }
-
-    .split-layout :global(.section-header h2) {
-        font-size: var(--text-4xl);
-    }
-
-    .split-layout :global(.headline-muted) {
-        display: block;
-    }
-
-    .story {
-        display: grid;
-        gap: 1.25rem;
-        color: var(--text-muted);
-        font-size: var(--text-lg);
-        line-height: 1.65;
-    }
-
     .areas {
         display: grid;
     }

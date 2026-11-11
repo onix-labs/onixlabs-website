@@ -17,7 +17,7 @@ export function buildTechArticle(article: TechArticleDetails, site: SiteSettings
         url,
         mainEntityOfPage: url,
         articleSection: article.section,
-        inLanguage: 'en',
+        inLanguage: 'en-GB',
         author,
         publisher: { '@id': `${site.url}/#organization` },
         image: toAbsoluteUrl(site.defaultImage, site.url),

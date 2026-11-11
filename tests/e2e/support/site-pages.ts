@@ -1,6 +1,6 @@
 import type { SitePage } from './site-page';
 
-// Every page the site serves. Contributors stay under /archive for now.
+// Every page the site serves.
 export const sitePages: ReadonlyArray<SitePage> = [
     { path: '/', title: 'ONIXLabs | ONIXLabs Studio, the agentic development environment' },
     { path: '/Products', title: 'Products | ONIXLabs' },
@@ -38,7 +38,12 @@ export const sitePages: ReadonlyArray<SitePage> = [
     { path: '/Legal/Information-Security', title: 'Information Security | ONIXLabs' },
     { path: '/Legal/Responsible-Disclosure', title: 'Responsible Disclosure Policy | ONIXLabs' },
     { path: '/Documentation', title: 'Documentation | ONIXLabs' },
-    { path: '/Documentation/Aero/Introduction-To-Aero', title: 'Introduction to Aero | ONIXLabs' },
+    { path: '/Documentation/Aero/Introduction-To-Aero', title: 'Introduction to ONIXLabs Aero | ONIXLabs' },
+    { path: '/Documentation/Studio/Introduction-To-Studio', title: 'Introduction to ONIXLabs Studio | ONIXLabs' },
+    { path: '/Documentation/ONIXPlayer/Introduction-To-ONIXPlayer', title: 'Introduction to ONIXPlayer | ONIXLabs' },
+    { path: '/Documentation/DotNet/Introduction-To-The-DotNet-Libraries', title: 'Introduction to the ONIXLabs .NET Libraries | ONIXLabs' },
+    { path: '/Documentation/Corda/Introduction-To-The-Corda-Libraries', title: 'Introduction to the ONIXLabs Corda Libraries | ONIXLabs' },
+    { path: '/Documentation/Kotlin/Introduction-To-The-Kotlin-Libraries', title: 'Introduction to the ONIXLabs Kotlin Libraries | ONIXLabs' },
     { path: '/Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste', title: 'Syntactic Sugar, Bitter Aftertaste | ONIXLabs' },
     { path: '/Documentation/CSharp/Underscore-Overkill', title: 'Underscore, Overkill | ONIXLabs' },
     { path: '/Documentation/Corda/Flow-Design-Guidelines-1', title: 'Flow Design Guidelines - Part 1 | ONIXLabs' },
@@ -50,8 +55,8 @@ export const sitePages: ReadonlyArray<SitePage> = [
     { path: '/Documentation/DotNet/Understanding-Monads', title: 'Understanding Monads | ONIXLabs' },
     { path: '/Documentation/DotNet/Billion-Dollar-Mistakes-And-Functional-Fixes', title: 'Billion-Dollar Mistakes and Functional Fixes | ONIXLabs' },
     { path: '/Documentation/Number-Theory/The-Problem-With-Decimals', title: 'The Problem with Decimals | ONIXLabs' },
-    { path: '/archive/Contributors/Matthew-Layton', title: 'Matthew Layton, Founder & Architect | ONIXLabs' },
-    { path: '/archive/Contributors/Laura-Perez-Crespo', title: 'Laura Pérez Crespo, Software Engineer | ONIXLabs' },
-    { path: '/archive/Contributors/Adam-Dry', title: 'Adam Dry, Integration Specialist | ONIXLabs' },
-    { path: '/archive/Contributors/Ryan-Gledhill', title: 'Ryan Gledhill, Strategic Advisor | ONIXLabs' },
+    { path: '/Contributors/Matthew-Layton', title: 'Matthew Layton, Founder & Architect | ONIXLabs' },
+    { path: '/Contributors/Laura-Perez-Crespo', title: 'Laura Pérez Crespo, Software Engineer | ONIXLabs' },
+    { path: '/Contributors/Adam-Dry', title: 'Adam Dry, Integration Specialist | ONIXLabs' },
+    { path: '/Contributors/Ryan-Gledhill', title: 'Ryan Gledhill, Strategic Advisor | ONIXLabs' },
 ];

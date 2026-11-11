@@ -105,7 +105,7 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
     .footer-grid {
         display: grid;
         gap: 2rem;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+        grid-template-columns: repeat(2, auto);
     }
 
     .footer-brand {
@@ -114,6 +114,23 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
         align-content: start;
         grid-column: 1 / -1;
         max-width: 22rem;
+    }
+
+    /* Phones: two columns under the brand, filled down rather than across, so the site's links (Products, Company) sit on
+       the left and the policies (Legal, Responsibility) on the right. */
+    .footer-column:nth-of-type(1) { grid-area: 2 / 1; }
+    .footer-column:nth-of-type(2) { grid-area: 3 / 1; }
+    .footer-column:nth-of-type(3) { grid-area: 2 / 2; }
+    .footer-column:nth-of-type(4) { grid-area: 3 / 2; }
+
+    @media (min-width: 40rem) {
+        .footer-grid {
+            grid-template-columns: repeat(4, auto);
+        }
+
+        .footer-column:nth-of-type(n) {
+            grid-area: auto;
+        }
     }
 
     @media (min-width: 56rem) {
@@ -200,7 +217,7 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
         margin-top: 2.5rem;
     }
 
-    /* Narrow screens, where the brand sits above the columns: everything is centred, and the social links wear their hover
+    /* Narrow screens, where the brand sits above the columns: the brand and groups are centred, and the social links wear their hover
        tint from the start, since there's no hover to reveal it. */
     @media (max-width: 55.99rem) {
         .footer-brand {
@@ -221,8 +238,10 @@ function familyHref(family: CollectionEntry<'productFamilies'>): string {
             color: var(--heading);
         }
 
-        .footer-column {
-            text-align: center;
+        /* Each column is as wide as its widest group and the columns are spread evenly, so the groups sit centred while
+           their headings and links stay left-aligned, sharing a left edge with the group above or below. */
+        .footer-grid {
+            justify-content: space-evenly;
         }
 
         .footer-copyright {

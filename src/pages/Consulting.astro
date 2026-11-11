@@ -1,13 +1,14 @@
 ---
 import Button from '../components/Button.astro';
 import GlassAura from '../components/GlassAura.astro';
-import PageHero from '../components/PageHero.astro';
+import LibraryHero from '../components/LibraryHero.astro';
 import TalkToUsSection from '../components/TalkToUsSection.astro';
 import type { Principle } from '../config/principle';
 import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// `icon` names a glass icon in public/onixlabs/images/icons/glass.
+// Consulting: a hero blooming in the whole brand spectrum, as on Aero and Contact, then the services as glowing glass
+// icons in a band of their own, then an invitation to talk. `icon` names a glass icon in public/onixlabs/images/icons/glass.
 const services: ReadonlyArray<Principle> = [
     { title: 'Strategy', icon: 'dice', body: 'We help define your product roadmap, identify market fit, and architect scalable solutions aligned with your business goals.' },
     { title: 'Development', icon: 'code', body: 'We design and build robust, maintainable software using modern best practices, delivering clean, efficient code that scales with your team.' },
@@ -23,16 +24,21 @@ const services: ReadonlyArray<Principle> = [
     path="/Consulting"
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Consulting', path: '/Consulting' }]}
 >
-    <PageHero title="Engineering that fits" highlight="Built for your team" highlightStyle="gradient">
-        We help startups and enterprises build robust, scalable software, faster. Whether you're launching a product, scaling a system, or
-        untangling legacy code, our engineering-first consulting cuts through the noise to deliver real solutions, partnering with your
-        team across the whole lifecycle to ship software that works.
-        <div slot="actions" class="button-pair">
+    <LibraryHero
+        title="Engineering that fits"
+        highlight="Built for your team"
+        spectrum
+        lead="We help startups and enterprises build robust, scalable software, faster. Whether you're launching a product, scaling a system, or untangling legacy code, our engineering-first consulting cuts through the noise to deliver real solutions, partnering with your team across the whole lifecycle to ship software that works."
+    >
+        <Fragment slot="actions">
             <Button href="/Contact?reason=consulting" variant="primary" size="large">Send a message</Button>
             <Button href={site.calendlyUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>Book a meeting</Button>
-        </div>
-        <div slot="media" class="container-wide">
-            <ol class="grid grid-3 services" role="list">
+        </Fragment>
+    </LibraryHero>
+
+    <section class="section tone-alt" aria-label="Our services">
+        <div class="container-wide">
+            <ol class="grid services" role="list">
                 {services.map((service: Principle) => (
                     <li class="service reveal-scale">
                         <GlassAura name={service.icon} class="service-icon" />
@@ -42,9 +48,9 @@ const services: ReadonlyArray<Principle> = [
                 ))}
             </ol>
         </div>
-    </PageHero>
+    </section>
 
-    <TalkToUsSection alternate contactHref="/Contact?reason=consulting" />
+    <TalkToUsSection contactHref="/Contact?reason=consulting" />
 </BaseLayout>
 
 <style>
@@ -55,7 +61,19 @@ const services: ReadonlyArray<Principle> = [
         isolation: isolate;
     }
 
-    /* No tiles: each service is a large glass icon with its own colour blurred behind it. */
+    @media (min-width: 48rem) {
+        .services {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 72rem) {
+        .services {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    /* No tiles: each service is a large glass icon with its own colour blurred behind it, as Aero's principles are. */
     .service {
         display: grid;
         align-content: start;

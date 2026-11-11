@@ -174,9 +174,11 @@ const release: StudioRelease | undefined = await loadStudioRelease();
      * the leaving screen stays above the one arriving.
      */
     /*
-     * The entrance: the showcase pops down into place while the copy sharpens and rises beneath it. Nothing starts
-     * invisible: the front screen and the copy are the largest things on the page, and hiding them would hold back its
-     * largest paint. Filled backwards only, so nothing stays in effect at rest to soften the text.
+     * The entrance: the showcase pops down into place while the copy sharpens and rises out from behind it. The copy
+     * sits beneath the showcase until it has risen clear (copy-behind), so the opaque front screen hides the part still
+     * below it rather than the blurred text washing over the window. Nothing starts invisible: the front screen and the
+     * copy are the largest things on the page, and hiding them would hold back its largest paint. Filled backwards only,
+     * so nothing stays in effect at rest to soften the text.
      */
     @media (prefers-reduced-motion: no-preference) {
         .studio-hero {
@@ -186,6 +188,7 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         .studio-copy {
             --blur-duration: 1s;
             --blur-easing: var(--entrance-ease);
+            animation: copy-behind 1.5s step-end backwards;
         }
 
         .showcase {
@@ -218,6 +221,12 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         .shot-7 { --turn-delay: -40s; }
         .shot-8 { --turn-delay: -35s; }
         .shot-9 { --turn-delay: -30s; }
+    }
+
+    /* Beneath the showcase until the copy has risen clear of it, then back above it, so a screen scaling away passes
+       behind the text. */
+    @keyframes copy-behind {
+        from { z-index: -1; }
     }
 
     /* No fade: the front screen is the largest thing on the page, and hiding it would hold back the page's largest paint. */

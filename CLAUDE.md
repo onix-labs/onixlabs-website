@@ -21,10 +21,8 @@ This branch is rebuilding the site on a new design language. `review.md`, if pre
 
 - Redesigned: `/`, `/Products`, `/Products/Studio`, `/Products/Aero`, the library pages (`/Products/DotNet`, `/Products/Corda`,
   `/Products/Kotlin`, built from `library-pages.yaml`) and every product under them, `/Documentation`, `/About`,
-  `/Engineering-With-AI`, `/Contact` and `/Legal`. `LibraryHero` opens the library, product, Aero and Contact pages.
-  Still the previous site's page: `/Consulting`; `PageHero` exists for it, and `ContributorCard` for the archived
-  contributor pages.
-- `/archive/Contributors` holds the contributor pages, so their paths sit under `/archive` (the schema requires it).
+  `/Engineering-With-AI`, `/Consulting`, `/Contact` and `/Legal`. `LibraryHero` opens the library, product, Aero,
+  Consulting and Contact pages. The contributor profiles (`/Contributors/<Name>`) are redesigned too.
 - `/design` is the design language, served by the dev server only; production builds generate no pages for it. Its
   pages live in `src/design/pages/`, with the table of contents in `src/design/design-navigation.ts`. Add new patterns
   here before using them on a page, and remove a page's specimens when the pattern goes.
@@ -61,7 +59,7 @@ what exists before adding new styles:
   animation that runs without it.
 - **Components** (`src/components/`): `src/components/ui/` holds the Stride controls (`Card`, `Accordion`, `Modal`,
   `Tabs`, form inputs and so on), shown on the design pages and available to any page. `StudioHero` is the home page
-  hero and `LibraryHero` opens the library, product, Aero and Contact pages. `SectionHeader` gives the eyebrow, `<h2>`
+  hero and `LibraryHero` opens the library, product, Aero, Consulting and Contact pages. `SectionHeader` gives the eyebrow, `<h2>`
   and lead of each section; `GlassBand` (a band of copy beside a glowing glass icon), `LibrarySection`, `ProductTile`,
   `FamilyTile`, `TeamTile`, `PrinciplesBento`, `TechnologyMarquee`, `TalkToUsSection` and `Button` cover most content.
   `StudioFeature` sets a Studio screenshot beside its `FeaturePoints` in a band. `GlassIcon` renders a 3D glass icon
@@ -88,7 +86,9 @@ These came from real defects on iPhones and from the Lighthouse budget, so they 
 - **Edges are inset shadows**, via `--edge-shadow`, never top and bottom borders.
 - **Nothing in a hero starts at `opacity: 0`.** The largest element on a phone's first screen is usually the hero copy
   or the first screenshot; hiding it, even briefly, is what Lighthouse measures as LCP. Entrances may slide, scale or
-  sharpen, and `rise` may fade below the fold, but the hero's first paint must show its copy and image.
+  sharpen, and `rise` may fade below the fold, but the hero's first paint must show its copy and image. Layering is
+  fine where a fade isn't: `StudioHero` holds its rising copy beneath the opaque front screen (`copy-behind`), so the
+  blurred text never washes over the window.
 - **Images are served at the size they're shown.** The Studio screenshots have half-size copies (`-856.webp`, from
   `scripts/generate-studio-sizes.ts`) and a `srcset` with `sizes` wherever they appear; the first screenshot in a hero
   is `loading="eager"` with `fetchpriority="high"`, the rest lazy. New large images need the same treatment.
@@ -114,8 +114,8 @@ without a reason. When a field loses its last reader, remove it from the schema 
 | `libraryPages` | `src/content/library-pages.yaml` | `/Products/DotNet`, `/Products/Corda` and `/Products/Kotlin`: a hero and a band for each package |
 | `aero` | `src/content/aero.yaml` | The principles and architecture modules on `/Products/Aero` |
 | `studio` | `src/content/studio.yaml` | `/Products/Studio`: one feature for each screenshot, with the points that explain it, and the capabilities around them |
-| `articles` | `src/content/articles/<folder>/<slug>.md` | `/Documentation/...` articles, listed by `category` on the `/Documentation` hub (Products, .NET Libraries, Engineering Standards, Corda) |
-| `contributors` | `src/content/contributors/<slug>.md` | `/archive/Contributors/<Name>` and the team tiles on the home and About pages |
+| `articles` | `src/content/articles/<folder>/<slug>.md` | `/Documentation/...` articles, listed by `category` on the `/Documentation` hub (Products, Foundations, Engineering Standards, Corda) |
+| `contributors` | `src/content/contributors/<slug>.md` | `/Contributors/<Name>` and the team tiles on the home, About and other profile pages |
 | `technologies` | `src/content/technologies.yaml` | The technology logos on the home page (sorted by `id`) |
 | `policies` | `src/content/policies/<slug>.md` | `/Legal/<Name>` policy pages, listed by `group` (Legal, Responsibility, Trust) on the `/Legal` hub and in the footer |
 

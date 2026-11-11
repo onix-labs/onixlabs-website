@@ -31,7 +31,7 @@ Was that obvious? Perhaps. Many of us have used it countless times. But function
 
 **Familiarity** with the framework **doesn’t excuse ambiguity**.
 
-```
+```csharp
 var number = Convert.ToInt32(...);
 ```
 

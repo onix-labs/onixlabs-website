@@ -8,7 +8,8 @@ interface Props {
 }
 
 const { eager = false, tone = 'auto', class: className = '' }: Props = Astro.props;
-const alt: string = 'The Aero logo on a central block, surrounded by six module blocks';
+const alt: string =
+    'The Aero logo on a central block, surrounded by six module blocks: Logging, Configuration, Data Access, Security & Cryptography, Digital Identity, and Distributed Mesh Networks';
 ---
 <div class:list={['showcase', className]}>
     <span class="showcase-aura" aria-hidden="true">

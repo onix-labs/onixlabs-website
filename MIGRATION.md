@@ -36,7 +36,7 @@ checks each one.
 | `/Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste`, `/Underscore-Overkill` | ✅ |
 | `/Documentation/Corda/Flow-Design-Guidelines-1`, `-2`, `-3`, `/Relational-Data-And-Pointers` | ✅ |
 | `/Documentation/Number-Theory/The-Problem-With-Decimals` | ✅ |
-| `/Contributors/Matthew-Layton`, `/Laura-Perez-Crespo`, `/Adam-Dry`, `/Ryan-Gledhill` | ✅ (now under `/archive/Contributors/…`) |
+| `/Contributors/Matthew-Layton`, `/Laura-Perez-Crespo`, `/Adam-Dry`, `/Ryan-Gledhill` | ✅ |
 | `/Tools` and the seven `/Tools/*` pages | ❌ Not migrated: moving to a separate site. These now return the 404 page. |
 
 ### URL behaviour that changed

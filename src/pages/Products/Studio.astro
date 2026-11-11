@@ -60,7 +60,7 @@ const release: StudioRelease | undefined = await loadStudioRelease();
             </p>
             <div class="button-pair studio-page-actions">
                 <PlatformDownload release={release} releasesUrl={releasesUrl} />
-                <Button href={repositoryUrl} size="large" external>View on GitHub</Button>
+                <Button href={repositoryUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>View on GitHub</Button>
             </div>
         </div>
     </section>
@@ -92,7 +92,7 @@ const release: StudioRelease | undefined = await loadStudioRelease();
             </SectionHeader>
             <div class="button-pair download-actions">
                 <PlatformDownload release={release} releasesUrl={releasesUrl} />
-                <Button href={repositoryUrl} size="large" external>View on GitHub</Button>
+                <Button href={repositoryUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>View on GitHub</Button>
             </div>
         </div>
     </section>

@@ -3,8 +3,9 @@ import type { MarkdownHeading } from 'astro';
 
 // A long document laid out for reading: a header (label, title, summary and details such as dates), the text filling the
 // width beside an "On this page" outline of its `##` headings, which starts level with the label, stays in view as the
-// text scrolls, and marks the section being read (initialise-outline-scrollspy.ts). Below 72rem the outline sits
-// between the header and the text. Used by documentation articles and policy pages.
+// text scrolls, and marks the section being read (initialise-outline-scrollspy.ts). Below 72rem there's no room to keep
+// it in view, so it's hidden rather than left behind at the top of the page. Used by documentation articles and policy
+// pages.
 interface Props {
     readonly label?: string | undefined;
     readonly labelHref?: string | undefined;
@@ -102,6 +103,11 @@ const outline: ReadonlyArray<MarkdownHeading> = headings.filter((heading: Markdo
         min-width: 0;
     }
 
+    /* The header's rule and the gap below it already separate the text, so a heading that opens it adds no space of its own. */
+    .reading-body > :global(:first-child) {
+        margin-top: 0;
+    }
+
     /* A block, not the label's usual inline-flex, so it starts level with the header's label rather than sitting low in a
        line of body text. */
     #outline-title {
@@ -128,7 +134,8 @@ const outline: ReadonlyArray<MarkdownHeading> = headings.filter((heading: Markdo
         text-decoration: none;
     }
 
-    /* The section being read, marked by the scrollspy: brighter, with its own stretch of the rule beside the list. */
+    /* The section being read, marked by the scrollspy: brighter, with its own stretch of the rule beside the list, in the
+       same colour as its text. */
     .outline li {
         position: relative;
     }
@@ -146,21 +153,13 @@ const outline: ReadonlyArray<MarkdownHeading> = headings.filter((heading: Markdo
         left: calc(-0.9rem - 1px);
         width: 2px;
         border-radius: 1px;
-        background: linear-gradient(var(--brand-violet), var(--brand-blue));
+        background: var(--heading);
     }
 
-    /* Below 72rem the outline sits between the header and the text, where it's still useful. */
+    /* Below 72rem the outline would scroll away with the header, so it isn't shown. */
     @media (max-width: 71.99rem) {
         .outline {
-            order: -1;
-            grid-row: 2;
-            padding: 1.25rem 1.5rem;
-            border-radius: var(--radius);
-            background: var(--bg-alt);
-        }
-
-        .reading-body {
-            grid-row: 3;
+            display: none;
         }
     }
 </style>

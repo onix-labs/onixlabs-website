@@ -1,0 +1,163 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+
+import { loadContributors } from '../../collections/load-contributors';
+import Button from '../../components/Button.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import TalkToUsSection from '../../components/TalkToUsSection.astro';
+import TeamTile from '../../components/TeamTile.astro';
+import { site } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildProfilePage } from '../../seo/build-profile-page';
+import { PageType } from '../../seo/page-type';
+
+// A contributor's profile: who they are beside their portrait, which glows in the brand's colours, then their biography
+// in a split section (as the story on /About is), the rest of the team, and an invitation to talk.
+interface Props {
+    readonly contributor: CollectionEntry<'contributors'>;
+    readonly colleagues: ReadonlyArray<CollectionEntry<'contributors'>>;
+}
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+    const contributors: ReadonlyArray<CollectionEntry<'contributors'>> = await loadContributors();
+
+    return contributors.map((contributor: CollectionEntry<'contributors'>) => ({
+        params: { name: contributor.data.path.split('/')[2] },
+        props: {
+            contributor,
+            colleagues: contributors.filter((colleague: CollectionEntry<'contributors'>): boolean => colleague.id !== contributor.id),
+        },
+    }));
+}
+
+const { contributor, colleagues }: Props = Astro.props;
+const { Content } = await render(contributor);
+const { name, givenName, familyName, jobTitle, accent, teaser, description, photo, path, linkedInUrl, gitHubUrl }: CollectionEntry<'contributors'>['data'] =
+    contributor.data;
+---
+<BaseLayout
+    title={`${name}, ${jobTitle}`}
+    description={description}
+    path={path}
+    type={PageType.Profile}
+    image={photo}
+    imageAlt={`Portrait of ${name}`}
+    breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'About', path: '/About' }, { name, path }]}
+    structuredData={[
+        buildProfilePage({ name, givenName, familyName, jobTitle, description, path, photo, sameAs: [linkedInUrl, gitHubUrl] }, site),
+    ]}
+>
+    <section class="section profile-hero" aria-labelledby="profile-name">
+        <div class="container-wide product-split">
+            <div class="product-split-content">
+                <header class="profile-intro">
+                    <p class:list={['profile-role rise', `accent-${accent}`]}>{jobTitle}</p>
+                    <h1 id="profile-name" class="rise">{givenName} <span class="headline-muted">{familyName}</span></h1>
+                    <p class="lead rise rise-2">{teaser}</p>
+                </header>
+                <div class="button-pair rise rise-3">
+                    <Button href={linkedInUrl} variant="primary" size="large" external>Connect on LinkedIn</Button>
+                    <Button href={gitHubUrl} variant="ghost" size="large" trailingIcon="arrow-right-bold" external>View on GitHub</Button>
+                </div>
+            </div>
+            <div class="portrait-stage">
+                <div class="window-light" aria-hidden="true"></div>
+                <img class="portrait" src={photo} alt={`Portrait of ${name}`} width={640} height={640} loading="eager" fetchpriority="high" />
+            </div>
+        </div>
+    </section>
+
+    <section class="section tone-alt" aria-labelledby="biography">
+        <div class="container-wide split-layout">
+            <SectionHeader eyebrow="Biography" title="About" highlight={givenName} id="biography" />
+            <div class="story reveal">
+                <Content />
+            </div>
+        </div>
+    </section>
+
+    <section class="section" aria-labelledby="the-team">
+        <div class="container-wide">
+            <SectionHeader title="The people" highlight="behind the code" id="the-team" centered />
+            <div class="grid grid-3 shelf-mobile">
+                {colleagues.map((colleague: CollectionEntry<'contributors'>) => (
+                    <TeamTile
+                        name={colleague.data.name}
+                        jobTitle={colleague.data.jobTitle}
+                        accent={colleague.data.accent}
+                        photo={colleague.data.photo}
+                        href={colleague.data.path}
+                        teaser={colleague.data.teaser}
+                        gitHubUrl={colleague.data.gitHubUrl}
+                        linkedInUrl={colleague.data.linkedInUrl}
+                    />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <TalkToUsSection alternate />
+</BaseLayout>
+
+<style>
+    .profile-hero {
+        isolation: isolate;
+        overflow: hidden;
+        padding-top: clamp(3.5rem, 2.5rem + 5vw, 7rem);
+    }
+
+    .profile-intro {
+        display: grid;
+        gap: 1rem;
+    }
+
+    /* The role in the person's accent colour, as on their tile. */
+    .profile-role {
+        justify-self: start;
+        color: var(--accent-ink, var(--label));
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    /* Larger than a product's name in the same split: a person's name is short, and it's the page's whole subject. */
+    .profile-intro h1 {
+        color: var(--heading);
+        font-family: var(--font-display);
+        font-size: clamp(3rem, 2rem + 4.5vw, 6rem);
+        font-weight: 600;
+        letter-spacing: -0.04em;
+        line-height: 1;
+    }
+
+    .profile-intro .lead {
+        max-width: 36rem;
+    }
+
+    .portrait-stage {
+        position: relative;
+        justify-self: center;
+        width: min(100%, 30rem);
+    }
+
+    .portrait {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius-xl);
+        corner-shape: var(--corner-shape);
+        box-shadow: var(--shadow-tile);
+    }
+
+    /* Portrait first on phones, where the name follows it. */
+    @media (max-width: 71.99rem) {
+        .portrait-stage {
+            order: -1;
+            width: min(100%, 24rem);
+        }
+    }
+</style>

@@ -11,13 +11,12 @@ export const site: SiteSettings = {
     twitterHandle: '@onix_labs',
     defaultImage: '/onixlabs/images/logo/logo-og.png',
     defaultImageAlt: 'ONIXLabs logo',
-    logo: '/onixlabs/images/logo/logo-orb-96.png',
+    logo: '/onixlabs/images/logo/logo-orb-512.png',
     foundingYear: 2020,
     contactFormEndpoint: 'https://formspree.io/f/xwpqpeay',
     calendlyUrl: 'https://calendly.com/onixlabs',
     socialLinks: [
         { name: 'X (Twitter)', url: 'https://x.com/onix_labs', icon: 'x-logo', isInFooter: true },
-        { name: 'Hashnode', url: 'https://onixlabs.hashnode.dev/', icon: 'hash', isInFooter: false },
         { name: 'GitHub', url: 'https://github.com/onix-labs', icon: 'github-logo', isInFooter: true },
     ],
     // Verified against Companies House on 8 November 2026. The brand dates from 2020 (foundingYear); the company from 2021.

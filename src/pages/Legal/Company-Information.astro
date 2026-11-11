@@ -23,7 +23,7 @@ const company: typeof site.company = site.company;
         summary={`ONIXLabs is the trading name of ${company.legalName}, a private limited company registered in ${company.registeredIn}.`}
         headings={[]}
     >
-        <div class="table-responsive">
+        <div class="table-responsive company-details">
             <table>
                 <tbody>
                     <tr><th scope="row">Legal name</th><td>{company.legalName}</td></tr>
@@ -50,3 +50,22 @@ const company: typeof site.company = site.company;
         </p>
     </ReadingLayout>
 </BaseLayout>
+
+<style>
+    /* The details read as plain label and value pairs: no frame, rules or shaded labels, and flush with the text around
+       them. */
+    .company-details {
+        border: 0;
+        border-radius: 0;
+    }
+
+    .company-details :is(th, td) {
+        border: 0;
+        background: none;
+        padding-block: 0.45rem;
+    }
+
+    .company-details th {
+        padding-left: 0;
+    }
+</style>

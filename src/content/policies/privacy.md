@@ -6,7 +6,7 @@ group: legal
 order: 2
 path: /Legal/Privacy
 effective: 2026-11-08
-updated: 2026-11-10
+updated: 2026-11-11
 ---
 
 This policy explains what personal data we collect when you use this website or contact us, why we collect it, how long we keep it, who we share it with, and the rights you have. We keep it as short as we can while giving you everything the law requires.
@@ -70,7 +70,7 @@ We may also share personal data when the law requires it, to establish or defend
 
 ## International transfers
 
-The providers above are based in, or process data in, the United States. When personal data is transferred outside the UK, we rely on a lawful transfer mechanism: UK adequacy regulations, including the UK Extension to the EU-US Data Privacy Framework where the provider is certified under it, or the UK International Data Transfer Agreement or Addendum, which contractually require the provider to protect your data to UK standards. You can ask us for more detail about the safeguards for a particular provider.
+The providers above are based in, or process data in, the United States. When personal data is transferred outside the UK, we rely on the safeguards each provider offers for transfers from the UK, which are designed to protect your data to UK standards. You can ask us for more detail about the safeguards for a particular provider.
 
 ## How long we keep it
 

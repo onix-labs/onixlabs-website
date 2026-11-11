@@ -7,7 +7,7 @@ export function buildWebsite(site: SiteSettings): JsonLdObject {
         '@id': `${site.url}/#website`,
         name: site.name,
         url: `${site.url}/`,
-        inLanguage: 'en',
+        inLanguage: 'en-GB',
         publisher: { '@id': `${site.url}/#organization` },
     };
 }

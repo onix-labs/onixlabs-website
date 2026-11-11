@@ -80,7 +80,7 @@ const contributors = defineCollection({
         givenName: z.string(),
         familyName: z.string(),
         order: z.number().int(),
-        path: sitePath.startsWith('/archive/Contributors/'),
+        path: sitePath.startsWith('/Contributors/'),
         jobTitle: z.string(),
         accent: z.enum(['blue', 'rose', 'coral', 'teal']),
         teaser: z.string(),
