@@ -1,14 +1,15 @@
 ---
 title: "The Problem with Decimals"
-description: "Why decimal precision and scale are lost between Java's BigDecimal and JavaScript numbers, and how to preserve them across front-end and back-end systems."
+description: "Why decimal precision and scale are lost between back-end decimal types and JavaScript numbers, and how to preserve them across front-end and back-end systems."
 category: dotnet
 order: 5
 path: /Documentation/Number-Theory/The-Problem-With-Decimals
+updated: 2026-11-11
 ---
 
-Throughout the course of my career, it has become apparent that there is a recurring challenge faced by developers bridging JavaScript front-end systems with Java back-end systems, particularly concerning the **precision**, and/or **scale** of decimal numbers; for example, a figure precisely defined as `50.00` using Java’s `BigDecimal` data type will be truncated to `50` when represented using JavaScript’s `Number` data type.
+Across the systems we've built and worked on, one challenge keeps coming back: bridging JavaScript front-end systems with back-end systems written in languages that have a true decimal type, such as Java, C# or Kotlin, particularly concerning the **precision**, and/or **scale** of decimal numbers. For example, a figure precisely defined as `50.00` using Java’s `BigDecimal` or C#’s `decimal` will be truncated to `50` when represented using JavaScript’s `Number` data type.
 
-This discrepancy stems from inherent differences in how both languages treat numerical **precision** and/or **scale**, and highlights the necessity for a robust understanding of the respective data types when developing across these platforms.
+This discrepancy stems from inherent differences in how these languages treat numerical **precision** and/or **scale**, and highlights the necessity for a robust understanding of the respective data types when developing across these platforms. The examples below use Java on the back end, but the same problem, and the same solutions, apply whichever decimal type your back end uses.
 
 The underlying reason for this discrepancy is remarkably simple - implementation details!
 
@@ -16,7 +17,7 @@ The underlying reason for this discrepancy is remarkably simple - implementation
 
 JavaScript’s `Number` data type implements the IEEE 754 double precision floating-point standard which **inherently doesn’t preserve decimal places**.
 
-In contrast, Java’s `BigDecimal` data type **does not implement IEEE 754**. Rather, `BigDecimal` is just a sophisticated wrapper around a BigInteger which represents its unscaled value, and an int that determines where along the number line a decimal point should be placed.
+In contrast, decimal types such as Java’s `BigDecimal` and C#’s `decimal` **don't use binary floating point**, and keep the scale they were given. Java’s `BigDecimal`, for example, is just a sophisticated wrapper around a BigInteger which represents its unscaled value, and an int that determines where along the number line a decimal point should be placed.
 
 ## Precision and Scale
 
@@ -51,9 +52,29 @@ It could be contended by some engineers that for enhanced safety, all financial 
 
 Essentially, this is the underlying principle of the `BigDecimal` class; it is fundamentally an integer value to which a defined scale is applied for precise representation.
 
+## C#'s decimal Type
+
+C#’s `decimal` takes a different route to the same goal. It's a fixed-size, 128-bit type: a 96-bit integer and a scale from 0 to 28, which gives it 28 to 29 significant digits. Like `BigDecimal`, it remembers its scale, so `50.00m` and `50m` are equal in value but print differently, and a JSON serialiser writes `50.00` for the first. Its limits are fixed, though: values beyond its range overflow, and it can't hold more than 28 decimal places.
+
+## OnixLabs.Numerics BigDecimal
+
+For .NET code that needs more than `decimal` can hold, [OnixLabs.Numerics](/Products/DotNet/Numerics) provides a `BigDecimal` of its own. Like Java’s, it stores any decimal number exactly as an unscaled `BigInteger` and a scale, and it implements .NET's generic math interfaces, so it works with the same generic algorithms as the built-in number types.
+
+It also makes the question at the heart of this article explicit. Whether `1.20` equals `1.2` depends on what you're doing, so the `==` operator compares numeric value while `Equals` compares value and scale:
+
+```csharp
+BigDecimal a = new(120, 2); // 1.20
+BigDecimal b = new(12, 1);  // 1.2
+
+bool numericallyEqual = a == b;   // true
+bool strictlyEqual = a.Equals(b); // false
+```
+
+Whichever decimal type the back end uses, the scale it carries is only as safe as the boundary it has to cross.
+
 ## Crossing the Boundary
 
-Challenges pertaining to the maintenance of scale and precision arise predominantly within financial applications that necessitate rigorous representation of numerical scale. These challenges are particularly evident during the parsing process of numbers expressed via Java’s `BigDecimal` data type into JavaScript’s `Number` data type. The latter’s limitations in accurately representing high-precision decimal numbers can lead to discrepancies that are untenable in precise financial computations.
+Challenges pertaining to the maintenance of scale and precision arise predominantly within financial applications that necessitate rigorous representation of numerical scale. These challenges are particularly evident during the parsing process of numbers expressed via a decimal type, such as Java’s `BigDecimal`, into JavaScript’s `Number` data type. The examples that follow use Java, but the same approach applies to C#’s `decimal` or OnixLabs’ `BigDecimal`. The latter’s limitations in accurately representing high-precision decimal numbers can lead to discrepancies that are untenable in precise financial computations.
 
 We’ll start by defining a simple response class:
 
@@ -300,10 +321,10 @@ The underlying implementation of the `valueOf` and `toBigDecimal` functions simp
 
 ## Summary
 
-In summary, the `BigDecimal` data type in Java should be used for financial calculations where numerical accuracy is paramount and rounding errors are unacceptable. `BigDecimal` can represent numbers exactly without the precision loss inherent in floating-point calculations.
+In summary, a true decimal type, such as Java’s `BigDecimal`, C#’s `decimal` or OnixLabs’ `BigDecimal`, should be used for financial calculations where numerical accuracy is paramount and rounding errors are unacceptable. These types represent decimal numbers exactly, without the precision loss inherent in binary floating-point calculations.
 
 The `Number` data type in JavaScript, being the sole native data type for representing decimal numbers, poses significant constraints when it comes to the precise handling of numerical values. Its inherent limitations in managing precision and scale render it unsuitable for financial calculations where accuracy is imperative. Therefore, it is advisable to employ the `Number` data type primarily for display purposes, rather than for the execution of monetary computations where precision is critical.
 
-In the process of serialisation from `BigDecimal` to `Number` via JSON, it is imperative to retain the scale attribute of `BigDecimal` as this will facilitate the accurate representation of numerical values on the front-end, ensuring that the presentation aligns with the precision and scale defined in the back-end systems.
+In the process of serialisation from a decimal type to `Number` via JSON, it is imperative to retain the value's scale as this will facilitate the accurate representation of numerical values on the front-end, ensuring that the presentation aligns with the precision and scale defined in the back-end systems.
 
-Conversely, during the deserialisation process from `Number` to `BigDecimal` via JSON, it is incumbent upon the developer to rigorously validate and apply the appropriate scaling to requested values.
+Conversely, during the deserialisation process from `Number` to a decimal type via JSON, it is incumbent upon the developer to rigorously validate and apply the appropriate scaling to requested values.

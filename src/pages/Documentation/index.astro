@@ -104,7 +104,10 @@ function articlesIn(category: DocumentationCategory): ReadonlyArray<CollectionEn
         text-align: center;
     }
 
+    /* "Documentation" is one long word, wider than a phone at the display size, so it shrinks with the screen rather
+       than overflowing it. */
     .docs-hero h1 {
+        font-size: min(var(--text-hero), 11vw);
         color: var(--heading);
         font-family: var(--font-display);
         font-weight: 600;
