@@ -217,4 +217,7 @@ Playwright browsers (`npx playwright install chromium webkit`) and a prior build
 - **TypeScript:** follow the house style that `eslint.config.js` enforces: explicit types, no `any`, one exported
   type per file, named exports.
 - **Tidiness:** when a component, icon, image, style or content field loses its last user, delete it in the same
-  change. Nothing in `src/`, `public/` or the schema should exist only for history.
+  change. Nothing in `src/`, `public/` or the schema should exist only for history. The exception is the logo copies
+  that other ONIXLabs repositories' READMEs link to as raw files on `main`:
+  `OnixLabs.Web/wwwroot/onixlabs/images/logo/logo-full-light.svg` and
+  `src/assets/images/logo/full/original/original-md.png`. Keep them at those paths, and update them when the logo changes.
