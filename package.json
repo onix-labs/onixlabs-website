@@ -10,7 +10,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "lint": "eslint .",
+    "lint": "astro sync && eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "images": "node scripts/generate-raster-images.ts && node scripts/generate-studio-sizes.ts && node scripts/generate-auras.ts && node scripts/generate-social-images.ts && node scripts/generate-noise-texture.ts"
