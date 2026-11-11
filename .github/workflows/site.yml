@@ -64,6 +64,8 @@ jobs:
             playwright-report/
             test-results/
             .lighthouseci/
+          # .lighthouseci is a hidden folder, which upload-artifact skips unless told otherwise.
+          include-hidden-files: true
           retention-days: 7
 
       - name: Upload site artifact
