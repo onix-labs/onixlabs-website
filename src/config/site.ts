@@ -31,5 +31,6 @@ export const site: SiteSettings = {
         director: 'Matthew Layton',
         email: 'admin@onixlabs.io',
         companiesHouseUrl: 'https://find-and-update.company-information.service.gov.uk/company/13661968',
+        duns: '228339519',
     },
 };

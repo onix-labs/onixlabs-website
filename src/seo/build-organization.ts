@@ -9,6 +9,7 @@ export function buildOrganization(site: SiteSettings): JsonLdObject {
         '@id': `${site.url}/#organization`,
         name: site.name,
         legalName: site.company.legalName,
+        duns: site.company.duns,
         email: site.company.email,
         url: `${site.url}/`,
         logo: toAbsoluteUrl(site.logo, site.url),

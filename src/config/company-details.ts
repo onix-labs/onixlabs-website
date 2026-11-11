@@ -11,4 +11,6 @@ export interface CompanyDetails {
     readonly director: string;
     readonly email: string;
     readonly companiesHouseUrl: string;
+    // The Dun & Bradstreet D-U-N-S number. Published only in the structured data, for business directories.
+    readonly duns: string;
 }
