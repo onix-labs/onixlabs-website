@@ -1,4 +1,6 @@
 ---
+import { createHash } from 'node:crypto';
+
 import { buildCircuitTracks } from './build-circuit-tracks';
 import Button from './Button.astro';
 import type { CircuitTrack } from './circuit-track';
@@ -6,9 +8,12 @@ import SectionHeader from './SectionHeader.astro';
 
 // How ONIXLabs uses AI, beside a circuit board whose tracks run in from every side to an AI chip, carrying electrons.
 // The board is two SVGs: the masked tracks and chip are static, and only the electrons repaint, because redrawing that
-// mask every frame would be expensive. The electrons animate with SMIL, not CSS, because each one's keyframes depend on
-// its track and passing those to CSS inline is ruled out by the Content Security Policy. Each is a head following the
-// track and a tail that is a dash of the track itself, so it bends with the corners. Under reduced motion they're hidden
+// mask every frame would be expensive. Each electron is a head and a tail that are both dashes of its track, so they
+// bend with the corners: the tail a stretching dash, the head a dash too short to see, drawn by its round caps. With
+// pathLength="1" every track measures the same, so all the electrons share one set of keyframes and differ only in
+// timing. The keyframes are computed here and emitted as a stylesheet whose hash is added to the Content Security
+// Policy. They aren't SMIL: Firefox applies SMIL animation of CSS properties as an inline style, which the policy
+// refuses, so there the tails lit their whole tracks and nothing faded. Under reduced motion they're hidden
 // and the board stands still. Colours are set as attributes, not in the CSS, because url(#id) in a stylesheet resolves
 // against the stylesheet. /Engineering-With-AI opens with it, as level 1, with its own lead and actions.
 interface Props {
@@ -44,6 +49,7 @@ const fadeShare: number = 0.14;
 const acceleration: number = 7;
 const longestTail: number = 0.2;
 const sampleCount: number = 24;
+const headLength: number = 0.0001;
 
 // Sampled more finely towards the end, where the distance covered per step is greatest.
 const samples: ReadonlyArray<number> = Array.from({ length: sampleCount + 1 }, (_: unknown, index: number): number => 1 - (1 - index / sampleCount) ** 2);
@@ -60,13 +66,38 @@ function tailLength(sample: number): number {
     return 0.008 + longestTail * sample ** 5;
 }
 
+function percent(time: number): string {
+    return `${round(time * 100)}%`;
+}
+
 const arrived: number = travelShare + fadeShare;
 const collapsed: number = tailLength(0);
-const motionTimes: string = [...samples.map((sample: number): string => round(sample * travelShare)), round(arrived), '1'].join(';');
-const motionPoints: string = [...samples.map((sample: number): string => round(sample ** acceleration)), '1', '1'].join(';');
-const tailDash: string = [...samples.map(tailLength), collapsed, collapsed].map((length: number): string => `${round(length)} 3`).join(';');
-const tailOffset: string = [...samples.map((sample: number): number => tailLength(sample) - sample ** acceleration), collapsed - 1, collapsed - 1].map(round).join(';');
-const glowTimes: string = ['0', round(timeAt(0.5)), round(travelShare), round(arrived), '1'].join(';');
+const motion: ReadonlyArray<{ readonly time: number; readonly distance: number; readonly tail: number }> = [
+    ...samples.map((sample: number) => ({ time: sample * travelShare, distance: sample ** acceleration, tail: tailLength(sample) })),
+    { time: arrived, distance: 1, tail: collapsed },
+    { time: 1, distance: 1, tail: collapsed },
+];
+
+// It brightens as it gathers speed, holds, then fades once it has arrived; each easing runs to the next keyframe.
+const glow: ReadonlyArray<{ readonly time: number; readonly opacity: number; readonly easing: string }> = [
+    { time: 0, opacity: 0, easing: 'cubic-bezier(0.7, 0, 0.9, 0.5)' },
+    { time: timeAt(0.5), opacity: 1, easing: 'linear' },
+    { time: travelShare, opacity: 1, easing: 'cubic-bezier(0.3, 0, 0.7, 1)' },
+    { time: arrived, opacity: 0, easing: 'linear' },
+    { time: 1, opacity: 0, easing: 'linear' },
+];
+
+// The head's dash starts where the tail ends, held just short of the track's end so it's still drawn on arrival.
+const electronStyles: string = [
+    `@keyframes electron-glow{${glow.map((key) => `${percent(key.time)}{opacity:${String(key.opacity)};animation-timing-function:${key.easing}}`).join('')}}`,
+    `@keyframes electron-tail{${motion.map((key) => `${percent(key.time)}{stroke-dasharray:${round(key.tail)} 3;stroke-dashoffset:${round(key.tail - key.distance)}}`).join('')}}`,
+    `@keyframes electron-head{${motion.map((key) => `${percent(key.time)}{stroke-dashoffset:${round(-Math.min(key.distance, 1 - headLength))}}`).join('')}}`,
+    ...electrons.map((track: CircuitTrack): string =>
+        `#electron-${track.id}{--electron-duration:${String(track.duration)}s;--electron-delay:${round(track.begin)}s}`),
+].join('');
+
+// Undefined where there's no Content Security Policy to add it to: the dev server doesn't apply one.
+Astro.csp?.insertStyleHash(`sha256-${createHash('sha256').update(electronStyles).digest('base64')}`);
 ---
 <section class="section ai-circuit" aria-labelledby="ai-title">
     <div class="container-wide ai-circuit-layout">
@@ -127,24 +158,15 @@ const glowTimes: string = ['0', round(timeAt(0.5)), round(travelShare), round(ar
                 </filter>
             </defs>
             <g filter="url(#electron-bloom)">
-                {electrons.map((track: CircuitTrack) => {
-                    const timing: Record<string, string> = { dur: `${String(track.duration)}s`, begin: `${String(track.begin)}s`, repeatCount: 'indefinite' };
-
-                    return (
-                        <g class={`electron-${track.tone}`}>
-                            <animate attributeName="opacity" {...timing} calcMode="spline" keyTimes={glowTimes} keySplines="0.7 0 0.9 0.5;0 0 1 1;0.3 0 0.7 1;0 0 1 1" values="0;1;1;0;0" />
-                            <path class="electron-tail" d={track.path} pathLength="1">
-                                <animate attributeName="stroke-dasharray" {...timing} keyTimes={motionTimes} values={tailDash} />
-                                <animate attributeName="stroke-dashoffset" {...timing} keyTimes={motionTimes} values={tailOffset} />
-                            </path>
-                            <circle class="electron-head" r="6">
-                                <animateMotion path={track.path} {...timing} keyTimes={motionTimes} keyPoints={motionPoints} />
-                            </circle>
-                        </g>
-                    );
-                })}
+                {electrons.map((track: CircuitTrack) => (
+                    <g id={`electron-${track.id}`} class={`electron electron-${track.tone}`}>
+                        <path class="electron-tail" d={track.path} pathLength="1" />
+                        <path class="electron-head" d={track.path} pathLength="1" />
+                    </g>
+                ))}
             </g>
         </svg>
+        <style is:inline set:html={electronStyles}></style>
     </div>
         </div>
 
@@ -279,15 +301,29 @@ const glowTimes: string = ['0', round(timeAt(0.5)), round(travelShare), round(ar
     .electron-violet { --electron: var(--brand-violet); }
     .electron-rose { --electron: var(--brand-rose); }
 
-    .electron-tail {
-        fill: none;
-        stroke: var(--electron);
-        stroke-linecap: round;
-        stroke-width: 4;
+    /* The keyframes and each electron's duration and delay are in the stylesheet the frontmatter generates. */
+    .electron {
+        animation: electron-glow var(--electron-duration) linear var(--electron-delay) infinite;
     }
 
+    .electron-tail,
     .electron-head {
-        fill: #fff;
+        fill: none;
+        stroke-linecap: round;
+    }
+
+    .electron-tail {
+        stroke: var(--electron);
+        stroke-width: 4;
+        animation: electron-tail var(--electron-duration) linear var(--electron-delay) infinite;
+    }
+
+    /* A dash too short to see, so all that shows is its round caps: a dot as wide as the stroke. */
+    .electron-head {
+        stroke: #fff;
+        animation: electron-head var(--electron-duration) linear var(--electron-delay) infinite;
+        stroke-width: 12;
+        stroke-dasharray: 0.0001 3;
     }
 
     @media (prefers-reduced-motion: reduce) {

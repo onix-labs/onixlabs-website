@@ -137,14 +137,6 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         margin-top: 0.6rem;
     }
 
-    /* Three equal buttons need more room than two. */
-    @media (max-width: 68rem) {
-        .studio-page-actions:has(:global(.platform-download-alternate:not([hidden]))),
-        .download-actions:has(:global(.platform-download-alternate:not([hidden]))) {
-            grid-auto-flow: row;
-        }
-    }
-
     .extras {
         gap: 2.5rem 3rem;
     }

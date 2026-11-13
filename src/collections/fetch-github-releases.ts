@@ -11,7 +11,9 @@ export async function fetchGitHubReleases(repository: string): Promise<ReadonlyA
         headers['authorization'] = `Bearer ${token}`;
     }
 
-    const response: Response = await fetch(`https://api.github.com/repos/${repository}/releases?per_page=30`, { headers, signal: AbortSignal.timeout(10_000) });
+    // The most GitHub returns at once: Studio publishes its plugins' releases in batches alongside its own, which could
+    // push the app's latest release out of a shorter page.
+    const response: Response = await fetch(`https://api.github.com/repos/${repository}/releases?per_page=100`, { headers, signal: AbortSignal.timeout(10_000) });
 
     if (!response.ok) {
         throw new Error(`GitHub answered ${String(response.status)}`);

@@ -8,7 +8,7 @@ import type { StudioRelease } from '../collections/studio-release';
 import type { StudioScreen } from './studio-screen';
 
 // ONIXLabs Studio on the Products page: the pitch beside a window showing one screen at a time, with brand light behind
-// it. On each beat the front screen scales up, blurs and fades away to reveal the next one behind it. All CSS: under reduced motion
+// it. On each beat the front screen scales up and fades away to reveal the next one behind it. All CSS: under reduced motion
 // (or without animation support) it holds the first screen.
 const releasesUrl: string = 'https://github.com/onix-labs/onixlabs-studio/releases';
 const release: StudioRelease | undefined = await loadStudioRelease();
@@ -97,21 +97,19 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         display: none;
     }
 
-    @media (max-width: 68rem) {
-        .studio-product .button-pair:has(:global(.platform-download-alternate:not([hidden]))) {
-            grid-auto-flow: row;
-        }
-    }
-
     /*
      * Each of the ten screens runs the same fifty-second sequence of ten five-second beats, offset by its place in the
      * queue, and the exit matches the home page's showcase. A screen moves in behind the front one just before it leaves,
      * and the z-index keeps the leaving screen above it, including where the sequence wraps from the last back to the
-     * first. Named apart from `showcase`, which hold-first-showcase-turn.ts holds on the home page.
+     * first. Named apart from `showcase`, which hold-first-showcase-turn.ts holds on the home page. The stacking order is
+     * its own animation on the same clock: z-index can't be composited, and in the same animation it would keep the
+     * scale and fade on the main thread.
      */
     @media (prefers-reduced-motion: no-preference) {
         .dissolve-shot {
-            animation: dissolve 50s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            animation:
+                dissolve 50s cubic-bezier(0.65, 0, 0.35, 1) infinite,
+                dissolve-stack 50s cubic-bezier(0.65, 0, 0.35, 1) infinite;
         }
 
         .dissolve-shot:nth-child(2) { animation-delay: -45s; }
@@ -125,10 +123,16 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         .dissolve-shot:nth-child(10) { animation-delay: -5s; }
     }
 
+    /* No blur on the leaving screen: it would move pixels on every frame, which only the main thread can draw. */
     @keyframes dissolve {
-        0%, 7.2% { z-index: 2; transform: scale(1); opacity: 1; filter: blur(0px); }
-        10% { z-index: 2; transform: scale(1.24); opacity: 0; filter: blur(18px); }
-        10.01%, 97.19% { z-index: 1; transform: scale(1); opacity: 0; filter: blur(0px); }
-        97.2%, 100% { z-index: 1; transform: scale(1); opacity: 1; filter: blur(0px); }
+        0%, 7.2% { transform: scale(1); opacity: 1; }
+        10% { transform: scale(1.24); opacity: 0; }
+        10.01%, 97.19% { transform: scale(1); opacity: 0; }
+        97.2%, 100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes dissolve-stack {
+        0%, 10% { z-index: 2; }
+        10.01%, 100% { z-index: 1; }
     }
 </style>

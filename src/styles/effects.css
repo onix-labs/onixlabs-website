@@ -430,17 +430,27 @@
 
 /* Blur-in: on load, an element rises into place while it sharpens. It never fades from nothing: hero copy is usually
    the largest thing on a phone's first screen, and hiding it would hold back the page's largest paint. Set --blur-delay,
-   --blur-rise, --blur-duration and --blur-easing to tune it. */
-@keyframes blur-in {
+   --blur-rise, --blur-duration and --blur-easing to tune it. The rise and the sharpening are separate animations on one
+   clock: a blur can only be drawn on the main thread, and sharing an animation with it would keep the rise there too,
+   where it stutters while a first visit is still loading. Apart, the rise runs on the compositor. */
+@keyframes blur-in-rise {
+    from {
+        transform: translateY(var(--blur-rise, 1.75rem));
+    }
+}
+
+@keyframes blur-in-sharpen {
     from {
         filter: blur(14px);
-        transform: translateY(var(--blur-rise, 1.75rem));
     }
 }
 
 @media (prefers-reduced-motion: no-preference) {
     .blur-in {
-        animation: blur-in var(--blur-duration, 1.1s) var(--blur-easing, var(--ease-out)) backwards;
+        animation: blur-in-rise, blur-in-sharpen;
+        animation-duration: var(--blur-duration, 1.1s);
+        animation-timing-function: var(--blur-easing, var(--ease-out));
+        animation-fill-mode: backwards;
         animation-delay: var(--blur-delay, 0ms);
     }
 

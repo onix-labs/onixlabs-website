@@ -13,7 +13,9 @@ sidebar (`<details>`) work without it. Keep it that way: content must never depe
 
 The build looks up the latest Studio and ONIXPlayer releases on GitHub (`src/collections/load-studio-release.ts` and
 `load-player-release.ts`). If that fails the build still succeeds, and the download buttons fall back to the releases
-pages.
+pages. Every hour CI checks whether the live site links each app's latest release, and rebuilds and deploys it if not.
+The download button offers exactly one installer; Safari and Firefox won't report a Mac's processor, so for them it's
+judged from the graphics processor (`infer-mac-architecture.ts`), and a Mac that can't be judged gets Apple silicon.
 
 ## Redesign in progress
 
@@ -54,9 +56,10 @@ what exists before adding new styles:
   `.zoom-arrive` (scroll-driven entrances) and `.scroll-progress` (the spectrum along the header). Motion is
   entrance-only: content animates in as it arrives and never animates on the way out, and nothing in a hero starts at
   `opacity: 0` (see the rendering rules). All motion is CSS-only, is off under `prefers-reduced-motion`, and leaves
-  content fully visible where it can't run. The one exception is the electrons in `AiCircuitSection`, which use SVG's
-  native SMIL animation to follow their tracks; still no JavaScript. `hold-first-showcase-turn.ts` only delays a CSS
-  animation that runs without it.
+  content fully visible where it can't run. The electrons in `AiCircuitSection` are CSS too: their keyframes are
+  computed in the component and emitted as a stylesheet whose hash it adds with `Astro.csp.insertStyleHash`. Don't use
+  SMIL to animate a CSS property (`opacity`, `stroke-*` and so on): Firefox applies it as an inline style, which the CSP
+  refuses. `hold-first-showcase-turn.ts` only delays a CSS animation that runs without it.
 - **Components** (`src/components/`): `src/components/ui/` holds the Stride controls (`Card`, `Accordion`, `Modal`,
   `Tabs`, form inputs and so on), shown on the design pages and available to any page. `StudioHero` is the home page
   hero and `LibraryHero` opens the library, product, Aero, Consulting and Contact pages. `SectionHeader` gives the eyebrow, `<h2>`
@@ -83,6 +86,11 @@ These came from real defects on iPhones and from the Lighthouse budget, so they 
   `scripts/generate-auras.ts` (part of `npm run images`) blurs each glass icon and the Aero image into `<name>-aura.webp`
   and `<name>-aura-dark.webp`, which `GlassAura` and `AeroShowcase` show behind the image. The only runtime blurs left are
   static backdrops (`.window-light`, `StudioWindow`'s glow, the marquee's logo glow) and the hero text's `blur-in`.
+- **Keep movement on the compositor.** A browser only runs an animation off the main thread if it can composite every
+  property in it: `transform`, `translate`, `scale`, `opacity` and filters that don't move pixels (`brightness`,
+  `grayscale`, not `blur`). One `z-index`, `visibility` or `blur` in the same keyframes keeps the whole animation on the
+  main thread, where it stutters while a first visit is still loading. Give those their own animation on the same timing,
+  as `showcase-stack`, `shot-wait` and `blur-in-sharpen` do.
 - **Edges are inset shadows**, via `--edge-shadow`, never top and bottom borders.
 - **Nothing in a hero starts at `opacity: 0`.** The largest element on a phone's first screen is usually the hero copy
   or the first screenshot; hiding it, even briefly, is what Lighthouse measures as LCP. Entrances may slide, scale or

@@ -1,11 +1,13 @@
 ---
+import Button from './Button.astro';
 import PlatformDownload from './PlatformDownload.astro';
 import PlayerWindow from './PlayerWindow.astro';
 import SectionHeader from './SectionHeader.astro';
 import { loadPlayerRelease } from '../collections/load-player-release';
 import type { PlayerRelease } from '../collections/player-release';
 
-// The ONIXPlayer hero: its pitch, a replica of its window, and the download for the visitor's platform.
+// The ONIXPlayer hero: its pitch, a replica of its window, the download for the visitor's platform, and a way into its
+// introduction in the documentation.
 const releasesUrl: string = 'https://github.com/onix-labs/onixlabs-media-player/releases';
 const release: PlayerRelease | undefined = await loadPlayerRelease();
 ---
@@ -17,6 +19,7 @@ const release: PlayerRelease | undefined = await loadPlayerRelease();
             </SectionHeader>
             <div class="button-pair">
                 <PlatformDownload release={release} releasesUrl={releasesUrl} />
+                <Button href="/Documentation/ONIXPlayer/Introduction-To-ONIXPlayer" variant="ghost" size="large" trailingIcon="arrow-right-bold">Find out more</Button>
             </div>
         </div>
         <div class="player-stage">
