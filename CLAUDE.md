@@ -101,8 +101,8 @@ These came from real defects on iPhones and from the Lighthouse budget, so they 
   `scripts/generate-studio-sizes.ts`) and a `srcset` with `sizes` wherever they appear; the first screenshot in a hero
   is `loading="eager"` with `fetchpriority="high"`, the rest lazy. New large images need the same treatment.
 - **Video starts on demand.** `video[data-lazy-video]` carries its source in `data-src`, and
-  `initialise-lazy-video.ts` loads and plays it when it scrolls near; keep videos short loops (the Player's is 30s,
-  about 1.8MB) with a poster image beneath.
+  `initialise-lazy-video.ts` loads and plays it when it scrolls near; keep videos short loops (the Player's is 59s,
+  about 3.2MB, H.264 MP4 for Safari) with a poster image beneath that matches the video's first frame.
 - **Budgets:** Lighthouse must score at least 95 in every category on the pages in `lighthouserc.cjs` (CI enforces it),
   and the axe tests must pass in both themes with no exclusions. Run them before declaring a visual change done.
 - **Test on WebKit.** The e2e suite has a `webkit-mobile` project (an iPhone) as well as Chromium desktop and mobile;
