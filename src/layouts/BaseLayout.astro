@@ -10,6 +10,9 @@ import '../styles/base.css';
 import '../styles/effects.css';
 import '../styles/prose.css';
 
+import poppinsRegular from '@fontsource/poppins/files/poppins-latin-400-normal.woff2?url';
+import poppinsSemiBold from '@fontsource/poppins/files/poppins-latin-600-normal.woff2?url';
+
 import Seo from '../components/Seo.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
@@ -48,6 +51,11 @@ const props: Props = Astro.props;
         <link rel="icon" sizes="any" type="image/svg+xml" href="/onixlabs/images/logo/logo-orb.svg" />
         <link rel="apple-touch-icon" href="/onixlabs/images/logo/logo-orb-180.png" />
         <link rel="sitemap" href="/sitemap-index.xml" />
+
+        <!-- The body and headline weights, fetched with the page rather than once the stylesheet asks for them, so a first
+             visit's hero isn't laid out again in Poppins halfway through its entrance. -->
+        <link rel="preload" href={poppinsRegular} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={poppinsSemiBold} as="font" type="font/woff2" crossorigin />
 
         <Seo {...props} />
     </head>

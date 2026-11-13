@@ -8,7 +8,7 @@ import type { StudioScreen } from './studio-screen';
 
 // The ONIXLabs Studio hero. On load the front window of a showcase drops into place while the headline and standfirst
 // sharpen and rise out from behind it, then the windows waiting behind it fly out to either side. The showcase has one
-// screen front and centre, with two waiting behind it on each side. On each beat the showcase scales up, blurs and
+// screen front and centre, with two waiting behind it on each side. On each beat the showcase scales up and
 // fades away while the next screen takes its place, from the left and then from the right, and those behind move up.
 // All CSS, apart from hold-first-showcase-turn.ts: under reduced motion (or without animation support) it holds its first arrangement. The background is grey
 // at the top, melting into the header, and blooms into the full brand spectrum at the bottom.
@@ -160,13 +160,6 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         }
     }
 
-    /* Three equal buttons need more room than two. */
-    @media (max-width: 68rem) {
-        .studio-actions:has(:global(.platform-download-alternate:not([hidden]))) {
-            grid-auto-flow: row;
-        }
-    }
-
     /*
      * Each of the ten screens runs the same fifty-second sequence of ten five-second beats, offset by its place in the
      * queue: waiting at the back for two beats, at the front for two, showcased for one, then gone for five. Because
@@ -200,14 +193,22 @@ const release: StudioRelease | undefined = await loadStudioRelease();
         }
 
         /* The waiting windows fly out from behind the front one once it has landed; `translate` leaves their turn's
-           `transform` alone, and starting at their distance from the middle puts them directly behind it. */
+           `transform` alone, and starting at their distance from the middle puts them directly behind it. Each turn is
+           two animations on the same clock: `showcase` moves, scales and fades the screen, and `showcase-stack` reorders
+           it. A browser can only hand an animation to the compositor if it can run every property in it, and z-index
+           can't be composited, so together they'd run on the main thread and stutter while a first visit is still loading.
+           For the same reason the fly-out's hidden wait is its own animation (shot-wait). */
         .shot {
-            animation: showcase 50s cubic-bezier(0.65, 0, 0.35, 1) infinite both, shot-fly 1.6s var(--entrance-ease) backwards;
-            animation-delay: var(--turn-delay), 1250ms;
+            animation:
+                showcase 50s cubic-bezier(0.65, 0, 0.35, 1) infinite both,
+                showcase-stack 50s cubic-bezier(0.65, 0, 0.35, 1) infinite both,
+                shot-fly 1.6s var(--entrance-ease) backwards,
+                shot-wait 1250ms step-end backwards;
+            animation-delay: var(--turn-delay), var(--turn-delay), 1250ms, 0ms;
         }
 
         .shot-0,
-        .shot:nth-child(n + 6) { animation-name: showcase, none; }
+        .shot:nth-child(n + 6) { animation-name: showcase, showcase-stack, none, none; }
         .shot-1, .shot-2 { --fly-from: -38%; }
         .shot-3, .shot-4 { --fly-from: -55%; }
 
@@ -235,20 +236,37 @@ const release: StudioRelease | undefined = await loadStudioRelease();
     }
 
     @keyframes shot-fly {
-        from { translate: calc(var(--side) * var(--fly-from)) 0; visibility: hidden; }
+        from { translate: calc(var(--side) * var(--fly-from)) 0; }
+    }
+
+    /* Hidden until its flight begins, so it doesn't show around the front screen as that drops into place. */
+    @keyframes shot-wait {
+        from { visibility: hidden; }
     }
 
     @keyframes actions-arrive {
         from { opacity: 0; }
     }
 
+    /* Only properties the compositor can run: no blur on the leaving screen, which would move pixels on every frame. */
     @keyframes showcase {
-        0%, 7.2% { z-index: 1; transform: translate(calc(var(--side) * 64%), 0%) scale(0.5) rotateY(calc(var(--side) * -14deg)); opacity: 0; filter: blur(0px) brightness(0.8); }
-        10%, 27.2% { z-index: 1; transform: translate(calc(var(--side) * 55%), 0%) scale(0.62) rotateY(calc(var(--side) * -14deg)); opacity: 0.8; filter: blur(0px) brightness(0.8); }
-        30%, 47.2% { z-index: 2; transform: translate(calc(var(--side) * 38%), 0%) scale(0.76) rotateY(calc(var(--side) * -14deg)); opacity: 1; filter: blur(0px) brightness(0.92); }
-        50% { z-index: 4; transform: translate(0%, 0%) scale(1) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
-        57.2% { z-index: 6; transform: translate(0%, 0%) scale(1) rotateY(0deg); opacity: 1; filter: blur(0px) brightness(1); }
-        60% { z-index: 6; transform: translate(0%, 0%) scale(1.24) rotateY(0deg); opacity: 0; filter: blur(18px) brightness(1); }
-        60.1%, 100% { z-index: 1; transform: translate(calc(var(--side) * 64%), 0%) scale(0.5) rotateY(calc(var(--side) * -14deg)); opacity: 0; filter: blur(0px) brightness(0.8); }
+        0%, 7.2% { transform: translate(calc(var(--side) * 64%), 0%) scale(0.5) rotateY(calc(var(--side) * -14deg)); opacity: 0; filter: brightness(0.8); }
+        10%, 27.2% { transform: translate(calc(var(--side) * 55%), 0%) scale(0.62) rotateY(calc(var(--side) * -14deg)); opacity: 0.8; filter: brightness(0.8); }
+        30%, 47.2% { transform: translate(calc(var(--side) * 38%), 0%) scale(0.76) rotateY(calc(var(--side) * -14deg)); opacity: 1; filter: brightness(0.92); }
+        50% { transform: translate(0%, 0%) scale(1) rotateY(0deg); opacity: 1; filter: brightness(1); }
+        57.2% { transform: translate(0%, 0%) scale(1) rotateY(0deg); opacity: 1; filter: brightness(1); }
+        60% { transform: translate(0%, 0%) scale(1.24) rotateY(0deg); opacity: 0; filter: brightness(1); }
+        60.1%, 100% { transform: translate(calc(var(--side) * 64%), 0%) scale(0.5) rotateY(calc(var(--side) * -14deg)); opacity: 0; filter: brightness(0.8); }
+    }
+
+    /* The stacking order through the same turn, keyframe for keyframe, so the leaving screen stays above the one arriving. */
+    @keyframes showcase-stack {
+        0%, 7.2% { z-index: 1; }
+        10%, 27.2% { z-index: 1; }
+        30%, 47.2% { z-index: 2; }
+        50% { z-index: 4; }
+        57.2% { z-index: 6; }
+        60% { z-index: 6; }
+        60.1%, 100% { z-index: 1; }
     }
 </style>

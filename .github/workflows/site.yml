@@ -6,6 +6,10 @@ on:
     branches:
       - main
   workflow_dispatch:
+  # The download buttons link to the latest Studio and ONIXPlayer releases, which are looked up at build time. Every hour
+  # the releases job checks whether the live site still links them, and rebuilds it when either app has a new release.
+  schedule:
+    - cron: '17 * * * *'
 
 permissions:
   contents: read
@@ -15,8 +19,39 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  releases:
+    name: Check for new app releases
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      stale: ${{ steps.compare.outputs.stale }}
+    steps:
+      # The same releases the build picks (select-studio-release.ts, select-player-release.ts): the newest that isn't a
+      # draft and is tagged as the app rather than a plugin. The live page links each by its tag, in the installer URLs
+      # or, when a release has no installers yet, its release page.
+      - name: Compare the latest releases with the live site
+        id: compare
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          live="$(curl --fail --silent --show-error --location https://www.onixlabs.io/Products)"
+          studio="$(gh api 'repos/onix-labs/onixlabs-studio/releases?per_page=100' --jq '[.[] | select(.draft | not) | select(.tag_name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+"))][0].tag_name // ""')"
+          player="$(gh api 'repos/onix-labs/onixlabs-media-player/releases?per_page=100' --jq '[.[] | select(.draft | not) | select(.tag_name | test("^[0-9]+\\.[0-9]+\\.[0-9]+"))][0].tag_name // ""')"
+          stale=false
+          for tag in "$studio" "$player"; do
+            if [ -n "$tag" ] && ! grep --quiet --fixed-strings "/$tag" <<< "$live"; then
+              echo "The live site doesn't link $tag yet."
+              stale=true
+            fi
+          done
+          echo "stale=$stale" >> "$GITHUB_OUTPUT"
+
   verify:
     name: Lint, test and build
+    needs: releases
+    # Runs on every push and pull request, and on the hourly schedule only when a release is missing from the live site.
+    if: ${{ !failure() && !cancelled() && (github.event_name != 'schedule' || needs.releases.outputs.stale == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

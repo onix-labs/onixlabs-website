@@ -618,12 +618,12 @@ a.tile:hover {
 }
 
 /* A pair left with only hidden buttons (a download on a phone, say) takes no space. */
-.button-pair:not(:has(> :not([hidden], [data-platform-download], [data-platform-download-alternate]))):has(> [data-platform-download][hidden]) {
+.button-pair:not(:has(> :not([hidden], [data-platform-download]))):has(> [data-platform-download][hidden]) {
     display: none;
 }
 
 @media (hover: none) and (pointer: coarse) {
-    .button-pair:not(:has(> :not([data-platform-download], [data-platform-download-alternate]))) {
+    .button-pair:not(:has(> :not([data-platform-download]))) {
         display: none;
     }
 }
@@ -656,11 +656,6 @@ a.tile:hover {
 .product-split-content .section-header {
     max-width: none;
     margin-bottom: 0;
-}
-
-/* Two downloads and a ghost button are too wide for half the row. */
-.product-split-content .button-pair:has(.button-ghost):has(.platform-download-alternate:not([hidden])) {
-    grid-auto-flow: row;
 }
 
 .product-split-content .headline-muted,
