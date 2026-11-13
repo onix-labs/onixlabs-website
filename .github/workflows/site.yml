@@ -113,7 +113,9 @@ jobs:
 
   deploy:
     name: Deploy to GitHub Pages
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    # The default condition needs every job upstream to have succeeded, and the releases job is skipped on pushes, which
+    # would skip the deploy too. So this checks verify itself, and the guard lets a skipped job upstream through.
+    if: ${{ !failure() && !cancelled() && needs.verify.result == 'success' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
     needs: verify
     runs-on: ubuntu-latest
     permissions:
