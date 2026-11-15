@@ -31,9 +31,13 @@ interface Props {
     readonly noindex?: boolean;
     readonly breadcrumbs?: ReadonlyArray<Breadcrumb>;
     readonly structuredData?: ReadonlyArray<JsonLdObject>;
+    // The origins the page may frame; none unless a page embeds a third-party widget, as Contact embeds Turnstile.
+    readonly frameSources?: ReadonlyArray<string>;
 }
 
-const props: Props = Astro.props;
+const { frameSources = ["'none'"], ...props }: Props = Astro.props;
+
+Astro.csp?.insertDirective(`frame-src ${frameSources.join(' ')}`);
 ---
 <!doctype html>
 <html lang="en-GB" data-theme="dark">

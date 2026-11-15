@@ -3,6 +3,7 @@ import Button from '../components/Button.astro';
 import Icon from '../components/Icon.astro';
 import LibraryHero from '../components/LibraryHero.astro';
 import { site } from '../config/site';
+import { turnstileOrigin } from '../config/turnstile-origin';
 import type { SocialLink } from '../config/social-link';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { contactReasons } from '../scripts/contact-reasons';
@@ -10,6 +11,9 @@ import { contactReasons } from '../scripts/contact-reasons';
 // Contact: a hero blooming in the whole brand spectrum, then the form in a raised tile beside the other ways to reach us,
 // as rows between rules. Links across the site prefill the form with ?reason= (src/scripts/contact-reasons.ts); the
 // form works without JavaScript and posts to Formspree.
+// Cloudflare Turnstile checks a visitor isn't a bot before the form sends (src/scripts/initialise-turnstile.ts), so this
+// page alone lets Cloudflare's script and challenge frame through the CSP. Without JavaScript the check can't run, so
+// the form says to email instead.
 // The first reason is selected until a visitor, or a ?reason= link, chooses another.
 const reasons: ReadonlyArray<string> = [
     'General enquiry',
@@ -23,6 +27,11 @@ const reasons: ReadonlyArray<string> = [
 ];
 const followLinks: ReadonlyArray<SocialLink> = site.socialLinks.filter((link: SocialLink): boolean => link.isInFooter);
 
+const failure: string = `We couldn't check that you're not a bot, so your message can't be sent. Please email us at ${site.company.email} instead.`;
+
+Astro.csp?.insertScriptResource("'self'");
+Astro.csp?.insertScriptResource(turnstileOrigin);
+
 for (const prefill of contactReasons.values()) {
     if (!reasons.includes(prefill.reason)) {
         throw new Error(`Contact prefill reason "${prefill.reason}" isn't one of the form's options.`);
@@ -34,6 +43,7 @@ for (const prefill of contactReasons.values()) {
     description="Contact ONIXLabs about Aero, ONIXLabs Studio, our open-source libraries or consulting. Send a message, email us or book a meeting."
     path="/Contact"
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Contact', path: '/Contact' }]}
+    frameSources={[turnstileOrigin]}
     structuredData={[{ '@type': 'ContactPage', name: 'Contact ONIXLabs', url: `${site.url}/Contact`, about: { '@id': `${site.url}/#organization` } }]}
 >
     <LibraryHero
@@ -52,7 +62,14 @@ for (const prefill of contactReasons.values()) {
         <div class="container-wide contact-layout">
             <div class="tile form-card reveal-scale" id="contact-form">
                 <h2 id="contact-form-title">Send us a message</h2>
-                <form action={site.contactFormEndpoint} method="post" aria-labelledby="contact-form-title">
+                <form
+                    action={site.contactFormEndpoint}
+                    method="post"
+                    aria-labelledby="contact-form-title"
+                    data-turnstile={site.turnstileSiteKey}
+                    data-turnstile-pending="Just a moment while we check you're not a bot. If a box appears above, tick it and your message will send."
+                    data-turnstile-failure={failure}
+                >
                     <div class="form-row">
                         <div class="field">
                             <label for="name">Name</label>
@@ -81,6 +98,15 @@ for (const prefill of contactReasons.values()) {
                         <label for="gotcha">Leave this field empty</label>
                         <input type="text" name="_gotcha" id="gotcha" tabindex="-1" autocomplete="off" />
                     </div>
+
+                    <!-- Cloudflare Turnstile's checkbox appears here, if a visitor needs to tick it. -->
+                    <div class="turnstile"></div>
+
+                    <noscript>
+                        <p class="field-error">The form needs JavaScript to check that you're not a bot. Please email us at <a href={`mailto:${site.company.email}`}>{site.company.email}</a> instead.</p>
+                    </noscript>
+
+                    <p class="form-status field-hint" role="status"></p>
 
                     <button type="submit" class="button button-primary button-large">
                         <span>Send message</span>
@@ -170,6 +196,20 @@ for (const prefill of contactReasons.values()) {
 
     .honeypot {
         display: none;
+    }
+
+    .form-status:empty {
+        display: none;
+    }
+
+    /* Turnstile keeps its frame here, unseen, until a visitor needs to tick its checkbox (65px tall at the flexible
+       size). Until then the frame is taken out of the form's flow, so it leaves no gap; it can't be display: none,
+       or the check wouldn't run. */
+    .turnstile:not([data-visible]) {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
     }
 
     /* The other ways to reach us: rows with rules between them, like the areas on /About. */

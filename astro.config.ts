@@ -54,7 +54,8 @@ export default defineConfig({
     },
     security: {
         csp: {
-            // Astro adds hashed script-src and style-src directives for every script and style it emits.
+            // Astro adds hashed script-src and style-src directives for every script and style it emits. frame-src is set
+            // per page by BaseLayout, as Contact frames Cloudflare Turnstile.
             // frame-ancestors can't be set from a <meta> tag; GitHub Pages can't send headers (see MIGRATION.md).
             directives: [
                 "default-src 'self'",
@@ -64,7 +65,6 @@ export default defineConfig({
                 "form-action https://formspree.io",
                 "base-uri 'self'",
                 "object-src 'none'",
-                "frame-src 'none'",
                 'upgrade-insecure-requests',
             ],
         },

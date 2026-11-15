@@ -14,6 +14,9 @@ export const site: SiteSettings = {
     logo: '/onixlabs/images/logo/logo-orb-512.png',
     foundingYear: 2020,
     contactFormEndpoint: 'https://formspree.io/f/xwpqpeay',
+    // The contact form's Cloudflare Turnstile widget. The matching secret key is set in the form's Formspree settings,
+    // which verifies every submission's token.
+    turnstileSiteKey: '0x4AAAAAAGCTRqebbUDYAwIT',
     calendlyUrl: 'https://calendly.com/onixlabs',
     socialLinks: [
         { name: 'X (Twitter)', url: 'https://x.com/onix_labs', icon: 'x-logo', isInFooter: true },

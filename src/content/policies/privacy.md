@@ -6,7 +6,7 @@ group: legal
 order: 2
 path: /Legal/Privacy
 effective: 2026-11-08
-updated: 2026-11-11
+updated: 2026-11-15
 ---
 
 This policy explains what personal data we collect when you use this website or contact us, why we collect it, how long we keep it, who we share it with, and the rights you have. We keep it as short as we can while giving you everything the law requires.
@@ -34,6 +34,7 @@ The form asks for your **name**, **email address**, **reason for getting in touc
 
 - **Lawful basis:** our legitimate interest in responding to people who contact us. Where your enquiry is about working with us, it's also processing needed to take steps, at your request, before entering into a contract.
 - **How it reaches us:** the form is processed by Formspree, which forwards your submission to our email inbox.
+- **Keeping out spam:** when you start filling in the form, it loads Cloudflare Turnstile, which checks that you're a person rather than a bot before the form can be sent. To do that, Cloudflare processes technical signals from your browser, such as your **IP address** and **browser details**. It doesn't read what you type into the form, and we don't receive these signals. The lawful basis is our legitimate interest in protecting the form, and our inbox, from automated spam. See [Cloudflare's Turnstile Privacy Addendum](https://www.cloudflare.com/turnstile-privacy-policy/) for how Cloudflare handles them.
 
 ### When you email us
 
@@ -62,6 +63,7 @@ We use a small number of service providers, who act on our instructions:
 | Provider | What they do | Where |
 |---|---|---|
 | Formspree | Processes contact form submissions and forwards them to us | United States |
+| Cloudflare (Turnstile) | Checks that contact form submissions come from people, not bots | United States |
 | Namecheap (Private Email) | Hosts our business email inbox | United States |
 | Calendly | Handles meeting bookings | United States |
 | GitHub | Hosts this website | United States |
