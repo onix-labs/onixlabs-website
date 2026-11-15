@@ -1,4 +1,4 @@
-import type { Locator } from '@playwright/test';
+import type { Locator, Route } from '@playwright/test';
 
 import type { TestArguments } from './support/test-arguments';
 import { expect, test } from './support/test';
@@ -70,6 +70,31 @@ test('the contact form posts to Formspree', async ({ page }: TestArguments): Pro
 
     await expect(page.locator('form')).toHaveAttribute('action', 'https://formspree.io/f/xwpqpeay');
     await expect(page.locator('form')).toHaveAttribute('method', 'post');
+});
+
+test('the contact form runs the bot check only once a visitor starts filling it in', async ({ page }: TestArguments): Promise<void> => {
+    await page.goto('/Contact');
+
+    await expect(page.locator('script[src^="https://challenges.cloudflare.com/"]')).toHaveCount(0);
+    await page.getByLabel('Name', { exact: true }).fill('Ada');
+
+    await expect(page.locator('form input[name="cf-turnstile-response"]')).toHaveValue('fake-token');
+});
+
+test('the contact form waits for the bot check, then sends', async ({ page }: TestArguments): Promise<void> => {
+    let posted: string | undefined;
+    await page.route('https://formspree.io/**', async (route: Route): Promise<void> => {
+        posted = route.request().postData() ?? undefined;
+        await route.fulfill({ status: 200, body: 'Thanks', contentType: 'text/plain' });
+    });
+    await page.goto('/Contact');
+
+    await page.getByLabel('Name', { exact: true }).fill('Ada');
+    await page.getByLabel('Email address', { exact: true }).fill('ada@example.com');
+    await page.getByLabel('Message', { exact: true }).fill('Hello.');
+    await page.getByRole('button', { name: 'Send message' }).click();
+
+    await expect.poll((): string | undefined => posted).toContain('cf-turnstile-response=fake-token');
 });
 
 test('an article in a series offers its next part first', async ({ page }: TestArguments): Promise<void> => {

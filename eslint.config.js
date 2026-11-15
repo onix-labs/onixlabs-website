@@ -73,8 +73,9 @@ export default defineConfig(
                 { selector: 'typeLike', format: ['PascalCase'] },
                 { selector: 'enumMember', format: ['PascalCase'] },
                 { selector: 'interface', format: ['PascalCase'], custom: { regex: '^I[A-Z]', match: false } },
-                // Quoted keys such as '@type' (JSON-LD) and Astro's 'astro:build:done' hook are data, not identifiers.
-                { selector: ['objectLiteralProperty', 'objectLiteralMethod', 'typeProperty'], modifiers: ['requiresQuotes'], format: null },
+                // Quoted keys such as '@type' (JSON-LD), Astro's 'astro:build:done' hook and Turnstile's 'error-callback'
+                // are data, not identifiers.
+                { selector: ['objectLiteralProperty', 'objectLiteralMethod', 'typeProperty', 'typeMethod'], modifiers: ['requiresQuotes'], format: null },
             ],
             'import-x/no-default-export': 'error',
             'import-x/no-cycle': 'error',

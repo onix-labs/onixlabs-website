@@ -6,7 +6,8 @@ product information current, adding articles, updating bios. Read this before ed
 ## How the site is built
 
 Astro 7, static output, deployed to GitHub Pages. Every page is rendered to HTML at build time. The only
-client-side JavaScript is the theme switch, the contact-form prefill, the download buttons (which swap in the installer
+client-side JavaScript is the theme switch, the contact-form prefill and its Cloudflare Turnstile bot check (loaded
+only once a visitor starts filling in the form; Formspree verifies the token), the download buttons (which swap in the installer
 for the visitor's platform and hide on phones and tablets), the Player video (which starts when it scrolls near), the
 article outline's scrollspy, and a hold before the Studio hero's first turn. The mobile menu (popover API) and the docs
 sidebar (`<details>`) work without it. Keep it that way: content must never depend on JavaScript to appear.
