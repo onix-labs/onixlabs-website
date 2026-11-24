@@ -4,6 +4,7 @@ description: "How to implement Corda flows that perform vault queries, and the b
 category: corda
 order: 3
 path: /Documentation/Corda/Flow-Design-Guidelines-3
+advert: corda-core
 published: 2022-03-13
 ---
 

@@ -1,0 +1,71 @@
+---
+// A logo or wordmark, spilling its own colours across whatever it sits on if it has an aura: its pre-rendered glow
+// (<name>-aura.webp, with <name>-aura-dark.webp beside it, from scripts/generate-auras.ts) on a canvas 2.2 times its width,
+// with grain over it to break up its bands, as GlassAura has it. The stacking context it sits in must clip it; size it with
+// width on the class, and spread the glow with --aura-scale. `darkSrc` is for a logo that needs its own image in the dark theme.
+interface Props {
+    readonly src: string;
+    readonly darkSrc?: string | undefined;
+    readonly aura?: string | undefined;
+    readonly width: number;
+    readonly height: number;
+    readonly class?: string;
+}
+
+const { src, darkSrc, aura, width, height, class: className = '' }: Props = Astro.props;
+---
+<span class:list={['logo-aura', { 'has-aura': aura !== undefined }, className]}>
+    {aura !== undefined && (
+        <Fragment>
+            <img class="aura-glow only-light" src={aura} alt="" width={512} height={512} loading="lazy" decoding="async" />
+            <img class="aura-glow only-dark" src={aura.replace('.webp', '-dark.webp')} alt="" width={512} height={512} loading="lazy" decoding="async" />
+        </Fragment>
+    )}
+    <img class:list={['aura-logo', { 'only-light': darkSrc !== undefined }]} src={src} alt="" width={width} height={height} loading="lazy" decoding="async" />
+    {darkSrc !== undefined && <img class="aura-logo only-dark" src={darkSrc} alt="" width={width} height={height} loading="lazy" decoding="async" />}
+</span>
+
+<style>
+    .logo-aura {
+        position: relative;
+        display: block;
+    }
+
+    .aura-logo {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .aura-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: -1;
+        width: 220%;
+        max-width: none;
+        height: auto;
+        transform: translate(-50%, -50%) scale(var(--aura-scale, 1.6));
+        pointer-events: none;
+    }
+
+    .has-aura::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: -1;
+        width: calc(220% * var(--aura-scale, 1.6));
+        aspect-ratio: 1;
+        transform: translate(-50%, -50%);
+        background: url('/onixlabs/images/noise-aura.png');
+        -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent);
+        mask-image: radial-gradient(closest-side, #000 45%, transparent);
+        pointer-events: none;
+    }
+
+    :global([data-theme='light']) .only-dark,
+    :global([data-theme='dark']) .only-light {
+        display: none;
+    }
+</style>

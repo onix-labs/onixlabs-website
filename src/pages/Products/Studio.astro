@@ -9,6 +9,7 @@ import Icon from '../../components/Icon.astro';
 import PlatformDownload from '../../components/PlatformDownload.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import StudioFeature from '../../components/StudioFeature.astro';
+import StudioIntroduction from '../../components/StudioIntroduction.astro';
 import { site } from '../../config/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
@@ -64,6 +65,8 @@ const release: StudioRelease | undefined = await loadStudioRelease();
             </div>
         </div>
     </section>
+
+    <StudioIntroduction />
 
     {studio.features.map((feature: Feature, index: number) => (
         <StudioFeature feature={feature} alternate={index % 2 === 1} reversed={index % 2 === 0} />

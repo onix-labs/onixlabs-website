@@ -4,6 +4,7 @@ description: "A deep dive into the C# var keyword: its intended use cases, the p
 category: standards
 order: 1
 path: /Documentation/CSharp/Syntactic-Sugar-Bitter-Aftertaste
+advert: csharp
 published: 2025-06-15
 ---
 

@@ -4,6 +4,7 @@ description: "Best practices for transactional Corda flows that cause ledger sta
 category: corda
 order: 2
 path: /Documentation/Corda/Flow-Design-Guidelines-2
+advert: corda-core
 published: 2022-03-13
 ---
 

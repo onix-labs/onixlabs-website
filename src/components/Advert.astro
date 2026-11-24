@@ -1,0 +1,133 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import Button from './Button.astro';
+import LogoAura from './LogoAura.astro';
+import SectionHeader from './SectionHeader.astro';
+
+// Points readers of an article at something relevant to it: a wide block in a product's colours (or a grey tile, with
+// the second part of its headline from coral to rose), with a two-part headline, a standfirst and one button on the left,
+// and a logo or a wordmark on the right, glowing in its own colours if it has an aura. They stack below 60rem,
+// image first. It follows the article's text, whose own bottom padding is the gap above it.
+interface Props {
+    readonly advert: CollectionEntry<'adverts'>;
+}
+
+const { advert }: Props = Astro.props;
+const { family, title, highlight, lead, action, path, image }: CollectionEntry<'adverts'>['data'] = advert.data;
+const colours: ReadonlyArray<string> = family === undefined ? [] : ['family-block', `family-${family}`];
+---
+<section class="section advert" aria-labelledby="advert">
+    <div class="container-wide">
+        <div class:list={['tile advert-block reveal-scale', `is-${image.kind}`, colours]}>
+            <div class="advert-copy">
+                <SectionHeader eyebrow="From ONIXLabs" title={title} highlight={highlight} highlightStyle={family === undefined ? 'gradient' : 'muted'} highlightClass={family === undefined ? 'text-pair from-coral to-rose' : ''} id="advert">
+                    {lead}
+                </SectionHeader>
+                <Button href={path} variant="primary" size="large">{action}</Button>
+            </div>
+            <LogoAura src={image.src} darkSrc={image.darkSrc} aura={image.aura} width={image.width} height={image.height} class="advert-logo" />
+        </div>
+    </div>
+</section>
+
+<style>
+    .advert {
+        padding-top: 0;
+    }
+
+    .advert-block {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+        align-items: center;
+        padding: clamp(1.75rem, 1rem + 4vw, 4.5rem);
+    }
+
+    .advert-block.family-block {
+        box-shadow: none;
+    }
+
+    /* A tile is too light in the dark theme for the label's coral, and for the blue in the full brand gradient. */
+    .advert-block:not(.family-block) {
+        --label: var(--text);
+    }
+
+    .advert-copy {
+        display: grid;
+        gap: 2rem;
+        justify-items: start;
+    }
+
+    .advert-copy :global(.section-header) {
+        max-width: none;
+        margin-bottom: 0;
+    }
+
+    .advert-copy :global(.section-header h2) {
+        font-size: var(--text-4xl);
+    }
+
+    .advert-copy :global(.section-header .lead) {
+        color: var(--text);
+        font-size: var(--text-lg);
+    }
+
+    .advert-copy :global(.headline-muted),
+    .advert-copy :global(.gradient-text) {
+        display: block;
+    }
+
+    .advert-copy :global(.headline-muted) {
+        color: inherit;
+    }
+
+    .advert-block :global(.advert-logo) {
+        order: -1;
+    }
+
+    .is-logo :global(.advert-logo) {
+        width: 6rem;
+    }
+
+    .is-wordmark :global(.advert-logo) {
+        --aura-scale: 1;
+        width: 11rem;
+        margin: -1rem;
+    }
+
+    /* The block's light would sit behind the text: all of it when stacked, the standfirst beside a logo. */
+    .advert-block::after {
+        width: 40%;
+    }
+
+    @media (max-width: 59.99rem) {
+        .advert-block::after {
+            content: none;
+        }
+    }
+
+    @media (min-width: 60rem) {
+        .advert-block {
+            gap: 5rem;
+        }
+
+        .is-logo,
+        .is-wordmark {
+            grid-template-columns: minmax(0, 1fr) auto;
+        }
+
+        .advert-block :global(.advert-logo) {
+            order: 0;
+        }
+
+        .is-logo :global(.advert-logo) {
+            width: 14rem;
+        }
+
+        .is-wordmark :global(.advert-logo) {
+            width: 22rem;
+            margin: -2rem;
+        }
+    }
+</style>

@@ -67,6 +67,8 @@ const articles = defineCollection({
         category: z.enum(['products', 'dotnet', 'standards', 'corda']),
         order: z.number().int(),
         path: sitePath.startsWith('/Documentation/'),
+        // The advert shown after the text, for something that follows from it.
+        advert: reference('adverts').optional(),
         author: reference('contributors').optional(),
         published: z.coerce.date().optional(),
         updated: z.coerce.date().optional(),
@@ -190,6 +192,33 @@ const libraryPages = defineCollection({
     }),
 });
 
+// Adverts for our products, keyed by the id an article's `advert` field names.
+const adverts = defineCollection({
+    loader: file('src/content/adverts.yaml'),
+    schema: z.object({
+        // Whose colours it wears; without one, it's the plain grey of a tile.
+        family: z.enum(['dotnet', 'corda', 'kotlin']).optional(),
+        // Its two-part headline.
+        title: z.string(),
+        highlight: z.string(),
+        lead: z.string(),
+        // The button's label, and the page it leads to.
+        action: z.string(),
+        path: sitePath.startsWith('/Products/'),
+        // A logo, or a wordmark (which is wider, with space around it).
+        image: z.object({
+            kind: z.enum(['logo', 'wordmark']),
+            src: publicImage,
+            // The image for the dark theme, when it needs its own.
+            darkSrc: publicImage.optional(),
+            // Its glow (<name>-aura.webp, with <name>-aura-dark.webp beside it), for an image that stands on grey.
+            aura: publicImage.endsWith('-aura.webp').optional(),
+            width: z.number().int(),
+            height: z.number().int(),
+        }),
+    }),
+});
+
 // Legal, responsibility and trust policies, at /Legal/<Name>, listed on the /Legal hub and in the footer by `group`.
 const policies = defineCollection({
     loader: glob({ pattern: '*.md', base: 'src/content/policies' }),
@@ -206,4 +235,4 @@ const policies = defineCollection({
     }),
 });
 
-export const collections = { productFamilies, products, articles, contributors, technologies, aero, studio, libraryPages, policies };
+export const collections = { productFamilies, products, articles, contributors, technologies, aero, studio, libraryPages, adverts, policies };

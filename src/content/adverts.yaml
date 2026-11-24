@@ -1,0 +1,97 @@
+# The adverts an article can name in its `advert` field, shown between its text and the further reading. Each points at
+# something that follows from the article. Wording comes from the page it points at, so keep the two in step.
+
+# The claim comes from the sources of github.com/onix-labs/onixlabs-dotnet at v16.4.0, which holds these four libraries.
+csharp:
+  family: dotnet
+  title: "Our standards"
+  highlight: "Put into practice"
+  lead: >-
+    OnixLabs.Core, Numerics, Security and DependencyInjection are written without a single var or underscore-prefixed
+    member. They're open source, so you can see how explicit, readable C# holds up in a real codebase.
+  action: "Explore our .NET libraries"
+  path: /Products/DotNet
+  image: { kind: logo, src: /onixlabs/images/logo/dotnet.webp, width: 224, height: 224 }
+
+dotnet:
+  family: dotnet
+  title: "Products for .NET"
+  highlight: "Built for Precision"
+  lead: >-
+    A suite of general-purpose, production-ready libraries for modern .NET, with a strong emphasis on correctness,
+    composability and value semantics. They fit as cleanly into a small utility as into a large system, without imposing an
+    architecture or locking you into a framework.
+  action: "Explore our .NET libraries"
+  path: /Products/DotNet
+  image: { kind: logo, src: /onixlabs/images/logo/dotnet.webp, width: 224, height: 224 }
+
+dotnet-numerics:
+  family: dotnet
+  title: "Advanced number types"
+  highlight: "For when precision matters"
+  lead: >-
+    OnixLabs.Numerics gives you exact decimals, wider integers and more precise floats, all built on .NET's generic math. Its
+    BigDecimal holds decimal numbers of any size, so values like money and measurements are stored exactly rather than approximated in binary.
+  action: "Explore Numerics"
+  path: /Products/DotNet/Numerics
+  image: { kind: logo, src: /onixlabs/images/logo/dotnet.webp, width: 224, height: 224 }
+
+corda:
+  family: corda
+  title: "Products for Corda"
+  highlight: "Built for Trust"
+  lead: >-
+    Open-source libraries for building CorDapps on Corda: the APIs every contract and workflow needs, decentralised
+    identities inspired by W3C standards, and business networks that are run by an operator or govern themselves.
+  action: "Explore our Corda libraries"
+  path: /Products/Corda
+  image: { kind: logo, src: /onixlabs/images/logo/corda.svg, width: 224, height: 224 }
+
+corda-core:
+  family: corda
+  title: "Corda Core"
+  highlight: "CorDapps without the boilerplate"
+  lead: >-
+    The groundwork every CorDapp needs, built once: reusable flow steps, messaging workflows, an idiomatic vault query DSL, and
+    state types that make relationships between states easy to express.
+  action: "Explore Corda Core"
+  path: /Products/Corda/Core
+  image: { kind: logo, src: /onixlabs/images/logo/corda.svg, width: 224, height: 224 }
+
+kotlin:
+  family: kotlin
+  title: "Products for Kotlin"
+  highlight: "Built for Clarity"
+  lead: >-
+    A suite of general-purpose libraries for the JVM, with a strong emphasis on correctness, type safety and expressive,
+    idiomatic Kotlin. They fit as cleanly into a small utility as into a large system, without imposing an architecture or
+    locking you into a framework.
+  action: "Explore our Kotlin libraries"
+  path: /Products/Kotlin
+  image: { kind: logo, src: /onixlabs/images/logo/kotlin.svg, width: 224, height: 224 }
+
+aero:
+  title: "ONIXLabs Aero"
+  highlight: "Enterprise stack for .NET"
+  lead: >-
+    A modular suite of .NET APIs designed for fast, scalable, enterprise engineering. It helps teams ship quickly, scale
+    confidently, and modernise existing .NET systems or build new cloud-native ones.
+  action: "Explore Aero"
+  path: /Products/Aero
+  image:
+    kind: wordmark
+    src: /onixlabs/images/logo/aero-dark.webp
+    darkSrc: /onixlabs/images/logo/aero-light.webp
+    aura: /onixlabs/images/logo/aero-aura.webp
+    width: 1280
+    height: 640
+
+studio:
+  title: "ONIXLabs Studio"
+  highlight: "Every tool in one window"
+  lead: >-
+    An agentic development environment, where you and your AI agents work in the same project, the same terminals and the same
+    editor.
+  action: "Explore Studio"
+  path: /Products/Studio
+  image: { kind: logo, src: /onixlabs/images/logo/studio.svg, aura: /onixlabs/images/logo/studio-aura.webp, width: 512, height: 512 }

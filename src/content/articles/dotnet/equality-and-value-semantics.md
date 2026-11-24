@@ -1,365 +1,606 @@
 ---
 title: "Equality and Value Semantics"
-description: "How .NET tests equality, and how to give your own types value semantics with IEquatable<T>, Equals, the == and != operators, and GetHashCode."
+description: "How equality works in C# classes, structs and records, how to implement IEquatable<T>, why collections break value equality, and how OnixLabs.Core helps."
 category: dotnet
 order: 1
 path: /Documentation/DotNet/Equality-And-Value-Semantics
+advert: dotnet
 published: 2025-12-15
+updated: 2026-11-24
 ---
 
 ## Introduction
 
-The understanding and implementation of equality testing and value semantics (the comparison of objects by value, rather than by reference) is something that is commonly overlooked when designing .NET types.
+Two friends each draw a cross on their own copy of the same map, at exactly the same spot. Are the two crosses the same?
 
-In this article we’re going to understand the importance of implementing equality and value semantics, and how this can improve the overall design of a system.
+If you're hunting for treasure, yes. Both say to dig in the same place, and it doesn't matter which one you follow. If you're holding an eraser, no. Rub one out, and the other is still there.
 
-### Common Language Specification
+Both answers are correct, because they answer different questions. The eraser cares about **identity**: is this the very same thing? The treasure hunter cares about **value**: does this represent the same thing? Every C# type has to choose which question its equality answers. Many types never choose at all. They inherit an answer from the way they were declared, and the bugs appear later: a duplicate in a set, a dictionary lookup that finds nothing, or a test that fails while showing two objects that look exactly alike.
 
-The Common Language Specification features five different type categories; classes, structures, interfaces, enumerations and delegates.
+In this article we'll build up from the beginning. We'll see what C# gives you for each kind of type, implement value equality by hand, let records do the work for us, find out where collections undo it all, and finish with the parts of OnixLabs.Core that close the remaining gaps.
 
-Each of these type categories perform type checking differently. When defining your own types, those types inherit the functionality defined by the `Equals` method of its base type. The following information describes the default implementation in .NET of the `Equals` method for each of the type categories:
+We'll use one example throughout, a point on a map. Code samples leave out documentation comments and argument validation for brevity.
 
-#### Class
+## Asking Whether Two Things Are Equal
 
-Equality is performed by calling `object.Equals(object obj)` and determines whether objects are equal by reference; equivalent to calling `object.ReferenceEquals(object objA, object objB)`.
+C# gives us several ways to compare two instances. They don't all ask the same question.
 
-#### Structure
+| Mechanism | What it asks |
+|---|---|
+| `ReferenceEquals(a, b)` | Are these the same object? No type can change the answer. |
+| `a.Equals(object)` | Does `a` consider itself equal to this object? Every type inherits this method and may override it. |
+| `Equals(a, b)` | The same question, asked safely when either side may be `null`. |
+| `a.Equals(T)` | The same question, for one specific type. Declared by `IEquatable<T>`. |
+| `a == b` | Whatever the `==` operator for the declared types of `a` and `b` says. |
 
-Equality is performed by calling `ValueType.Equals(object obj)` and determines whether objects are equal by value by performing either byte-by-byte comparison or field-by-field comparison using reflection.
+The last row differs from the others in an important way. `Equals` is a virtual method, so the object itself decides the answer while the program runs. Operators are chosen by the compiler, using the types the variables were *declared* with. The same two objects can therefore give different answers depending on how you refer to them, and we'll see that happen shortly.
 
-#### Enumeration
+### The Equality Contract
 
-Equality is performed by calling `Enum.Equals(object obj)` and determines whether the values have the same enumeration type and the same underlying value.
+Whichever type we're writing, the rest of .NET expects its equality to follow some rules:
 
-#### Delegate
+- **Reflexive:** a value equals itself.
+- **Symmetric:** if `a` equals `b`, then `b` equals `a`.
+- **Transitive:** if `a` equals `b`, and `b` equals `c`, then `a` equals `c`.
+- **Consistent:** asking again gives the same answer, as long as neither value has changed.
+- **Safe with null:** no instance equals `null`, and asking doesn't throw.
+- **Matched by its hash code:** if `a` equals `b`, both must return the same result from `GetHashCode`.
 
-Equality is performed by calling `MulticastDelegate.Equals(object obj)` and determines whether the delegates have the same type, with identical invocation lists.
+The last rule is the one most often broken. Hash-based collections such as `HashSet<T>` and `Dictionary<TKey, TValue>` use the hash code to decide where to look, and only call `Equals` on what they find there. If two equal values return different hash codes, the collection looks in the wrong place and never asks whether they're equal.
 
-#### Interface
+The rule only works in that direction. Equal values must share a hash code, but values that share a hash code don't have to be equal. Reading it backwards leads to a bug that we'll come to when we write a hash code of our own.
 
-Equality is performed by calling `object.Equals(object obj)` and determines whether objects are equal by reference.
+## Behaviour Semantics and Value Semantics
 
-### Equality Testing Mechanisms in .NET
+The contract tells us how equality must behave, but not which kind to choose. The treasure hunter and the eraser were both right, so how do we know which of them a type should agree with? It comes down to what the type is *for*.
 
-C# and .NET provide several language-level and framework-level features for performing equality testing between type instances.
+- **A type with behaviour semantics exists to do something.** A database connection, a file stream, a message handler: what matters is which one you're holding, because calling it has consequences and it may change as you use it. Its equality is normally based on identity.
+- **A type with value semantics exists to mean something.** A point, a date, a colour: what matters is what it says, and any instance that says the same thing will do. Its equality is normally based on value.
 
-#### Methods
+A useful test is to imagine quietly swapping one instance for another with the same contents. If nothing in the program could care, it's a value. If something could go wrong, identity matters.
 
-It’s quite clear that Microsoft understood the importance of equality testing as the three fundamental method implementations for these tests are implemented at the root of the type hierarchy.
+This is a guide rather than a rule, and it's worth asking what a type *represents* instead of what it looks like. The entities you store with Entity Framework Core are a good example. A `Customer` entity is often little more than a list of properties, so it looks like a value. But it represents one particular customer, who remains the same customer after changing their name or moving house. The properties describe the customer at one moment; they don't define who the customer is.
 
-##### ReferenceEquals (static)
+EF Core works the same way. Within a context, it tracks a single instance for each primary key, and it [compares entities by reference](https://learn.microsoft.com/en-us/ef/core/change-tracking/identity-resolution#overriding-object-equality), even if they override `Equals`. A collection of related entities might not, though: a `HashSet<T>` uses your `Equals` unless it's told otherwise, and could treat two separate entities as one. That's why Microsoft recommends leaving entity equality alone, and [avoiding records](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records), which compare by value, as entity types. An entity may be made of values, but it isn't one.
 
-Determines whether the specified object instances are the same instance. This method will return true if `objA` and `objB` are the same instance, or if both are null; otherwise, false.
+## Class Equality
 
-```csharp
-object.ReferenceEquals(object objA, object objB)
-```
-
-As of C# 7.0 static code analysis will identify `ReferenceEquals` checks for null and suggest replacing these will pattern matching expressions; for example:
-
-```csharp
-if (obj is null)
-```
-
-##### Equals (static)
-
-Determines whether the specified object instances are considered equal. This method will return true if the objects are considered equal; otherwise false. If both `objA` and `objB` are null, the method returns true.
-
-```csharp
-object.Equals(object objA, object objB)
-```
-
-##### Equals (instance)
-
-Determines whether the specified object is equal to the current object. This method will return true if the specified object is equal to the current object; otherwise false.
+Our `Point` has value semantics, so we know the answer we want: two points at the same spot should be equal. Let's see what C# gives us, starting with a class.
 
 ```csharp
-Equals(object obj)
-```
-
-#### Operators
-
-The equality testing operators `==` and `!=` are implemented by default for reference types and compare object instances by reference, however there is no default implementation of these operators for value types.
-
-#### Interfaces
-
-The .NET Standard API exposes an interface called `IEquatable<T>` which provides a type-specific method for determining equality of type instances.
-
-### Implementation Guide
-
-The aim of this implementation guide is to establish a set of rules and best practices for implementing equality checking when designing C# types — specifically we’re going to focus on classes and structures to understand the importance of implementing equality and value semantics.
-
-When implementing value types, you should always override `Equals` because tests for equality that rely on reflection offer poor performance.
-
-You can also override the default implementation of `Equals` for reference types to test for value equality, thus defining the precise value semantics for the type.
-
-*The decision of whether to implement a class or a structure is subject to a different topic of design, however Microsoft have outlined the considerations that should be made for those design decisions* [*here*](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct)*.*
-
-#### Example
-
-There are many cases in .NET applications where classes are designed to be value oriented as opposed to behaviour oriented.
-
-*For the sake of brevity and clarity in this example, some code samples have been deliberately shortened, however a full version of the example class will also be demonstrated.*
-
-Let’s start by taking a look at a typical example of such a class:
-
-```csharp
-public sealed class Product(string name, decimal price)
-{    
-    public string Name => name;
-    public decimal Price => price;
+public sealed class Point(int x, int y)
+{
+    public int X { get; } = x;
+    public int Y { get; } = y;
 }
 ```
 
-Let’s go ahead and create some instances of this class:
+Unless a class says otherwise, its equality is identity. `Equals` and `==` both ask whether two variables refer to the same object.
 
 ```csharp
-Product milk1 = new Product("Milk", 1.99m);
-Product milk2 = new Product("Milk", 1.99m);
-object  milk3 = new Product("Milk", 1.99m);
-Product milk4 = milk1;
-Product milk5 = null;
+Point first = new(123, 456);
+Point second = new(123, 456);
+Point alias = first;
+
+first.Equals(second)    // False
+first == second         // False
+first == alias          // True
+
+HashSet<Point> points = [first, second];
+points.Count            // 2
 ```
 
-What can we identify about these instances?
+As far as C# is concerned, these are two different crosses, and where they are doesn't come into it.
 
-- `milk1` and `milk2` are *seemingly* identical.
-- `milk1` and `milk2` are *seemingly* identical to `milk3` except that is it declared as an `object`.
-- `milk4` and `milk1` are identical by reference.
-- `milk5` is null.
+That's the right default for a type with behaviour semantics. Two open database connections aren't interchangeable just because they point at the same server. It's the wrong default for `Point`, which is nothing more than its contents.
 
-But what happens when we try to equate these instances?
+## Struct Equality
 
-```csharp
-milk1.Equals(milk2)   // False
-milk1 == milk2        // False
-
-milk1.Equals(milk3)   // False
-milk1 == milk3        // False
-milk1.Equals(milk4)   // True
-milk1 == milk4        // True
-milk1.Equals(milk5)   // False
-milk1 == milk5        // False
-```
-
-This correlates with the default implementation for `Equals` on class types as described in the Common Language Specification section above, but it's probably not the behaviour we want for a value oriented class, rather it seems more suitable to implement value semantics so that we can equate classes by value, as well as by reference.
-
-##### Step 1: Implementing IEquatable<T>
-
-It might seem like overriding `Equals` on the `Product` class would be a good place to start, but actually a better place to start would be to implement `IEquatable<Product>` since this gives us a typed equality testing mechanism, and we can forward more generalised, object-based equality calls into this method.
+What happens if we declare `Point` as a struct instead?
 
 ```csharp
-public sealed class Product(string name, decimal price) : IEquatable<Product>
-{    
-    public string Name => name;
-    public decimal Price => price;
-
-    public bool Equals(Product other) =>
-        ReferenceEquals(other, this)
-        || other is Product
-        && Name == other.Name
-        && Price == other.Price;
+public readonly struct Point(int x, int y)
+{
+    public int X { get; } = x;
+    public int Y { get; } = y;
 }
 ```
 
-The `Equals` method implementation checks whether `other` is equal to this by reference OR `other` is an instance of `Product` AND then compares the values of each property.
-
-So what happens when we try to equate these instances now?
+A struct variable holds its data directly, so there's no shared object to have an identity. Structs inherit their equality from `ValueType`, which compares contents.
 
 ```csharp
-milk1.Equals(milk2)   // True
-milk1 == milk2        // False
+Point first = new(123, 456);
+Point second = new(123, 456);
 
-milk1.Equals(milk3)   // False
-milk1 == milk3        // False
-milk1.Equals(milk4)   // True
-milk1 == milk4        // True
-milk1.Equals(milk5)   // False
-milk1 == milk5        // False
+first.Equals(second)    // True
+first == second         // Error CS0019: operator '==' cannot be applied
 ```
 
-You’ll notice if you correlate these results with the results above, that only one result has changed, and that was `milk1.Equals(milk2)`. This is because the typed `Equals` implementation provided by `IEquatable<T>` was used to perform equality checking here.
+The first answer is the one we want, but the default comes with three drawbacks.
 
-##### Step 2: Overriding Equals
+- **There are no operators.** Unlike a class, a struct has no `==` or `!=` until you write them.
+- **Comparing creates objects.** The inherited `Equals` works with `object`, so the values are boxed: copied into new objects, just to be compared.
+- **The rest depends on the fields.** Our `Point` is two integers side by side, which .NET can compare as a block of raw memory. Not every struct is so lucky.
 
-This still isn’t quite the behaviour we want because we’re unable to equate `object` declarations; in this case `milk3` is still not equal to `milk1` despite being instantiated with exactly the same information. This is where we override the `Equals` method on the `Product` class to provide a generalised equality checking implementation.
+The last of these is easy to miss, because a small change can tip a struct from one side to the other. Suppose our points also need a label:
 
 ```csharp
-public sealed class Product(string name, decimal price) : IEquatable<Product>
-{    
-    public string Name => name;
-    public decimal Price => price;
-
-    public bool Equals(Product other) =>
-        ReferenceEquals(other, this)
-        || other is Product
-        && Name == other.Name
-        && Price == other.Price;
-
-    public override bool Equals(object obj) => obj is Product other && Equals(other);
+public readonly struct Point(int x, int y, string label)
+{
+    public int X { get; } = x;
+    public int Y { get; } = y;
+    public string Label { get; } = label;
 }
 ```
 
-The overridden `Equals` method implementation just passes the equality check to the `IEquatable<T>` implementation by type-casting `obj` as a `Product`.
-
-So what happens when we try to equate these instances now?
+A string can't be compared as raw memory, because what the struct holds is a reference to it. .NET falls back to inspecting the fields one at a time, using reflection, which is much slower. The default hash code suffers too. It never promised to use every field, and today's runtime uses only the first one here:
 
 ```csharp
-milk1.Equals(milk2)   // True
-milk1 == milk2        // False
+Point cave = new(123, 456, "Cave");
+Point beach = new(123, 789, "Beach");
 
-milk1.Equals(milk3)   // True
-milk1 == milk3        // False
-
-milk1.Equals(milk4)   // True
-milk1 == milk4        // True
-
-milk1.Equals(milk5)   // False
-milk1 == milk5        // False
+cave.Equals(beach)                           // False
+cave.GetHashCode() == beach.GetHashCode()    // True
 ```
 
-Now we can see that `milk1` is equal to `milk3` even though `milk3` is declared as an `object` but this still isn't quite what we want.
+Every point with the same `X` now shares a hash code, whatever its `Y` or its label. A dictionary with those keys still gives correct answers, but it has to search through them one by one, which is exactly what a dictionary exists to avoid. Nothing fails, and nothing warns you. It just gets slower.
 
-##### Step 3: Implement Operators
+So structs begin with the right meaning, but not the right implementation. If a struct is going to be compared, or used as a key, give it an implementation of its own. We'll leave the label behind, and go back to two coordinates.
 
-Ideally the equality operators `==` and `!=` would also perform value equality checking. There's no need for them to perform reference checks, since this is now being handled directly from the `Equals` method implementations.
+## Implementing `IEquatable<T>`
+
+`IEquatable<T>` is how a type says, "I know how to compare myself with another `T`." It declares a single method, but a complete implementation has four parts. We'll start from the class and add them one at a time, because each part fixes something the previous one leaves broken.
+
+### Step 1: Compare Values With `Equals(T)`
 
 ```csharp
-public sealed class Product(string name, decimal price) : IEquatable<Product>
-{    
-    public string Name => name;
-    public decimal Price => price;
+public sealed class Point(int x, int y) : IEquatable<Point>
+{
+    public int X { get; } = x;
+    public int Y { get; } = y;
 
-    public bool Equals(Product other) =>
-        ReferenceEquals(other, this)
-        || other is Product
-        && Name == other.Name
-        && Price == other.Price;
-
-    public override bool Equals(object obj) => obj is Product other && Equals(other);
-
-    public static bool operator ==(Product a, Product b) => Equals(a, b);
-
-    public static bool operator !=(Product a, Product b) => !Equals(a, b);
+    public bool Equals(Point? other) => ReferenceEquals(this, other)
+        || other is not null
+        && this.X == other.X
+        && this.Y == other.Y;
 }
 ```
 
-The overridden equality operator implementations calls `object.Equals` passing in `a` and `b` as arguments:
+The method reads from top to bottom. An object always equals itself, so we can stop early. Nothing equals `null`. Otherwise, the values decide. `first.Equals(second)` is now true.
 
-- If `a` and `b` are `null`, the method returns `true`.
-- If `a` or `b` is `null`, the method returns `false`.
-- If neither `a` or `b` are `null`, `a.Equals(b)` is called, forwarding equality testing into the custom `Equals` implementation of the type.
+### Step 2: Override `Equals(object)`
 
-*For the* `!=` *or inequality operator, the result of* `object.Equals` *is simply negated.*
-
-So what happens when we try to equate these instances now?
+The new method is only used when the compiler knows that both sides are `Point`. Code that sees a plain `object` still gets the version inherited from `object`, which compares by identity.
 
 ```csharp
-milk1.Equals(milk2)   // True
-milk1 == milk2        // True
+object boxed = second;
 
-milk1.Equals(milk3)   // True
-milk1 == milk3        // False
-milk1 == (Product)milk3 // True
-
-milk1.Equals(milk4)   // True
-milk1 == milk4        // True
-
-milk1.Equals(milk5)   // False
-milk1 == milk5        // False
+first.Equals(second)    // True
+first.Equals(boxed)     // False
 ```
 
-Better still, but `milk1` and `milk3` will be compared by reference because `milk3` is declared as an `object`. As illustrated in the results, the only realistic way to circumvent this is to cast `milk3` to `Product`.
-
-There is still a problem here however. Imagine you have a requirement in your software to store these products in a `HashSet<Product>`. Given that `milk1`, `milk2`, `milk3` are identical by value, `milk4` is identical by reference and `milk5` is null, how many items would you expect to see in the hash set?
-
-Two, right? … wrong!
-
-The `HashSet<T>` class relies on `GetHashCode` first to store a unique value. If a collision is found, it uses `Equals` to determine whether the type instances are in fact equal. Since we haven't yet overridden `GetHashCode` our custom type won't work properly with hashed collection types.
-
-##### Step 4: Overriding GetHashCode
-
-The `GetHashCode` method is quite closely related to the `Equals` method in some respects, though they have different roles and responsibilities in type design. The purpose of the `GetHashCode` method is to return a hash code that is deterministic and *unique* to the type instance. With regards to uniqueness, since `GetHashCode` returns 32-bit values, it is not considered globally or universally unique and may be subject to collisions.
-
-Understanding hash code implementations is quite a broad topic. For the sake of completeness, there is another article on this topic, [here](/Documentation/DotNet/HashCode-Algorithms-And-Why-They-Matter).
-
-The final implementation uses an implementation detailed in the link above, where the custom types properties are simply rolled into a new anonymous type, upon which `GetHashCode` is called.
+Two answers for the same pair of objects. We fix that by sending the general method to the specific one, so that there's a single definition of equality.
 
 ```csharp
-public override int GetHashCode() => HashCode.Combine(Name, Price);
+public override bool Equals(object? obj) => this.Equals(obj as Point);
 ```
 
-### Final Implementation
+If `obj` is something other than `Point`, the `as` operator produces `null`, and step 1 already handles that.
 
-Here is the product class fully implemented so you can see how everything hangs together.
+### Step 3: Override `GetHashCode`
+
+The two points are equal now, but they still inherit hash codes based on identity, so a set would almost certainly still hold both. We've broken the last rule of the contract, and the compiler warns us about it. The hash code has to be built from the same values that `Equals` compares.
 
 ```csharp
-public sealed class Product(string name, decimal price) : IEquatable<Product>
-{    
-    public string Name => name;
-    public decimal Price => price;
+public override int GetHashCode() => HashCode.Combine(this.X, this.Y);
+```
 
-    public override int GetHashCode() => HashCode.Combine(Name, Price);
+```csharp
+HashSet<Point> points = [first, second];
+points.Count    // 1
+```
 
-    public bool Equals(Product other) =>
-        ReferenceEquals(other, this)
-        || other is Product
-        && Name == other.Name
-        && Price == other.Price;
+Hash codes deserve an article of their own, and [they have one](/Documentation/DotNet/HashCode-Algorithms-And-Why-They-Matter).
 
-    public override bool Equals(object obj) => obj is Product other && Equals(other);
+#### Don't Build `Equals` on `GetHashCode`
 
-    public static bool operator ==(Product a, Product b) => Equals(a, b);
+Once a type has a hash code, there's a tempting shortcut. If equal values always share a hash code, why not let `Equals` compare hash codes, and avoid listing every property twice? Here's what that looks like, with a hash code that's simpler than ours to make the point, if you'll pardon the pun:
 
-    public static bool operator !=(Product a, Product b) => !Equals(a, b);
+```csharp
+public bool Equals(Point? other) => other is not null && this.GetHashCode() == other.GetHashCode();
+
+public override int GetHashCode() => this.X ^ this.Y;
+```
+
+```csharp
+Point original = new(123, 456);
+Point swapped = new(456, 123);
+
+original.GetHashCode() == swapped.GetHashCode()    // True
+original.Equals(swapped)                           // True
+
+HashSet<Point> points = [original, swapped];
+points.Count                                       // 1
+```
+
+It's easy to blame `GetHashCode`. Combining `X` and `Y` with `^` gives the same result whichever way round they are, so these two points were always going to share a hash code. That's called a collision, and it's allowed. Two values that collide take a little longer to tell apart, but nothing breaks, because `Equals` has the final say.
+
+Here, `Equals` has given that job away. It asks the hash code to settle a question that hash codes can't answer, so two different points become equal, and the set throws one of them away.
+
+A better hash code only hides the problem. A `Point` holds 64 bits of data and a hash code has room for 32, so some points must collide, however cleverly it's calculated. The bug would just become rare, and with `HashCode.Combine` it would be harder still to find: its results change each time the program starts, so the points that collide today may not collide tomorrow.
+
+What looks like an easy escape hatch is really a footgun. The fix is to compare the values themselves, as we did in step 1. Do that, and even with this simple hash code, the two points still collide, but they're no longer equal and the set holds both.
+
+A hash code can tell you that two values are *different*. Only `Equals` can tell you that they're the *same*.
+
+### Step 4: Overload the Operators
+
+Finally, `==` still compares identity, so `first.Equals(second)` is true while `first == second` is false. This step is the easiest to forget, because nothing warns you.
+
+```csharp
+public static bool operator ==(Point? left, Point? right) => Equals(left, right);
+
+public static bool operator !=(Point? left, Point? right) => !Equals(left, right);
+```
+
+The static `Equals(left, right)` deals with `null` on either side, then calls the method from step 2. Everything leads back to step 1.
+
+### The Complete Class
+
+```csharp
+public sealed class Point(int x, int y) : IEquatable<Point>
+{
+    public int X { get; } = x;
+    public int Y { get; } = y;
+
+    public bool Equals(Point? other) => ReferenceEquals(this, other)
+        || other is not null
+        && this.X == other.X
+        && this.Y == other.Y;
+
+    public override bool Equals(object? obj) => this.Equals(obj as Point);
+
+    public override int GetHashCode() => HashCode.Combine(this.X, this.Y);
+
+    public static bool operator ==(Point? left, Point? right) => Equals(left, right);
+
+    public static bool operator !=(Point? left, Point? right) => !Equals(left, right);
 }
 ```
 
-### Differences for Structures
+Three details are worth pointing out.
 
-Implementing `Equals` and `GetHashCode` are virtually identical when working with structures as opposed to classes, in fact, there are only subtle changes that need to be corrected.
+- **The properties are read-only.** A hash-based collection remembers where it put a value. If the value changes afterwards, so does its hash code, and the collection can no longer find it.
+- **The class is sealed.** If a subclass adds a field and compares it too, the base class may consider itself equal to the subclass while the subclass disagrees, which breaks symmetry. Sealing the class avoids the problem.
+- **Operators still follow declared types.** `first == boxed` compares identity even now, because `boxed` is declared as `object`. Use `Equals` when you don't know the type.
 
-Since structures can’t be `null` by design, there is no need for the null check when implementing `IEquatable<Product>`. Since value types are copied by value, there is also no need to check referential equality.
+### The Same Steps for a Struct
+
+The four parts are the same for a struct, with a little less to do. A struct can't be `null`, and it has no identity, so both of those checks disappear.
 
 ```csharp
-public readonly struct Product : IEquatable<Product>
-{    
-    public bool Equals(Product other) => 
-        Name == other.Name &&
-        Price == other.Price;
+public readonly struct Point(int x, int y) : IEquatable<Point>
+{
+    public int X { get; } = x;
+    public int Y { get; } = y;
+
+    public bool Equals(Point other) => this.X == other.X && this.Y == other.Y;
+
+    public override bool Equals(object? obj) => obj is Point other && this.Equals(other);
+
+    public override int GetHashCode() => HashCode.Combine(this.X, this.Y);
+
+    public static bool operator ==(Point left, Point right) => left.Equals(right);
+
+    public static bool operator !=(Point left, Point right) => !left.Equals(right);
 }
 ```
 
-### Using Records
+All three drawbacks are gone. The operators exist, `Equals(Point)` compares without boxing, and the result no longer depends on what kind of fields we have. If we did bring the label back, we'd add it to `Equals` and `GetHashCode`, and neither would need reflection. `HashSet<T>` and `Dictionary<TKey, TValue>` notice `IEquatable<T>` and use it automatically.
 
-As of C# 9.0, record types have been introduced to C#, which provides value semantics out of the box. You can find out more about record types on the [Microsoft Docs](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/records) site.
+## Record Class Equality
 
-### Value Semantics in OnixLabs.Core
+That's a lot of code to say "compare everything". Worse, it has to be kept up to date: add a property, forget to add it to `Equals`, and the type is quietly wrong. Records ask the compiler to write it instead.
 
-Step 3 is the easiest one to forget. `IEquatable<T>` only asks for an `Equals` method, so nothing stops a type from implementing it while `==` quietly carries on comparing references, and the two disagree.
+```csharp
+public sealed record Point(int X, int Y);
+```
 
-[OnixLabs.Core](/Products/DotNet#onixlabs-core) closes that gap with `IValueEquatable<T>`. It extends `IEquatable<T>` and declares `==` and `!=` as static abstract members, so a type can't claim value semantics without providing the operators to match. Leaving them out is a compile error rather than a bug waiting to be found.
+`record` is short for `record class`. It's still a class, so variables still hold references, but the compiler writes every part of the previous section for us: `IEquatable<Point>`, both `Equals` methods, `GetHashCode` and the operators.
+
+```csharp
+Point first = new(123, 456);
+Point second = new(123, 456);
+
+first.Equals(second)              // True
+first == second                   // True
+ReferenceEquals(first, second)    // False
+```
+
+Two crosses at the same spot, and a type that knows the difference between the same place and the same ink.
+
+Records also handle inheritance, which we avoided above by sealing the class. Each record carries a hidden property, `EqualityContract`, that identifies its type, and two records are only equal if those match.
+
+```csharp
+public record Point(int X, int Y);
+public sealed record Point3D(int X, int Y, int Z) : Point(X, Y);
+
+Point flat = new(123, 456);
+Point raised = new Point3D(123, 456, 0);
+
+flat == raised    // False
+raised == flat    // False
+```
+
+Both directions agree, so symmetry holds. Sealing a record that isn't designed for inheritance is still a good habit.
+
+## Record Struct Equality
+
+Structs get the same treatment.
+
+```csharp
+public readonly record struct Point(int X, int Y);
+```
+
+This gives us the contents-based meaning that structs always had, with the implementation they were missing. The comparison is generated from the fields, so there's no boxing or reflection, every field contributes to the hash code, and `==` and `!=` are included.
+
+Include `readonly` unless you have a reason not to. The properties of a plain `record struct` can be changed after it's created, while those of a `record class` can't.
+
+Here's how the four declarations compare before we write any equality code ourselves:
+
+| Declaration | `Equals` compares | `==` compares |
+|---|---|---|
+| `class` | Identity | Identity |
+| `struct` | Fields, sometimes by reflection | Not available |
+| `record class` | Type and fields | Type and fields |
+| `record struct` | Fields | Fields |
+
+For a small value such as `Point`, a `readonly record struct` is a natural fit, and it's the version we'll use from here.
+
+## Pitfalls When Comparing Collections
+
+Records compare their fields, so it's tempting to conclude that a record compares *everything* inside it. Let's give `Point` something to live in: a route between points, which may or may not have been planned yet.
+
+```csharp
+public sealed record Route(string Name, IReadOnlyList<Point>? Waypoints);
+```
+
+```csharp
+Route first = new("Treasure", [new(123, 456), new(789, 12)]);
+Route second = new("Treasure", [new(123, 456), new(789, 12)]);
+
+first == second    // False
+```
+
+The same name and the same waypoints, yet the routes aren't equal. The record kept its promise and compared each field using that field's own equality. The trouble is the field.
+
+### Most Collections Compare by Identity
+
+Arrays, lists, sets and dictionaries are all classes, and they follow the default for classes. Being immutable doesn't change that.
+
+| Type | Two instances are equal when |
+|---|---|
+| `T[]`, `List<T>` | They're the same object |
+| `HashSet<T>`, `Dictionary<TKey, TValue>` | They're the same object |
+| `ImmutableList<T>`, `ImmutableHashSet<T>`, `FrozenSet<T>` | They're the same object |
+| `ImmutableArray<T>` | They wrap the same underlying array |
+| `ReadOnlyMemory<T>`, `ReadOnlySpan<T>` | They cover the same region of memory |
+| `string` | They contain the same characters |
+
+Hash codes follow the same pattern, so a `HashSet<Route>` containing `first` doesn't find `second` either.
+
+### Copies Share Their Collections
+
+The opposite mistake is just as easy to make. A `with` expression copies the fields of a record, and a collection field is only a reference, so the original and the copy end up with the same list.
+
+```csharp
+List<Point> waypoints = [new(123, 456)];
+
+Route original = new("Treasure", waypoints);
+Route shortcut = original with { Name = "Shortcut" };
+
+waypoints.Add(new(789, 12));
+
+original.Waypoints?.Count    // 2
+shortcut.Waypoints?.Count     // 2
+```
+
+`IReadOnlyList<T>` doesn't prevent this. It means that *you* can't change the list through that property, not that nobody can.
+
+### `SequenceEqual` Doesn't Like `null`
+
+LINQ's `SequenceEqual` compares two sequences one element at a time, which is the comparison we wanted. It doesn't accept `null` on either side, though, and our waypoints may be `null`.
+
+```csharp
+IReadOnlyList<Point>? planned = [new(123, 456)];
+IReadOnlyList<Point>? unplanned = null;
+
+planned.SequenceEqual(unplanned)      // Throws ArgumentNullException
+unplanned.SequenceEqual(unplanned)    // Throws ArgumentNullException
+```
+
+With nullable reference types enabled, the compiler warns about both calls. Ignore the warning, and two routes with the same name and nothing planned, which ought to be equal, throw when they're compared. The contract doesn't allow that.
+
+### Order, Nesting and Lazy Queries
+
+- **Order matters to a sequence.** `[1, 2, 3]` and `[3, 2, 1]` are different sequences. For waypoints that's correct, but a set has no meaningful order, so compare sets with `SetEquals`. Dictionaries have no meaningful order either, so compare their counts, then look up each key.
+- **Nested collections fall back to identity.** `SequenceEqual` on two `int[][]` values compares the inner arrays, which are the same only if they're the same object.
+- **Not every sequence is stored.** A LINQ query runs again each time it's read, so an `IEnumerable<T>` field may do a lot of work in `Equals`, or give a different answer each time. Store a list or an array instead.
+
+### The Hash Code Has to Follow
+
+Suppose we fix `Equals` so that it looks inside the collection, and write the obvious hash code to go with it:
+
+```csharp
+public override int GetHashCode() => HashCode.Combine(this.Name, this.Waypoints);
+```
+
+This compiles, reads well, and is wrong. `HashCode.Combine` asks the list for its hash code, and the list answers with its identity. Equal routes now return different hash codes, and we're back to a set that can't find what it contains. If `Equals` looks inside a collection, `GetHashCode` must look inside it too.
+
+## Comparing Collections With OnixLabs.Core.Linq
+
+None of these problems is hard to solve once. What's hard is remembering to solve all of them, every time. The `OnixLabs.Core.Linq` namespace in [OnixLabs.Core](/Products/DotNet#onixlabs-core) provides a matching pair of methods, one for each half of the contract.
+
+`SequenceEqualOrNull` compares two sequences element by element, and accepts `null` on either side.
+
+| Left | Right | Result |
+|---|---|---|
+| `null` | `null` | `true` |
+| `null` | Any sequence, even an empty one | `false` |
+| Any sequence, even an empty one | `null` | `false` |
+| A sequence | A sequence | `true` if they have the same elements in the same order |
+
+Notice that `null` and empty are different. For our route, "not planned yet" and "planned, with nowhere to stop on the way" shouldn't be confused.
+
+`GetContentHashCode` builds a hash code from the elements, and returns zero for `null`. With both, the route becomes:
+
+```csharp
+using OnixLabs.Core.Linq;
+
+public sealed record Route(string Name, IReadOnlyList<Point>? Waypoints)
+{
+    public IReadOnlyList<Point>? Waypoints { get; } = Waypoints is null ? null : [..Waypoints];
+
+    public bool Equals(Route? other) => ReferenceEquals(this, other)
+        || other is not null
+        && this.Name == other.Name
+        && this.Waypoints.SequenceEqualOrNull(other.Waypoints);
+
+    public override int GetHashCode() => HashCode.Combine(this.Name, this.Waypoints.GetContentHashCode());
+}
+```
+
+We only replace the two parts that were wrong. The compiler still writes the rest, and its `Equals(object)`, `==` and `!=` all lead to our `Equals`. We've also taken a copy of the waypoints, so nobody holding the original list can change the route, or its hash code, after it's been created.
+
+```csharp
+Route first = new("Treasure", [new(123, 456), new(789, 12)]);
+Route second = new("Treasure", [new(123, 456), new(789, 12)]);
+
+first == second            // True
+
+HashSet<Route> routes = [first];
+routes.Contains(second)    // True
+```
+
+The comparison works across collection types, so an array equals a list with the same contents. `SequenceEqualOrNull` also accepts an `IEqualityComparer<T>` when the elements need a different rule:
+
+```csharp
+IReadOnlyList<string> lower = ["cave", "beach"];
+IReadOnlyList<string> upper = ["CAVE", "BEACH"];
+
+lower.SequenceEqualOrNull(upper)                                      // False
+lower.SequenceEqualOrNull(upper, StringComparer.OrdinalIgnoreCase)    // True
+```
+
+If you pass a comparer to `SequenceEqualOrNull` inside `Equals`, the hash code has to follow the same rule. `GetContentHashCode` uses each element's own hash code, so in that case you'd build it yourself, using the `HashCode.Add` overload that accepts a comparer.
+
+Both methods respect order, and both use each element's own equality. They're for sequences rather than sets, and nested collections still need elements that compare by value. One way to arrange that is to wrap the inner collection in a type like `Route`.
+
+## Completing the Contract With `IValueEquatable<T>`
+
+There's one gap left. `IEquatable<T>` promises an `Equals` method and nothing more. It doesn't mention operators, and that causes trouble in two places.
+
+The first is step 4 of our implementation. Forget the operators on a class, and it compiles without complaint while `Equals` and `==` disagree.
+
+The second is generic code. Suppose we want to count how many times a value appears:
+
+```csharp
+public static int CountOf<T>(this IEnumerable<T> values, T target) where T : IEquatable<T> =>
+    values.Count(value => value == target);    // Error CS0019: operator '==' cannot be applied
+```
+
+The compiler can't use an operator that the interface doesn't promise. It's tempting to add a `class` constraint, which makes the error go away:
+
+```csharp
+public static int CountOf<T>(this IEnumerable<T> values, T target) where T : class, IEquatable<T> =>
+    values.Count(value => value == target);    // Compiles, but compares identity
+```
+
+This is worse. Operators are chosen at compile time, and all the compiler knows about `T` is that it's a class, so it picks the comparison that every class has. That's true even when `T` is a record, or a class with operators as carefully written as ours.
+
+OnixLabs.Core provides `IValueEquatable<T>`, which extends `IEquatable<T>` and requires both operators:
+
+```csharp
+public interface IValueEquatable<T> : IEquatable<T> where T : IValueEquatable<T>
+{
+    public static abstract bool operator ==(T? left, T? right);
+
+    public static abstract bool operator !=(T? left, T? right);
+}
+```
+
+On our class, only the declaration changes. The operators we wrote in step 4 now satisfy the interface, and leaving them out is an error rather than a surprise.
 
 ```csharp
 using OnixLabs.Core;
 
-public sealed class Product(string name, decimal price) : IValueEquatable<Product>
+public sealed class Point(int x, int y) : IValueEquatable<Point>
 {
-    public string Name { get; } = name;
-    public decimal Price { get; } = price;
+    public int X { get; } = x;
+    public int Y { get; } = y;
 
-    public bool Equals(Product? other) => other is not null && Name == other.Name && Price == other.Price;
+    public bool Equals(Point? other) => ReferenceEquals(this, other)
+        || other is not null
+        && this.X == other.X
+        && this.Y == other.Y;
 
-    public override bool Equals(object? obj) => Equals(obj as Product);
+    public override bool Equals(object? obj) => this.Equals(obj as Point);
 
-    public override int GetHashCode() => HashCode.Combine(Name, Price);
+    public override int GetHashCode() => HashCode.Combine(this.X, this.Y);
 
-    public static bool operator ==(Product? left, Product? right) => Equals(left, right);
+    public static bool operator ==(Point? left, Point? right) => Equals(left, right);
 
-    public static bool operator !=(Product? left, Product? right) => !Equals(left, right);
+    public static bool operator !=(Point? left, Point? right) => !Equals(left, right);
 }
 ```
 
-Because the operators are part of the interface, generic code can rely on them too: anything constrained to `IValueEquatable<T>` can be compared with `==` and get value equality. A type that also needs ordering can implement `IValueComparable<T>`, which adds `<`, `<=`, `>` and `>=` in the same way. Across the ONIXLabs .NET libraries, types such as `Optional<T>`, `Result<T>` and the cryptographic primitives implement `IValueEquatable<T>`, so they all compare the same way.
+Records already have the operators, so they only need to name the interface:
+
+```csharp
+public readonly record struct Point(int X, int Y) : IValueEquatable<Point>;
+```
+
+Generic code can now use `==` and get value equality, for classes, structs and records alike:
+
+```csharp
+public static int CountOf<T>(this IEnumerable<T> values, T target) where T : IValueEquatable<T> =>
+    values.Count(value => value == target);
+```
+
+If your values also have an order, `IValueComparable<T>` does the same job for `IComparable<T>`, requiring `<`, `<=`, `>` and `>=` as well. Across the ONIXLabs .NET libraries, `Optional<T>`, `Result<T>`, `BigDecimal` and the cryptographic primitives all implement `IValueEquatable<T>`, so they all compare the same way.
+
+## Putting It Together
+
+Here's the finished model, with everything we've covered:
+
+```csharp
+using OnixLabs.Core;
+using OnixLabs.Core.Linq;
+
+public readonly record struct Point(int X, int Y) : IValueEquatable<Point>;
+
+public sealed record Route(string Name, IReadOnlyList<Point>? Waypoints) : IValueEquatable<Route>
+{
+    public IReadOnlyList<Point>? Waypoints { get; } = Waypoints is null ? null : [..Waypoints];
+
+    public bool Equals(Route? other) => ReferenceEquals(this, other)
+        || other is not null
+        && this.Name == other.Name
+        && this.Waypoints.SequenceEqualOrNull(other.Waypoints);
+
+    public override int GetHashCode() => HashCode.Combine(this.Name, this.Waypoints.GetContentHashCode());
+}
+```
+
+And here's how to decide what your own types need:
+
+1. **Decide which question the type answers.** If two instances with the same contents are still different things, use a class and keep identity. That includes entities, however much they look like values.
+2. **If it's a value, start with a record.** Use a `readonly record struct` for something small, and a `sealed record` otherwise.
+3. **Write it by hand when you need control.** Implement `Equals(T)`, `Equals(object)`, `GetHashCode` and both operators, all leading back to one definition.
+4. **Look for collections.** If the type holds one, replace `Equals` and `GetHashCode` together, using `SequenceEqualOrNull` and `GetContentHashCode`.
+5. **Keep it immutable.** A value that can change is a key that can be lost.
+6. **Implement `IValueEquatable<T>`,** so that the operators can't be forgotten and generic code can rely on them.
+
+Now both the treasure hunter and the eraser get the right answer.
 
 See [IValueEquatable&lt;T&gt;](https://github.com/onix-labs/onixlabs-dotnet/wiki/OnixLabs.Core.IValueEquatable) and [IValueComparable&lt;T&gt;](https://github.com/onix-labs/onixlabs-dotnet/wiki/OnixLabs.Core.IValueComparable) in the API reference.

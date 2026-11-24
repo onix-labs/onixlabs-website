@@ -4,6 +4,7 @@ description: "Why decimal precision and scale are lost between back-end decimal 
 category: dotnet
 order: 5
 path: /Documentation/Number-Theory/The-Problem-With-Decimals
+advert: dotnet-numerics
 updated: 2026-11-11
 ---
 
