@@ -66,6 +66,8 @@ what exists before adding new styles:
   hero and `LibraryHero` opens the library, product, Aero, Consulting and Contact pages. `SectionHeader` gives the eyebrow, `<h2>`
   and lead of each section; `GlassBand` (a band of copy beside a glowing glass icon), `LibrarySection`, `ProductTile`,
   `FamilyTile`, `TeamTile`, `PrinciplesBento`, `TechnologyMarquee`, `TalkToUsSection` and `Button` cover most content.
+  `Advert` points readers of an article at a product.
+  `LogoAura` is a logo over its glow, and `StudioIntroduction` uses it under the hero of Studio's page.
   `StudioFeature` sets a Studio screenshot beside its `FeaturePoints` in a band. `GlassIcon` renders a 3D glass icon
   and `GlassAura` the icon over its glow.
 - **Typography:** the self-hosted Poppins for all text, JetBrains Mono for code and technical labels. Headlines have
@@ -84,9 +86,10 @@ These came from real defects on iPhones and from the Lighthouse budget, so they 
 
 - **No runtime blur on anything that animates or scrolls into view.** iOS Safari clips a `filter: blur()` layer to its
   parent's box while an ancestor is animated, and re-blurs it every frame. Glows are rendered ahead of time instead:
-  `scripts/generate-auras.ts` (part of `npm run images`) blurs each glass icon and the Aero image into `<name>-aura.webp`
-  and `<name>-aura-dark.webp`, which `GlassAura` and `AeroShowcase` show behind the image. The only runtime blurs left are
-  static backdrops (`.window-light`, `StudioWindow`'s glow, the marquee's logo glow) and the hero text's `blur-in`.
+  `scripts/generate-auras.ts` (part of `npm run images`) blurs each glass icon, the Aero image and the Studio and Aero
+  logos into `<name>-aura.webp` and `<name>-aura-dark.webp`, which `GlassAura`, `AeroShowcase` and `LogoAura` show behind
+  the image. The only runtime blurs left are static backdrops (`.window-light`, `StudioWindow`'s glow, the marquee's logo
+  glow) and the hero text's `blur-in`.
 - **Keep movement on the compositor.** A browser only runs an animation off the main thread if it can composite every
   property in it: `transform`, `translate`, `scale`, `opacity` and filters that don't move pixels (`brightness`,
   `grayscale`, not `blur`). One `z-index`, `visibility` or `blur` in the same keyframes keeps the whole animation on the
@@ -124,6 +127,7 @@ without a reason. When a field loses its last reader, remove it from the schema 
 | `aero` | `src/content/aero.yaml` | The principles and architecture modules on `/Products/Aero` |
 | `studio` | `src/content/studio.yaml` | `/Products/Studio`: one feature for each screenshot, with the points that explain it, and the capabilities around them |
 | `articles` | `src/content/articles/<folder>/<slug>.md` | `/Documentation/...` articles, listed by `category` on the `/Documentation` hub (Products, Foundations, Engineering Standards, Corda) |
+| `adverts` | `src/content/adverts.yaml` | The advert an article's `advert` field names, between its text and the further reading. Wording follows the page it points at, so update both |
 | `contributors` | `src/content/contributors/<slug>.md` | `/Contributors/<Name>` and the team tiles on the home, About and other profile pages |
 | `technologies` | `src/content/technologies.yaml` | The technology logos on the home page (sorted by `id`) |
 | `policies` | `src/content/policies/<slug>.md` | `/Legal/<Name>` policy pages, listed by `group` (Legal, Responsibility, Trust) on the `/Legal` hub and in the footer |
@@ -164,7 +168,8 @@ Each product's source of truth is its repository (`repositoryUrl`). When updatin
 
 - **An article:** add `src/content/articles/<category>/<slug>.md` with the frontmatter the schema requires. The
   `path` must start with `/Documentation/`, and never changes once published, even if the article moves category. Give it
-  a `published` date. Use `##` and deeper headings in the body; the title is rendered as the page's `<h1>`, and the `##`
+  a `published` date. Name an `advert` (a key in `adverts.yaml`) if one follows from the article; leave it out rather
+  than force a fit. Use `##` and deeper headings in the body; the title is rendered as the page's `<h1>`, and the `##`
   headings make its outline. A new category also needs an entry in `src/config/documentation-categories.ts` and the
   schema's `category` enum.
 - **A product:** add a YAML file in `src/content/products/`, with an icon under `public/onixlabs/images/icons/`,

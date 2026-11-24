@@ -4,7 +4,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import type { Metadata, OutputInfo } from 'sharp';
 
-// The glow behind each glass icon (GlassAura) and behind the Aero image (AeroShowcase) used to be the browser blurring
+// The glow behind each glass icon (GlassAura), the Aero image (AeroShowcase) and the Studio and Aero logos (LogoAura) used to be the browser blurring
 // a second copy of the image with filter: blur(). iOS Safari clips a filtered layer to its parent's box while an
 // ancestor animates, and the blur costs the GPU on every frame, so the glows are rendered here instead: the image on a
 // canvas 2.2 times its size (room for the blur to spread), blurred, then graded with the same arithmetic as CSS's
@@ -14,6 +14,10 @@ const imagesRoot: string = path.resolve('public/onixlabs/images');
 const padding: number = 0.6; // Each side, as a fraction of the image's width: the canvas is 1 + 2 × padding wide.
 const iconBlur: number = 0.26; // The blur's standard deviation, as a fraction of the image's width.
 const aeroBlur: number = 0.12; // The Aero image is mostly empty space between its modules, so its colours need less spreading.
+const wordmarkBlur: number = 0.2; // Less than an icon's: the Aero wordmark's colours are only a third of its width.
+const thickening: number = 0.02; // How far colours spread to join up, as a fraction of the width, before their alpha is raised.
+const thickeningGain: number = 8;
+const greyChroma: number = 40; // Channels closer together than this make a grey.
 const outputWidth: number = 512; // The glow is soft, so it needs far fewer pixels than the image it came from.
 
 interface AuraGrade {
@@ -24,8 +28,14 @@ interface AuraGrade {
 // The dark theme's grade is gentler: its glows sit on near-black, where saturation reads stronger.
 const lightGrade: AuraGrade = { saturation: 3.2, brightness: 1.05 };
 const darkGrade: AuraGrade = { saturation: 2.6, brightness: 1.15 };
+// A logo is flat, full colour rather than pale glass, so it needs far less lifting.
+const logoGrade: AuraGrade = { saturation: 1.5, brightness: 1.05 };
+const logoDarkGrade: AuraGrade = { saturation: 1.3, brightness: 1.1 };
+// The wordmark's colours are small dots all round a ring, so they thin out and mix as they spread.
+const wordmarkGrade: AuraGrade = { saturation: 2.6, brightness: 1.05 };
+const wordmarkDarkGrade: AuraGrade = { saturation: 2.4, brightness: 1.1 };
 
-async function renderAura(source: string, destination: string, grade: AuraGrade, blur: number): Promise<void> {
+async function renderAura(source: string | Buffer, destination: string, grade: AuraGrade, blur: number): Promise<void> {
     const { width }: Metadata = await sharp(source).metadata();
     const pad: number = Math.round(width * padding);
     // The padded image is blurred in the same pipeline as its resize: sharp premultiplies the alpha for a resize and
@@ -69,6 +79,28 @@ function applyGrade(pixels: Buffer, grade: AuraGrade): void {
     }
 }
 
+// The image with everything grey made transparent, so a wordmark's black or white letters don't muddy its glow, and the
+// colours that are left thickened until they join up, because sparse ones would blur away to almost nothing. Boosting the
+// glow itself instead would show its bands.
+async function keepColours(source: string): Promise<Buffer> {
+    const { data, info }: { data: Buffer; info: OutputInfo } = await sharp(source).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    for (let offset: number = 0; offset < data.length; offset += 4) {
+        const channels: ReadonlyArray<number> = [data.readUInt8(offset), data.readUInt8(offset + 1), data.readUInt8(offset + 2)];
+        if (Math.max(...channels) - Math.min(...channels) < greyChroma) {
+            data.writeUInt8(0, offset + 3);
+        }
+    }
+    const { data: thick, info: thickInfo }: { data: Buffer; info: OutputInfo } = await sharp(data, { raw: { width: info.width, height: info.height, channels: 4 } })
+        .resize({ width: outputWidth })
+        .blur(outputWidth * thickening)
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+    for (let offset: number = 3; offset < thick.length; offset += 4) {
+        thick.writeUInt8(clamp(thick.readUInt8(offset) * thickeningGain), offset);
+    }
+    return sharp(thick, { raw: { width: thickInfo.width, height: thickInfo.height, channels: 4 } }).png().toBuffer();
+}
+
 function clamp(value: number): number {
     return Math.min(255, Math.max(0, Math.round(value)));
 }
@@ -95,4 +127,10 @@ async function renderAll(sources: ReadonlyArray<string>, blur: number): Promise<
 }
 
 await renderAll(await auraSources(path.join(imagesRoot, 'icons/glass')), iconBlur);
+// The logos' colours are the same in both themes, so their two glows differ only in their grade.
+await renderAura(path.join(imagesRoot, 'logo/studio.svg'), path.join(imagesRoot, 'logo/studio-aura.webp'), logoGrade, iconBlur);
+await renderAura(path.join(imagesRoot, 'logo/studio.svg'), path.join(imagesRoot, 'logo/studio-aura-dark.webp'), logoDarkGrade, iconBlur);
+const aeroColours: Buffer = await keepColours(path.join(imagesRoot, 'logo/aero-dark.webp'));
+await renderAura(aeroColours, path.join(imagesRoot, 'logo/aero-aura.webp'), wordmarkGrade, wordmarkBlur);
+await renderAura(aeroColours, path.join(imagesRoot, 'logo/aero-aura-dark.webp'), wordmarkDarkGrade, wordmarkBlur);
 await renderAll([path.join(imagesRoot, 'marketing/aero.webp'), path.join(imagesRoot, 'marketing/aero-dark.webp')], aeroBlur);

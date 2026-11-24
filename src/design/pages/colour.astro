@@ -89,7 +89,7 @@ const familyNames: ReadonlyMap<string, string> = new Map<string, string>([
 </Specimen>
 
 <Specimen title="Product colour blocks" code={'<div class="tile family-block family-aero">…</div>\n/* family-aero | family-studio | family-player | family-dotnet | family-kotlin | family-corda */'}>
-    <Fragment slot="notes"><p>Each product owns a gradient pair. As a block, the pair is deepened so white text on it clears 4.5:1. Capstone products (Aero, ONIXLabs Studio, ONIXPlayer) lead; the library families are smaller and quieter.</p></Fragment>
+    <Fragment slot="notes"><p>Each product owns a gradient pair, except ONIXLabs Studio, which takes the spectrum of its icon. As a block, the colours are deepened so white text on them clears 4.5:1. Capstone products (Aero, ONIXLabs Studio, ONIXPlayer) lead; the library families are smaller and quieter.</p></Fragment>
     <div class="grid grid-3">
         {families.map((family: string) => (
             <div class={`tile family-block family-${family} block-sample`}>

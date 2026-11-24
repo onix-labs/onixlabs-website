@@ -34,11 +34,13 @@
        itself, so the animated --angle is read there rather than frozen at :root. */
     --brand-conic-stops: var(--brand-amber), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-cyan), var(--brand-teal), var(--brand-green), var(--brand-amber);
 
-    /* Product families. Capstone products get their own pair; libraries share the older family pairs. */
+    /* Product families. Capstone products get their own pair, or in Studio's case the spectrum of its icon; libraries share
+       the older family pairs. */
     --family-aero-from: var(--brand-amber);
     --family-aero-to: var(--brand-rose);
-    --family-studio-from: var(--brand-violet);
-    --family-studio-to: var(--brand-blue);
+    --family-studio-from: var(--brand-amber);
+    --family-studio-to: var(--brand-green);
+    --family-studio-stops: var(--brand-amber), var(--brand-rose), var(--brand-violet), var(--brand-blue), var(--brand-teal), var(--brand-green);
     --family-player-from: var(--brand-cyan);
     --family-player-to: var(--brand-teal);
     --family-dotnet-from: var(--brand-violet);

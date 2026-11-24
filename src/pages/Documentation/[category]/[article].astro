@@ -6,6 +6,7 @@ import type { GetStaticPathsResult } from 'astro';
 import { estimateReadingMinutes } from '../../../collections/estimate-reading-minutes';
 import { formatArticleDate } from '../../../collections/format-article-date';
 import { loadArticles } from '../../../collections/load-articles';
+import Advert from '../../../components/Advert.astro';
 import ArticleList from '../../../components/ArticleList.astro';
 import Button from '../../../components/Button.astro';
 import ReadingLayout from '../../../components/ReadingLayout.astro';
@@ -19,8 +20,9 @@ import type { JsonLdObject } from '../../../seo/json-ld-object';
 import { PageType } from '../../../seo/page-type';
 
 // An article, laid out for reading: a calm header with its category, date, reading time and author, the text in a
-// comfortable column with an outline held beside it, then more to read. The rest of its category comes first, starting
-// with whatever follows it, so a series reads on in order; other articles fill in if its category is short.
+// comfortable column with an outline held beside it, then the advert it names, if any, and more to read. The rest of
+// its category comes first, starting with whatever follows it, so a series reads on in order; other articles fill in if its
+// category is short.
 interface Props {
     readonly article: CollectionEntry<'articles'>;
     readonly related: ReadonlyArray<CollectionEntry<'articles'>>;
@@ -52,6 +54,7 @@ const category: DocumentationCategory | undefined = documentationCategories.find
     (candidate: DocumentationCategory): boolean => candidate.id === article.data.category,
 );
 const author: CollectionEntry<'contributors'> | undefined = article.data.author === undefined ? undefined : await getEntry(article.data.author);
+const advert: CollectionEntry<'adverts'> | undefined = article.data.advert === undefined ? undefined : await getEntry(article.data.advert);
 const readingMinutes: number = estimateReadingMinutes(article.body ?? '');
 const structuredData: ReadonlyArray<JsonLdObject> = [
     buildTechArticle({
@@ -94,6 +97,8 @@ const structuredData: ReadonlyArray<JsonLdObject> = [
         </Fragment>
         <Content />
     </ReadingLayout>
+
+    {advert !== undefined && <Advert advert={advert} />}
 
     {related.length > 0 && (
         <section class="section tone-alt" aria-labelledby="keep-reading">

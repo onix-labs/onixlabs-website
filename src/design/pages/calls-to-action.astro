@@ -1,8 +1,20 @@
 ---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+import Advert from '../../components/Advert.astro';
 import TalkToUsSection from '../../components/TalkToUsSection.astro';
 import Specimen from '../Specimen.astro';
+
+const adverts: ReadonlyArray<CollectionEntry<'adverts'>> = (await getCollection('adverts'))
+    .filter((advert: CollectionEntry<'adverts'>): boolean => advert.id === 'dotnet' || advert.id === 'studio');
 ---
 <Specimen title="Closing call to action" surface="none" padding="none" code={'<TalkToUsSection />\n<TalkToUsSection alternate />   /* on the grey band */\n<TalkToUsSection contactHref="/Contact?reason=consulting" />'}>
     <Fragment slot="notes"><p>The last thing on most pages, flat in its band: the invitation and two actions on the left, the glass envelope on the right. Set <code>alternate</code> when the section before it is plain, so the bands keep alternating, and <code>contactHref</code> to open a prefilled contact form.</p></Fragment>
     <TalkToUsSection />
+</Specimen>
+
+<Specimen title="Advert" surface="none" code={'<Advert advert={advert} />'}>
+    <Fragment slot="notes"><p>Between an article's text and its further reading, pointing at something that follows from it: the entry in <code>adverts.yaml</code> that the article's <code>advert</code> field names. A product's colour block, with a white logo, or a grey tile with an icon glowing in its own colours. One to an article.</p></Fragment>
+    {adverts.map((advert: CollectionEntry<'adverts'>) => <Advert advert={advert} />)}
 </Specimen>

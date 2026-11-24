@@ -737,7 +737,7 @@ a:hover > .link-cta .icon {
 .family-corda { --family-from: var(--family-corda-from); --family-to: var(--family-corda-to); }
 .family-kotlin { --family-from: var(--family-kotlin-from); --family-to: var(--family-kotlin-to); }
 .family-aero { --family-from: var(--family-aero-from); --family-to: var(--family-aero-to); }
-.family-studio { --family-from: var(--family-studio-from); --family-to: var(--family-studio-to); }
+.family-studio { --family-from: var(--family-studio-from); --family-to: var(--family-studio-to); --family-stops: var(--family-studio-stops); }
 .family-player { --family-from: var(--family-player-from); --family-to: var(--family-player-to); }
 
 /* A small line icon on a quiet disc, for feature tiles. */
@@ -847,9 +847,9 @@ textarea.input {
 /* A badge on a deepened brand or family gradient, with white text. */
 .badge-brand,
 .badge-family {
-    --badge-from: color-mix(in srgb, var(--family-from, var(--brand-rose)) 72%, #000);
-    --badge-to: color-mix(in srgb, var(--family-to, var(--brand-violet)) 72%, #000);
-    background: linear-gradient(120deg, var(--badge-from), var(--badge-to));
+    --badge-stops: var(--family-stops, var(--family-from, var(--brand-rose)), var(--family-to, var(--brand-violet)));
+    /* Deepened by a third, as .family-block is. */
+    background: linear-gradient(rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33)), linear-gradient(120deg, var(--badge-stops));
     color: #ffffff;
 }
 

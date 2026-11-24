@@ -1,0 +1,101 @@
+---
+import Button from './Button.astro';
+import LogoAura from './LogoAura.astro';
+import SectionHeader from './SectionHeader.astro';
+
+// What Studio is, between the hero of its page and its features: its icon glowing on the left, and on the right the
+// introduction and a way into its article in the documentation. Stacks below 60rem, icon first.
+---
+<section class="section tone-alt studio-introduction" aria-labelledby="studio-introduction">
+    <div class="container-wide introduction-layout">
+        <div class="introduction-icon zoom-arrive">
+            <LogoAura src="/onixlabs/images/logo/studio.svg" aura="/onixlabs/images/logo/studio-aura.webp" width={512} height={512} class="introduction-logo" />
+        </div>
+        <div class="introduction-copy">
+            <SectionHeader eyebrow="Introducing Studio" title="Built from the ground up" highlight="for people and agents" highlightStyle="gradient" id="studio-introduction">
+                Studio is a free, open-source agentic development environment: a full, language-agnostic IDE, version control for your
+                repositories, and the tools that used to live in windows of their own.
+            </SectionHeader>
+            <div class="introduction-details">
+                <p>
+                    It began as a text editor, and grew each time we asked what else could live in the same window. One principle runs
+                    through all of it: agents at every surface. Not a chat panel beside the work, but agents inside it, helping
+                    wherever you're working.
+                </p>
+                <p>
+                    Agents are trusted with real work, so they work within real limits. They write inside your workspace by default,
+                    their transcripts show what they read and run, and you decide what each tool may do, must ask first, or may never
+                    touch.
+                </p>
+            </div>
+            <Button href="/Documentation/Studio/Introduction-To-Studio" size="large">Read the introduction</Button>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* The glow spreads well past the icon, so the band clips it. */
+    .studio-introduction {
+        overflow: clip;
+    }
+
+    .introduction-layout {
+        display: grid;
+        gap: 2.5rem;
+    }
+
+    .introduction-icon {
+        display: grid;
+        place-items: center;
+        isolation: isolate;
+    }
+
+    /* Stacked, the glow stops short of the label below it, which would lose its contrast. */
+    .introduction-icon :global(.introduction-logo) {
+        --aura-scale: 1.2;
+        width: min(13rem, 55vw);
+    }
+
+    .introduction-copy {
+        display: grid;
+        gap: 2rem;
+        justify-items: start;
+    }
+
+    .introduction-copy :global(.section-header) {
+        max-width: none;
+        margin-bottom: 0;
+    }
+
+    .introduction-copy :global(.section-header h2) {
+        font-size: 2.5rem;
+    }
+
+    .introduction-copy :global(.section-header .lead) {
+        font-size: var(--text-lg);
+    }
+
+    .introduction-copy :global(.gradient-text) {
+        display: block;
+    }
+
+    .introduction-details {
+        display: grid;
+        gap: 1rem;
+        color: var(--text-muted);
+        line-height: 1.65;
+    }
+
+    @media (min-width: 60rem) {
+        .introduction-layout {
+            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .introduction-icon :global(.introduction-logo) {
+            --aura-scale: 1.6;
+            width: min(100%, 20rem);
+        }
+    }
+</style>

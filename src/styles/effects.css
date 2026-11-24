@@ -159,13 +159,13 @@
 
 /*
  * Family colour block: a product family's gradient as a solid, confident block. The colours are deepened by a
- * quarter so white text on them clears 4.5:1.
+ * third, by the black over them, so white text clears 4.5:1 even on amber. A family with more than two colours sets
+ * --family-stops.
  */
 .family-block {
-    --block-from: color-mix(in srgb, var(--family-from, var(--brand-violet)) 72%, #000);
-    --block-to: color-mix(in srgb, var(--family-to, var(--brand-blue)) 72%, #000);
+    --block-stops: var(--family-stops, var(--family-from, var(--brand-violet)), var(--family-to, var(--brand-blue)));
     position: relative;
-    background: linear-gradient(135deg, var(--block-from), var(--block-to));
+    background: linear-gradient(rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33)), linear-gradient(135deg, var(--block-stops));
     color: #ffffff;
     isolation: isolate;
     overflow: hidden;

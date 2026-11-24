@@ -1,5 +1,6 @@
 import type { Locator, Route } from '@playwright/test';
 
+import type { Advert } from './support/advert';
 import type { TestArguments } from './support/test-arguments';
 import { expect, test } from './support/test';
 
@@ -103,4 +104,27 @@ test('an article in a series offers its next part first', async ({ page }: TestA
 
     await expect(keepReading.getByRole('listitem').first().getByRole('link')).toHaveAttribute('href', '/Documentation/Corda/Flow-Design-Guidelines-3');
     await expect(page.getByRole('link', { name: 'Corda', exact: true })).toHaveAttribute('href', '/Documentation/#corda');
+});
+
+const adverts: ReadonlyArray<Advert> = [
+    { article: '/Documentation/DotNet/Equality-And-Value-Semantics', name: 'Products for .NET Built for Precision', href: '/Products/DotNet' },
+    { article: '/Documentation/Corda/Flow-Design-Guidelines-1', name: 'Corda Core CorDapps without the boilerplate', href: '/Products/Corda/Core' },
+    { article: '/Documentation/Studio/Introduction-To-Studio', name: 'ONIXLabs Studio Every tool in one window', href: '/Products/Studio' },
+];
+
+for (const advert of adverts) {
+    test(`${advert.article} advertises ${advert.href} before its further reading`, async ({ page }: TestArguments): Promise<void> => {
+        await page.goto(advert.article);
+
+        await expect(page.getByRole('region', { name: advert.name }).getByRole('link')).toHaveAttribute('href', advert.href);
+        await expect(page.locator('.advert + section')).toHaveAccessibleName(/^More from /);
+        await page.getByRole('region', { name: advert.name }).getByRole('link').click();
+        await expect(page).toHaveURL(new RegExp(`${advert.href}$`));
+    });
+}
+
+test('an article that names no advert has none', async ({ page }: TestArguments): Promise<void> => {
+    await page.goto('/Documentation/ONIXPlayer/Introduction-To-ONIXPlayer');
+
+    await expect(page.locator('.advert')).toHaveCount(0);
 });

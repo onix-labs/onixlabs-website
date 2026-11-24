@@ -4,6 +4,7 @@ description: "How ONIXLabs Studio grew from a simple text editor into a free, op
 category: products
 order: 1
 path: /Documentation/Studio/Introduction-To-Studio
+advert: studio
 published: 2026-11-10
 ---
 

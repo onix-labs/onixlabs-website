@@ -54,7 +54,7 @@ export const designNavigation: ReadonlyArray<DesignGroup> = [
             { slug: 'studio-feature', title: 'Studio features', summary: 'The staggered feature bands: a screenshot beside the points that explain it.' },
             { slug: 'bands', title: 'Bands', summary: 'Full-width sections in the page, alt and dark tones.' },
             { slug: 'marquee', title: 'Marquee', summary: 'The scrolling technology strip.' },
-            { slug: 'calls-to-action', title: 'Calls to action', summary: 'The closing call-to-action band.' },
+            { slug: 'calls-to-action', title: 'Calls to action', summary: 'The closing call-to-action band, and the advert on articles.' },
             { slug: 'navigation', title: 'Header and footer', summary: 'The site header, its scroll progress, and the directory footer.' },
         ],
     },

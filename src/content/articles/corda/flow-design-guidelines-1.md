@@ -4,6 +4,7 @@ description: "What Corda flows and flow sessions are, how to implement and exten
 category: corda
 order: 1
 path: /Documentation/Corda/Flow-Design-Guidelines-1
+advert: corda-core
 published: 2022-03-12
 ---
 

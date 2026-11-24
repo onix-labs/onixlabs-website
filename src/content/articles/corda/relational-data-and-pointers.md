@@ -4,6 +4,7 @@ description: "What state pointers in Corda are, how to use them to model relatio
 category: corda
 order: 4
 path: /Documentation/Corda/Relational-Data-And-Pointers
+advert: corda-core
 published: 2022-03-13
 ---
 

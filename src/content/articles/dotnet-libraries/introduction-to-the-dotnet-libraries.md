@@ -4,6 +4,7 @@ description: "An introduction to the ONIXLabs .NET libraries: what Core, Numeric
 category: products
 order: 4
 path: /Documentation/DotNet/Introduction-To-The-DotNet-Libraries
+advert: dotnet
 published: 2026-11-10
 ---
 
