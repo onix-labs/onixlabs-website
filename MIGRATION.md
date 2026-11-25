@@ -66,7 +66,7 @@ deliberate changes came out of the SEO and accessibility work:
 - Titles put the page first (`Numerics Library for .NET | ONIXLabs`) instead of `ONIXLabs | ...`.
 - JSON-LD on every page: Organization and WebSite; BreadcrumbList on inner pages; SoftwareSourceCode for each
   library; SoftwareApplication for Aero; TechArticle for articles; ProfilePage/Person for contributors.
-- `logo-og.png` was an empty (0-byte) file, so link previews had no image. It's now a generated 1200×630 card.
+- `logo-og.png` was an empty (0-byte) file, so link previews had no image. The build now draws a 1200×630 card for each page.
 - `sitemap-index.xml` and `robots.txt` are generated.
 
 **Accessibility (axe-core reports no WCAG 2.2 AA violations on any page, in either theme)**

@@ -42,8 +42,6 @@ const { name, givenName, familyName, jobTitle, accent, teaser, description, phot
     description={description}
     path={path}
     type={PageType.Profile}
-    image={photo}
-    imageAlt={`Portrait of ${name}`}
     breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'About', path: '/About' }, { name, path }]}
     structuredData={[
         buildProfilePage({ name, givenName, familyName, jobTitle, description, path, photo, sameAs: [linkedInUrl, gitHubUrl] }, site),
