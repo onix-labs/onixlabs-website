@@ -1,0 +1,42 @@
+---
+import { cardTheme } from '../../social/card-theme';
+import { loadSocialCards } from '../../social/load-social-cards';
+import type { SocialCard } from '../../social/social-card';
+import { toSocialCardPath } from '../../social/to-social-card-path';
+import Specimen from '../Specimen.astro';
+
+const cards: ReadonlyArray<SocialCard> = await loadSocialCards();
+---
+<Specimen title="Social cards">
+    <Fragment slot="notes"><p>The image a link shows where it's shared: a headline beside a picture over a bloom, or a business card for a contributor. Drawn at build time from the content; a page without a card of its own shows the home page's.</p></Fragment>
+    <ul class="cards" role="list">
+        {cards.map((card: SocialCard) => (
+            <li>
+                <img src={toSocialCardPath(card.path)} alt={card.alt} width={cardTheme.width} height={cardTheme.height} loading="lazy" decoding="async" />
+                <span>{card.path}</span>
+            </li>
+        ))}
+    </ul>
+</Specimen>
+
+<style>
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+        gap: var(--tile-gap);
+        padding: 0;
+        list-style: none;
+    }
+
+    .cards li {
+        display: grid;
+        gap: var(--space-2);
+        font-size: var(--text-sm);
+    }
+
+    .cards img {
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius);
+    }
+</style>

@@ -113,6 +113,21 @@ These came from real defects on iPhones and from the Lighthouse budget, so they 
   WebKit differs on filters, form controls and animations. WebKit logs a CSP refusal for the stylesheet it applies to
   its own `<select>` picker; `pages.spec.ts` ignores that one message, and nothing else.
 
+## Social cards
+
+The image a link shows where it's shared (`og:image`) is drawn at build time, by `src/pages/social/[...card].jpg.ts`: a
+1200×630 JPEG for each card in `src/social/load-social-cards.ts`, published at `/social/<page path>.jpg` and shown on
+`/design/social-cards`. `Seo.astro` finds a page's card by its `path`; a page without one gets `homeCard`.
+
+- Every product, library page, article and contributor gets a card from its content, so adding one needs nothing more. An
+  article's glass icon and colours come from its category in `src/config/documentation-categories.ts`, or, when it
+  introduces a product (`introduces` in its frontmatter), from that product in `product-appearances.ts`.
+- The cards of pages whose copy is in their `.astro` files (home, the documentation hub, Studio, Aero, ONIXPlayer, Consulting) are written in
+  `home-card.ts` and `build-page-cards.ts`. Their wording follows those pages' headlines, so update both.
+- A card is laid out by Satori, a subset of CSS flexbox with no CSS variables, and rasterised by sharp. Colours come from
+  `brand-palette.ts` and `card-theme.ts`, which copy `tokens.css`; fonts are the WOFF files of `@fontsource`.
+- Keep cards under 300KB, or WhatsApp may not show them. Never change a card's URL scheme: shared links keep it.
+
 ## Content model
 
 All content lives in `src/content/` and is validated by the Zod schemas in `src/content.config.ts`. **The schema is

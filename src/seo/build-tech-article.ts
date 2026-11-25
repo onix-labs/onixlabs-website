@@ -1,4 +1,5 @@
 import type { SiteSettings } from '../config/site-settings';
+import { toSocialCardPath } from '../social/to-social-card-path';
 import type { JsonLdObject } from './json-ld-object';
 import type { TechArticleDetails } from './tech-article-details';
 import { toAbsoluteUrl } from './to-absolute-url';
@@ -20,7 +21,7 @@ export function buildTechArticle(article: TechArticleDetails, site: SiteSettings
         inLanguage: 'en-GB',
         author,
         publisher: { '@id': `${site.url}/#organization` },
-        image: toAbsoluteUrl(site.defaultImage, site.url),
+        image: toAbsoluteUrl(toSocialCardPath(article.path), site.url),
         ...(article.published !== undefined ? { datePublished: article.published.toISOString() } : {}),
         ...(article.updated !== undefined ? { dateModified: article.updated.toISOString() } : {}),
     };

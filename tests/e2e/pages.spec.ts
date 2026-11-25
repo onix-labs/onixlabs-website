@@ -2,6 +2,8 @@ import type { BrowserContext, ConsoleMessage, Page, Response } from '@playwright
 
 import { sectionPaths } from '../../src/config/section-paths';
 import { toCanonicalPath } from '../../src/config/to-canonical-path';
+import { toSocialCardPath } from '../../src/social/to-social-card-path';
+import { resolveDistFile } from './support/resolve-dist-file';
 import { serveDist } from './support/serve-dist';
 import { sitePages } from './support/site-pages';
 import type { SitePage } from './support/site-page';
@@ -12,6 +14,13 @@ import { expect, test } from './support/test';
 // logs a refusal, on every page with a select, with no effect on the control. It's WebKit's bug, not a policy problem.
 function isWebKitSelectStylesheetNoise(text: string): boolean {
     return text.startsWith('Refused to apply a stylesheet because its hash, its nonce, or \'unsafe-inline\' does not appear in the style-src');
+}
+
+// Each product, article and contributor has a social card of its own, as do the documentation hub and Consulting; every
+// other page has the home page's.
+function expectedCardPath(pagePath: string): string {
+    const hasOwnCard: boolean = /^\/(Products\/|Documentation|Contributors\/|Consulting)/.test(pagePath);
+    return toSocialCardPath(hasOwnCard ? pagePath : '/');
 }
 
 for (const sitePage of sitePages) {
@@ -43,7 +52,9 @@ for (const sitePage of sitePages) {
             await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', expectedUrl);
             await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', expectedUrl);
             await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.{50,}/);
-            await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.onixlabs\.io\//);
+            await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', `https://www.onixlabs.io${expectedCardPath(sitePage.path)}`);
+            await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', `https://www.onixlabs.io${expectedCardPath(sitePage.path)}`);
+            expect((await resolveDistFile(expectedCardPath(sitePage.path))).status).toBe(200);
             await expect(page.locator('meta[http-equiv="content-security-policy"]')).toHaveCount(1);
 
             const structuredData: string | null = await page.locator('script[type="application/ld+json"]').textContent();

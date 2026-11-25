@@ -4,6 +4,7 @@ description: "Why ONIXLabs built ONIXPlayer: a glass media player for macOS, Win
 category: products
 order: 3
 path: /Documentation/ONIXPlayer/Introduction-To-ONIXPlayer
+introduces: player
 published: 2026-11-10
 ---
 

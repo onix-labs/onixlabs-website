@@ -9,8 +9,6 @@ export const site: SiteSettings = {
         'and Corda solutions, frameworks, and consulting services to accelerate scalable, secure business applications.',
     locale: 'en_GB',
     twitterHandle: '@onix_labs',
-    defaultImage: '/onixlabs/images/logo/logo-og.png',
-    defaultImageAlt: 'ONIXLabs logo',
     logo: '/onixlabs/images/logo/logo-orb-512.png',
     foundingYear: 2020,
     contactFormEndpoint: 'https://formspree.io/f/xwpqpeay',

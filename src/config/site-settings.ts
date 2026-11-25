@@ -7,8 +7,6 @@ export interface SiteSettings {
     readonly description: string;
     readonly locale: string;
     readonly twitterHandle: string;
-    readonly defaultImage: string;
-    readonly defaultImageAlt: string;
     readonly logo: string;
     readonly foundingYear: number;
     readonly contactFormEndpoint: string;

@@ -4,6 +4,7 @@ description: "An introduction to the ONIXLabs Corda libraries: Corda Core, the I
 category: products
 order: 5
 path: /Documentation/Corda/Introduction-To-The-Corda-Libraries
+introduces: corda
 advert: corda
 published: 2026-11-10
 ---

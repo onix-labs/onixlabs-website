@@ -2,6 +2,7 @@ import { defineCollection, reference } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { studioColours } from './config/studio-colours';
+import { cardSubjects } from './social/card-subjects';
 
 // These schemas are the contract for all site content. Content that doesn't match fails `astro build`,
 // so an invalid edit can't reach production. See CLAUDE.md for how each collection is used.
@@ -69,6 +70,8 @@ const articles = defineCollection({
         path: sitePath.startsWith('/Documentation/'),
         // The advert shown after the text, for something that follows from it.
         advert: reference('adverts').optional(),
+        // The product or family it introduces, whose colours and picture its social card takes.
+        introduces: z.enum(cardSubjects).optional(),
         author: reference('contributors').optional(),
         published: z.coerce.date().optional(),
         updated: z.coerce.date().optional(),
